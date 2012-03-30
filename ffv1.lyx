@@ -1042,11 +1042,26 @@ State transition table
 \end_layout
 
 \begin_layout Standard
-one_state[i] = default_state_transition[i] + state_transition_delta[i]
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset Newline newline
 \end_inset
 
-zero_state[i] = 256 - one_state[256-i]
+
+\begin_inset Formula $one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula $zero\_state_{i}=256-one\_state_{256-i}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
