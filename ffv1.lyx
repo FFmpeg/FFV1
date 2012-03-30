@@ -87,8 +87,18 @@ The FFV1 video codec is a simple and efficient lossless intra only codec.
 \end_layout
 
 \begin_layout Standard
-The latest version of this document is available at http://www.mplayerhq.hu/~micha
-el/ffv1.{lyx,txt,html,ps}
+The latest version of this document is available at 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://raw.github.com/FFmpeg/FFV1/master/ffv1.lyx
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
