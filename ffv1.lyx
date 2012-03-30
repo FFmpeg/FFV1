@@ -618,9 +618,11 @@ Coding of the sample difference
 \end_layout
 
 \begin_layout Standard
-Instead of coding the 9 (or 10 in the case of RCT) bits of the sample difference
- with huffman or range coding only the 8 (or 9) least significant bits are
- used as thats enough the recover the original sample
+Instead of coding the n+1 (or n+2 in the case of RCT) bits of the sample
+ difference with huffman or range coding only the n (or n+1) least significant
+ bits are used as thats enough the recover the original sample.
+ bits in the equation below is bits_per_raw_sample+1 for RCT and bits_per_raw_sa
+mple otherwise.
 \end_layout
 
 \begin_layout Standard
