@@ -1,0 +1,1293 @@
+#LyX 1.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 221
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\use_natbib 0
+\use_numerical_citations 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Title
+\noindent 
+Description of the FFV1 Video Codec
+\layout Author
+
+by Michael Niedermayer <michaelni@gmx.at>
+\layout Standard
+
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset 
+
+
+\layout Section
+
+Introduction
+\layout Standard
+
+The FFV1 video codec is a simple lossless intra only codec.
+ It is still under development and the bitstream might change between versions.
+ 
+\layout Standard
+
+The latest version of this document is available at http://www.mplayerhq.hu/~micha
+el/ffv1.{lyx,txt,html,ps}
+\layout Standard
+\noindent 
+This document assumes familiarity with mathematical and coding concepts
+ such as Arithmetic coding and YCbCr colorspaces.
+\layout Section
+
+Terms and Definitions
+\layout List
+\labelwidthstring 00.00.0000
+
+CABAC Context Adaptive Binary Arithmetic Coder
+\begin_inset LatexCommand \cite{H264}
+
+\end_inset 
+
+
+\layout List
+\labelwidthstring 00.00.0000
+
+RCT Reversible component transform
+\layout Section
+
+High-level Description
+\layout Standard
+
+Each frame is split in 3 planes (Y, Cb, Cr).
+ In the case of the normal YCbCr colorspace the Y plane is coded first followed
+ by the Cb and Cr planes, in the case of the JPEG2000-RCT colorspace the
+ lines are interleaved to reduce cache trashing as most likely the RCT will
+ be immedeatly converted to RGB during decoding, the order of the lines
+ in the interleaving is again Y,Cb,Cr.
+\layout Standard
+
+Samples within a plane are coded in raster scan order (left->right, top->bottom)
+, each sample is predicted by the median predictor from samples in the same
+ plane and the difference is stored
+\layout Subsection
+
+Border
+\layout Standard
+
+Samples above the coded picture are assumed to be 0, right of the coded
+ picture are identical to the closest left sample and left of the coded
+ picture are identical to the top right one
+\layout Standard
+
+
+\begin_inset  Tabular
+<lyxtabular version="3" rows="4" columns="5">
+<features>
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+a
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+b
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+c
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+c
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+a
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+d
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+e
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+e
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+d
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+f
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+g
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+h
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+h
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Standard
+
+Note, this is identical to 
+\begin_inset LatexCommand \cite{JPEGLS}
+
+\end_inset 
+
+
+\layout Subsection
+
+Median predictor
+\layout Standard
+
+median(left, top, left + top - diag)
+\layout Standard
+
+left, top, diag are the left, top and lefttop samples
+\layout Standard
+
+Note, this is also used in 
+\begin_inset LatexCommand \cite{JPEGLS,HuffYuv}
+
+\end_inset 
+
+
+\layout Subsection
+
+Context
+\layout Standard
+
+
+\begin_inset  Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+T
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+tl
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+t
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+tr
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+L
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+l
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+X
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Standard
+
+The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as
+ context
+\layout Standard
+
+
+\begin_inset Formula $context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$
+\end_inset 
+
+
+\layout Standard
+
+If context < 0 then -context is used and the difference between the sample
+ and its predicted value is encoded with a flipped sign
+\layout Subsection
+
+Quantization
+\layout Standard
+
+There are 5 quantization tables for the 5 sample differences, both the number
+ of quantization steps and their distribution are stored in the bitstream.
+ Each quantization table has exactly 256 entries, and the 8 least significant
+ bits of the sample difference are used as index
+\layout Standard
+
+
+\begin_inset Formula $Q_{i}[a-b]=Table_{i}[(a-b)\&255]$
+\end_inset 
+
+
+\layout Subsection
+
+Colorspace
+\layout Subsubsection
+
+JPEG2000-RCT
+\layout Standard
+
+
+\begin_inset Formula $Cb=b-g$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Formula $Cr=r-g$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Formula $Y=g+(Cb+Cr)>>2$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Formula $g=Y-(Cb+Cr)>>2$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Formula $r=Cr+g$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset Formula $b=Cb+g$
+\end_inset 
+
+
+\layout Standard
+
+
+\begin_inset LatexCommand \cite{JPEG2000}
+
+\end_inset 
+
+
+\layout Subsection
+
+Coding of the sample difference 
+\layout Standard
+
+Instead of coding the 9 (or 10 in the case of RCT) bits of the sample difference
+ with huffman or CABAC coding only the 8 (or 9) least significant bits are
+ used as thats enough the recover the original sample
+\layout Standard
+
+
+\begin_inset Formula $coder\_ input=\left[\left(sample\_ difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$
+\end_inset 
+
+
+\layout Subsubsection
+
+Arithmetic coding mode
+\layout Paragraph
+
+Context Adaptive Binary Arithmetic Coding (CABAC)
+\layout Standard
+
+The coder is borrowed from
+\begin_inset LatexCommand \cite{H264}
+
+\end_inset 
+
+ and the reader is referred to that for further information, it is also
+ noted that the author doesn't know if the coder is patented, so care must
+ be taken if FFV1 is used in countries where software patents are legal.
+ But even if CABAC turns out to be patent free there is still some risk
+ that other parts of FFV1 are covered by patents.
+ By just looking at the very long list of patents which cover other relatively
+ simple standards it is shown that the patent offices seem to pass nearly
+ everything.
+ In many cases the patents cover basic operations like subtraction or taking
+ the median of 3 integers in a specific case like motion vectors.
+\layout Paragraph
+
+Non binary values
+\layout Standard
+
+
+\begin_inset LatexCommand \label{sub:Non-binary-values}
+
+\end_inset 
+
+To encode 8 or 9bit numbers as is needed in our case, we could simply encode
+ each bit separately and use the past bits as context, but that would mean
+ 255 contexts per 8bit symbol which is not only a waste of memory but also
+ requires more past data to reach reasonable good estimate of the probabilities.
+ Alternatively simply assuming a laplacian distribution and only dealing
+ with its variance and mean like we do in huffman coding mode would be another
+ possibility, but due to flexibility and simplicity, another method was
+ chosen, which simply uses a single symbol to encode if a number is 0 and
+ if not encodes the number using its exponent,mantisse and sign, the exact
+ contexts which are used can probably better be described by the following
+ code then by some english text
+\layout LyX-Code
+
+put_symbol(CABACContext *c, uint8_t *state, int v, int is_signed, int max_exp){
+     
+\layout LyX-Code
+
+    int i;
+\layout LyX-Code
+
+    if(v){         
+\layout LyX-Code
+
+        const int a= ABS(v);         
+\layout LyX-Code
+
+        const int e= av_log2(a);
+\layout LyX-Code
+
+        put_cabac(c, state+0, 0);                  
+\layout LyX-Code
+
+        for(i=0; i<e; i++){
+\layout LyX-Code
+
+            put_cabac(c, state+1+i, 1);  //1..8         
+\layout LyX-Code
+
+        }
+\layout LyX-Code
+
+        if(e<max_exp){
+\layout LyX-Code
+
+            put_cabac(c, state+1+i, 0);      //1..8
+\layout LyX-Code
+
+            for(i=e-1; i>=0; i--){
+\layout LyX-Code
+
+                put_cabac(c, state+16+e+i, (a>>i)&1); //17..29
+\layout LyX-Code
+
+            }
+\layout LyX-Code
+
+            if(is_signed)
+\layout LyX-Code
+
+                put_cabac(c, state+9 + e, v < 0); //9..16
+\layout LyX-Code
+
+        }
+\layout LyX-Code
+
+    }else{
+\layout LyX-Code
+
+        put_cabac(c, state+0, 1);
+\layout LyX-Code
+
+    }
+\layout LyX-Code
+
+}
+\layout LyX-Code
+
+\layout Standard
+
+max_exp is 7 unless the RCT is used, in which case it is 8 for the samples
+ in a plane and 7 for the elements in the header
+\layout Standard
+
+is_signed is 1 for encoding of the samples within a plane or line, and 0
+ for the elements of the header
+\layout Paragraph
+
+Initial values for the context model
+\layout Standard
+
+At keyframes all CABAC state variables are set to 0 except number 7 which
+ is set to 124, number 7 is used to select between -127..-64,64..127 and -128
+ which should explain the strong favoring of the earlier
+\layout Subsubsection
+
+Huffman coding mode
+\layout Standard
+
+Uses golomb rice codes.
+ The VLC code is split in 2 parts, the prefix stores the most significant
+ bits, the suffix stores the k least significant bits or stores the whole
+ number in the ESC case
+\layout Paragraph
+
+Prefix
+\layout Standard
+
+
+\begin_inset  Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+bits
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+value
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+1
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+01
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+1
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+...
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+...
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0000 0000 0001
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+11
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0000 0000 0000
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+ESC
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Paragraph
+
+Suffix
+\layout List
+\labelwidthstring 00.00.0000
+
+non\SpecialChar ~
+ESC the k least significant bits MSB first
+\layout List
+\labelwidthstring 00.00.0000
+
+ESC the value - 11, in MSB first order, ESC may only be used if the value
+ cannot be coded as non ESC
+\layout Paragraph
+
+Examples
+\layout Standard
+
+
+\begin_inset  Tabular
+<lyxtabular version="3" rows="7" columns="3">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+k
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+bits
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+value
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+1
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+001
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+2
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+2
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+1 00
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+0
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+2
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+1 10
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+2
+\end_inset 
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+2
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+01 01
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+5
+\end_inset 
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+any
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+000000000000 10000000
+\end_inset 
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\layout Standard
+
+139
+\end_inset 
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset 
+
+
+\layout Paragraph
+
+run mode
+\layout Standard
+
+run mode is entered when the context is 0, and left as soon as a non 0 differenc
+e is found, the level is identical to the predicted one, the run and the
+ first different level is coded
+\layout Paragraph
+
+run length coding
+\layout Paragraph
+
+level coding
+\layout Standard
+
+is identical to the normal difference coding with the exception that the
+ 0 value is removed as it cant occur
+\layout LyX-Code
+
+if(diff>0) diff--;
+\layout LyX-Code
+
+encode(diff);
+\layout Standard
+
+Note, this is different from JPEG-LS, which doesn't use prediction in run
+ mode, and uses a different encoding and context model for the last difference,
+ on a small set of test samples the use of prediction improved the compression
+ rate a bit
+\layout Section
+
+Bitstream
+\layout List
+\labelwidthstring 00.00.0000
+
+b CABAC 1-bit symbol
+\layout List
+\labelwidthstring 00.00.0000
+
+v 7bit unsigned symbol coded with the method described in 
+\begin_inset LatexCommand \ref{sub:Non-binary-values}
+
+\end_inset 
+
+
+\layout Standard
+
+The same context which is initialized to 0 is used for all fields in the
+ header
+\layout Subsection
+
+Frame
+\layout List
+\labelwidthstring 00.00.0000
+
+b keyframe
+\layout List
+\labelwidthstring 00.00.0000
+
+if(keyframe)
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+Header
+\end_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+if(JPEG2000_RCT){
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+for(y=0;\SpecialChar ~
+y<height;\SpecialChar ~
+y++){
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+LumaLine[y]
+\layout List
+\labelwidthstring 00.00.0000
+
+CbLine[y]
+\layout List
+\labelwidthstring 00.00.0000
+
+CrLine[y]
+\end_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+}
+\end_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+}else{
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+LumaPlane
+\layout List
+\labelwidthstring 00.00.0000
+
+CbPlane
+\layout List
+\labelwidthstring 00.00.0000
+
+CrPlane
+\end_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+}
+\layout Subsection
+
+Header
+\layout List
+\labelwidthstring 00.00.0000
+
+v Version
+\layout List
+\labelwidthstring 00.00.0000
+
+v coder type (0-> golomb rice, 1-> CABAC)
+\layout List
+\labelwidthstring 00.00.0000
+
+v Colorspace type (0->YCbCr, 1->JPEG2000_RCT)
+\layout List
+\labelwidthstring 00.00.0000
+
+b grayscale
+\layout List
+\labelwidthstring 00.00.0000
+
+v log2_h_chroma_subsample (
+\begin_inset Formula $chroma\_ width=2^{-log2\_ h\_ chroma\_ subsample}luma\_ width$
+\end_inset 
+
+)
+\layout List
+\labelwidthstring 00.00.0000
+
+v log2_v_chroma_subsample (
+\begin_inset Formula $chroma\_ height=2^{-log2\_ v\_ chroma\_ subsample}luma\_ height$
+\end_inset 
+
+)
+\layout List
+\labelwidthstring 00.00.0000
+
+b alpha plane
+\layout List
+\labelwidthstring 00.00.0000
+
+x Quantization tables
+\layout Subsection
+
+Quant Table
+\layout Standard
+
+The quantization tables are simply stored by storing the number of equal
+ entries -1 of the first half of the table using the method described in
+ 
+\begin_inset LatexCommand \ref{sub:Non-binary-values}
+
+\end_inset 
+
+, the second half doesn't need to be stored as it is identical to the first
+ with flipped sign
+\layout Standard
+
+example:
+\newline 
+Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
+\newline 
+Stored values: 1, 3, 1
+\layout Section
+
+Changelog
+\layout List
+\labelwidthstring 00.00.0000
+
+0.01 2003-06-09
+\newline 
+initial version by Michael Niedermayer
+\layout List
+\labelwidthstring 00.00.0000
+
+0.02 2004-02-15
+\newline 
+update to match implementation (significant changes)
+\layout List
+\labelwidthstring 00.00.0000
+
+0.03 2004-02-18
+\newline 
+
+\begin_inset Quotes eld
+\end_inset 
+
+Boarder
+\begin_inset Quotes erd
+\end_inset 
+
+->
+\begin_inset Quotes erd
+\end_inset 
+
+Border
+\begin_inset Quotes erd
+\end_inset 
+
+ by Jim Leonard
+\newline 
+huffyuv url by Felix Buenemann
+\newline 
+minor fixes by me
+\layout List
+\labelwidthstring 00.00.0000
+
+0.04 2004-03-19
+\newline 
+new huffyuv url by Raphael Clifford as old one is down
+\layout Section
+
+ToDo
+\layout Itemize
+
+mean,k estimation for the golomb rice codes
+\layout Itemize
+
+bitstream end handling
+\layout Itemize
+
+spelling errors
+\layout Section
+
+Bibliography
+\layout Bibliography
+\bibitem [JPEGLS]{JPEGLS}
+
+
+\begin_inset LatexCommand \url[JPEG-LS FCD 14495]{http://www.jpeg.org/public/fcd14495p.pdf}
+
+\end_inset 
+
+
+\layout Bibliography
+\bibitem [H264]{H264}
+
+
+\begin_inset LatexCommand \url[H.264 Draft]{http://bs.hhi.de/~wiegand/JVT-G050.pdf}
+
+\end_inset 
+
+
+\layout Bibliography
+\bibitem [HUFFYUV]{HuffYuv}
+
+
+\begin_inset LatexCommand \url[Huffyuv]{http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html}
+
+\end_inset 
+
+
+\layout Bibliography
+\bibitem [FFMPEG]{FFMPEG}
+
+
+\begin_inset LatexCommand \url[FFmpeg]{http://ffmpeg.org}
+
+\end_inset 
+
+
+\layout Bibliography
+\bibitem [JPEG2000]{JPEG2000}
+
+JPEG2000 url
+\layout Section
+
+Copyright
+\layout Standard
+
+Copyright 2003,2004 Michael Niedermayer <michaelni@gmx.at> 
+\newline 
+This text can be used under the GNU Free Documentation License or GNU General
+ Public License.
+ See 
+\begin_inset LatexCommand \htmlurl{http://www.gnu.org/licenses/fdl.txt}
+
+\end_inset 
+
+.
+\the_end
