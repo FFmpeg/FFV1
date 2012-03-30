@@ -1331,12 +1331,24 @@ LumaPlane
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
+if(chroma_planes){
+\end_layout
+
+\begin_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
 CbPlane
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
 CrPlane
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+}
 \end_layout
 
 \end_deeper
@@ -1366,7 +1378,7 @@ v Colorspace type (0->YCbCr, 1->JPEG2000_RCT)
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-b grayscale
+b chroma_planes
 \end_layout
 
 \begin_layout Labeling
