@@ -639,7 +639,296 @@ Binary values
 \end_layout
 
 \begin_layout Standard
-TODO
+To encode binary digits efficiently a range coder is used.
+ It is specified by the following C code.
+\end_layout
+
+\begin_layout LyX-Code
+void init_range_encoder(RangeCoder *c, uint8_t *buf, int buf_size){
+\end_layout
+
+\begin_layout LyX-Code
+    c->bytestream= buf;
+\end_layout
+
+\begin_layout LyX-Code
+    c->bytestream_end= buf + buf_size;
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    c->low= 0;
+\end_layout
+
+\begin_layout LyX-Code
+    c->range= 0xFF00;
+\end_layout
+
+\begin_layout LyX-Code
+    c->outstanding_count= 0;
+\end_layout
+
+\begin_layout LyX-Code
+    c->outstanding_byte= -1;
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+void init_range_decoder(RangeCoder *c, const uint8_t *buf, int buf_size){
+\end_layout
+
+\begin_layout LyX-Code
+    init_range_encoder(c, buf, buf_size);
+\end_layout
+
+\begin_layout LyX-Code
+    c->low = bytestream_get_be16(&c->bytestream);
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+void refill(RangeCoder *c){
+\end_layout
+
+\begin_layout LyX-Code
+    if(c->range < 0x100){
+\end_layout
+
+\begin_layout LyX-Code
+        c->range <<= 8;
+\end_layout
+
+\begin_layout LyX-Code
+        c->low <<= 8;
+\end_layout
+
+\begin_layout LyX-Code
+        if(c->bytestream < c->bytestream_end)
+\end_layout
+
+\begin_layout LyX-Code
+            c->low+= c->bytestream[0];
+\end_layout
+
+\begin_layout LyX-Code
+        c->bytestream++;
+\end_layout
+
+\begin_layout LyX-Code
+    }
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+int get_rac(RangeCoder *c, uint8_t * const state){
+\end_layout
+
+\begin_layout LyX-Code
+    int range1= (c->range * (*state)) >> 8;
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    c->range -= range1;
+\end_layout
+
+\begin_layout LyX-Code
+    if(c->low < c->range){
+\end_layout
+
+\begin_layout LyX-Code
+        *state= zero_state[*state];
+\end_layout
+
+\begin_layout LyX-Code
+        refill(c);
+\end_layout
+
+\begin_layout LyX-Code
+        return 0;
+\end_layout
+
+\begin_layout LyX-Code
+    }else{
+\end_layout
+
+\begin_layout LyX-Code
+        c->low -= c->range;
+\end_layout
+
+\begin_layout LyX-Code
+        *state= one_state[*state];
+\end_layout
+
+\begin_layout LyX-Code
+        c->range = range1;
+\end_layout
+
+\begin_layout LyX-Code
+        refill(c);
+\end_layout
+
+\begin_layout LyX-Code
+        return 1;
+\end_layout
+
+\begin_layout LyX-Code
+    }
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+void renorm_encoder(RangeCoder *c){
+\end_layout
+
+\begin_layout LyX-Code
+    while(c->range < 0x100){
+\end_layout
+
+\begin_layout LyX-Code
+        if(c->outstanding_byte < 0){
+\end_layout
+
+\begin_layout LyX-Code
+            c->outstanding_byte= c->low>>8;
+\end_layout
+
+\begin_layout LyX-Code
+        }else if(c->low <= 0xFF00){
+\end_layout
+
+\begin_layout LyX-Code
+            *c->bytestream++ = c->outstanding_byte;
+\end_layout
+
+\begin_layout LyX-Code
+            for(;c->outstanding_count; c->outstanding_count--)
+\end_layout
+
+\begin_layout LyX-Code
+                *c->bytestream++ = 0xFF;
+\end_layout
+
+\begin_layout LyX-Code
+            c->outstanding_byte= c->low>>8;
+\end_layout
+
+\begin_layout LyX-Code
+        }else if(c->low >= 0x10000){
+\end_layout
+
+\begin_layout LyX-Code
+            *c->bytestream++ = c->outstanding_byte + 1;
+\end_layout
+
+\begin_layout LyX-Code
+            for(;c->outstanding_count; c->outstanding_count--)
+\end_layout
+
+\begin_layout LyX-Code
+                *c->bytestream++ = 0x00;
+\end_layout
+
+\begin_layout LyX-Code
+            c->outstanding_byte= (c->low>>8) & 0xFF;
+\end_layout
+
+\begin_layout LyX-Code
+        }else{
+\end_layout
+
+\begin_layout LyX-Code
+            c->outstanding_count++;
+\end_layout
+
+\begin_layout LyX-Code
+        }
+\end_layout
+
+\begin_layout LyX-Code
+        c->low = (c->low & 0xFF)<<8;
+\end_layout
+
+\begin_layout LyX-Code
+        c->range <<= 8;
+\end_layout
+
+\begin_layout LyX-Code
+    }
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout LyX-Code
+void put_rac(RangeCoder *c, uint8_t * const state, int bit){
+\end_layout
+
+\begin_layout LyX-Code
+    int range1= (c->range * (*state)) >> 8;
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    if(!bit){
+\end_layout
+
+\begin_layout LyX-Code
+        c->range -= range1;
+\end_layout
+
+\begin_layout LyX-Code
+        *state= zero_state[*state];
+\end_layout
+
+\begin_layout LyX-Code
+    }else{
+\end_layout
+
+\begin_layout LyX-Code
+        c->low += c->range - range1;
+\end_layout
+
+\begin_layout LyX-Code
+        c->range = range1;
+\end_layout
+
+\begin_layout LyX-Code
+        *state= one_state[*state];
+\end_layout
+
+\begin_layout LyX-Code
+    }
+\end_layout
+
+\begin_layout LyX-Code
+    renorm_encoder(c);
+\end_layout
+
+\begin_layout LyX-Code
+}
 \end_layout
 
 \begin_layout Paragraph
@@ -744,6 +1033,90 @@ Initial values for the context model
 
 \begin_layout Standard
 At keyframes all range coder state variables are set to 128
+\end_layout
+
+\begin_layout Paragraph
+State transition table
+\end_layout
+
+\begin_layout Standard
+one_state[i] = default_state_transition[i] + state_transition_delta[i]
+\begin_inset Newline newline
+\end_inset
+
+zero_state[i] = 256 - one_state[256-i]
+\end_layout
+
+\begin_layout Paragraph
+default_state_transition
+\end_layout
+
+\begin_layout LyX-Code
+  0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
+\end_layout
+
+\begin_layout LyX-Code
+ 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 37, 38, 39, 40, 41, 42,
+\end_layout
+
+\begin_layout LyX-Code
+ 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 56, 57,
+\end_layout
+
+\begin_layout LyX-Code
+ 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+\end_layout
+
+\begin_layout LyX-Code
+ 74, 75, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+\end_layout
+
+\begin_layout LyX-Code
+ 89, 90, 91, 92, 93, 94, 94, 95, 96, 97, 98, 99,100,101,102,103,
+\end_layout
+
+\begin_layout LyX-Code
+104,105,106,107,108,109,110,111,112,113,114,114,115,116,117,118,
+\end_layout
+
+\begin_layout LyX-Code
+119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,133,
+\end_layout
+
+\begin_layout LyX-Code
+134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,
+\end_layout
+
+\begin_layout LyX-Code
+150,151,152,152,153,154,155,156,157,158,159,160,161,162,163,164,
+\end_layout
+
+\begin_layout LyX-Code
+165,166,167,168,169,170,171,171,172,173,174,175,176,177,178,179,
+\end_layout
+
+\begin_layout LyX-Code
+180,181,182,183,184,185,186,187,188,189,190,190,191,192,194,194,
+\end_layout
+
+\begin_layout LyX-Code
+195,196,197,198,199,200,201,202,202,204,205,206,207,208,209,209,
+\end_layout
+
+\begin_layout LyX-Code
+210,211,212,213,215,215,216,217,218,219,220,220,222,223,224,225,
+\end_layout
+
+\begin_layout LyX-Code
+226,227,227,229,229,230,231,232,234,234,235,236,237,238,239,240,
+\end_layout
+
+\begin_layout LyX-Code
+241,242,243,244,245,246,247,248,248,  0,  0,  0,  0,  0,  0,  0,
+\end_layout
+
+\begin_layout LyX-Code
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -2597,7 +2970,7 @@ for(i=1; i<256; i++)
 \begin_inset space ~
 \end_inset
 
-state_transition[i] - state_transition[i-1]
+state_transition_delta[i]
 \end_layout
 
 \end_inset
@@ -3053,7 +3426,8 @@ coder_type Coder used, 0 (Golomb Rice), 1 (Range coder), 2 (Range coder
 \begin_layout Labeling
 \labelwidthstring 12345678901234567890
 \noindent
-state_transition The range coder state transition table
+state_transition_delta The range coder custom state transition table.
+ If it is not coded, all its elements are assumed to be 0.
 \end_layout
 
 \begin_layout Labeling
