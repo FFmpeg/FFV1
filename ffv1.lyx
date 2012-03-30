@@ -133,12 +133,14 @@ High-level Description
 \end_layout
 
 \begin_layout Standard
-Each frame is split in 3 planes (Y, Cb, Cr).
+Each frame is split in 1 to 4 planes (Y, Cb, Cr, Alpha).
  In the case of the normal YCbCr colorspace the Y plane is coded first followed
- by the Cb and Cr planes, in the case of the JPEG2000-RCT colorspace the
- lines are interleaved to reduce cache trashing as most likely the RCT will
- be immedeatly converted to RGB during decoding, the order of the lines
- in the interleaving is again Y,Cb,Cr.
+ by the Cb and Cr planes, if an Alpha/transparency plane exists, it is coded
+ last.
+ In the case of the JPEG2000-RCT colorspace the lines are interleaved to
+ reduce cache trashing as most likely the RCT will be immedeatly converted
+ to RGB during decoding, the order of the lines in the interleaving is again
+ Y,Cb,Cr.
 \end_layout
 
 \begin_layout Standard
