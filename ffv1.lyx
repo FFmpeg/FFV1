@@ -84,8 +84,6 @@ Introduction
 
 \begin_layout Standard
 The FFV1 video codec is a simple lossless intra only codec.
- It is still under development and the bitstream might change between versions.
- 
 \end_layout
 
 \begin_layout Standard
