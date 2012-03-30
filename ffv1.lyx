@@ -104,23 +104,11 @@ https://raw.github.com/FFmpeg/FFV1/master/ffv1.lyx
 \begin_layout Standard
 \noindent
 This document assumes familiarity with mathematical and coding concepts
- such as Arithmetic coding and YCbCr colorspaces.
+ such as Range coding and YCbCr colorspaces.
 \end_layout
 
 \begin_layout Section
 Terms and Definitions
-\end_layout
-
-\begin_layout Labeling
-\labelwidthstring 00.00.0000
-CABAC Context Adaptive Binary Arithmetic Coder
-\begin_inset CommandInset citation
-LatexCommand cite
-key "H264"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Labeling
@@ -631,7 +619,7 @@ Coding of the sample difference
 
 \begin_layout Standard
 Instead of coding the 9 (or 10 in the case of RCT) bits of the sample difference
- with huffman or CABAC coding only the 8 (or 9) least significant bits are
+ with huffman or range coding only the 8 (or 9) least significant bits are
  used as thats enough the recover the original sample
 \end_layout
 
@@ -643,31 +631,15 @@ Instead of coding the 9 (or 10 in the case of RCT) bits of the sample difference
 \end_layout
 
 \begin_layout Subsubsection
-Arithmetic coding mode
+Range coding mode
 \end_layout
 
 \begin_layout Paragraph
-Context Adaptive Binary Arithmetic Coding (CABAC)
+Binary values
 \end_layout
 
 \begin_layout Standard
-The coder is borrowed from
-\begin_inset CommandInset citation
-LatexCommand cite
-key "H264"
-
-\end_inset
-
- and the reader is referred to that for further information, it is also
- noted that the author doesn't know if the coder is patented, so care must
- be taken if FFV1 is used in countries where software patents are legal.
- But even if CABAC turns out to be patent free there is still some risk
- that other parts of FFV1 are covered by patents.
- By just looking at the very long list of patents which cover other relatively
- simple standards it is shown that the patent offices seem to pass nearly
- everything.
- In many cases the patents cover basic operations like subtraction or taking
- the median of 3 integers in a specific case like motion vectors.
+TODO
 \end_layout
 
 \begin_layout Paragraph
@@ -681,22 +653,21 @@ name "sub:Non-binary-values"
 
 \end_inset
 
-To encode 8 or 9bit numbers as is needed in our case, we could simply encode
- each bit separately and use the past bits as context, but that would mean
- 255 contexts per 8bit symbol which is not only a waste of memory but also
- requires more past data to reach reasonable good estimate of the probabilities.
+To encode scalar integers, we could simply encode each bit separately and
+ use the past bits as context, but that would mean 255 contexts per 8bit
+ symbol which is not only a waste of memory but also requires more past
+ data to reach reasonable good estimate of the probabilities.
  Alternatively simply assuming a laplacian distribution and only dealing
  with its variance and mean like we do in huffman coding mode would be another
  possibility, but due to flexibility and simplicity, another method was
  chosen, which simply uses a single symbol to encode if a number is 0 and
- if not encodes the number using its exponent,mantisse and sign, the exact
+ if not encodes the number using its exponent, mantisse and sign, the exact
  contexts which are used can probably better be described by the following
  code then by some english text
 \end_layout
 
 \begin_layout LyX-Code
-put_symbol(CABACContext *c, uint8_t *state, int v, int is_signed, int max_exp){
-     
+void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
 \end_layout
 
 \begin_layout LyX-Code
@@ -704,71 +675,59 @@ put_symbol(CABACContext *c, uint8_t *state, int v, int is_signed, int max_exp){
 \end_layout
 
 \begin_layout LyX-Code
-    if(v){         
+    put_rac(c, state+0, !v);
 \end_layout
 
 \begin_layout LyX-Code
-        const int a= ABS(v);         
+    if (v) {
 \end_layout
 
 \begin_layout LyX-Code
-        const int e= av_log2(a);
+        int a= ABS(v);
 \end_layout
 
 \begin_layout LyX-Code
-        put_cabac(c, state+0, 0);                  
+        int e= log2(a);
 \end_layout
 
 \begin_layout LyX-Code
-        for(i=0; i<e; i++){
+                 
 \end_layout
 
 \begin_layout LyX-Code
-            put_cabac(c, state+1+i, 1);  //1..8         
+        for (i=0; i<e; i++)
 \end_layout
 
 \begin_layout LyX-Code
-        }
+            put_rac(c, state+1+MIN(i,9), 1);  //1..10
 \end_layout
 
 \begin_layout LyX-Code
-        if(e<max_exp){
+
 \end_layout
 
 \begin_layout LyX-Code
-            put_cabac(c, state+1+i, 0);      //1..8
+        put_rac(c, state+1+MIN(i,9), 0);
 \end_layout
 
 \begin_layout LyX-Code
-            for(i=e-1; i>=0; i--){
+        for (i=e-1; i>=0; i--)
 \end_layout
 
 \begin_layout LyX-Code
-                put_cabac(c, state+16+e+i, (a>>i)&1); //17..29
+            put_rac(c, state+22+MIN(i,9), (a>>i)&1); //22..31
 \end_layout
 
 \begin_layout LyX-Code
-            }
+
 \end_layout
 
 \begin_layout LyX-Code
-            if(is_signed)
+        if (is_signed)
 \end_layout
 
 \begin_layout LyX-Code
-                put_cabac(c, state+9 + e, v < 0); //9..16
-\end_layout
-
-\begin_layout LyX-Code
-        }
-\end_layout
-
-\begin_layout LyX-Code
-    }else{
-\end_layout
-
-\begin_layout LyX-Code
-        put_cabac(c, state+0, 1);
+            put_rac(c, state+11 + MIN(e, 10), v < 0); //11..21
 \end_layout
 
 \begin_layout LyX-Code
@@ -779,28 +738,12 @@ put_symbol(CABACContext *c, uint8_t *state, int v, int is_signed, int max_exp){
 }
 \end_layout
 
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout Standard
-max_exp is 7 unless the RCT is used, in which case it is 8 for the samples
- in a plane and 7 for the elements in the header
-\end_layout
-
-\begin_layout Standard
-is_signed is 1 for encoding of the samples within a plane or line, and 0
- for the elements of the header
-\end_layout
-
 \begin_layout Paragraph
 Initial values for the context model
 \end_layout
 
 \begin_layout Standard
-At keyframes all CABAC state variables are set to 0 except number 7 which
- is set to 124, number 7 is used to select between -127..-64,64..127 and -128
- which should explain the strong favoring of the earlier
+At keyframes all range coder state variables are set to 128
 \end_layout
 
 \begin_layout Subsubsection
@@ -1235,12 +1178,24 @@ Bitstream
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-b CABAC 1-bit symbol
+b Range Coded 1-bit symbol
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-v 7bit unsigned symbol coded with the method described in 
+v unsigned scalar symbol coded with the method described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Non-binary-values"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+s signed scalar symbol coded with the method described in 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Non-binary-values"
@@ -2651,7 +2606,7 @@ state_transition[i] - state_transition[i-1]
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+s
 \end_layout
 
 \end_inset
