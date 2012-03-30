@@ -642,295 +642,81 @@ Binary values
 
 \begin_layout Standard
 To encode binary digits efficiently a range coder is used.
- It is specified by the following C code.
-\end_layout
-
-\begin_layout LyX-Code
-void init_range_encoder(RangeCoder *c, uint8_t *buf, int buf_size){
-\end_layout
-
-\begin_layout LyX-Code
-    c->bytestream= buf;
-\end_layout
-
-\begin_layout LyX-Code
-    c->bytestream_end= buf + buf_size;
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-    c->low= 0;
-\end_layout
-
-\begin_layout LyX-Code
-    c->range= 0xFF00;
-\end_layout
-
-\begin_layout LyX-Code
-    c->outstanding_count= 0;
-\end_layout
-
-\begin_layout LyX-Code
-    c->outstanding_byte= -1;
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-void init_range_decoder(RangeCoder *c, const uint8_t *buf, int buf_size){
-\end_layout
-
-\begin_layout LyX-Code
-    init_range_encoder(c, buf, buf_size);
-\end_layout
-
-\begin_layout LyX-Code
-    c->low = bytestream_get_be16(&c->bytestream);
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-void refill(RangeCoder *c){
-\end_layout
-
-\begin_layout LyX-Code
-    if(c->range < 0x100){
-\end_layout
-
-\begin_layout LyX-Code
-        c->range <<= 8;
-\end_layout
-
-\begin_layout LyX-Code
-        c->low <<= 8;
-\end_layout
-
-\begin_layout LyX-Code
-        if(c->bytestream < c->bytestream_end)
-\end_layout
-
-\begin_layout LyX-Code
-            c->low+= c->bytestream[0];
-\end_layout
-
-\begin_layout LyX-Code
-        c->bytestream++;
-\end_layout
-
-\begin_layout LyX-Code
-    }
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-int get_rac(RangeCoder *c, uint8_t * const state){
-\end_layout
-
-\begin_layout LyX-Code
-    int range1= (c->range * (*state)) >> 8;
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-    c->range -= range1;
-\end_layout
-
-\begin_layout LyX-Code
-    if(c->low < c->range){
-\end_layout
+ 
+\begin_inset Formula $C_{i}$
+\end_inset
 
-\begin_layout LyX-Code
-        *state= zero_state[*state];
-\end_layout
-
-\begin_layout LyX-Code
-        refill(c);
-\end_layout
-
-\begin_layout LyX-Code
-        return 0;
-\end_layout
-
-\begin_layout LyX-Code
-    }else{
-\end_layout
-
-\begin_layout LyX-Code
-        c->low -= c->range;
-\end_layout
-
-\begin_layout LyX-Code
-        *state= one_state[*state];
-\end_layout
-
-\begin_layout LyX-Code
-        c->range = range1;
-\end_layout
-
-\begin_layout LyX-Code
-        refill(c);
-\end_layout
-
-\begin_layout LyX-Code
-        return 1;
-\end_layout
-
-\begin_layout LyX-Code
-    }
-\end_layout
-
-\begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-void renorm_encoder(RangeCoder *c){
-\end_layout
-
-\begin_layout LyX-Code
-    while(c->range < 0x100){
-\end_layout
-
-\begin_layout LyX-Code
-        if(c->outstanding_byte < 0){
-\end_layout
-
-\begin_layout LyX-Code
-            c->outstanding_byte= c->low>>8;
-\end_layout
+is the i-th Context.
+ 
+\begin_inset Formula $B_{i}$
+\end_inset
 
-\begin_layout LyX-Code
-        }else if(c->low <= 0xFF00){
-\end_layout
-
-\begin_layout LyX-Code
-            *c->bytestream++ = c->outstanding_byte;
-\end_layout
-
-\begin_layout LyX-Code
-            for(;c->outstanding_count; c->outstanding_count--)
-\end_layout
-
-\begin_layout LyX-Code
-                *c->bytestream++ = 0xFF;
-\end_layout
-
-\begin_layout LyX-Code
-            c->outstanding_byte= c->low>>8;
-\end_layout
-
-\begin_layout LyX-Code
-        }else if(c->low >= 0x10000){
-\end_layout
-
-\begin_layout LyX-Code
-            *c->bytestream++ = c->outstanding_byte + 1;
-\end_layout
-
-\begin_layout LyX-Code
-            for(;c->outstanding_count; c->outstanding_count--)
-\end_layout
+is the i-th byte of the bytestream.
+ 
+\begin_inset Formula $b_{i}$
+\end_inset
 
-\begin_layout LyX-Code
-                *c->bytestream++ = 0x00;
-\end_layout
+is the i-th range coded binary value, 
+\begin_inset Formula $S_{0,i}$
+\end_inset
 
-\begin_layout LyX-Code
-            c->outstanding_byte= (c->low>>8) & 0xFF;
+is the i-th initial state, which is 128.
 \end_layout
 
-\begin_layout LyX-Code
-        }else{
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor $
+\end_inset
 
-\begin_layout LyX-Code
-            c->outstanding_count++;
-\end_layout
 
-\begin_layout LyX-Code
-        }
 \end_layout
 
-\begin_layout LyX-Code
-        c->low = (c->low & 0xFF)<<8;
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $\begin{array}{ccccccccc}
+S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
+S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
+\end{array}$
+\end_inset
 
-\begin_layout LyX-Code
-        c->range <<= 8;
-\end_layout
 
-\begin_layout LyX-Code
-    }
 \end_layout
 
-\begin_layout LyX-Code
-}
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $\begin{array}{ccc}
+S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k\end{array}$
+\end_inset
 
-\begin_layout LyX-Code
-void put_rac(RangeCoder *c, uint8_t * const state, int bit){
-\end_layout
 
-\begin_layout LyX-Code
-    int range1= (c->range * (*state)) >> 8;
 \end_layout
 
-\begin_layout LyX-Code
+\begin_layout Standard
+\begin_inset Formula $\begin{array}{ccccccc}
+R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
+R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
+\end{array}$
+\end_inset
 
-\end_layout
 
-\begin_layout LyX-Code
-    if(!bit){
 \end_layout
 
-\begin_layout LyX-Code
-        c->range -= range1;
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $R_{0}=65280$
+\end_inset
 
-\begin_layout LyX-Code
-        *state= zero_state[*state];
-\end_layout
 
-\begin_layout LyX-Code
-    }else{
 \end_layout
 
-\begin_layout LyX-Code
-        c->low += c->range - range1;
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $L_{0}=2^{8}B_{0}+B_{1}$
+\end_inset
 
-\begin_layout LyX-Code
-        c->range = range1;
-\end_layout
 
-\begin_layout LyX-Code
-        *state= one_state[*state];
 \end_layout
 
-\begin_layout LyX-Code
-    }
-\end_layout
+\begin_layout Standard
+\begin_inset Formula $j_{0}=2$
+\end_inset
 
-\begin_layout LyX-Code
-    renorm_encoder(c);
-\end_layout
 
-\begin_layout LyX-Code
-}
 \end_layout
 
 \begin_layout Paragraph
