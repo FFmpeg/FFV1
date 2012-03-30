@@ -1206,7 +1206,7 @@ reference "sub:Non-binary-values"
 \end_layout
 
 \begin_layout Standard
-The same context which is initialized to 0 is used for all fields in the
+The same context which is initialized to 128 is used for all fields in the
  header
 \end_layout
 
