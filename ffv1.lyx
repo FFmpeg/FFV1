@@ -636,6 +636,20 @@ mple otherwise.
 Range coding mode
 \end_layout
 
+\begin_layout Standard
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from
+ H.264.
+ But due to the uncertain patent/royality situation as well as its slightly
+ worse performance CABAC was replaced by a range coder based on 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RangeCoder"
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Paragraph
 Binary values
 \end_layout
