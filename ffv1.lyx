@@ -3462,7 +3462,18 @@ key "JPEG2000"
 
 \end_inset
 
-JPEG2000 url
+ JPEG2000 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.jpeg.org/jpeg2000/
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
