@@ -3451,6 +3451,23 @@ key "JPEG2000"
 JPEG2000 url
 \end_layout
 
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "RANGECODER"
+key "RangeCoder"
+
+\end_inset
+
+"Range encoding: an algorithm for removing redundancy from a digitised message.
+ G.
+ N.
+ N.
+ Martin Presented in March 1979 to the Video & Data Recording Conference,
+ IBM UK Scientific Center held in Southampton July 24-27 1979."
+\end_layout
+
 \begin_layout Section
 Copyright
 \end_layout
