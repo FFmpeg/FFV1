@@ -638,7 +638,14 @@ Range coding mode
 
 \begin_layout Standard
 Early experimental versions of FFV1 used the CABAC Arithmetic coder from
- H.264.
+ H.264
+\begin_inset CommandInset citation
+LatexCommand cite
+key "H264"
+
+\end_inset
+
+.
  But due to the uncertain patent/royality situation as well as its slightly
  worse performance CABAC was replaced by a range coder based on 
 \begin_inset CommandInset citation
