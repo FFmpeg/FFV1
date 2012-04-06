@@ -766,6 +766,11 @@ is the i-th range coded binary value,
 \end_inset
 
 is the i-th initial state, which is 128.
+ The length of the bytestream encoding n binary symbols is 
+\begin_inset Formula $j_{n}$
+\end_inset
+
+bytes.
 \end_layout
 
 \begin_layout Standard
@@ -1105,7 +1110,9 @@ Huffman coding mode
 Uses golomb rice codes.
  The VLC code is split in 2 parts, the prefix stores the most significant
  bits, the suffix stores the k least significant bits or stores the whole
- number in the ESC case
+ number in the ESC case.
+ The end of the bitstream (of the frame) is filled with 0 bits so that the
+ bitstream contains a multiple of 8 bits.
 \end_layout
 
 \begin_layout Paragraph
@@ -3508,10 +3515,6 @@ ToDo
 
 \begin_layout Itemize
 mean,k estimation for the golomb rice codes
-\end_layout
-
-\begin_layout Itemize
-bitstream end handling
 \end_layout
 
 \begin_layout Itemize
