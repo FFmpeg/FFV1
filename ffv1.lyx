@@ -142,9 +142,10 @@ Border
 \end_layout
 
 \begin_layout Standard
-Samples above the coded picture are assumed to be 0, right of the coded
- picture are identical to the closest left sample and left of the coded
- picture are identical to the top right one
+For the purpose of the predictior and context samples above the coded picture
+ are assumed to be 0, right of the coded picture are identical to the closest
+ left sample and left of the coded picture are identical to the top right
+ one
 \end_layout
 
 \begin_layout Standard
