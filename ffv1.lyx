@@ -615,8 +615,8 @@ The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as
 \end_layout
 
 \begin_layout Standard
-If context < 0 then -context is used and the difference between the sample
- and its predicted value is encoded with a flipped sign
+If the context is smaller than 0 then -context is used and the difference
+ between the sample and its predicted value is encoded with a flipped sign
 \end_layout
 
 \begin_layout Subsection
