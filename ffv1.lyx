@@ -1074,8 +1074,11 @@ on of frame sizes and generally performs better than the default.
 \end_layout
 
 \begin_layout LyX-Code
-165,130,132,138,133,135,145,136,137,139,146,141,143,142,144,148, 147,155,151,149
-,151,150,152,157,153,154,156,168,158,162,161,160,
+165,130,132,138,133,135,145,136,137,139,146,141,143,142,144,148, 
+\end_layout
+
+\begin_layout LyX-Code
+147,155,151,149,151,150,152,157,153,154,156,168,158,162,161,160,
 \end_layout
 
 \begin_layout LyX-Code
