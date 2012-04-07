@@ -125,7 +125,8 @@ MSB Most significant bit, the bit that can cause the largest change in magnitude
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-RCT Reversible component transform
+RCT Reversible Color Transform, a near linear, exactly reversible integer
+ transform that converts between RGB and YCbCr representations of a sample.
 \end_layout
 
 \begin_layout Labeling
