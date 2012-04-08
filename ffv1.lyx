@@ -83,7 +83,8 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The FFV1 video codec is a simple and efficient lossless intra only codec.
+The FFV1 video codec is a simple and efficient lossless intra-frame only
+ codec.
 \end_layout
 
 \begin_layout Standard
@@ -103,8 +104,23 @@ https://raw.github.com/FFmpeg/FFV1/master/ffv1.lyx
 
 \begin_layout Standard
 \noindent
-This document assumes familiarity with mathematical and coding concepts
- such as Range coding and YCbCr colorspaces.
+This document assumes familiarity with mathematical concepts such as 
+\begin_inset Quotes eld
+\end_inset
+
+Range coding
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+YCbCr colorspaces
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -113,29 +129,35 @@ Terms and Definitions
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-ESC Escape symbol to indicate that the to be stored symbol is too large
+ESC Escape symbol to indicate that the symbol to be stored is too large
  for normal storage and a different method is used to store it.
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-MSB Most significant bit, the bit that can cause the largest change in magnitude
- of the symbol
+MSB Most Significant Bit: The bit that can cause the largest change in magnitude
+ of the symbol.
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-RCT Reversible Color Transform, a near linear, exactly reversible integer
- transform that converts between RGB and YCbCr representations of a sample.
+RCT Reversible Color Transform: It is a transform used to map an integer
+ number domain into an integer number co-domain.
+ It is used for lossless compression.
 \end_layout
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-VLC Variable length code
+VLC Variable Length Code
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+CABAC Context-Adaptive Binary Arithmetic Coding
 \end_layout
 
 \begin_layout Section
-High-level Description
+General Description
 \end_layout
 
 \begin_layout Standard
@@ -479,18 +501,18 @@ median(left, top, left + top - diag)
 \end_layout
 
 \begin_layout Standard
-left, top, diag are the left, top and lefttop samples
+left, top, diag are the left, top and left-top samples
 \end_layout
 
 \begin_layout Standard
-Note, this is also used in 
+Note, this is also used in JPEG-LS and HuffYuv
 \begin_inset CommandInset citation
 LatexCommand cite
 key "JPEGLS,HuffYuv"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Subsection
@@ -628,7 +650,7 @@ X
 
 \begin_layout Standard
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as
- context
+ context:
 \end_layout
 
 \begin_layout Standard
@@ -640,7 +662,7 @@ The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as
 
 \begin_layout Standard
 If the context is smaller than 0 then -context is used and the difference
- between the sample and its predicted value is encoded with a flipped sign
+ between the sample and its predicted value is encoded with a flipped sign.
 \end_layout
 
 \begin_layout Subsection
@@ -651,7 +673,7 @@ Quantization
 There are 5 quantization tables for the 5 sample differences, both the number
  of quantization steps and their distribution are stored in the bitstream.
  Each quantization table has exactly 256 entries, and the 8 least significant
- bits of the sample difference are used as index
+ bits of the sample difference are used as index:
 \end_layout
 
 \begin_layout Standard
@@ -732,12 +754,19 @@ Coding of the sample difference
 \end_layout
 
 \begin_layout Standard
-Instead of coding the n+1 bits of the sample difference with huffman or
- range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least
+Instead of coding the n+1 bits of the sample difference with Huffman-, or
+ Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least
  significant bits are used, since this is sufficient to recover the original
  sample.
- In the equation below, bits represents bits_per_raw_sample+1 for RCT or
- bits_per_raw_sample otherwise.
+ In the equation below, the term 
+\begin_inset Quotes eld
+\end_inset
+
+bits
+\begin_inset Quotes erd
+\end_inset
+
+ represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 \end_layout
 
 \begin_layout Standard
@@ -760,8 +789,15 @@ key "H264"
 
 \end_inset
 
-, but due to the uncertain patent/royality situation as well as its slightly
- worse performance CABAC was replaced by a range coder based on 
+, but due to the uncertain patent/royality situation, as well as its slightly
+ worse performance, CABAC was replaced by a range coder based on an algorithm
+ defined by 
+\shape italic
+G.
+ Nigel N.
+ Martin
+\shape default
+ in 1979 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "RangeCoder"
@@ -781,26 +817,26 @@ To encode binary digits efficiently a range coder is used.
 \begin_inset Formula $C_{i}$
 \end_inset
 
-is the i-th Context.
+ is the i-th Context.
  
 \begin_inset Formula $B_{i}$
 \end_inset
 
-is the i-th byte of the bytestream.
+ is the i-th byte of the bytestream.
  
 \begin_inset Formula $b_{i}$
 \end_inset
 
-is the i-th range coded binary value, 
+ is the i-th range coded binary value, 
 \begin_inset Formula $S_{0,i}$
 \end_inset
 
-is the i-th initial state, which is 128.
+ is the i-th initial state, which is 128.
  The length of the bytestream encoding n binary symbols is 
 \begin_inset Formula $j_{n}$
 \end_inset
 
-bytes.
+ bytes.
 \end_layout
 
 \begin_layout Standard
@@ -871,11 +907,12 @@ name "sub:Non-binary-values"
 \end_inset
 
 To encode scalar integers it would be possible to encode each bit separately
- and use the past bits as context, however that would mean 255 contexts
- per 8bit symbol which is not only a waste of memory but also requires more
- past data to reach a reasonably good estimate of the probabilities.
- Alternatively assuming a laplacian distribution and only dealing with its
- variance and mean (as in huffman coding) would also be possible, however,
+ and use the past bits as context.
+ However that would mean 255 contexts per 8-bit symbol which is not only
+ a waste of memory but also requires more past data to reach a reasonably
+ good estimate of the probabilities.
+ Alternatively assuming a Laplacian distribution and only dealing with its
+ variance and mean (as in Huffman coding) would also be possible, however,
  for maximum flexibility and simplicity, the chosen method uses a single
  symbol to encode if a number is 0 and if not encodes the number using its
  exponent, mantissa and sign.
@@ -1068,7 +1105,7 @@ on of frame sizes and generally performs better than the default.
  To use it, the coder_type has to be set to 2 and the difference to the
  default has to be stored in the header.
  The reference implemenation of FFV1 in FFmpeg uses this table by default
- at the time of this writing when range coding is used.
+ at the time of this writing when Range coding is used.
 \end_layout
 
 \begin_layout LyX-Code
@@ -1140,11 +1177,11 @@ Huffman coding mode
 \end_layout
 
 \begin_layout Standard
-Uses golomb rice codes.
- The VLC code is split in 2 parts, the prefix stores the most significant
+This coding mode uses golomb rice codes.
+ The VLC code is split into 2 parts, the prefix stores the most significant
  bits, the suffix stores the k least significant bits or stores the whole
  number in the ESC case.
- The end of the bitstream (of the frame) is filled with 0 bits so that the
+ The end of the bitstream (of the frame) is filled with 0-bits so that the
  bitstream contains a multiple of 8 bits.
 \end_layout
 
@@ -1530,9 +1567,9 @@ Run mode
 \end_layout
 
 \begin_layout Standard
-Run mode is entered when the context is 0, and left as soon as a non 0 differenc
+Run mode is entered when the context is 0, and left as soon as a non-0 differenc
 e is found, the level is identical to the predicted one, the run and the
- first different level is coded
+ first different level is coded.
 \end_layout
 
 \begin_layout Paragraph
@@ -1544,8 +1581,8 @@ Level coding
 \end_layout
 
 \begin_layout Standard
-is identical to the normal difference coding with the exception that the
- 0 value is removed as it cant occur
+Level coding is identical to the normal difference coding with the exception
+ that the 0 value is removed as it cannot occur:
 \end_layout
 
 \begin_layout LyX-Code
@@ -1598,7 +1635,7 @@ reference "sub:Non-binary-values"
 
 \begin_layout Standard
 The same context which is initialized to 128 is used for all fields in the
- header
+ header.
 \end_layout
 
 \begin_layout Subsection
@@ -3609,7 +3646,7 @@ key "HuffYuv"
 
 \end_inset
 
-Huffyuv 
+HuffYuv 
 \begin_inset Flex URL
 status collapsed
 
@@ -3679,11 +3716,10 @@ key "RangeCoder"
 \end_inset
 
 "Range encoding: an algorithm for removing redundancy from a digitised message.
- G.
- N.
- N.
- Martin Presented in March 1979 to the Video & Data Recording Conference,
- IBM UK Scientific Center held in Southampton July 24-27 1979."
+ Presented by G.
+ Nigel N.
+ Martin at the Video & Data Recording Conference, IBM UK Scientific Center
+ held in Southampton July 24-27 1979."
 \end_layout
 
 \begin_layout Section
