@@ -2068,7 +2068,7 @@ for(i=0; i<slice_count; i++)
 \begin_inset space ~
 \end_inset
 
-Slice[i]
+Slice(i)
 \end_layout
 
 \end_inset
@@ -2116,7 +2116,7 @@ Slice
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="20" columns="2">
+<lyxtabular version="3" rows="21" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -2125,7 +2125,7 @@ Slice
 \begin_inset Text
 
 \begin_layout Plain Layout
-Slice {
+Slice(i) {
 \end_layout
 
 \end_inset
@@ -3116,6 +3116,57 @@ AlphaPlane
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+if(i)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset space ~
 \end_inset
 
