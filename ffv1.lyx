@@ -2121,7 +2121,7 @@ Slice
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="34" columns="2">
+<lyxtabular version="3" rows="36" columns="2">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -3681,7 +3681,7 @@ AlphaPlane
 \begin_inset space ~
 \end_inset
 
-if(i)
+if(i || ec)
 \end_layout
 
 \end_inset
@@ -3767,7 +3767,7 @@ slice_size
 \begin_inset space ~
 \end_inset
 
-if(ec)
+if(ec){
 \end_layout
 
 \end_inset
@@ -3777,6 +3777,57 @@ if(ec)
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+error_status
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8BE
 \end_layout
 
 \end_inset
@@ -3834,6 +3885,41 @@ crc_parity
 </cell>
 </row>
 <row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+}
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -3865,6 +3951,12 @@ crc_parity
 slice_size Size of the slice in bytes, this allows finding the start of
  slices before previous slices have been fully decoded.
  And allows this way parallel decoding as well as error resilience.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 12345678901234567890
+error_status 0(no error), 1(slice contained a correctable error), 2(slice
+ contains a uncorrectable error)
 \end_layout
 
 \begin_layout Subsection
