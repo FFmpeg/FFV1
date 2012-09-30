@@ -5643,6 +5643,13 @@ version 0, 1 or 3.
 
 \begin_layout Labeling
 \labelwidthstring 12345678901234567890
+minor_version For version 3, minor_version is 2, minor versions prior to
+ this represent pre standard variants that should not exist in the wild.
+ Decoders must not reject a file due to an unknown minor_version.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 12345678901234567890
 \noindent
 coder_type Coder used, 0 (Golomb Rice), 1 (Range coder), 2 (Range coder
  with custom state transition table) 
