@@ -147,7 +147,7 @@ Each frame is split in 1 to 4 planes (Y, Cb, Cr, Alpha).
  In the case of the JPEG2000-RCT colorspace the lines are interleaved to
  improve caching efficiency since it is most likely that the RCT will immediatel
 y be converted to RGB during decoding; the interleaved coding order is also
- Y,Cb,Cr.
+ Y,Cb,Cr,Alpha.
 \end_layout
 
 \begin_layout Standard
