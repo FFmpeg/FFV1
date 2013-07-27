@@ -168,7 +168,7 @@ Border
 \end_layout
 
 \begin_layout Standard
-For the purpose of the predictior and context samples above the coded picture
+For the purpose of the predictior and context, samples above the coded picture
  are assumed to be 0; samples to the right of the coded picture are identical
  to the closest left sample; samples to the left of the coded picture are
  identical to the top right sample (if there is one), otherwise 0.
