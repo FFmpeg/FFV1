@@ -1556,7 +1556,115 @@ Run length coding
 \end_layout
 
 \begin_layout Standard
-TODO
+The run value is encoded in 2 parts, the prefix part stores the more significant
+ part of the run as well as adjusting the run_index which determines the
+ number of bits in the less significant part of the run.
+ The 2nd part of the value stores the less significant part of the run as
+ it is.
+ The run_index is reset for each plane and slice to 0.
+\end_layout
+
+\begin_layout LyX-Code
+log2_run[41]={
+\begin_inset CommandInset citation
+LatexCommand cite
+key "JPEGLS"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+ 0, 0, 0, 0, 1, 1, 1, 1,
+\end_layout
+
+\begin_layout LyX-Code
+ 2, 2, 2, 2, 3, 3, 3, 3,
+\end_layout
+
+\begin_layout LyX-Code
+ 4, 4, 5, 5, 6, 6, 7, 7,
+\end_layout
+
+\begin_layout LyX-Code
+ 8, 9,10,11,12,13,14,15,
+\end_layout
+
+\begin_layout LyX-Code
+16,17,18,19,20,21,22,23,
+\end_layout
+
+\begin_layout LyX-Code
+24,
+\end_layout
+
+\begin_layout LyX-Code
+};
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if (run_count == 0 && run_mode == 1) {
+\end_layout
+
+\begin_layout LyX-Code
+    if (get_bits1()) {
+\end_layout
+
+\begin_layout LyX-Code
+        run_count = 1 << log2_run[run_index];
+\end_layout
+
+\begin_layout LyX-Code
+        if (x + run_count <= w)
+\end_layout
+
+\begin_layout LyX-Code
+            run_index++;
+\end_layout
+
+\begin_layout LyX-Code
+    } else {
+\end_layout
+
+\begin_layout LyX-Code
+        if (log2_run[run_index])
+\end_layout
+
+\begin_layout LyX-Code
+            run_count = get_bits(log2_run[run_index]);
+\end_layout
+
+\begin_layout LyX-Code
+        else
+\end_layout
+
+\begin_layout LyX-Code
+            run_count = 0;
+\end_layout
+
+\begin_layout LyX-Code
+        if (run_index)
+\end_layout
+
+\begin_layout LyX-Code
+            run_index--;
+\end_layout
+
+\begin_layout LyX-Code
+        run_mode = 2;
+\end_layout
+
+\begin_layout LyX-Code
+    }
+\end_layout
+
+\begin_layout LyX-Code
+}
 \end_layout
 
 \begin_layout Paragraph
