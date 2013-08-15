@@ -3949,6 +3949,15 @@ error_status 0(no error), 1(slice contained a correctable error), 2(slice
  contains a uncorrectable error)
 \end_layout
 
+\begin_layout Labeling
+\labelwidthstring 12345678901234567890
+plane_count prior to version 4: without transparency: 2 else 3.
+\begin_inset Newline newline
+\end_inset
+
+version 4 and later: gray: 1, gray+alpha or color:2, color+alpha:3
+\end_layout
+
 \begin_layout Subsection
 Header
 \end_layout
