@@ -4627,7 +4627,7 @@ v
 \begin_inset space ~
 \end_inset
 
-minor_version
+micro_version
 \end_layout
 
 \end_inset
@@ -5795,9 +5795,9 @@ version 0, 1 or 3.
 
 \begin_layout Labeling
 \labelwidthstring 12345678901234567890
-minor_version For version 3, minor_version is 4, minor versions prior to
+micro_version For version 3, micro_version is 4, micro versions prior to
  this represent pre standard variants that should not exist in the wild.
- Decoders must not reject a file due to an unknown minor_version.
+ Decoders must not reject a file due to an unknown micro_version.
 \end_layout
 
 \begin_layout Labeling
