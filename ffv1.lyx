@@ -5790,7 +5790,7 @@ crc_parity
 version 0, 1 or 3.
  Version 2 was never enabled in the encoder thus version 2 files should
  not exist, and this document does not describe them to keep the text simpler.
- Version 3 is still work in progress.
+ 
 \end_layout
 
 \begin_layout Labeling
