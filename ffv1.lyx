@@ -800,6 +800,12 @@ Binary values
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Binary-values"
+
+\end_inset
+
 To encode binary digits efficiently a range coder is used.
  
 \begin_inset Formula $C_{i}$
@@ -1706,7 +1712,14 @@ Bitstream
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-b Range Coded 1-bit symbol
+b Range Coded 1-bit symbol with the method described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Binary-values"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Labeling
