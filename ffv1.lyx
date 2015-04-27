@@ -904,7 +904,7 @@ name "sub:Coding-of-the-sample-difference"
 
 \end_inset
 
-Coding of the sample difference 
+Coding of the sample difference
 \end_layout
 
 \begin_layout Standard
@@ -1301,7 +1301,7 @@ on of frame sizes and generally performs better than the default.
 \end_layout
 
 \begin_layout LyX-Code
-165,130,132,138,133,135,145,136,137,139,146,141,143,142,144,148, 
+165,130,132,138,133,135,145,136,137,139,146,141,143,142,144,148,
 \end_layout
 
 \begin_layout LyX-Code
@@ -7906,7 +7906,7 @@ Copyright
 \end_layout
 
 \begin_layout Standard
-Copyright 2003-2013 Michael Niedermayer <michaelni@gmx.at> 
+Copyright 2003-2013 Michael Niedermayer <michaelni@gmx.at>
 \begin_inset Newline newline
 \end_inset
 
