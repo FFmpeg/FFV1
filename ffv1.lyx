@@ -802,7 +802,7 @@ Binary values
 \begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Binary-values"
+name "sub:Range-binary-values"
 
 \end_inset
 
@@ -896,7 +896,7 @@ Non binary values
 \begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:Non-binary-values"
+name "sub:Range-non-binary-values"
 
 \end_inset
 
@@ -1171,6 +1171,12 @@ Huffman coding mode
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Golomb-values"
+
+\end_inset
+
 This coding mode uses golomb rice codes.
  The VLC code is split into 2 parts, the prefix stores the most significant
  bits, the suffix stores the k least significant bits or stores the whole
@@ -1712,10 +1718,16 @@ Bitstream
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-b Range Coded 1-bit symbol with the method described in 
+u(n) unsigned big endian integer using n bits
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+sg Golomb Rice coded signed scalar symbol coded with the method described
+ in
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Binary-values"
+reference "sub:Golomb-values"
 
 \end_inset
 
@@ -1724,10 +1736,10 @@ reference "sub:Binary-values"
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-v unsigned scalar symbol coded with the method described in 
+br Range coded boolean (1-bit) symbol with the method described in 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Non-binary-values"
+reference "sub:Range-binary-values"
 
 \end_inset
 
@@ -1736,10 +1748,11 @@ reference "sub:Non-binary-values"
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-s signed scalar symbol coded with the method described in 
+ur Range coded unsigned scalar symbol coded with the method described in
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Non-binary-values"
+reference "sub:Range-non-binary-values"
 
 \end_inset
 
@@ -1748,12 +1761,14 @@ reference "sub:Non-binary-values"
 
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
-24BE 24bit big endian integer
-\end_layout
+sr Range coded signed scalar symbol coded with the method described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Range-non-binary-values"
 
-\begin_layout Labeling
-\labelwidthstring 00.00.0000
-32BE 32bit big endian integer
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1820,7 +1835,7 @@ keyframe
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -2237,7 +2252,7 @@ slice_x
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2288,7 +2303,7 @@ slice_y
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2339,7 +2354,7 @@ slice_width-1
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2390,7 +2405,7 @@ slice_height-1
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2508,7 +2523,7 @@ quant_table_index[i][j]
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2559,7 +2574,7 @@ picture_structure
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2610,7 +2625,7 @@ sar_num
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2661,7 +2676,7 @@ sar_den
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -2779,7 +2794,7 @@ reset_contexts
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -2846,7 +2861,7 @@ slice_coding_mode
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -3938,7 +3953,7 @@ slice_size
 \begin_inset Text
 
 \begin_layout Plain Layout
-24BE
+u(24)
 \end_layout
 
 \end_inset
@@ -4024,7 +4039,7 @@ error_status
 \begin_inset Text
 
 \begin_layout Plain Layout
-8BE
+u(8)
 \end_layout
 
 \end_inset
@@ -4075,7 +4090,7 @@ crc_parity
 \begin_inset Text
 
 \begin_layout Plain Layout
-32BE
+u(32)
 \end_layout
 
 \end_inset
@@ -4237,7 +4252,7 @@ version
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4272,7 +4287,7 @@ coder_type
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4425,7 +4440,7 @@ state_transition_delta[i]
 \begin_inset Text
 
 \begin_layout Plain Layout
-s
+sr
 \end_layout
 
 \end_inset
@@ -4460,7 +4475,7 @@ colorspace_type
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4546,7 +4561,7 @@ bits_per_raw_sample
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4581,7 +4596,7 @@ chroma_planes
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -4616,7 +4631,7 @@ log2(h_chroma_subsample)
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4651,7 +4666,7 @@ log2(v_chroma_subsample)
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4686,7 +4701,7 @@ alpha_plane
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -4817,7 +4832,7 @@ version
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4852,7 +4867,7 @@ micro_version
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -4887,7 +4902,7 @@ coder_type
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5040,7 +5055,7 @@ state_transition_delta[i]
 \begin_inset Text
 
 \begin_layout Plain Layout
-s
+sr
 \end_layout
 
 \end_inset
@@ -5075,7 +5090,7 @@ colorspace_type
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5110,7 +5125,7 @@ bits_per_raw_sample
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5145,7 +5160,7 @@ chroma_planes
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -5180,7 +5195,7 @@ log2(h_chroma_subsample)
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5215,7 +5230,7 @@ log2(v_chroma_subsample)
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5250,7 +5265,7 @@ alpha_plane
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -5285,7 +5300,7 @@ num_h_slices-1
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5320,7 +5335,7 @@ num_v_slices-1
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5355,7 +5370,7 @@ quant_table_count
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5527,7 +5542,7 @@ states_coded
 \begin_inset Text
 
 \begin_layout Plain Layout
-b
+br
 \end_layout
 
 \end_inset
@@ -5827,7 +5842,7 @@ initial_state_delta[i][j][k]
 \begin_inset Text
 
 \begin_layout Plain Layout
-s
+sr
 \end_layout
 
 \end_inset
@@ -5897,7 +5912,7 @@ ec
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5932,7 +5947,7 @@ intra
 \begin_inset Text
 
 \begin_layout Plain Layout
-v
+ur
 \end_layout
 
 \end_inset
@@ -5967,7 +5982,7 @@ crc_parity
 \begin_inset Text
 
 \begin_layout Plain Layout
-32BE
+u(32)
 \end_layout
 
 \end_inset
@@ -6188,7 +6203,7 @@ The quantization tables are stored by storing the number of equal entries
  -1 of the first half of the table using the method described in 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:Non-binary-values"
+reference "sub:Range-non-binary-values"
 
 \end_inset
 
