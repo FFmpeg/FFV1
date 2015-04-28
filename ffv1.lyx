@@ -6540,6 +6540,11 @@ version specifies the version of the bitstream.
 \begin_inset Newline newline
 \end_inset
 
+Each version is incompatible with others versions: decoders SHOULD reject
+ a file due to unknown version.
+\begin_inset Newline newline
+\end_inset
+
 
 \begin_inset Tabular
 <lyxtabular version="3" rows="6" columns="2">
@@ -6682,16 +6687,27 @@ NOT exist, and this document does not describe them to keep the text simpler.
 \end_layout
 
 \begin_layout Description
-micro_version specifies the micro version of the bitstream, each new micro
- version is compatible with the previous version.
+micro_version specifies the micro-version of the bitstream.
 \begin_inset Newline newline
 \end_inset
 
-Decoders MUST
+After a version is considered stable (a micro-version value is assigned
+ to be the first stable variant of a specific version), each new micro-version
+ after this first stable variant is compatible with the previous micro-version:
+ decoders SHOULD
 \begin_inset space ~
 \end_inset
 
-NOT reject a file due to an unknown micro_version.
+NOT reject a file due to an unknown micro-version equal or above the micro-versi
+on considered as stable.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Meaning of micro_version for version 3:
 \begin_inset Newline newline
 \end_inset
 
@@ -6747,6 +6763,114 @@ reserved*
 
 \begin_layout Plain Layout
 4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+first stable variant
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Other
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+reserved for future use
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+* were development versions which may be incompatible with the stable variants.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Meaning of micro_version for version 4 (note: at the time of writting of
+ this specification, version 4 is not considered stable so the first stable
+ version value is to be annonced in the future):
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+micro_version
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0...TBA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+reserved*
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+TBA
 \end_layout
 
 \end_inset
