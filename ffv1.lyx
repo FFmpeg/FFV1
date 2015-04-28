@@ -7899,7 +7899,8 @@ reserved for future use
 crc_parity 32bit that are choosen so that the global header as a whole or
  slice as a whole has a crc remainder of 0.
  This is equivalent to storing the crc remainder in the 32bit parity.
- The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7).
+ The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7)
+ with initial value 0.
  The compressed bitstream is padded so that the 32bit crc end in the last
  4 bytes.
 \end_layout
