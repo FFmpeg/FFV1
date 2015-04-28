@@ -121,6 +121,172 @@ This document assumes familiarity with mathematical and coding concepts
 Terms and Definitions
 \end_layout
 
+\begin_layout Subsection
+Terms
+\end_layout
+
+\begin_layout Standard
+The key words "MUST", "MUST
+\begin_inset space ~
+\end_inset
+
+NOT", "SHOULD", and "SHOULD
+\begin_inset space ~
+\end_inset
+
+NOT" in this document are to be interpreted as described in RFC 2119 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "RFC2119"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For reference, below is an excerpt of RFC 2119:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+MUST
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+means that the definition is an absolute requirement of the specification.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+MUST
+\begin_inset space ~
+\end_inset
+
+NOT
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+means that the definition is an absolute prohibition of the specification.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+SHOULD
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+means that there may exist valid reasons in particular circumstances to
+ ignore a particular item, but the full implications must be understood
+ and carefully weighed before choosing a different course.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+SHOULD
+\begin_inset space ~
+\end_inset
+
+NOT
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+means that there may exist valid reasons in particular circumstances when
+ the particular behavior is acceptable or even useful, but the full implications
+ should be understood and the case carefully weighed before implementing
+ any behavior described with this label.
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Definitions
+\end_layout
+
 \begin_layout Labeling
 \labelwidthstring 00.00.0000
 ESC Escape symbol to indicate that the symbol to be stored is too large
@@ -6508,8 +6674,11 @@ reserved for future use
 \begin_inset Newline newline
 \end_inset
 
-* Version 2 was never enabled in the encoder thus version 2 files should
- not exist, and this document does not describe them to keep the text simpler.
+* Version 2 was never enabled in the encoder thus version 2 files SHOULD
+\begin_inset space ~
+\end_inset
+
+NOT exist, and this document does not describe them to keep the text simpler.
 \end_layout
 
 \begin_layout Description
@@ -6518,7 +6687,11 @@ micro_version specifies the micro version of the bitstream, each new micro
 \begin_inset Newline newline
 \end_inset
 
-Decoders must not reject a file due to an unknown micro_version.
+Decoders MUST
+\begin_inset space ~
+\end_inset
+
+NOT reject a file due to an unknown micro_version.
 \begin_inset Newline newline
 \end_inset
 
@@ -7308,7 +7481,7 @@ sar_num specifies the sample aspect ratio numerator.
 \begin_inset Newline newline
 \end_inset
 
-Must be 0 if sample aspect ratio is unknown.
+MUST be 0 if sample aspect ratio is unknown.
 \end_layout
 
 \begin_layout Description
@@ -7316,7 +7489,7 @@ sar_den specifies the sample aspect ratio numerator.
 \begin_inset Newline newline
 \end_inset
 
-Must be 0 if sample aspect ratio is unknown.
+MUST be 0 if sample aspect ratio is unknown.
 \end_layout
 
 \begin_layout Description
