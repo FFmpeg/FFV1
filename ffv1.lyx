@@ -4158,8 +4158,7 @@ u(32)
  
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_coding_mode indicates the slice coding mode.
 \begin_inset Newline newline
 \end_inset
@@ -4257,8 +4256,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_size indicates the size of the slice in bytes.
 \begin_inset Newline newline
 \end_inset
@@ -4268,8 +4266,7 @@ Note: this allows finding the start of slices before previous slices have
  And allows this way parallel decoding as well as error resilience.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 error_status specifies the error status.
 \begin_inset Newline newline
 \end_inset
@@ -4387,8 +4384,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 plane_count indicates the count of planes and the associated plane types.
 \begin_inset Newline newline
 \end_inset
@@ -6372,8 +6368,7 @@ u(32)
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 00.00.0000
+\begin_layout Description
 \noindent
 version specifies the version of the bitstream.
 \begin_inset Newline newline
@@ -6517,8 +6512,7 @@ reserved for future use
  not exist, and this document does not describe them to keep the text simpler.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 00.00.0000
+\begin_layout Description
 micro_version specifies the micro version of the bitstream, each new micro
  version is compatible with the previous version.
 \begin_inset Newline newline
@@ -6625,8 +6619,7 @@ reserved for future use
 * were development versions which may be incompatible with the stable variants.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 coder_type specifies the coder used
 \begin_inset Newline newline
@@ -6745,8 +6738,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 state_transition_delta specifiies the range coder custom state transition
  table.
@@ -6757,8 +6749,7 @@ If state_transition_delta is not present in the bitstream, all range coder
  custom state transition table elements are assumed to be 0.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 colorspace_type specifies the color space.
 \begin_inset Newline newline
@@ -6857,8 +6848,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 chroma_planes indicates if chroma (color) planes are present.
 \begin_inset Newline newline
@@ -6937,8 +6927,7 @@ chroma planes are present
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 bits_per_raw_sample bits_per_raw_sample
 \begin_inset Newline newline
@@ -6947,8 +6936,7 @@ bits_per_raw_sample bits_per_raw_sample
 indicates the number of bits for each luma and chroma sample.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 h_chroma_subsample indicates the subsample factor between luma and chroma
  width (
@@ -6958,8 +6946,7 @@ h_chroma_subsample indicates the subsample factor between luma and chroma
 )
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 v_chroma_subsample indicates the subsample factor between luma and chroma
  height (
@@ -6969,8 +6956,7 @@ v_chroma_subsample indicates the subsample factor between luma and chroma
 )
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 \noindent
 alpha_plane indicates if a transparency plane is present.
 \begin_inset Newline newline
@@ -7049,23 +7035,19 @@ transparency plane is present
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 num_h_slices indicates the number of horizontal elements of the slice raster.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 num_v_slices indicates the number of vertical elements of the slice raster.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 quant_table_count indicates the number of quantization table sets.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 states_coded indicates if the respective quantization table set has the
  initial states coded.
 \begin_inset Newline newline
@@ -7144,8 +7126,7 @@ initial states are present
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 initial_state_delta[i][j][k] indicates the initial range coder state, it
  is encoded using k as context index and
 \begin_inset Newline newline
@@ -7158,40 +7139,33 @@ pred= j ? initial_states[i][j-1][k] : 128
 initial_state[i][j][k]= (pred+initial_state_delta[i][j][k])&255
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_count indicates the number of slices in the current frame, slice_count
  is 1 if it is not explicitly coded.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_x indicates the x position on the slice raster formed by num_h_slices.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_y indicates the y position on the slice raster formed by num_v_slices.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_width indicates the width on the slice raster.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 slice_height indicates the height on the slice raster.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 quant_table_index indicates the index to select the quantization table set
  and the initial states for the slice.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 picture_structure specifies the picture structure.
 \begin_inset Newline newline
 \end_inset
@@ -7329,8 +7303,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 sar_num specifies the sample aspect ratio numerator.
 \begin_inset Newline newline
 \end_inset
@@ -7338,8 +7311,7 @@ sar_num specifies the sample aspect ratio numerator.
 Must be 0 if sample aspect ratio is unknown.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 sar_den specifies the sample aspect ratio numerator.
 \begin_inset Newline newline
 \end_inset
@@ -7347,8 +7319,7 @@ sar_den specifies the sample aspect ratio numerator.
 Must be 0 if sample aspect ratio is unknown.
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 ec indicates the error detection/correction type.
 \begin_inset Newline newline
 \end_inset
@@ -7446,8 +7417,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 intra indicates the relationship between frames.
 \begin_inset Newline newline
 \end_inset
@@ -7545,8 +7515,7 @@ reserved for future use
 
 \end_layout
 
-\begin_layout Labeling
-\labelwidthstring 12345678901234567890
+\begin_layout Description
 crc_parity 32bit that are choosen so that the global header as a whole or
  slice as a whole has a crc remainder of 0.
  This is equivalent to storing the crc remainder in the 32bit parity.
