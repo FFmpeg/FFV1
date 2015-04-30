@@ -4699,6 +4699,14 @@ MUST be 0 if sample aspect ratio is unknown.
 \end_layout
 
 \begin_layout Description
+reset_contexts indicates if slice contexts must be reseted.
+\begin_inset Newline newline
+\end_inset
+
+Inferred to be 0 if not present.
+\end_layout
+
+\begin_layout Description
 slice_coding_mode indicates the slice coding mode.
 \begin_inset Newline newline
 \end_inset
