@@ -311,6 +311,589 @@ VLC Variable length code
 \end_layout
 
 \begin_layout Section
+Conventions
+\end_layout
+
+\begin_layout Standard
+Note: the operators and the order of precedence are the same as used in
+ the C programming language
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ISO9899"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Arithmetic operators
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
++
+\begin_inset space ~
+\end_inset
+
+b means a plus b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+-
+\begin_inset space ~
+\end_inset
+
+b means a minus b.
+\end_layout
+
+\begin_layout Description
+-a means negation of a.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+*
+\begin_inset space ~
+\end_inset
+
+b means a multiplied by b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+/
+\begin_inset space ~
+\end_inset
+
+b means a divided by b with truncation of the result toward zero.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+%
+\begin_inset space ~
+\end_inset
+
+b means remainder of a divided by b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+&
+\begin_inset space ~
+\end_inset
+
+b means bit-wise 
+\begin_inset Quotes eld
+\end_inset
+
+and
+\begin_inset Quotes erd
+\end_inset
+
+ of a and b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+|
+\begin_inset space ~
+\end_inset
+
+b means bit-wise 
+\begin_inset Quotes eld
+\end_inset
+
+or
+\begin_inset Quotes erd
+\end_inset
+
+ of a and b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+>>
+\begin_inset space ~
+\end_inset
+
+b means arithmetic righ shift of two's complement integer representation
+ of a by b binary digits.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+<<
+\begin_inset space ~
+\end_inset
+
+b means arithmetic left shift of two's complement integer representation
+ of a by b binary digits.
+\end_layout
+
+\begin_layout Subsection
+Assignment operators
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+b means a is assigned b.
+\end_layout
+
+\begin_layout Description
+a++ is equivalent to a
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+a
+\begin_inset space ~
+\end_inset
+
++
+\begin_inset space ~
+\end_inset
+
+1.
+\end_layout
+
+\begin_layout Description
+a-- is equivalent to a
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+a
+\begin_inset space ~
+\end_inset
+
+-
+\begin_inset space ~
+\end_inset
+
+1.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
++=
+\begin_inset space ~
+\end_inset
+
+b is equivalent to a
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+a
+\begin_inset space ~
+\end_inset
+
++
+\begin_inset space ~
+\end_inset
+
+b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+-=
+\begin_inset space ~
+\end_inset
+
+b is equivalent to a
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+a
+\begin_inset space ~
+\end_inset
+
+-
+\begin_inset space ~
+\end_inset
+
+b.
+\end_layout
+
+\begin_layout Subsection
+Comparison operators
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+>
+\begin_inset space ~
+\end_inset
+
+b means a greater than b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+>=
+\begin_inset space ~
+\end_inset
+
+b means a greater than or equal to b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+<
+\begin_inset space ~
+\end_inset
+
+b means a less than b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+<=
+\begin_inset space ~
+\end_inset
+
+b means a less than or equal b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+==
+\begin_inset space ~
+\end_inset
+
+b means a equal to b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+!=
+\begin_inset space ~
+\end_inset
+
+b means a not equalto b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+&&
+\begin_inset space ~
+\end_inset
+
+b means boolean logical 
+\begin_inset Quotes eld
+\end_inset
+
+and
+\begin_inset Quotes erd
+\end_inset
+
+ of a and b.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+||
+\begin_inset space ~
+\end_inset
+
+b means boolean logical 
+\begin_inset Quotes eld
+\end_inset
+
+or
+\begin_inset Quotes erd
+\end_inset
+
+ of a and b.
+\end_layout
+
+\begin_layout Description
+!a means boolean logical 
+\begin_inset Quotes eld
+\end_inset
+
+not
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+a
+\begin_inset space ~
+\end_inset
+
+?
+\begin_inset space ~
+\end_inset
+
+b
+\begin_inset space ~
+\end_inset
+
+:
+\begin_inset space ~
+\end_inset
+
+c means b if a is true otherwise c.
+\end_layout
+
+\begin_layout Subsection
+Order of operation precedence
+\end_layout
+
+\begin_layout Standard
+When order of precedence is not indicated explicitly by use of parentheses,
+ operations are evaluated in the following order (from top to bottom, operations
+ of same precedence being evaluated from left to right):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="13" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a++, a--
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+!a, -a
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a * b, a / b, a % b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a + b, a - b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a << b, a >> b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a < b, a <= b, a > b, a >= b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a == b, a != b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a & b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a | b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a && b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a || b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a ? b : c
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a = b, a += b, a -= b
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Range
+\end_layout
+
+\begin_layout Description
+a...b means any value starting from a to b, inclusive.
+\end_layout
+
+\begin_layout Section
 General Description
 \end_layout
 
@@ -8899,6 +9482,29 @@ mean,k estimation for the golomb rice codes
 
 \begin_layout Section
 Bibliography
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "ISO/IEC 9899"
+key "ISO9899"
+
+\end_inset
+
+ISO/IEC 9899 - Programming languages - C 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.open-std.org/JTC1/SC22/WG14/www/standards
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Bibliography
