@@ -9488,6 +9488,29 @@ Bibliography
 \labelwidthstring References
 \begin_inset CommandInset bibitem
 LatexCommand bibitem
+label "RFC 2119"
+key "RFC2119"
+
+\end_inset
+
+RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.ietf.org/rfc/rfc2119.txt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
 label "ISO/IEC 9899"
 key "ISO9899"
 
