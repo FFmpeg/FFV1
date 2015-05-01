@@ -2540,7 +2540,7 @@ Frame
 \begin_inset Text
 
 \begin_layout Plain Layout
-Frame {
+Frame( ) {
 \end_layout
 
 \end_inset
@@ -2610,7 +2610,7 @@ br
 \begin_inset space ~
 \end_inset
 
-if (keyframe) {
+if( keyframe ) {
 \end_layout
 
 \end_inset
@@ -2661,7 +2661,7 @@ if (keyframe) {
 \begin_inset space ~
 \end_inset
 
-if(version<2)
+if( version < 2 )
 \end_layout
 
 \end_inset
@@ -2728,7 +2728,7 @@ if(version<2)
 \begin_inset space ~
 \end_inset
 
-FrameHeader01
+FrameHeader01( )
 \end_layout
 
 \end_inset
@@ -2798,7 +2798,7 @@ FrameHeader01
 \begin_inset space ~
 \end_inset
 
-for(i=0; i<slice_count; i++)
+for( i = 0; i < slice_count; i++ )
 \end_layout
 
 \end_inset
@@ -2849,7 +2849,7 @@ for(i=0; i<slice_count; i++)
 \begin_inset space ~
 \end_inset
 
-Slice(i)
+Slice( i )
 \end_layout
 
 \end_inset
@@ -2906,7 +2906,7 @@ Slice
 \begin_inset Text
 
 \begin_layout Plain Layout
-Slice(i) {
+Slice( i ) {
 \end_layout
 
 \end_inset
@@ -2941,7 +2941,7 @@ type
 \begin_inset space ~
 \end_inset
 
-if(version>2)
+if( version > 2 )
 \end_layout
 
 \end_inset
@@ -2992,7 +2992,7 @@ if(version>2)
 \begin_inset space ~
 \end_inset
 
-SliceHeader(i)
+SliceHeader( i )
 \end_layout
 
 \end_inset
@@ -3027,7 +3027,7 @@ SliceHeader(i)
 \begin_inset space ~
 \end_inset
 
-if (colorspace_type == 1) {
+if( colorspace_type == 1) {
 \end_layout
 
 \end_inset
@@ -3078,15 +3078,15 @@ if (colorspace_type == 1) {
 \begin_inset space ~
 \end_inset
 
-for (y=0;
+for( y = 0;
 \begin_inset space ~
 \end_inset
 
-y<height;
+y < height;
 \begin_inset space ~
 \end_inset
 
-y++) {
+y++ ) {
 \end_layout
 
 \end_inset
@@ -3153,7 +3153,7 @@ y++) {
 \begin_inset space ~
 \end_inset
 
-LumaLine[y]
+LumaLine( y )
 \end_layout
 
 \end_inset
@@ -3220,7 +3220,7 @@ LumaLine[y]
 \begin_inset space ~
 \end_inset
 
-CbLine[y]
+CbLine( y )
 \end_layout
 
 \end_inset
@@ -3287,7 +3287,7 @@ CbLine[y]
 \begin_inset space ~
 \end_inset
 
-CrLine[y]
+CrLine( y )
 \end_layout
 
 \end_inset
@@ -3354,7 +3354,7 @@ CrLine[y]
 \begin_inset space ~
 \end_inset
 
-if (alpha_plane)
+if( alpha_plane )
 \end_layout
 
 \end_inset
@@ -3437,7 +3437,7 @@ if (alpha_plane)
 \begin_inset space ~
 \end_inset
 
-AlphaLine[y]
+AlphaLine( y )
 \end_layout
 
 \end_inset
@@ -3574,7 +3574,7 @@ AlphaLine[y]
 \begin_inset space ~
 \end_inset
 
-LumaPlane
+LumaPlane( )
 \end_layout
 
 \end_inset
@@ -3625,74 +3625,7 @@ LumaPlane
 \begin_inset space ~
 \end_inset
 
-if (chroma_planes) {
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-CbPlane
+if( chroma_planes ) {
 \end_layout
 
 \end_inset
@@ -3759,7 +3692,74 @@ CbPlane
 \begin_inset space ~
 \end_inset
 
-CrPlane
+CbPlane( )
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+CrPlane( )
 \end_layout
 
 \end_inset
@@ -3861,7 +3861,7 @@ CrPlane
 \begin_inset space ~
 \end_inset
 
-if (alpha_plane)
+if( alpha_plane )
 \end_layout
 
 \end_inset
@@ -3928,7 +3928,7 @@ if (alpha_plane)
 \begin_inset space ~
 \end_inset
 
-AlphaPlane
+AlphaPlane( )
 \end_layout
 
 \end_inset
@@ -3998,7 +3998,7 @@ AlphaPlane
 \begin_inset space ~
 \end_inset
 
-if(i || version>2)
+if( i || version > 2 )
 \end_layout
 
 \end_inset
@@ -4084,7 +4084,7 @@ u(24)
 \begin_inset space ~
 \end_inset
 
-if(ec){
+if( ec ) {
 \end_layout
 
 \end_inset
@@ -4564,7 +4564,7 @@ Slice Header
 \begin_inset Text
 
 \begin_layout Plain Layout
-SliceHeader(i) {
+SliceHeader( i ) {
 \end_layout
 
 \end_inset
@@ -4669,7 +4669,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-slice_width-1
+slice_width - 1
 \end_layout
 
 \end_inset
@@ -4704,7 +4704,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-slice_height-1
+slice_height - 1
 \end_layout
 
 \end_inset
@@ -4739,7 +4739,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-for(j=0; j<plane_count; j++)
+for( j = 0; j < plane_count; j++)
 \end_layout
 
 \end_inset
@@ -4790,7 +4790,7 @@ for(j=0; j<plane_count; j++)
 \begin_inset space ~
 \end_inset
 
-quant_table_index[i][j]
+quant_table_index[ i ][ j ]
 \end_layout
 
 \end_inset
@@ -4930,7 +4930,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-if (version > 3)
+if( version > 3 )
 \end_layout
 
 \end_inset
@@ -5410,7 +5410,7 @@ Version 0 and 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-FrameHeader01 {
+FrameHeader01( ) {
 \end_layout
 
 \end_inset
@@ -5515,7 +5515,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-if(coder_type>1)
+if( coder_type > 1 )
 \end_layout
 
 \end_inset
@@ -5566,7 +5566,7 @@ if(coder_type>1)
 \begin_inset space ~
 \end_inset
 
-for(i=1; i<256; i++)
+for( i = 1; i < 256; i++ )
 \end_layout
 
 \end_inset
@@ -5633,7 +5633,7 @@ for(i=1; i<256; i++)
 \begin_inset space ~
 \end_inset
 
-state_transition_delta[i]
+state_transition_delta[ i ]
 \end_layout
 
 \end_inset
@@ -5703,7 +5703,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-if(version>0)
+if( version > 0 )
 \end_layout
 
 \end_inset
@@ -5824,7 +5824,7 @@ br
 \begin_inset space ~
 \end_inset
 
-log2(h_chroma_subsample)
+log2( h_chroma_subsample )
 \end_layout
 
 \end_inset
@@ -5859,7 +5859,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-log2(v_chroma_subsample)
+log2( v_chroma_subsample )
 \end_layout
 
 \end_inset
@@ -5929,7 +5929,7 @@ br
 \begin_inset space ~
 \end_inset
 
-QuantizationTable(0)
+QuantizationTable( 0 )
 \end_layout
 
 \end_inset
@@ -5990,7 +5990,7 @@ Version 2 and later files use a global header and a per frame header.
 \begin_inset Text
 
 \begin_layout Plain Layout
-GlobalHeader {
+GlobalHeader( ) {
 \end_layout
 
 \end_inset
@@ -6130,7 +6130,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-if(coder_type>1)
+if( coder_type > 1 )
 \end_layout
 
 \end_inset
@@ -6181,7 +6181,7 @@ if(coder_type>1)
 \begin_inset space ~
 \end_inset
 
-for(i=1; i<256; i++)
+for( i = 1; i < 256; i++ )
 \end_layout
 
 \end_inset
@@ -6248,7 +6248,7 @@ for(i=1; i<256; i++)
 \begin_inset space ~
 \end_inset
 
-state_transition_delta[i]
+state_transition_delta[ i ]
 \end_layout
 
 \end_inset
@@ -6388,7 +6388,7 @@ br
 \begin_inset space ~
 \end_inset
 
-log2(h_chroma_subsample)
+log2( h_chroma_subsample )
 \end_layout
 
 \end_inset
@@ -6423,7 +6423,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-log2(v_chroma_subsample)
+log2( v_chroma_subsample )
 \end_layout
 
 \end_inset
@@ -6493,7 +6493,7 @@ br
 \begin_inset space ~
 \end_inset
 
-num_h_slices-1
+num_h_slices - 1
 \end_layout
 
 \end_inset
@@ -6528,7 +6528,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-num_v_slices-1
+num_v_slices - 1
 \end_layout
 
 \end_inset
@@ -6598,7 +6598,7 @@ ur
 \begin_inset space ~
 \end_inset
 
-for(i=0; i<quant_table_count; i++)
+for( i = 0; i < quant_table_count; i++ )
 \end_layout
 
 \end_inset
@@ -6649,7 +6649,7 @@ for(i=0; i<quant_table_count; i++)
 \begin_inset space ~
 \end_inset
 
-QuantizationTable(i)
+QuantizationTable( i )
 \end_layout
 
 \end_inset
@@ -6684,7 +6684,7 @@ QuantizationTable(i)
 \begin_inset space ~
 \end_inset
 
-for(i=0; i<quant_table_count; i++) {
+for( i = 0; i < quant_table_count; i++ ) {
 \end_layout
 
 \end_inset
@@ -6786,7 +6786,7 @@ br
 \begin_inset space ~
 \end_inset
 
-if(states_coded)
+if( states_coded )
 \end_layout
 
 \end_inset
@@ -6853,90 +6853,7 @@ if(states_coded)
 \begin_inset space ~
 \end_inset
 
-for(j=0; j<context_count[i];j++)
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-for(k=0; k<CONTEXT_SIZE;k++)
+for( j = 0; j < context_count[ i ]; j++ )
 \end_layout
 
 \end_inset
@@ -7019,6 +6936,41 @@ for(k=0; k<CONTEXT_SIZE;k++)
 \begin_inset space ~
 \end_inset
 
+for( k = 0; k < CONTEXT_SIZE; k++ )
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
 
 \begin_inset space ~
 \end_inset
@@ -7035,7 +6987,55 @@ for(k=0; k<CONTEXT_SIZE;k++)
 \begin_inset space ~
 \end_inset
 
-initial_state_delta[i][j][k]
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+initial_state_delta[ i ][ j ][ k ]
 \end_layout
 
 \end_inset
@@ -8190,16 +8190,17 @@ initial states are present
 \end_layout
 
 \begin_layout Description
-initial_state_delta[i][j][k] indicates the initial range coder state, it
- is encoded using k as context index and
+initial_state_delta[ i ][ j ][ k ] indicates the initial range coder state,
+ it is encoded using k as context index and
 \begin_inset Newline newline
 \end_inset
 
-pred= j ? initial_states[i][j-1][k] : 128
+pred = j ? initial_states[ i ][j - 1][ k ] : 128
 \begin_inset Newline newline
 \end_inset
 
-initial_state[i][j][k]= (pred+initial_state_delta[i][j][k])&255
+initial_state[ i ][ j ][ k ] = ( pred + initial_state_delta[ i ][ j ][ k
+ ] ) & 255
 \end_layout
 
 \begin_layout Description
@@ -8458,7 +8459,7 @@ Stored values: 1, 3, 1
 \begin_inset Text
 
 \begin_layout Plain Layout
-QuantizationTable(i) {
+QuantizationTable( i ) {
 \end_layout
 
 \end_inset
@@ -8493,7 +8494,7 @@ type
 \begin_inset space ~
 \end_inset
 
-scale=1
+scale = 1
 \end_layout
 
 \end_inset
@@ -8528,7 +8529,7 @@ scale=1
 \begin_inset space ~
 \end_inset
 
-for(j=0; j<MAX_CONTEXT_INPUTS; j++) {
+for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {
 \end_layout
 
 \end_inset
@@ -8579,7 +8580,7 @@ for(j=0; j<MAX_CONTEXT_INPUTS; j++) {
 \begin_inset space ~
 \end_inset
 
-QuantizationTablePerContext(i, j, scale)
+QuantizationTablePerContext( i, j, scale )
 \end_layout
 
 \end_inset
@@ -8630,7 +8631,7 @@ QuantizationTablePerContext(i, j, scale)
 \begin_inset space ~
 \end_inset
 
-scale*=2*len_count[i][j]-1
+scale *= 2 * len_count[ i ][ j ] - 1
 \end_layout
 
 \end_inset
@@ -8700,7 +8701,7 @@ scale*=2*len_count[i][j]-1
 \begin_inset space ~
 \end_inset
 
-context_count[i]=(scale+1)/2
+context_count[ i ] = ( scale + 1 ) / 2
 \end_layout
 
 \end_inset
@@ -8792,7 +8793,7 @@ type
 \begin_inset space ~
 \end_inset
 
-v=0
+v = 0
 \end_layout
 
 \end_inset
@@ -8827,7 +8828,7 @@ v=0
 \begin_inset space ~
 \end_inset
 
-for(k= 0; k<128;) {
+for( k = 0; k < 128; ) {
 \end_layout
 
 \end_inset
@@ -8878,7 +8879,7 @@ for(k= 0; k<128;) {
 \begin_inset space ~
 \end_inset
 
-len-1
+len - 1
 \end_layout
 
 \end_inset
@@ -8929,7 +8930,7 @@ sr
 \begin_inset space ~
 \end_inset
 
-for(a=0; a<len; a++) {
+for( a = 0; a < len; a++ ) {
 \end_layout
 
 \end_inset
@@ -8996,7 +8997,7 @@ for(a=0; a<len; a++) {
 \begin_inset space ~
 \end_inset
 
-quant_tables[i][j][k]=scale*v
+quant_tables[ i ][ j ][ k ] = scale * v
 \end_layout
 
 \end_inset
@@ -9235,7 +9236,7 @@ v++
 \begin_inset space ~
 \end_inset
 
-for (k=1; k<128; k++) {
+for( k = 1; k < 128; k++ ) {
 \end_layout
 
 \end_inset
@@ -9286,7 +9287,7 @@ for (k=1; k<128; k++) {
 \begin_inset space ~
 \end_inset
 
-quant_tables[i][j][256-k]=-quant_tables[i][j][k]
+quant_tables[ i ][ j ][ 256 - k ] = -quant_tables[ i ][ j ][ k ]
 \end_layout
 
 \end_inset
@@ -9356,7 +9357,7 @@ quant_tables[i][j][256-k]=-quant_tables[i][j][k]
 \begin_inset space ~
 \end_inset
 
-quant_tables[i][j][128]=-quant_tables[i][j][127]
+quant_tables[ i ][ j ][ 128 ] = -quant_tables[ i ][ j ][ 127 ]
 \end_layout
 
 \end_inset
@@ -9391,7 +9392,7 @@ quant_tables[i][j][128]=-quant_tables[i][j][127]
 \begin_inset space ~
 \end_inset
 
-len_count[i][j]=v
+len_count[ i ][ j ] = v
 \end_layout
 
 \end_inset
