@@ -893,6 +893,20 @@ Range
 a...b means any value starting from a to b, inclusive.
 \end_layout
 
+\begin_layout Subsection
+Bitstream functions
+\end_layout
+
+\begin_layout Description
+remaing_bits_in_bitstream(
+\begin_inset space ~
+\end_inset
+
+) means the count of remaining bits after the current position in the bitstream.
+ It is computed from the NumBytes value multiplied by 8 minus the count
+ of bits already read by the bitstream parser.
+\end_layout
+
 \begin_layout Section
 General Description
 \end_layout
@@ -2525,13 +2539,506 @@ The same context which is initialized to 128 is used for all fields in the
  header.
 \end_layout
 
+\begin_layout Standard
+Default values at the decoder initialization phase:
+\end_layout
+
+\begin_layout Description
+ConfigurationRecordIsPresent is set to 0.
+\end_layout
+
+\begin_layout Subsection
+Configuration Record
+\end_layout
+
+\begin_layout Standard
+In the case of a bitstream with version >= 2, a configuration record is
+ stored in the the underlying container, at the track header level.
+\begin_inset Newline newline
+\end_inset
+
+The size of the configuration record, NumBytes, is supplied by the underlying
+ container.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ConfigurationRecord( NumBytes ) {
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+ConfigurationRecordIsPresent = 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+GlobalHeader( )
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+while( remaing_bits_in_bitstream( ) > 32)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+reserved_for_future_use
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u(1)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+configuration_record_crc_parity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+u(32)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+reserved_for_future_use has semantics that are reserved for future use.
+\begin_inset Newline newline
+\end_inset
+
+Encoders conforming to this version of this specification SHALL
+\begin_inset space ~
+\end_inset
+
+NOT write this value.
+\begin_inset Newline newline
+\end_inset
+
+Decoders conforming to this version of this specification SHALL ignore its
+ value.
+\end_layout
+
+\begin_layout Description
+configuration_record_crc_parity 32 bits that are choosen so that the configurati
+on record as a whole has a crc remainder of 0.
+\begin_inset Newline newline
+\end_inset
+
+This is equivalent to storing the crc remainder in the 32-bit parity.
+\begin_inset Newline newline
+\end_inset
+
+The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7)
+ with initial value 0.
+\end_layout
+
+\begin_layout Standard
+This configuration record can be placed in any file format supporting configurat
+ion records, fitting as much as possible with how the file format uses to
+ store configuration records.
+ The configuration record storage place and NumBytes are currently defined
+ and supported by this version of this specification for the following container
+ formats:
+\end_layout
+
+\begin_layout Subsubsection
+In AVI File Format
+\end_layout
+
+\begin_layout Standard
+The Configuration Record extends the stream format chunk (
+\begin_inset Quotes eld
+\end_inset
+
+AVI
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+hdlr
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+strl
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+strf
+\begin_inset Quotes erd
+\end_inset
+
+) with the ConfigurationRecord bistream.
+\begin_inset Newline newline
+\end_inset
+
+See 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "AVI"
+
+\end_inset
+
+ for more information about chunks.
+\end_layout
+
+\begin_layout Description
+NumBytes is defined as the size, in bytes, of the strf chunk indicated in
+ the chunk header minus the size of the stream format structure.
+\end_layout
+
+\begin_layout Subsubsection
+In ISO/IEC 14496-12 (MP4 File Format)
+\end_layout
+
+\begin_layout Standard
+The Configuration Record extends the sample description box (
+\begin_inset Quotes eld
+\end_inset
+
+moov
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+trak
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+mdia
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+minf
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+stbl
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+stsd
+\begin_inset Quotes erd
+\end_inset
+
+) with a 
+\begin_inset Quotes eld
+\end_inset
+
+glbl
+\begin_inset Quotes erd
+\end_inset
+
+ box which contains the ConfigurationRecord bitstream.
+\begin_inset Newline newline
+\end_inset
+
+See 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ISO14496_12"
+
+\end_inset
+
+ for more information about boxes.
+\end_layout
+
+\begin_layout Description
+NumBytes is defined as the size, in bytes, of the 
+\begin_inset Quotes eld
+\end_inset
+
+glbl
+\begin_inset Quotes erd
+\end_inset
+
+ box indicated in the box header minus the size of the box header.
+\end_layout
+
+\begin_layout Subsubsection
+In NUT File Format
+\end_layout
+
+\begin_layout Standard
+The codec_specific_data element (in 
+\begin_inset Quotes eld
+\end_inset
+
+stream_header
+\begin_inset Quotes erd
+\end_inset
+
+ packet) contains the ConfigurationRecord bitstream.
+\begin_inset Newline newline
+\end_inset
+
+See 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "NUT"
+
+\end_inset
+
+ for more information about elements.
+\end_layout
+
+\begin_layout Description
+NumBytes is defined as the size, in bytes, of the codec_specific_data element
+ as indicated in the 
+\begin_inset Quotes eld
+\end_inset
+
+length
+\begin_inset Quotes erd
+\end_inset
+
+ field of codec_specific_data
+\end_layout
+
 \begin_layout Subsection
 Frame
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="2">
+<lyxtabular version="3" rows="7" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top">
 <column alignment="center" valignment="top">
@@ -2610,58 +3117,7 @@ br
 \begin_inset space ~
 \end_inset
 
-if( keyframe ) {
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-if( version < 2 )
+if( keyframe && !ConfigurationRecordIsPresent)
 \end_layout
 
 \end_inset
@@ -2716,54 +3172,7 @@ if( version < 2 )
 \begin_inset space ~
 \end_inset
 
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
 FrameHeader01( )
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-}
 \end_layout
 
 \end_inset
@@ -3639,7 +4048,7 @@ u(8)
 \begin_inset space ~
 \end_inset
 
-crc_parity
+slice_crc_parity
 \end_layout
 
 \end_inset
@@ -3847,6 +4256,20 @@ reserved for future use
 \end_inset
 
 
+\end_layout
+
+\begin_layout Description
+slice_crc_parity 32 bits that are choosen so that the slice as a whole has
+ a crc remainder of 0.
+\begin_inset Newline newline
+\end_inset
+
+This is equivalent to storing the crc remainder in the 32-bit parity.
+\begin_inset Newline newline
+\end_inset
+
+The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7)
+ with initial value 0.
 \end_layout
 
 \begin_layout Subsection
@@ -5321,7 +5744,7 @@ Version 2 and later files use a global header and a per frame header.
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="29" columns="2">
+<lyxtabular version="3" rows="28" columns="2">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="left" valignment="top">
 <column alignment="center" valignment="top">
@@ -6496,41 +6919,6 @@ ur
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-crc_parity
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-u(32)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
@@ -6565,6 +6953,16 @@ version specifies the version of the bitstream.
 
 Each version is incompatible with others versions: decoders SHOULD reject
  a file due to unknown version.
+\begin_inset Newline newline
+\end_inset
+
+Decoders SHOULD reject a file with version < 2 && ConfigurationRecordIsPresent
+ == 1.
+\begin_inset Newline newline
+\end_inset
+
+Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent
+ == 0.
 \begin_inset Newline newline
 \end_inset
 
@@ -7742,16 +8140,6 @@ reserved for future use
 \end_inset
 
 
-\end_layout
-
-\begin_layout Description
-crc_parity 32bit that are choosen so that the global header as a whole or
- slice as a whole has a crc remainder of 0.
- This is equivalent to storing the crc remainder in the 32bit parity.
- The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7)
- with initial value 0.
- The compressed bitstream is padded so that the 32bit crc end in the last
- 4 bytes.
 \end_layout
 
 \begin_layout Subsection
@@ -9000,6 +9388,77 @@ key "RangeCoder"
  Nigel N.
  Martin at the Video & Data Recording Conference, IBM UK Scientific Center
  held in Southampton July 24-27 1979."
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "AVI"
+key "AVI"
+
+\end_inset
+
+AVI RIFF File Format 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "ISO/IEC 14496-12"
+key "ISO14496_12"
+
+\end_inset
+
+Information technology — Coding of audio-visual objects — Part 12: ISO base
+ media file format 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=619
+88
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring References
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "NUT"
+key "NUT"
+
+\end_inset
+
+NUT Open Container Format 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.ffmpeg.org/~michael/nut.txt
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
