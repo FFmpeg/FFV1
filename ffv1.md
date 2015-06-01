@@ -81,7 +81,7 @@ For reference, below is an excerpt of RFC 2119:
               the particular behavior is acceptable or even useful, but the full 
               implications should be understood and the case carefully weighed before
               implementing any behavior described with this label.
-
+              &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
 
 
@@ -99,8 +99,9 @@ RCT   Reversible Color Transform, a near linear, exactly reversible integer tran
       that converts between RGB and YCbCr representations of a sample.
 
 VLC   Variable length code.
-
+      &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
+
 
 
 # Conventions
@@ -331,7 +332,7 @@ void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
 
 At keyframes all range coder state variables are set to their initial state.
 
-#### State transition table\
+#### State transition table
 
 
 $one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$
@@ -431,7 +432,7 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 #### Suffix
 
 
-|              |
+|              |                                                         |
 |:-------------|---------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first|
 |ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
@@ -499,7 +500,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 # Bitstream
 
-|                                                               |
+|      |                                                        |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
 | sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
@@ -520,9 +521,9 @@ In the case of a bitstream with version >= 2, a configuration record is stored i
 It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
-
-| ConfigurationRecord( NumBytes ) {                        |      |
+|                                                          |      |
 |----------------------------------------------------------|-----:|
+| ConfigurationRecord( NumBytes ) {                        |      |
 |    ConfigurationRecordIsPresent = 1                      |      |
 |    Parameters( )                                         |      |
 |    while( remaining\_bits\_in\_bitstream( ) \> 32)       |      |
@@ -620,8 +621,9 @@ See [NUT](#references) for more information about elements.
 
 ## Slice Header
 
-| SliceHeader( i ) { | type| 
+|                                                            |    |
 |------------------------------------------------------------|---:|
+| SliceHeader( i ) {                                         |type| 
 |    slice\_x                                                | ur | 
 |    slice\_y                                                | ur | 
 |    slice\_width - 1                                        | ur | 
@@ -689,8 +691,9 @@ See [NUT](#references) for more information about elements.
 
 ## Parameters
 
-| Parameters( ) {                                            | type|
+|                                                            |     |
 |------------------------------------------------------------|----:|
+| Parameters( ) {                                            | type|
 |   version                                                  | ur  |
 |   if( version \> 2 )                                       |     |
 |       micro\_version                                       | ur  |
@@ -863,12 +866,15 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 The quantization tables are stored by storing the number of equal entries -1 of the first half of the table using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign.
 
-example:\
-Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0\
+example:
+
+Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
+
 Stored values: 1, 3, 1
 
-| QuantizationTable( i ) {                          | type        |
+|                                                   |             |
 |---------------------------------------------------|-------------|
+| QuantizationTable( i ) {                          | type        |
 |   scale = 1                                       |             |
 |    for( j = 0; j \< MAX\_CONTEXT\_INPUTS; j++ ) { |             |
 |        QuantizationTablePerContext( i, j, scale ) |             |
@@ -880,8 +886,9 @@ Stored values: 1, 3, 1
 
 MAX_CONTEXT_INPUTS is 5.
 
-| QuantizationTablePerContext(i, j, scale) {                                | type |
+|                                                                           |      |
 |---------------------------------------------------------------------------|------|
+| QuantizationTablePerContext(i, j, scale) {                                | type |
 |    v = 0                                                                  |      |
 |    for( k = 0; k \< 128; ) {                                              |      |
 |        len - 1                                                            | sr   |
