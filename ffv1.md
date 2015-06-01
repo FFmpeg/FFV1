@@ -81,6 +81,7 @@ For reference, below is an excerpt of RFC 2119:
               the particular behavior is acceptable or even useful, but the full 
               implications should be understood and the case carefully weighed before
               implementing any behavior described with this label.
+
 -----------------------------------------------------------------------------------------
 
 
@@ -98,6 +99,7 @@ RCT   Reversible Color Transform, a near linear, exactly reversible integer tran
       that converts between RGB and YCbCr representations of a sample.
 
 VLC   Variable length code.
+
 -----------------------------------------------------------------------------------------
 
 
@@ -167,19 +169,19 @@ When order of precedence is not indicated explicitly by use of parentheses, oper
 
 |                             |
 |:---------------------------:|
-|a++, a–                      |
-|!a, -a                       |
-|a * b, a / b, a % b          |
-|a + b, a - b                 |
-|a << b, a >> b               |
-|a < b, a <= b, a > b, a >= b |
-|a == b, a != b               |
-|a & b                        |
-|a | b                        |
-|a && b                       |
-|a || b                       |
-|a ? b : c                    |
-|a = b, a += b, a -= b        |
+|<code>a++, a–</code>                      |
+|<code>!a, -a</code>                       |
+|<code>a * b, a / b, a % b </code>         |
+|<code>a + b, a - b</code>                 |
+|<code>a << b, a >> b</code>               |
+|<code>a < b, a <= b, a > b, a >= b</code> |
+|<code>a == b, a != b</code>               |
+|<code>a & b</code>                        |
+|<code>a &#124; b</code>                       |
+|<code>a && b</code>                       |
+|<code>a &#124;&#124; b</code>                       |
+|<code>a ? b : c</code>                    |
+|<code>a = b, a += b, a -= b</code>        |
 
 ## Range
 
@@ -199,8 +201,8 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 For the purpose of the predictior and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
 
-|               |
-|-|-|-|-|-|-|-|-|
+| | | | | | | | |
+|---|---|---|---|---|---|---|---|
 |0|0| |0|0|0| |0|
 |0|0| |0|0|0| |0|
 |0|0| |a|b|c| |c|
@@ -218,8 +220,8 @@ Note, this is also used in [JPEG-LS and HuffYuv](#references).
 
 ## Context
 
-|           |
-|--|--|--|--|
+|  |  |  |  |
+|---|---|---|---|
 |  |  |T |  |
 |  |tl|t |tr|
 |L |l |X |  |
