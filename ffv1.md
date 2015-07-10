@@ -315,7 +315,6 @@ void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
         int e= log2(a); 
 
         for (i=0; i<e; i++)
-
             put_rac(c, state+1+MIN(i,9), 1);  //1..10
 
         put_rac(c, state+1+MIN(i,9), 0);
