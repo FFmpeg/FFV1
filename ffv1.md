@@ -110,66 +110,72 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 ## Arithmetic operators
 
-__a + b__ means a plus b.
+--------------- ----------------------------------------------------------------
+__a + b__       means a plus b.
 
-__a - b__ means a minus b.
+__a - b__       means a minus b.
 
-__-a__ means negation of a.
+__-a__          means negation of a.
 
-__a \* b__ means a multiplied by b.
+__a \* b__      means a multiplied by b.
 
-__a / b__ means a divided by b with truncation of the result toward zero.
+__a / b__       means a divided by b with truncation of the result toward zero.
 
-__a % b__ means remainder of a divided by b.
+__a % b__       means remainder of a divided by b.
 
-__a & b__ means bit-wise “and” of a and b.
+__a & b__       means bit-wise “and” of a and b.
 
-__a | b__ means bit-wise “or” of a and b.
+__a | b__       means bit-wise “or” of a and b.
 
-__a >> b__ means arithmetic righ shift of two’s complement integer representation of a by b binary digits.
+__a >> b__      means arithmetic righ shift of two’s complement integer representation of a by b binary digits.
 
-__a << b__ means arithmetic left shift of two’s complement integer representation of a by b binary digits.
+__a << b__      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
+--------------- ----------------------------------------------------------------
 
 ## Assignment operators
 
-__a = b__ means a is assigned b.
+--------------- ----------------------------------------------------------------
+__a = b__       means a is assigned b.
 
-__a++__ is equivalent to a = a + 1.
+__a++__         is equivalent to a = a + 1.
 
-__a–__ is equivalent to a = a - 1.
+__a–__          is equivalent to a = a - 1.
 
-__a += b__ is equivalent to a = a + b.
+__a += b__      is equivalent to a = a + b.
 
-__a -= b__ is equivalent to a = a - b.
+__a -= b__      is equivalent to a = a - b.
+--------------- ----------------------------------------------------------------
 
 ## Comparison operators
 
-__a > b__ means a greater than b.
+--------------- ----------------------------------------------------------------
+__a > b__       means a greater than b.
 
-__a >= b__ means a greater than or equal to b.
+__a >= b__      means a greater than or equal to b.
 
-__a < b__ means a less than b.
+__a < b__       means a less than b.
 
-__a <= b__ means a less than or equal b.
+__a <= b__      means a less than or equal b.
 
-__a == b__ means a equal to b.
+__a == b__      means a equal to b.
 
-__a != b__ means a not equalto b.
+__a != b__      means a not equalto b.
 
-__a && b__ means boolean logical “and” of a and b.
+__a && b__      means boolean logical “and” of a and b.
 
-__a || b__ means boolean logical “or” of a and b.
+__a || b__      means boolean logical “or” of a and b.
 
-__!a__ means boolean logical “not”.
+__!a__          means boolean logical “not”.
 
-__a ? b : c__ means b if a is true otherwise c.
+__a ? b : c__   means b if a is true otherwise c.
+--------------- ----------------------------------------------------------------
 
 ## Order of operation precedence
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right):
 
-|                             |
-|:---------------------------:|
+|                                          |
+|:----------------------------------------:|
 |<code>a++, a–</code>                      |
 |<code>!a, -a</code>                       |
 |<code>a * b, a / b, a % b </code>         |
@@ -178,9 +184,9 @@ When order of precedence is not indicated explicitly by use of parentheses, oper
 |<code>a < b, a <= b, a > b, a >= b</code> |
 |<code>a == b, a != b</code>               |
 |<code>a & b</code>                        |
-|<code>a &#124; b</code>                       |
+|<code>a &#124; b</code>                   |
 |<code>a && b</code>                       |
-|<code>a &#124;&#124; b</code>                       |
+|<code>a &#124;&#124; b</code>             |
 |<code>a ? b : c</code>                    |
 |<code>a = b, a += b, a -= b</code>        |
 
