@@ -464,7 +464,7 @@ Run mode is entered when the context is 0, and left as soon as a non-0 differenc
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index which determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
 
 ```
-log2_run[41]={JPEGLS.
+log2_run[41]={
  0, 0, 0, 0, 1, 1, 1, 1,
  2, 2, 2, 2, 3, 3, 3, 3,
  4, 4, 5, 5, 6, 6, 7, 7,
@@ -490,7 +490,7 @@ if (run_count == 0 && run_mode == 1) {
 }
 ```
 
-[JPEGLS](#references)
+The log2\_run function is also used within [JPEGLS](#references).
 
 #### Level coding
 
