@@ -455,15 +455,14 @@ In the case of a bitstream with version >= 2, a configuration record is stored i
 It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
-|                                                          |      |
-|----------------------------------------------------------|:-----|
-| ConfigurationRecord( NumBytes ) {                        |      |
-|    ConfigurationRecordIsPresent = 1                      |      |
-|    Parameters( )                                         |      |
-|    while( remaining\_bits\_in\_bitstream( ) \> 32 )      |      |
-|         reserved\_for\_future\_use                       | u(1) |
-|     configuration\_record\_crc\_parity                   | u(32)|
-|}                                                         |      |
+```c
+ConfigurationRecord( NumBytes ) {
+    ConfigurationRecordIsPresent = 1
+    Parameters( )
+    while( remaining\_bits\_in\_bitstream( ) \> 32 )
+         reserved\_for\_future\_use                     // u(1)
+     configuration\_record\_crc\_parity                 // u(32)
+````
 
 **reserved_for_future_use** has semantics that are reserved for future use.\
     Encoders conforming to this version of this specification SHALL NOT write this value.\
