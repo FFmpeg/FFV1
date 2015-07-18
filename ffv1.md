@@ -203,7 +203,7 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 For the purpose of the predictior and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
 
 | | | | | | | | |
-|---|---|---|---|---|---|---|---|
+|-|-|-|-|-|-|-|-|
 |0|0| |0|0|0| |0|
 |0|0| |0|0|0| |0|
 |0|0| |a|b|c| |c|
@@ -221,7 +221,7 @@ Note, this is also used in [JPEG-LS and HuffYuv](#references).
 ## Context
 
 |  |  |  |  |
-|---|---|---|---|
+|--|--|--|--|
 |  |  |T |  |
 |  |tl|t |tr|
 |L |l |X |  |
@@ -419,19 +419,19 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 
 |              |                                                         |
 |:-------------|---------------------------------------------------------|
-|non ESC       | the k least significant bits MSB first|
+|non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
 
 #### Examples
 
-|k | bits | value|
-|:---:|:------------------------:|:-------:|
-|0 | 1 | 0|
-|0 | 001 | 2|
-|2 | 1 00 | 0|
-|2 | 1 10 | 2|
-|2 | 01 01 | 5|
-|any | 000000000000 10000000 | 139|
+| k   | bits                      | value |
+|:---:|:--------------------------|------:|
+| 0   | ``1``                     | 0     |
+| 0   | ``001``                   | 2     |
+| 2   | ``1 00``                  | 0     |
+| 2   | ``1 10``                  | 2     |
+| 2   | ``01 01``                 | 5     |
+| any | ``000000000000 10000000`` | 139   |
 
 #### Run mode
 
@@ -504,7 +504,7 @@ It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
 |                                                          |      |
-|----------------------------------------------------------|-----:|
+|----------------------------------------------------------|:-----|
 | ConfigurationRecord( NumBytes ) {                        |      |
 |    ConfigurationRecordIsPresent = 1                      |      |
 |    Parameters( )                                         |      |
@@ -559,7 +559,7 @@ See [NUT](#references) for more information about elements.
 ## Slice
 
 |                                                                    |
-|------------------------------------------------------------|------:|
+|------------------------------------------------------------|:------|
 |Slice( i ) {                                                | type  |
 |    if( version \> 2 )                                      |       |
 |        SliceHeader( i )                                    |       |
@@ -817,7 +817,7 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 **ec** indicates the error detection/correction type.
 
 |value | error detection/correction type          |
-|------|-------------------------------------     |
+|------|------------------------------------------|
 |0     | 32bit CRC on the global header           |
 |1     | 32bit CRC per slice and the global header|
 |Other | reserved for future use                  |
