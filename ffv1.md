@@ -67,7 +67,6 @@ The key words MUST, MUST NOT, SHOULD, and SHOULD NOT in this document are to b
 
 For reference, below is an excerpt of RFC 2119:
 
-
 ------------- ---------------------------------------------------------------------------
 "MUST"        means that the definition is an absolute requirement of the specification.
 
@@ -84,9 +83,7 @@ For reference, below is an excerpt of RFC 2119:
               &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
 
-
 ## Definitions
-
 
 ----- -----------------------------------------------------------------------------------
 ESC   Escape symbol to indicate that the symbol to be stored is too large for normal
@@ -101,8 +98,6 @@ RCT   Reversible Color Transform, a near linear, exactly reversible integer tran
 VLC   Variable length code.
       &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
-
-
 
 # Conventions
 
@@ -216,7 +211,6 @@ For the purpose of the predictior and context, samples above the coded slice are
 |0|a| |d| |e| |e|
 |0|d| |f|g|h| |h|
 
-
 ## Median predictor
 
 median(left, top, left + top - diag)
@@ -232,7 +226,6 @@ Note, this is also used in [JPEG-LS and HuffYuv](#references).
 |  |  |T |  |
 |  |tl|t |tr|
 |L |l |X |  |
-
 
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
 
@@ -280,31 +273,23 @@ To encode binary digits efficiently a range coder is used. $C_{i}$ is the i-th C
 
 $r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$
 
-
 $\begin{array}{ccccccccc}
 S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
 S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
 \end{array}$
 
-
 $\begin{array}{ccc}
 S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k
 \end{array}$
-
-
 
 $\begin{array}{ccccccc}
 R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
 R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
 \end{array}$
 
-
-
 $R_{0}=65280$
 
-
 $L_{0}=2^{8}B_{0}+B_{1}$
-
 
 $j_{0}=2$
 
@@ -338,7 +323,6 @@ void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
 At keyframes all range coder state variables are set to their initial state.
 
 #### State transition table
-
 
 $one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$
 
@@ -424,7 +408,6 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 
 #### Prefix
 
-
 |bits           | value |
 |:--------------|:------| 
 |1              | 0     |
@@ -433,9 +416,7 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
 
-
 #### Suffix
-
 
 |              |                                                         |
 |:-------------|---------------------------------------------------------|
@@ -443,7 +424,6 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 |ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
 
 #### Examples
-
 
 |k | bits | value|
 |:---:|:------------------------:|:-------:|
@@ -453,7 +433,6 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 |2 | 1 10 | 2|
 |2 | 01 01 | 5|
 |any | 000000000000 10000000 | 139|
-
 
 #### Run mode
 
@@ -521,7 +500,6 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-
 In the case of a bitstream with version >= 2, a configuration record is stored in the the underlying container, at the track header level.
 It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
@@ -535,7 +513,6 @@ The size of the configuration record, NumBytes, is supplied by the underlying co
 |         reserved\_for\_future\_use                       | u(1) |
 |     configuration\_record\_crc\_parity                   | u(32)|
 |}                                                         |      |
-
 
 **reserved_for_future_use** has semantics that are reserved for future use.\
     Encoders conforming to this version of this specification SHALL NOT write this value.\
@@ -580,7 +557,6 @@ See [NUT](#references) for more information about elements.
 |        Slice( i )                                 |    |
 |}                                                  |    |
 
-
 ## Slice
 
 |                                                                    |
@@ -604,7 +580,6 @@ See [NUT](#references) for more information about elements.
 |    }                                                       |       |
 |}                                                           |       |
 
-
 **primary_color_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
 **slice_size** indicates the size of the slice in bytes.\
@@ -618,7 +593,6 @@ See [NUT](#references) for more information about elements.
 | 1     | slice contains a correctable error   |
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
-
 
 **slice_crc_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.\
     This is equivalent to storing the crc remainder in the 32-bit parity.\
@@ -643,7 +617,6 @@ See [NUT](#references) for more information about elements.
 |        slice\_coding\_mode                                 | ur | 
 |    }                                                       |    | 
 | }                                                          |    | 
-
 
 **slice_x** indicates the x position on the slice raster formed by num_h_slices.\
     Inferred to be 0 if not present.
@@ -672,7 +645,6 @@ See [NUT](#references) for more information about elements.
 |2        |          bottom field first | 
 |3        |                 progressive | 
 |Other    |     reserved for future use | 
-
 
 **sar_num** specifies the sample aspect ratio numerator.\
     Inferred to be 0 if not present.\
@@ -733,7 +705,6 @@ See [NUT](#references) for more information about elements.
 |   }                                                        |     |
 |}                                                           |     |
 
-
 **version** specifies the version of the bitstream.\
     Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.\
     Decoders SHOULD reject a file with version < 2 && ConfigurationRecordIsPresent == 1.\
@@ -746,7 +717,6 @@ See [NUT](#references) for more information about elements.
 |2       |  reserved\*             |
 |3       |  FFV1 version 3         |
 |Other   |  reserved for future use|
-
 
 \* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
 
@@ -782,10 +752,8 @@ Meaning of micro_version for version 4 (note: at the time of writting of this sp
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
-
 **state_transition_delta** specifies the range coder custom state transition table.\
 If state_transition_delta is not present in the bitstream, all range coder custom state transition table elements are assumed to be 0.
-
 
 **colorspace_type** specifies the color space.
 
@@ -801,7 +769,6 @@ If state_transition_delta is not present in the bitstream, all range coder custo
 |-------|---------------------------------|
 |0      |   chroma planes are not present |
 |1      |   chroma planes are present     |
-
 
 **bits_per_raw_sample** indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
 
@@ -842,7 +809,6 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
-
 **initial_state_delta** [ i ][ j ][ k ] indicates the initial range coder state, it is encoded using k as context index and\
     pred = j ? initial\_states[ i ][j - 1][ k ] : 128\
     initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
@@ -856,7 +822,6 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 |0     | 32bit CRC on the global header           |
 |1     | 32bit CRC per slice and the global header|
 |Other | reserved for future use                  |
-
 
 **intra** indicates the relationship between frames.
     Inferred to be 0 if not present.
@@ -888,7 +853,6 @@ Stored values: 1, 3, 1
 |    context\_count[ i ] = ( scale + 1 ) / 2        |             |
 |}                                                  |             |
 
-
 MAX_CONTEXT_INPUTS is 5.
 
 |                                                                           |      |
@@ -909,7 +873,6 @@ MAX_CONTEXT_INPUTS is 5.
 |    quant\_tables[ i ][ j ][ 128 ] = -quant\_tables[ i ][ j ][ 127 ]       |      |
 |    len\_count[ i ][ j ] = v                                               |      |
 |}                                                                          |      |
-
 
 **quant_tables** indicates the quantification table values.
 
@@ -955,6 +918,5 @@ NUT Open Container Format <http://www.ffmpeg.org/~michael/nut.txt>
 
 # Copyright
 
-
-Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>\
+Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>
 This text can be used under the GNU Free Documentation License or GNU General Public License. See <http://www.gnu.org/licenses/fdl.txt>.
