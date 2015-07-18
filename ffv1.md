@@ -1,54 +1,5 @@
-# FFV1 Video Codec Specification
-## by Michael Niedermayer <michaelni@gmx.at>
-
-
-
-
-
-<!-- toc -->
-
-* [Introduction](#introduction)
-* [Terms and Definitions](#terms-and-definitions)
-  * [Terms](#terms)
-  * [Definitions](#definitions)
-* [Conventions](#conventions)
-  * [Arithmetic operators](#arithmetic-operators)
-  * [Assignment operators](#assignment-operators)
-  * [Comparison operators](#comparison-operators)
-  * [Order of operation precedence](#order-of-operation-precedence)
-  * [Range](#range)
-  * [Bitstream functions](#bitstream-functions)
-* [General Description](#general-description)
-  * [Border](#border)
-  * [Median predictor](#median-predictor)
-  * [Context](#context)
-  * [Quantization](#quantization)
-  * [Colorspace](#colorspace)
-    * [JPEG2000-RCT](#jpeg2000-rct)
-  * [Coding of the sample difference](#coding-of-the-sample-difference)
-    * [Range coding mode](#range-coding-mode)
-    * [Huffman coding mode](#huffman-coding-mode)
-* [Bitstream](#bitstream)
-  * [Configuration Record](#configuration-record)
-    * [In AVI File Format](#in-avi-file-format)
-    * [In ISO/IEC 14496-12 (MP4 File Format)](#in-isoiec-14496-12-mp4-file-format)
-    * [In NUT File Format](#in-nut-file-format)
-  * [Frame](#frame)
-  * [Slice](#slice)
-  * [Slice Header](#slice-header)
-  * [Parameters](#parameters)
-  * [Quantization Tables](#quantization-tables)
-    * [Restrictions](#restrictions)
-* [Changelog](#changelog)
-* [ToDo](#todo)
-* [Bibliography](#bibliography)
-  * [References](#references)
-* [Copyright](#copyright)
-
-<!-- toc stop -->
-
-
-
+% FFV1 Video Codec Specification
+% by Michael Niedermayer <michaelni@gmx.at>
 
 # Introduction
 
