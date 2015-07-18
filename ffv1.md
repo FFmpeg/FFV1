@@ -190,7 +190,7 @@ __a...b__ means any value starting from a to b, inclusive.
 
 ## Bitstream functions
 
-**remaing_bits_in_bitstream( )** means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
+**remaining\_bits\_in\_bitstream( )** means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
 # General Description
 
