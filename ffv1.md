@@ -792,16 +792,16 @@ Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
 
 Stored values: 1, 3, 1
 
-|                                                   |             |
-|---------------------------------------------------|-------------|
-| QuantizationTable( i ) {                          | type        |
-|   scale = 1                                       |             |
-|    for( j = 0; j \< MAX\_CONTEXT\_INPUTS; j++ ) { |             |
-|        QuantizationTablePerContext( i, j, scale ) |             |
-|        scale \*= 2 \* len\_count[ i ][ j ] - 1    |             |
-|    }                                              |             |
-|    context\_count[ i ] = ( scale + 1 ) / 2        |             |
-|}                                                  |             |
+```c
+QuantizationTable( i ) {                          // type
+    scale = 1
+    for( j = 0; j \< MAX\_CONTEXT\_INPUTS; j++ ) {
+        QuantizationTablePerContext( i, j, scale )
+        scale \*= 2 \* len\_count[ i ][ j ] - 1
+    }
+    context\_count[ i ] = ( scale + 1 ) / 2
+```
+
 
 MAX_CONTEXT_INPUTS is 5.
 
