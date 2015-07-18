@@ -168,21 +168,21 @@ __a ? b : c__   means b if a is true otherwise c.
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right):
 
-|                                          |
-|:----------------------------------------:|
-|<code>a++, a–</code>                      |
-|<code>!a, -a</code>                       |
-|<code>a * b, a / b, a % b </code>         |
-|<code>a + b, a - b</code>                 |
-|<code>a << b, a >> b</code>               |
-|<code>a < b, a <= b, a > b, a >= b</code> |
-|<code>a == b, a != b</code>               |
-|<code>a & b</code>                        |
-|<code>a &#124; b</code>                   |
-|<code>a && b</code>                       |
-|<code>a &#124;&#124; b</code>             |
-|<code>a ? b : c</code>                    |
-|<code>a = b, a += b, a -= b</code>        |
+|                                 |
+|:-------------------------------:|
+|``a++, a–``                      |
+|``!a, -a``                       |
+|``a * b, a / b, a % b ``         |
+|``a + b, a - b``                 |
+|``a << b, a >> b``               |
+|``a < b, a <= b, a > b, a >= b`` |
+|``a == b, a != b``               |
+|``a & b``                        |
+|``a | b``                        |
+|``a && b``                       |
+|``a || b``                       |
+|``a ? b : c``                    |
+|``a = b, a += b, a -= b``        |
 
 ## Range
 
