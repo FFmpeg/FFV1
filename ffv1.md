@@ -1,6 +1,5 @@
-<h1>FFV1 Video Codec Specification</h1>
-
-<h2>by Michael Niedermayer <michaelni@gmx.at></h2>
+# FFV1 Video Codec Specification
+## by Michael Niedermayer <michaelni@gmx.at>
 
 
 
