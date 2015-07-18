@@ -274,6 +274,7 @@ At keyframes all range coder state variables are set to their initial state.
 
 #### State transition table
 
+
 $one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$
 
 $zero\_state_{i}=256-one\_state_{256-i}$
