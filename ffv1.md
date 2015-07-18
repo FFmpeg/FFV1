@@ -508,7 +508,7 @@ The size of the configuration record, NumBytes, is supplied by the underlying co
 | ConfigurationRecord( NumBytes ) {                        |      |
 |    ConfigurationRecordIsPresent = 1                      |      |
 |    Parameters( )                                         |      |
-|    while( remaining\_bits\_in\_bitstream( ) \> 32)       |      |
+|    while( remaining\_bits\_in\_bitstream( ) \> 32 )      |      |
 |         reserved\_for\_future\_use                       | u(1) |
 |     configuration\_record\_crc\_parity                   | u(32)|
 |}                                                         |      |
@@ -550,7 +550,7 @@ See [NUT](#references) for more information about elements.
 |---------------------------------------------------|---:|
 |Frame( ) {                                         |type|
 |    keyframe                                       |  br|
-|    if( keyframe && !ConfigurationRecordIsPresent) |    |
+|    if( keyframe && !ConfigurationRecordIsPresent )|    |
 |         Parameters( )                             |    |
 |    for( i = 0; i \< slice\_count; i++ )           |    |
 |        Slice( i )                                 |    |
@@ -566,7 +566,7 @@ See [NUT](#references) for more information about elements.
 |    if( colorspace\_type == 0) {                            |       |
 |        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
 |            Plane( p )                                      |       |
-|    } else if( colorspace\_type == 1) {                     |       |
+|    } else if( colorspace\_type == 1 ) {                    |       |
 |        for( y = 0; y \< height; y++ )                      |       |
 |            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
 |                Line( p, y )                                |       |
@@ -606,7 +606,7 @@ See [NUT](#references) for more information about elements.
 |    slice\_y                                                | ur | 
 |    slice\_width - 1                                        | ur | 
 |    slice\_height - 1                                       | ur | 
-|    for( j = 0; j \< quant\_table\_index\_count; j++)       |    | 
+|    for( j = 0; j \< quant\_table\_index\_count; j++ )      |    | 
 |        quant\_table\_index [ i ][ j ]                      | ur | 
 |    picture\_structure                                      | ur | 
 |    sar\_num                                                | ur | 
@@ -684,14 +684,14 @@ See [NUT](#references) for more information about elements.
 |   log2( h\_chroma\_subsample )                             | ur  |
 |   log2( v\_chroma\_subsample )                             | ur  |
 |   alpha\_plane                                             | br  |
-|   if ( version \> 1 ) {                                    |     |
+|   if( version \> 1 ) {                                     |     |
 |       num\_h\_slices - 1                                   | ur  |
 |       num\_v\_slices - 1                                   | ur  |
 |       quant\_table\_count                                  | ur  |
 |   }                                                        |     |
 |   for( i = 0; i \< quant\_table\_count; i++ )              |     |
 |       QuantizationTable( i )                               |     |
-|   if ( version \> 1 ) {                                    |     |
+|   if( version \> 1 ) {                                     |     |
 |       for( i = 0; i \< quant\_table\_count; i++ ) {        |     |
 |           states\_coded                                    | br  |
 |           if( states\_coded )                              |     |
