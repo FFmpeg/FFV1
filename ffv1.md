@@ -459,9 +459,9 @@ The size of the configuration record, NumBytes, is supplied by the underlying co
 ConfigurationRecord( NumBytes ) {
     ConfigurationRecordIsPresent = 1
     Parameters( )
-    while( remaining\_bits\_in\_bitstream( ) \> 32 )
-         reserved\_for\_future\_use                     // u(1)
-     configuration\_record\_crc\_parity                 // u(32)
+    while( remaining_bits_in_bitstream( ) > 32 )
+         reserved_for_future_use                     // u(1)
+     configuration_record_crc_parity                 // u(32)
 ````
 
 **reserved_for_future_use** has semantics that are reserved for future use.\
@@ -795,11 +795,11 @@ Stored values: 1, 3, 1
 ```c
 QuantizationTable( i ) {                          // type
     scale = 1
-    for( j = 0; j \< MAX\_CONTEXT\_INPUTS; j++ ) {
+    for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {
         QuantizationTablePerContext( i, j, scale )
-        scale \*= 2 \* len\_count[ i ][ j ] - 1
+        scale *= 2 * len_count[ i ][ j ] - 1
     }
-    context\_count[ i ] = ( scale + 1 ) / 2
+    context_count[ i ] = ( scale + 1 ) / 2
 ```
 
 
