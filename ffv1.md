@@ -117,7 +117,7 @@ __a ? b : c__   means b if a is true otherwise c.
 
 ## Order of operation precedence
 
-When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right):
+When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
 
 |                                 |
 |:-------------------------------:|
