@@ -157,6 +157,7 @@ For the purpose of the predictior and context, samples above the coded slice are
 |-|-|-|-|-|-|-|-|
 |0|0| |0|0|0| |0|
 |0|0| |0|0|0| |0|
+| | | | | | | | |
 |0|0| |a|b|c| |c|
 |0|a| |d| |e| |e|
 |0|d| |f|g|h| |h|
