@@ -523,7 +523,7 @@ See [NUT](#references) for more information about elements.
 |            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
 |                Line( p, y )                                |       |
 |    }                                                       |       |
-|    if( i || version \> 2 )                                 |       |
+|    if( i \|\| version \> 2 )                               |       |
 |        slice\_size                                         | u(24) |
 |    if( ec ) {                                              |       |
 |        error\_status                                       |  u(8) |
