@@ -22,11 +22,11 @@ For reference, below is an excerpt of RFC 2119:
 
 "MUST NOT"    means that the definition is an absolute prohibition of the specification.
 
-“SHOULD”      means that there may exist valid reasons in particular circumstances to
+"SHOULD"      means that there may exist valid reasons in particular circumstances to
               ignore a particular item, but the full implications must be understood and
               carefully weighed before choosing a different course.
 
-“SHOULD NOT”  means that there may exist valid reasons in particular circumstances when
+"SHOULD NOT"  means that there may exist valid reasons in particular circumstances when
               the particular behavior is acceptable or even useful, but the full 
               implications should be understood and the case carefully weighed before
               implementing any behavior described with this label.
@@ -68,9 +68,9 @@ __a / b__       means a divided by b with truncation of the result toward zero
 
 __a % b__       means remainder of a divided by b.
 
-__a & b__       means bit-wise “and” of a and b.
+__a & b__       means bit-wise "and" of a and b.
 
-__a | b__       means bit-wise “or” of a and b.
+__a | b__       means bit-wise "or" of a and b.
 
 __a >> b__      means arithmetic righ shift of two’s complement integer representation of a by b binary digits.
 
@@ -106,11 +106,11 @@ __a == b__      means a equal to b.
 
 __a != b__      means a not equalto b.
 
-__a && b__      means boolean logical “and” of a and b.
+__a && b__      means boolean logical "and" of a and b.
 
-__a || b__      means boolean logical “or” of a and b.
+__a || b__      means boolean logical "or" of a and b.
 
-__!a__          means boolean logical “not”.
+__!a__          means boolean logical "not".
 
 __a ? b : c__   means b if a is true otherwise c.
 --------------- ----------------------------------------------------------------
@@ -210,7 +210,7 @@ $b=Cb+g$
 
 ## Coding of the sample difference
 
-Instead of coding the n+1 bits of the sample difference with Huffman-, or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term “bits” represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the sample difference with Huffman-, or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 
 $coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$
 
@@ -477,24 +477,24 @@ This configuration record can be placed in any file format supporting configurat
 
 ### In AVI File Format
 
-The Configuration Record extends the stream format chunk (\`\`AVI \`\`, “hdlr”, “strl”, “strf”) with the ConfigurationRecord bistream.
+The Configuration Record extends the stream format chunk (\`\`AVI \`\`, "hdlr", "strl", "strf") with the ConfigurationRecord bistream.
 See [AVI](#references) for more information about chunks.
 
 **NumBytes** is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
 ### In ISO/IEC 14496-12 (MP4 File Format)
 
-The Configuration Record extends the sample description box (“moov”, “trak”, “mdia”, “minf”, “stbl”, “stsd”) with a “glbl” box which contains the ConfigurationRecord bitstream.
+The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream.
 See [ISO14496_12](#references) for more information about boxes.
 
-**NumBytes** is defined as the size, in bytes, of the “glbl” box indicated in the box header minus the size of the box header.
+**NumBytes** is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
 ### In NUT File Format
 
-The codec_specific_data element (in “stream_header” packet) contains the ConfigurationRecord bitstream.
+The codec_specific_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream.
 See [NUT](#references) for more information about elements.
 
-**NumBytes** is defined as the size, in bytes, of the codec_specific_data element as indicated in the “length” field of codec_specific_data
+**NumBytes** is defined as the size, in bytes, of the codec_specific_data element as indicated in the "length" field of codec_specific_data
 
 ## Frame
 
