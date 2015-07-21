@@ -436,7 +436,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 # Bitstream
 
-|      |                                                        |
+|Symbol| Defintion                                              |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
 | sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
@@ -498,38 +498,38 @@ See [NUT](#references) for more information about elements.
 
 ## Frame
 
-|                                                        |
-|---------------------------------------------------|---:|
-|Frame( ) {                                         |type|
-|    keyframe                                       |  br|
-|    if( keyframe && !ConfigurationRecordIsPresent )|    |
-|         Parameters( )                             |    |
-|    for( i = 0; i \< slice\_count; i++ )           |    |
-|        Slice( i )                                 |    |
-|}                                                  |    |
+```c
+Frame( ) {                                                  // type
+    keyframe                                                // br
+    if( keyframe && !ConfigurationRecordIsPresent )
+         Parameters( )
+    for( i = 0; i \< slice\_count; i++ )
+        Slice( i )
+}
+```
 
 ## Slice
 
-|                                                                    |
-|------------------------------------------------------------|:------|
-|Slice( i ) {                                                | type  |
-|    if( version \> 2 )                                      |       |
-|        SliceHeader( i )                                    |       |
-|    if( colorspace\_type == 0) {                            |       |
-|        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
-|            Plane( p )                                      |       |
-|    } else if( colorspace\_type == 1 ) {                    |       |
-|        for( y = 0; y \< height; y++ )                      |       |
-|            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
-|                Line( p, y )                                |       |
-|    }                                                       |       |
-|    if( i \|\| version \> 2 )                               |       |
-|        slice\_size                                         | u(24) |
-|    if( ec ) {                                              |       |
-|        error\_status                                       |  u(8) |
-|        slice\_crc\_parity                                  | u(32) |
-|    }                                                       |       |
-|}                                                           |       |
+```c
+Slice( i ) {                                                // type
+    if( version \> 2 )
+        SliceHeader( i )
+    if( colorspace\_type == 0) {
+        for( p = 0; p \< primary\_color\_count; p++ ) {
+            Plane( p )
+    } else if( colorspace\_type == 1 ) {
+        for( y = 0; y \< height; y++ )
+            for( p = 0; p \< primary\_color\_count; p++ ) {
+                Line( p, y )
+    }
+    if( i \|\| version \> 2 )
+        slice\_size                                         // u(24)
+    if( ec ) {
+        error\_status                                       // u(8)
+        slice\_crc\_parity                                  // u(32)
+    }
+}
+```
 
 **primary_color_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
@@ -551,23 +551,23 @@ See [NUT](#references) for more information about elements.
 
 ## Slice Header
 
-|                                                            |    |
-|------------------------------------------------------------|---:|
-| SliceHeader( i ) {                                         |type| 
-|    slice\_x                                                | ur | 
-|    slice\_y                                                | ur | 
-|    slice\_width - 1                                        | ur | 
-|    slice\_height - 1                                       | ur | 
-|    for( j = 0; j \< quant\_table\_index\_count; j++ )      |    | 
-|        quant\_table\_index [ i ][ j ]                      | ur | 
-|    picture\_structure                                      | ur | 
-|    sar\_num                                                | ur | 
-|    sar\_den                                                | ur | 
-|    if( version \> 3 ) {                                    |    | 
-|        reset\_contexts                                     | br | 
-|        slice\_coding\_mode                                 | ur | 
-|    }                                                       |    | 
-| }                                                          |    | 
+```c
+SliceHeader( i ) {                                          // type
+    slice\_x                                                // ur
+    slice\_y                                                // ur
+    slice\_width - 1                                        // ur
+    slice\_height - 1                                       // ur
+    for( j = 0; j \< quant\_table\_index\_count; j++ )
+        quant\_table\_index [ i ][ j ]                      // ur
+    picture\_structure                                      // ur
+    sar\_num                                                // ur
+    sar\_den                                                // ur
+    if( version \> 3 ) {
+        reset\_contexts                                     // br
+        slice\_coding\_mode                                 // ur
+    }
+}
+```
 
 **slice_x** indicates the x position on the slice raster formed by num_h_slices.\
     Inferred to be 0 if not present.
@@ -619,42 +619,42 @@ See [NUT](#references) for more information about elements.
 
 ## Parameters
 
-|                                                            |     |
-|------------------------------------------------------------|----:|
-| Parameters( ) {                                            | type|
-|   version                                                  | ur  |
-|   if( version \> 2 )                                       |     |
-|       micro\_version                                       | ur  |
-|   coder\_type                                              | ur  |
-|   if( coder\_type \> 1 )                                   |     |
-|       for( i = 1; i \< 256; i++ )                          |     |
-|           state\_transition\_delta[ i ]                    | sr  |
-|   colorspace\_type                                         | ur  |
-|   if( version \> 0 )                                       |     |
-|       bits\_per\_raw\_sample                               | ur  |
-|   chroma\_planes                                           | br  |
-|   log2( h\_chroma\_subsample )                             | ur  |
-|   log2( v\_chroma\_subsample )                             | ur  |
-|   alpha\_plane                                             | br  |
-|   if( version \> 1 ) {                                     |     |
-|       num\_h\_slices - 1                                   | ur  |
-|       num\_v\_slices - 1                                   | ur  |
-|       quant\_table\_count                                  | ur  |
-|   }                                                        |     |
-|   for( i = 0; i \< quant\_table\_count; i++ )              |     |
-|       QuantizationTable( i )                               |     |
-|   if( version \> 1 ) {                                     |     |
-|       for( i = 0; i \< quant\_table\_count; i++ ) {        |     |
-|           states\_coded                                    | br  |
-|           if( states\_coded )                              |     |
-|               for( j = 0; j \< context\_count[ i ]; j++ )  |     |
-|                   for( k = 0; k \< CONTEXT\_SIZE; k++ )    |     |
-|                       initial\_state\_delta[ i ][ j ][ k ] | sr  |
-|       }                                                    |     |
-|       ec                                                   | ur  |
-|       intra                                                | ur  |
-|   }                                                        |     |
-|}                                                           |     |
+```c
+Parameters( ) {                                             // type
+    version                                                 // ur
+    if( version \> 2 )
+        micro\_version                                      // ur
+    coder\_type                                             // ur
+    if( coder\_type \> 1 )
+        for( i = 1; i \< 256; i++ )
+            state\_transition\_delta[ i ]                   // sr
+    colorspace\_type                                        // ur
+    if( version \> 0 )
+        bits\_per\_raw\_sample                              // ur
+    chroma\_planes                                          // br
+    log2( h\_chroma\_subsample )                            // ur
+    log2( v\_chroma\_subsample )                            // ur
+    alpha\_plane                                            // br
+    if( version \> 1 ) {
+        num\_h\_slices - 1                                  // ur
+        num\_v\_slices - 1                                  // ur
+        quant\_table\_count                                 // ur
+    }
+    for( i = 0; i \< quant\_table\_count; i++ )
+        QuantizationTable( i )
+    if( version \> 1 ) {
+        for( i = 0; i \< quant\_table\_count; i++ ) {
+            states\_coded                                   // br
+            if( states\_coded )
+                for( j = 0; j \< context\_count[ i ]; j++ )
+                    for( k = 0; k \< CONTEXT\_SIZE; k++ )
+                        initial\_state\_delta[ i ][ j ][ k ]// sr
+        }
+        ec                                                  // ur
+        intra                                               // ur
+    }
+}
+```
 
 **version** specifies the version of the bitstream.\
     Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.\
@@ -794,7 +794,7 @@ Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
 Stored values: 1, 3, 1
 
 ```c
-QuantizationTable( i ) {                          // type
+QuantizationTable( i ) {                                    // type
     scale = 1
     for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {
         QuantizationTablePerContext( i, j, scale )
@@ -806,24 +806,24 @@ QuantizationTable( i ) {                          // type
 
 MAX_CONTEXT_INPUTS is 5.
 
-|                                                                           |      |
-|---------------------------------------------------------------------------|------|
-| QuantizationTablePerContext(i, j, scale) {                                | type |
-|    v = 0                                                                  |      |
-|    for( k = 0; k \< 128; ) {                                              |      |
-|        len - 1                                                            | sr   |
-|        for( a = 0; a \< len; a++ ) {                                      |      |
-|            quant\_tables[ i ][ j ][ k ] = scale* v                        |      |
-|            k++                                                            |      |
-|        }                                                                  |      |
-|        v++                                                                |      |
-|    }                                                                      |      |
-|    for( k = 1; k \< 128; k++ ) {                                          |      |
-|        quant\_tables[ i ][ j ][ 256 - k ] = -quant\_tables[ i ][ j ][ k ] |      |
-|    }                                                                      |      |
-|    quant\_tables[ i ][ j ][ 128 ] = -quant\_tables[ i ][ j ][ 127 ]       |      |
-|    len\_count[ i ][ j ] = v                                               |      |
-|}                                                                          |      |
+```c
+QuantizationTablePerContext(i, j, scale) {                  // type
+    v = 0
+    for( k = 0; k \< 128; ) {
+        len - 1                                             // sr
+        for( a = 0; a \< len; a++ ) {
+            quant\_tables[ i ][ j ][ k ] = scale* v
+            k++
+        }
+        v++
+    }
+    for( k = 1; k \< 128; k++ ) {
+        quant\_tables[ i ][ j ][ 256 - k ] = -quant\_tables[ i ][ j ][ k ]
+    }
+    quant\_tables[ i ][ j ][ 128 ] = -quant\_tables[ i ][ j ][ 127 ]
+    len\_count[ i ][ j ] = v
+}
+```
 
 **quant_tables** indicates the quantification table values.
 
