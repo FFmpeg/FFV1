@@ -477,7 +477,7 @@ This configuration record can be placed in any file format supporting configurat
 
 ### In AVI File Format
 
-The Configuration Record extends the stream format chunk (\`\`AVI \`\`, "hdlr", "strl", "strf") with the ConfigurationRecord bistream.
+The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bistream.
 See [AVI](#references) for more information about chunks.
 
 **NumBytes** is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
