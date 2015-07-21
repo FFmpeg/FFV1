@@ -831,7 +831,7 @@ MAX_CONTEXT_INPUTS is 5.
 
 ### Restrictions
 
-In version 2 and later the maximum slice size in pixels is $\frac{width\centerdot height}{4}$, this is to ensure that fast multithreaded decoding is possible.
+In version 2 and later the maximum slice size in pixels is $\frac{width\centerdot height}{4}$, unless the frame is smaller or equal 352x288 this is to ensure that fast multithreaded decoding is possible.
 
 # Changelog
 
