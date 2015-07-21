@@ -27,7 +27,7 @@ For reference, below is an excerpt of RFC 2119:
               carefully weighed before choosing a different course.
 
 "SHOULD NOT"  means that there may exist valid reasons in particular circumstances when
-              the particular behavior is acceptable or even useful, but the full 
+              the particular behavior is acceptable or even useful, but the full
               implications should be understood and the case carefully weighed before
               implementing any behavior described with this label.
               &nbsp; &nbsp;
@@ -361,7 +361,7 @@ This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the
 #### Prefix
 
 |bits           | value |
-|:--------------|:------| 
+|:--------------|:------|
 |1              | 0     |
 |01             | 1     |
 |...            | ...   |
@@ -553,21 +553,21 @@ The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) wi
 
 |                                                            |    |
 |------------------------------------------------------------|---:|
-| SliceHeader( i ) {                                         |type| 
-|    slice\_x                                                | ur | 
-|    slice\_y                                                | ur | 
-|    slice\_width - 1                                        | ur | 
-|    slice\_height - 1                                       | ur | 
-|    for( j = 0; j \< quant\_table\_index\_count; j++ )      |    | 
-|        quant\_table\_index [ i ][ j ]                      | ur | 
-|    picture\_structure                                      | ur | 
-|    sar\_num                                                | ur | 
-|    sar\_den                                                | ur | 
-|    if( version \> 3 ) {                                    |    | 
-|        reset\_contexts                                     | br | 
-|        slice\_coding\_mode                                 | ur | 
-|    }                                                       |    | 
-| }                                                          |    | 
+| SliceHeader( i ) {                                         |type|
+|    slice\_x                                                | ur |
+|    slice\_y                                                | ur |
+|    slice\_width - 1                                        | ur |
+|    slice\_height - 1                                       | ur |
+|    for( j = 0; j \< quant\_table\_index\_count; j++ )      |    |
+|        quant\_table\_index [ i ][ j ]                      | ur |
+|    picture\_structure                                      | ur |
+|    sar\_num                                                | ur |
+|    sar\_den                                                | ur |
+|    if( version \> 3 ) {                                    |    |
+|        reset\_contexts                                     | br |
+|        slice\_coding\_mode                                 | ur |
+|    }                                                       |    |
+| }                                                          |    |
 
 **slice_x** indicates the x position on the slice raster formed by num_h_slices.
 Inferred to be 0 if not present.
@@ -590,12 +590,12 @@ Inferred to be 0 if not present.
 Inferred to be 0 if not present.
 
 |value    |  picure structure used      |
-|---------|-----------------------------| 
-|0        |                     unknown | 
-|1        |             top field first | 
-|2        |          bottom field first | 
-|3        |                 progressive | 
-|Other    |     reserved for future use | 
+|---------|-----------------------------|
+|0        |                     unknown |
+|1        |             top field first |
+|2        |          bottom field first |
+|3        |                 progressive |
+|Other    |     reserved for future use |
 
 **sar_num** specifies the sample aspect ratio numerator.
 Inferred to be 0 if not present.
@@ -673,7 +673,7 @@ Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent 
 
 **micro_version** specifies the micro-version of the bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
-    
+
 Meaning of micro_version for version 3:
 
 |value  | micro\_version          |
@@ -683,7 +683,7 @@ Meaning of micro_version for version 3:
 |Other  | reserved for future use |
 
 \* were development versions which may be incompatible with the stable variants.
-    
+
 Meaning of micro_version for version 4 (note: at the time of writting of this specification, version 4 is not considered stable so the first stable version value is to be annonced in the future):
 
 |value   | micro_version           |
@@ -725,7 +725,7 @@ If state_transition_delta is not present in the bitstream, all range coder custo
 
 |value  | bits for each luma and chroma sample            |
 |-------|-------------------------------------------------|
-| 0     | reserved\*                                      | 
+| 0     | reserved\*                                      |
 | Other | the actual bits for each luma and chroma sample |
 
 \* Encoders MUST not store bits_per_raw_sample = 0
@@ -741,7 +741,7 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 |value  | color space used                 |
 |-------|----------------------------------|
 | 0     | transparency plane is not present|
-| 1     | transparency plane is present    | 
+| 1     | transparency plane is present    |
 
 **num_h_slices** indicates the number of horizontal elements of the slice raster.
 Inferred to be 1 if not present.
@@ -843,7 +843,7 @@ See <https://github.com/FFmpeg/FFV1/commits/master>
 
 # Bibliography
 
-## References 
+## References
 
 RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels <https://www.ietf.org/rfc/rfc2119.txt>
 
