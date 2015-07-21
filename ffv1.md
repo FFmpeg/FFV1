@@ -487,7 +487,7 @@ See [AVI](#references) for more information about chunks.
 The Configuration Record extends the sample description box (“moov”, “trak”, “mdia”, “minf”, “stbl”, “stsd”) with a “glbl” box which contains the ConfigurationRecord bitstream.\
 See [ISO14496_12](#references) for more information about boxes.
 
-**NumBytes* is defined as the size, in bytes, of the “glbl” box indicated in the box header minus the size of the box header.
+**NumBytes** is defined as the size, in bytes, of the “glbl” box indicated in the box header minus the size of the box header.
 
 ### In NUT File Format
 
