@@ -153,14 +153,14 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 For the purpose of the predictior and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
 
-| | | | | | | | |
-|-|-|-|-|-|-|-|-|
-|0|0| |0|0|0| |0|
-|0|0| |0|0|0| |0|
-| | | | | | | | |
-|0|0| |a|b|c| |c|
-|0|a| |d| |e| |e|
-|0|d| |f|g|h| |h|
+|   |   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|---|
+| 0 | 0 |   | 0 | 0 | 0 |   | 0 |
+| 0 | 0 |   | 0 | 0 | 0 |   | 0 |
+|   |   |   |   |   |   |   |   |
+| 0 | 0 |   | a | b | c |   | c |
+| 0 | a |   | d |   | e |   | e |
+| 0 | d |   | f | g | h |   | h |
 
 ## Median predictor
 
@@ -172,11 +172,11 @@ Note, this is also used in [JPEG-LS and HuffYuv](#references).
 
 ## Context
 
-|  |  |  |  |
-|--|--|--|--|
-|  |  |T |  |
-|  |tl|t |tr|
-|L |l |X |  |
+|   |   |   |   |
+|---|---|---|---|
+|   |   | T |   |
+|   |tl | t |tr |
+| L | l | X |   |
 
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
 
