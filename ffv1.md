@@ -465,33 +465,33 @@ ConfigurationRecord( NumBytes ) {
     configuration_record_crc_parity                 // u(32)
 ````
 
-**reserved_for_future_use** has semantics that are reserved for future use.\
-    Encoders conforming to this version of this specification SHALL NOT write this value.\
-    Decoders conforming to this version of this specification SHALL ignore its value.
+**reserved_for_future_use** has semantics that are reserved for future use.
+Encoders conforming to this version of this specification SHALL NOT write this value.
+Decoders conforming to this version of this specification SHALL ignore its value.
 
-**configuration_record_crc_parity** 32 bits that are choosen so that the configuration record as a whole has a crc remainder of 0.\
-    This is equivalent to storing the crc remainder in the 32-bit parity.\
-    The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
+**configuration_record_crc_parity** 32 bits that are choosen so that the configuration record as a whole has a crc remainder of 0.
+This is equivalent to storing the crc remainder in the 32-bit parity.
+The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
 
 This configuration record can be placed in any file format supporting configuration records, fitting as much as possible with how the file format uses to store configuration records. The configuration record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
 
 ### In AVI File Format
 
-The Configuration Record extends the stream format chunk (\`\`AVI \`\`, “hdlr”, “strl”, “strf”) with the ConfigurationRecord bistream.\
+The Configuration Record extends the stream format chunk (\`\`AVI \`\`, “hdlr”, “strl”, “strf”) with the ConfigurationRecord bistream.
 See [AVI](#references) for more information about chunks.
 
 **NumBytes** is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
 ### In ISO/IEC 14496-12 (MP4 File Format)
 
-The Configuration Record extends the sample description box (“moov”, “trak”, “mdia”, “minf”, “stbl”, “stsd”) with a “glbl” box which contains the ConfigurationRecord bitstream.\
+The Configuration Record extends the sample description box (“moov”, “trak”, “mdia”, “minf”, “stbl”, “stsd”) with a “glbl” box which contains the ConfigurationRecord bitstream.
 See [ISO14496_12](#references) for more information about boxes.
 
 **NumBytes** is defined as the size, in bytes, of the “glbl” box indicated in the box header minus the size of the box header.
 
 ### In NUT File Format
 
-The codec_specific_data element (in “stream_header” packet) contains the ConfigurationRecord bitstream.\
+The codec_specific_data element (in “stream_header” packet) contains the ConfigurationRecord bitstream.
 See [NUT](#references) for more information about elements.
 
 **NumBytes** is defined as the size, in bytes, of the codec_specific_data element as indicated in the “length” field of codec_specific_data
@@ -533,8 +533,8 @@ See [NUT](#references) for more information about elements.
 
 **primary_color_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
-**slice_size** indicates the size of the slice in bytes.\
-    Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
+**slice_size** indicates the size of the slice in bytes.
+Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
 
 **error_status** specifies the error status.
 
@@ -545,9 +545,9 @@ See [NUT](#references) for more information about elements.
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
 
-**slice_crc_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.\
-    This is equivalent to storing the crc remainder in the 32-bit parity.\
-    The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
+**slice_crc_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
+This is equivalent to storing the crc remainder in the 32-bit parity.
+The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
 
 ## Slice Header
 
@@ -569,25 +569,25 @@ See [NUT](#references) for more information about elements.
 |    }                                                       |    | 
 | }                                                          |    | 
 
-**slice_x** indicates the x position on the slice raster formed by num_h_slices.\
-    Inferred to be 0 if not present.
+**slice_x** indicates the x position on the slice raster formed by num_h_slices.
+Inferred to be 0 if not present.
 
-**slice_y** indicates the y position on the slice raster formed by num_v_slices.\
-    Inferred to be 0 if not present.
+**slice_y** indicates the y position on the slice raster formed by num_v_slices.
+Inferred to be 0 if not present.
 
-**slice_width** indicates the width on the slice raster.\
-    Inferred to be 1 if not present.
+**slice_width** indicates the width on the slice raster.
+Inferred to be 1 if not present.
 
-**slice_height** indicates the height on the slice raster.\
-    Inferred to be 1 if not present.
+**slice_height** indicates the height on the slice raster.
+Inferred to be 1 if not present.
 
 **quant_table_index_count** is defined as 1 + ( ( chroma_planes || version \< 4 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
-**quant_table_index** indicates the index to select the quantization table set and the initial states for the slice.\
-    Inferred to be 0 if not present.
+**quant_table_index** indicates the index to select the quantization table set and the initial states for the slice.
+Inferred to be 0 if not present.
 
-**picture_structure** specifies the picture structure.\
-    Inferred to be 0 if not present.
+**picture_structure** specifies the picture structure.
+Inferred to be 0 if not present.
 
 |value    |  picure structure used      |
 |---------|-----------------------------| 
@@ -597,19 +597,19 @@ See [NUT](#references) for more information about elements.
 |3        |                 progressive | 
 |Other    |     reserved for future use | 
 
-**sar_num** specifies the sample aspect ratio numerator.\
-    Inferred to be 0 if not present.\
-    MUST be 0 if sample aspect ratio is unknown.
+**sar_num** specifies the sample aspect ratio numerator.
+Inferred to be 0 if not present.
+MUST be 0 if sample aspect ratio is unknown.
 
-**sar_den** specifies the sample aspect ratio numerator.\
-    Inferred to be 0 if not present.\
-    MUST be 0 if sample aspect ratio is unknown.
+**sar_den** specifies the sample aspect ratio numerator.
+Inferred to be 0 if not present.
+MUST be 0 if sample aspect ratio is unknown.
 
-**reset_contexts** indicates if slice contexts must be reset.\
-    Inferred to be 0 if not present.
+**reset_contexts** indicates if slice contexts must be reset.
+Inferred to be 0 if not present.
 
-**slice_coding_mode** indicates the slice coding mode.\
-    Inferred to be 0 if not present.
+**slice_coding_mode** indicates the slice coding mode.
+Inferred to be 0 if not present.
 
 |value  | slice coding mode            |
 |-------|------------------------------|
@@ -656,10 +656,10 @@ See [NUT](#references) for more information about elements.
 |   }                                                        |     |
 |}                                                           |     |
 
-**version** specifies the version of the bitstream.\
-    Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.\
-    Decoders SHOULD reject a file with version < 2 && ConfigurationRecordIsPresent == 1.\
-    Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent == 0.
+**version** specifies the version of the bitstream.
+Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
+Decoders SHOULD reject a file with version < 2 && ConfigurationRecordIsPresent == 1.
+Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
 |:-------|:------------------------|
@@ -671,7 +671,7 @@ See [NUT](#references) for more information about elements.
 
 \* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
 
-**micro_version** specifies the micro-version of the bitstream.\
+**micro_version** specifies the micro-version of the bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
     
 Meaning of micro_version for version 3:
@@ -703,7 +703,7 @@ Meaning of micro_version for version 4 (note: at the time of writting of this sp
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
-**state_transition_delta** specifies the range coder custom state transition table.\
+**state_transition_delta** specifies the range coder custom state transition table.
 If state_transition_delta is not present in the bitstream, all range coder custom state transition table elements are assumed to be 0.
 
 **colorspace_type** specifies the color space.
@@ -728,7 +728,7 @@ If state_transition_delta is not present in the bitstream, all range coder custo
 | 0     | reserved\*                                      | 
 | Other | the actual bits for each luma and chroma sample |
 
-\* Encoders MUST not store bits_per_raw_sample = 0\
+\* Encoders MUST not store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 **h_chroma_subsample** indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
@@ -743,26 +743,26 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 | 0     | transparency plane is not present|
 | 1     | transparency plane is present    | 
 
-**num_h_slices** indicates the number of horizontal elements of the slice raster.\
-    Inferred to be 1 if not present.
+**num_h_slices** indicates the number of horizontal elements of the slice raster.
+Inferred to be 1 if not present.
 
-**num_v_slices** indicates the number of vertical elements of the slice raster.\
-    Inferred to be 1 if not present.
+**num_v_slices** indicates the number of vertical elements of the slice raster.
+Inferred to be 1 if not present.
 
-**quant_table_count** indicates the number of quantization table sets.\
-    Inferred to be 1 if not present.
+**quant_table_count** indicates the number of quantization table sets.
+Inferred to be 1 if not present.
 
-**states_coded** indicates if the respective quantization table set has the initial states coded.\
-    Inferred to be 0 if not present.
+**states_coded** indicates if the respective quantization table set has the initial states coded.
+Inferred to be 0 if not present.
 
 | value | initial states                                               |
 |-------|--------------------------------------------------------------|
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
-**initial_state_delta** [ i ][ j ][ k ] indicates the initial range coder state, it is encoded using k as context index and\
-    pred = j ? initial\_states[ i ][j - 1][ k ] : 128\
-    initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+**initial_state_delta** [ i ][ j ][ k ] indicates the initial range coder state, it is encoded using k as context index and
+pred = j ? initial\_states[ i ][j - 1][ k ] : 128
+initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
 
 **slice\_count** indicates the number of slices in the current frame, slice\_count is 1 if it is not explicitly coded.
 
