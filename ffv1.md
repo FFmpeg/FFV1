@@ -143,6 +143,8 @@ __a...b__ means any value starting from a to b, inclusive.
 
 **remaining\_bits\_in\_bitstream( )** means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
+\pagebreak
+
 # General Description
 
 Each frame is split in 1 to 4 planes (Y, Cb, Cr, Alpha). In the case of the normal YCbCr colorspace the Y plane is coded first followed by the Cb and Cr planes, if an Alpha/transparency plane exists, it is coded last. In the case of the JPEG2000-RCT colorspace the lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding; the interleaved coding order is also Y, Cb, Cr, Alpha.
