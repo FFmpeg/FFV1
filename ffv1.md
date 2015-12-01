@@ -53,6 +53,9 @@ RGB    A reference to the method of storing the value of a sample by using three
 YCbCr  A reference to the method of storing the value of a sample by using three numeric
        values that represent the luminance of the sample (Y) and the chrominance of the
        sample (Cb and Cr).
+
+TBA    To Be Announced. Used in reference to the development of future iterations of the
+       FFV1 specification.
        &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
 
