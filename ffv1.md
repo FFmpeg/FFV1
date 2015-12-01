@@ -47,6 +47,13 @@ RCT   Reversible Color Transform, a near linear, exactly reversible integer tran
 
       &nbsp; &nbsp;
 VLC   Variable Length Code.
+
+RGB    A reference to the method of storing the value of a sample by using three numeric
+       values that represent Red, Green, and Blue.
+
+YCbCr  A reference to the method of storing the value of a sample by using three numeric
+       values that represent the luminance of the sample (Y) and the chrominance of the
+       sample (Cb and Cr).
 -----------------------------------------------------------------------------------------
 
 # Conventions
