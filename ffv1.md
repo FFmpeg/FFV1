@@ -36,17 +36,16 @@ For reference, below is an excerpt of RFC 2119:
 ## Definitions
 
 ------ -----------------------------------------------------------------------------------
-ESC   An ESCape symbol to indicate that the symbol to be stored is too large for normal
-      storage and that an alternate storage method.
+ESC    An ESCape symbol to indicate that the symbol to be stored is too large for normal
+       storage and that an alternate storage method.
 
-MSB   Most Significant Bit, the bit that can cause the largest change in magnitude of
-      the symbol.
+MSB    Most Significant Bit, the bit that can cause the largest change in magnitude of
+       the symbol.
 
-RCT   Reversible Color Transform, a near linear, exactly reversible integer transform
-      that converts between RGB and YCbCr representations of a sample.
+RCT    Reversible Color Transform, a near linear, exactly reversible integer transform
+       that converts between RGB and YCbCr representations of a sample.
 
-      &nbsp; &nbsp;
-VLC   Variable Length Code.
+VLC    Variable Length Code.
 
 RGB    A reference to the method of storing the value of a sample by using three numeric
        values that represent Red, Green, and Blue.
@@ -54,6 +53,7 @@ RGB    A reference to the method of storing the value of a sample by using three
 YCbCr  A reference to the method of storing the value of a sample by using three numeric
        values that represent the luminance of the sample (Y) and the chrominance of the
        sample (Cb and Cr).
+       &nbsp; &nbsp;
 -----------------------------------------------------------------------------------------
 
 # Conventions
