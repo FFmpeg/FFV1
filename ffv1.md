@@ -448,7 +448,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 # Bitstream
 
-|      |                                                        |
+|Symbol| Defintion                                              |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
 | sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
