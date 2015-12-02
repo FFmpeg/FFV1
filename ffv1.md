@@ -3,7 +3,7 @@
 
 # Introduction
 
-The FFV1 video codec is a simple and efficient lossless intra-frame only codec.
+The FFV1 video codec is a simple and efficient lossless intra-frame codec.
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 
@@ -147,9 +147,9 @@ __a...b__ means any value starting from a to b, inclusive.
 
 # General Description
 
-Each frame is split in 1 to 4 planes (Y, Cb, Cr, Alpha). In the case of the normal YCbCr colorspace the Y plane is coded first followed by the Cb and Cr planes, if an Alpha/transparency plane exists, it is coded last. In the case of the JPEG2000-RCT colorspace the lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding; the interleaved coding order is also Y, Cb, Cr, Alpha.
+Each frame is composed of 1 to 4 of the following colorspace planes: Y, Cb, Cr, Alpha. In the case of YCbCr colorspace, the Y plane is coded first, followed by the Cb plane, then the Cr plane, and if it exists the Alpha (transparency) plane is coded last. In the case of JPEG2000-RCT(###JPEG2000-RCT) colorspace, the lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding; the interleaved coding order is also Y, Cb, Cr, Alpha.
 
-Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored see [Coding of the Sample Difference](#coding-of-the-sample-difference).
+Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored. See [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
 ## Border
 
@@ -248,7 +248,7 @@ $j_{0}=2$
 
 #### Range non binary values
 
-To encode scalar integers it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
+To encode scalar integers it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible; however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
 void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
@@ -671,7 +671,7 @@ Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent 
 |3       |  FFV1 version 3         |
 |Other   |  reserved for future use|
 
-\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
+\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe version 2 to keep the text simpler.
 
 **micro_version** specifies the micro-version of the bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
