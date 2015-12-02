@@ -72,7 +72,7 @@ __a & b__       means bit-wise "and" of a and b.
 
 __a | b__       means bit-wise "or" of a and b.
 
-__a >> b__      means arithmetic righ shift of two’s complement integer representation of a by b binary digits.
+__a >> b__      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
 
 __a << b__      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 --------------- ----------------------------------------------------------------
@@ -454,7 +454,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with version >= 2, a configuration record is stored in the the underlying container, at the track header level.
+In the case of a bitstream with version >= 2, a configuration record is stored in the underlying container, at the track header level.
 It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
