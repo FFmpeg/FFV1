@@ -104,17 +104,17 @@ __a -= b__      is equivalent to a = a - b.
 ## Comparison operators
 
 --------------- ----------------------------------------------------------------
-__a > b__       means a greater than b.
+__a > b__       means a is greater than b.
 
-__a >= b__      means a greater than or equal to b.
+__a >= b__      means a is greater than or equal to b.
 
-__a < b__       means a less than b.
+__a < b__       means a is less than b.
 
-__a <= b__      means a less than or equal b.
+__a <= b__      means a is less than or equal b.
 
-__a == b__      means a equal to b.
+__a == b__      means a is equal to b.
 
-__a != b__      means a not equalto b.
+__a != b__      means a is not equalto b.
 
 __a && b__      means boolean logical "and" of a and b.
 
@@ -122,7 +122,7 @@ __a || b__      means boolean logical "or" of a and b.
 
 __!a__          means boolean logical "not".
 
-__a ? b : c__   means b if a is true otherwise c.
+__a ? b : c__   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
 
 ## Order of operation precedence
