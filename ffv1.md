@@ -493,10 +493,10 @@ See [ISO14496_12](#references) for more information about boxes.
 
 ### In NUT File Format
 
-The codec_specific_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream.
+The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream.
 See [NUT](#references) for more information about elements.
 
-**NumBytes** is defined as the size, in bytes, of the codec_specific_data element as indicated in the "length" field of codec_specific_data
+**NumBytes** is defined as the size, in bytes, of the codec\_specific\_data element as indicated in the "length" field of codec\_specific\_data
 
 ## Frame
 
@@ -533,7 +533,7 @@ See [NUT](#references) for more information about elements.
 |    }                                                       |       |
 |}                                                           |       |
 
-**primary_color_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+**primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
 **slice_size** indicates the size of the slice in bytes.
 Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
@@ -547,7 +547,7 @@ Note: this allows finding the start of slices before previous slices have been f
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
 
-**slice_crc_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
+**slice\_crc\_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
 The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
 
@@ -583,9 +583,9 @@ Inferred to be 1 if not present.
 **slice_height** indicates the height on the slice raster.
 Inferred to be 1 if not present.
 
-**quant_table_index_count** is defined as 1 + ( ( chroma_planes || version \< 4 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+**quant\_table\_index\_count** is defined as 1 + ( ( chroma_planes || version \< 4 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
-**quant_table_index** indicates the index to select the quantization table set and the initial states for the slice.
+**quant\_table\_index** indicates the index to select the quantization table set and the initial states for the slice.
 Inferred to be 0 if not present.
 
 **picture_structure** specifies the picture structure.
@@ -610,7 +610,7 @@ MUST be 0 if sample aspect ratio is unknown.
 **reset_contexts** indicates if slice contexts must be reset.
 Inferred to be 0 if not present.
 
-**slice_coding_mode** indicates the slice coding mode.
+**slice\_coding\_mode** indicates the slice coding mode.
 Inferred to be 0 if not present.
 
 |value  | slice coding mode            |
@@ -723,7 +723,7 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 |0      |   chroma planes are not present |
 |1      |   chroma planes are present     |
 
-**bits_per_raw_sample** indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
+**bits\_per\_raw\_sample** indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
 
 |value  | bits for each luma and chroma sample            |
 |-------|-------------------------------------------------|
@@ -733,9 +733,9 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 \* Encoders MUST not store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
-**h_chroma_subsample** indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
+**h\_chroma\_subsample** indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
 
-**v_chroma_subsample** indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$)
+**v\_chroma\_subsample** indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$)
 
 **alpha_plane**
 :   indicates if a transparency plane is present.
@@ -745,13 +745,13 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 | 0     | transparency plane is not present|
 | 1     | transparency plane is present    |
 
-**num_h_slices** indicates the number of horizontal elements of the slice raster.
+**num\_h\_slices** indicates the number of horizontal elements of the slice raster.
 Inferred to be 1 if not present.
 
-**num_v_slices** indicates the number of vertical elements of the slice raster.
+**num\_v\_slices** indicates the number of vertical elements of the slice raster.
 Inferred to be 1 if not present.
 
-**quant_table_count** indicates the number of quantization table sets.
+**quant\_table\_count** indicates the number of quantization table sets.
 Inferred to be 1 if not present.
 
 **states_coded** indicates if the respective quantization table set has the initial states coded.
@@ -762,7 +762,7 @@ Inferred to be 0 if not present.
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
-**initial_state_delta** [ i ][ j ][ k ] indicates the initial range coder state, it is encoded using k as context index and
+**initial\_state\_delta** [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and
 pred = j ? initial\_states[ i ][j - 1][ k ] : 128
 initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
 
@@ -806,7 +806,7 @@ QuantizationTable( i ) {                          // type
 ```
 
 
-MAX_CONTEXT_INPUTS is 5.
+MAX\_CONTEXT\_INPUTS is 5.
 
 |                                                                           |      |
 |---------------------------------------------------------------------------|------|
