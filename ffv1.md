@@ -218,11 +218,11 @@ $coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1
 
 ### Range coding mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264](#references) but due to the uncertain patent/royality situation, as well as its slightly worse performance, CABAC was replaced by a range coder based on an algorithm defined by *G. Nigel N. Martin* in 1979 [RangeCoder](#references).
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264](#references) but due to the uncertain patent/royality situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel N. Martin* in 1979 [RangeCoder](#references).
 
 #### Range binary values
 
-To encode binary digits efficiently a range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
+To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
 
 $r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$
 
@@ -273,7 +273,7 @@ void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
 
 #### Initial values for the context model
 
-At keyframes all range coder state variables are set to their initial state.
+At keyframes all Range coder state variables are set to their initial state.
 
 #### State transition table
 
@@ -705,8 +705,8 @@ Meaning of micro_version for version 4 (note: at the time of writting of this sp
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
-**state_transition_delta** specifies the range coder custom state transition table.
-If state_transition_delta is not present in the bitstream, all range coder custom state transition table elements are assumed to be 0.
+**state_transition_delta** specifies the Range coder custom state transition table.
+If state_transition_delta is not present in the bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
 **colorspace_type** specifies the color space.
 
