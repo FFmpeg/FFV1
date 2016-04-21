@@ -7,7 +7,7 @@ $(info PDF and HTML rendering has been tested with pandoc version 1.13.2.1, some
 all: ffv1.html ffv1.pdf
 	
 ffv1.html: ffv1.md
-	pandoc --toc --mathml -s --number-sections  -c "http://elyxer.nongnu.org/lyx.css" -o "$@" "$<"
+	pandoc --toc --mathml -s --number-sections  -c "style.css" -o "$@" "$<"
 
 ffv1.pdf:  ffv1.md
 	pandoc --toc -s --number-sections --latex-engine=xelatex -V geometry:margin=1in -o "$@" "$<"
