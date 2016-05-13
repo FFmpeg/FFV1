@@ -458,6 +458,12 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 The same context which is initialized to 128 is used for all fields in the header.
 
+The following MUST be provided by external means during initialization of the decoder:
+
+**frame\_width** is defined as frame width in pixels.
+
+**frame\_height** is defined as frame height in pixels.
+
 Default values at the decoder initialization phase:
 
 **ConfigurationRecordIsPresent** is set to 0.
@@ -843,7 +849,8 @@ MAX\_CONTEXT\_INPUTS is 5.
 
 ### Restrictions
 
-In version 2 and later the maximum slice size in pixels is $\frac{width\centerdot height}{4}$, unless the frame is smaller or equal 352x288 this is to ensure that fast multithreaded decoding is possible.
+To ensure that fast multithreaded decoding is possible, starting version 2 and if frame\_width * frame\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
+Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 # Changelog
 
