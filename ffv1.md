@@ -593,10 +593,10 @@ Inferred to be 0 if not present.
 **slice_y** indicates the y position on the slice raster formed by num_v_slices.
 Inferred to be 0 if not present.
 
-**slice_width** indicates the width on the slice raster.
+**slice_width** indicates the width on the slice raster formed by num_h_slices.
 Inferred to be 1 if not present.
 
-**slice_height** indicates the height on the slice raster.
+**slice_height** indicates the height on the slice raster formed by num_v_slices.
 Inferred to be 1 if not present.
 
 **quant\_table\_index\_count** is defined as 1 + ( ( chroma_planes || version \< 4 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
