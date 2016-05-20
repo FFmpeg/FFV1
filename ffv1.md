@@ -852,6 +852,10 @@ MAX\_CONTEXT\_INPUTS is 5.
 To ensure that fast multithreaded decoding is possible, starting version 2 and if frame\_width * frame\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
+For each frame, each position in the slice raster MUST be filled by one and only one slice of the frame (no missing slice position, no slice overlapping).
+
+For each Frame with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous frame, except if reset\_contexts is 1.
+
 # Changelog
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
