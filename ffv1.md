@@ -856,6 +856,32 @@ For each frame, each position in the slice raster MUST be filled by one and only
 
 For each Frame with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous frame, except if reset\_contexts is 1.
 
+# Appendixes
+
+## Decoder implementation suggestions
+
+### Multi-threading support and independence of slices
+
+The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of slice\_size fields. slice\_size fields pre-analysis allows multi-threading as well as independence of slice content (a bitstream error in a slice content has no impact on the decoding of the other slices).
+
+After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherant...) or if there is no possibility of seek into the stream.
+
+Architecture overwiew of slices in a frame:
+-
+|                                                               |
+|:--------------------------------------------------------------|
+| first slice content                                           |
+| first slice slice\_size + error\_status + slice\_crc\_parity  |
+|---------------------------------------------------------------|
+| second slice content                                          |
+| second slice slice\_size + error\_status + slice\_crc\_parity |
+|---------------------------------------------------------------|
+| ...                                                           |
+|---------------------------------------------------------------|
+| last slice content                                            |
+| last slice slice\_size + error\_status + slice\_crc\_parity   |
+
+
 # Changelog
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
