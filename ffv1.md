@@ -535,45 +535,16 @@ See [NUT](#references) for more information about elements.
 |Slice( i ) {                                                | type  |
 |    if( version \>= 3 )                                     |       |
 |        SliceHeader( i )                                    |       |
-|    if( colorspace\_type == 0) {                            |       |
-|        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
-|            Plane( p )                                      |       |
-|    } else if( colorspace\_type == 1 ) {                    |       |
-|        for( y = 0; y \< height; y++ )                      |       |
-|            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
-|                Line( p, y )                                |       |
-|    }                                                       |       |
+|    SliceContent( )                                         |       |
 |    if ( coder\_type == 0 )                                 |       |
 |        while ( !byte\_aligned() )                          |       |
 |            padding                                         |  u(1) |
 |    if( version \>= 3 )                                     |       |
-|        slice\_size                                         | u(24) |
-|    if( ec ) {                                              |       |
-|        error\_status                                       |  u(8) |
-|        slice\_crc\_parity                                  | u(32) |
-|    }                                                       |       |
+|        SliceFooter( )                                      |       |
 |}                                                           |       |
-
-**primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
 **padding** specifies a bit without any significance and used only for byte alignment.
 MUST be 0.
-
-**slice_size** indicates the size of the slice in bytes.
-Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
-
-**error_status** specifies the error status.
-
-| value |     error status                     |
-|-------|--------------------------------------|
-| 0     | no error                             |
-| 1     | slice contains a correctable error   |
-| 2     | slice contains a uncorrectable error |
-| Other | reserved for future use              |
-
-**slice\_crc\_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
-This is equivalent to storing the crc remainder in the 32-bit parity.
-The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
 
 ## Slice Header
 
@@ -642,6 +613,53 @@ Inferred to be 0 if not present.
 | 0     | normal Range Coding or VLC   |
 | 1     | raw PCM                      |
 | Other | reserved for future use      |
+
+## Slice Content
+
+|                                                                    |
+|------------------------------------------------------------|:------|
+|SliceContent( ) {                                           | type  |
+|    if( colorspace\_type == 0) {                            |       |
+|        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
+|            Plane( p )                                      |       |
+|    } else if( colorspace\_type == 1 ) {                    |       |
+|        for( y = 0; y \< height; y++ )                      |       |
+|            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
+|                Line( p, y )                                |       |
+|    }                                                       |       |
+|}                                                           |       |
+
+**primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+
+## Slice Footer
+
+Note: slice footer is always byte aligned.
+
+|                                                                    |
+|------------------------------------------------------------|:------|
+|SliceFooter( ) {                                            | type  |
+|    slice\_size                                             | u(24) |
+|    if( ec ) {                                              |       |
+|        error\_status                                       |  u(8) |
+|        slice\_crc\_parity                                  | u(32) |
+|    }                                                       |       |
+|}                                                           |       |
+
+**slice_size** indicates the size of the slice in bytes.
+Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
+
+**error_status** specifies the error status.
+
+| value |     error status                     |
+|-------|--------------------------------------|
+| 0     | no error                             |
+| 1     | slice contains a correctable error   |
+| 2     | slice contains a uncorrectable error |
+| Other | reserved for future use              |
+
+**slice\_crc\_parity** 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
+This is equivalent to storing the crc remainder in the 32-bit parity.
+The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
 
 ## Parameters
 
@@ -870,24 +888,27 @@ For each Frame with keyframe value of 0, each slice MUST have the same value of 
 
 ### Multi-threading support and independence of slices
 
-The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of slice\_size fields. slice\_size fields pre-analysis allows multi-threading as well as independence of slice content (a bitstream error in a slice content has no impact on the decoding of the other slices).
+The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
 After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherant...) or if there is no possibility of seek into the stream.
 
 Architecture overwiew of slices in a frame:
--
+
 |                                                               |
 |:--------------------------------------------------------------|
+| first slice header                                            |
 | first slice content                                           |
-| first slice slice\_size + error\_status + slice\_crc\_parity  |
+| first slice footer                                            |
 |---------------------------------------------------------------|
+| second slice header                                           |
 | second slice content                                          |
-| second slice slice\_size + error\_status + slice\_crc\_parity |
+| second slice footer                                           |
 |---------------------------------------------------------------|
 | ...                                                           |
 |---------------------------------------------------------------|
+| last slice header                                             |
 | last slice content                                            |
-| last slice slice\_size + error\_status + slice\_crc\_parity   |
+| last slice footer                                             |
 
 
 # Changelog
