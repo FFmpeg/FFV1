@@ -153,6 +153,8 @@ __a...b__ means any value starting from a to b, inclusive.
 
 **remaining\_bits\_in\_bitstream( )** means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
+**byte\_aligned( )** means remaining\_bits\_in\_bitstream( ) % 8 is 0.
+
 \pagebreak
 
 # General Description
@@ -541,6 +543,9 @@ See [NUT](#references) for more information about elements.
 |            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
 |                Line( p, y )                                |       |
 |    }                                                       |       |
+|    if ( coder\_type == 0 )                                 |       |
+|        while ( !byte\_aligned() )                          |       |
+|            padding                                         |  u(1) |
 |    if( i \|\| version \> 2 )                               |       |
 |        slice\_size                                         | u(24) |
 |    if( ec ) {                                              |       |
@@ -550,6 +555,9 @@ See [NUT](#references) for more information about elements.
 |}                                                           |       |
 
 **primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+
+**padding** specifies a bit without any significance and used only for byte alignment.
+MUST be 0.
 
 **slice_size** indicates the size of the slice in bytes.
 Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
