@@ -472,7 +472,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with version >= 2, a configuration record is stored in the underlying container, at the track header level.
+In the case of a bitstream with version >= 3, a configuration record is stored in the underlying container, at the track header level.
 It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
@@ -533,7 +533,7 @@ See [NUT](#references) for more information about elements.
 |                                                                    |
 |------------------------------------------------------------|:------|
 |Slice( i ) {                                                | type  |
-|    if( version \> 2 )                                      |       |
+|    if( version \>= 3 )                                     |       |
 |        SliceHeader( i )                                    |       |
 |    if( colorspace\_type == 0) {                            |       |
 |        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
@@ -546,7 +546,7 @@ See [NUT](#references) for more information about elements.
 |    if ( coder\_type == 0 )                                 |       |
 |        while ( !byte\_aligned() )                          |       |
 |            padding                                         |  u(1) |
-|    if( i \|\| version \> 2 )                               |       |
+|    if( version \>= 3 )                                     |       |
 |        slice\_size                                         | u(24) |
 |    if( ec ) {                                              |       |
 |        error\_status                                       |  u(8) |
@@ -589,7 +589,7 @@ The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) wi
 |    picture\_structure                                      | ur |
 |    sar\_num                                                | ur |
 |    sar\_den                                                | ur |
-|    if( version \> 3 ) {                                    |    |
+|    if( version \>= 4 ) {                                   |    |
 |        reset\_contexts                                     | br |
 |        slice\_coding\_mode                                 | ur |
 |    }                                                       |    |
@@ -607,7 +607,7 @@ Inferred to be 1 if not present.
 **slice_height** indicates the height on the slice raster formed by num_v_slices.
 Inferred to be 1 if not present.
 
-**quant\_table\_index\_count** is defined as 1 + ( ( chroma_planes || version \< 4 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+**quant\_table\_index\_count** is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
 **quant\_table\_index** indicates the index to select the quantization table set and the initial states for the slice.
 Inferred to be 0 if not present.
@@ -649,27 +649,27 @@ Inferred to be 0 if not present.
 |------------------------------------------------------------|----:|
 | Parameters( ) {                                            | type|
 |   version                                                  | ur  |
-|   if( version \> 2 )                                       |     |
+|   if( version \>= 3 )                                      |     |
 |       micro\_version                                       | ur  |
 |   coder\_type                                              | ur  |
 |   if( coder\_type \> 1 )                                   |     |
 |       for( i = 1; i \< 256; i++ )                          |     |
 |           state\_transition\_delta[ i ]                    | sr  |
 |   colorspace\_type                                         | ur  |
-|   if( version \> 0 )                                       |     |
+|   if( version \>= 1 )                                      |     |
 |       bits\_per\_raw\_sample                               | ur  |
 |   chroma\_planes                                           | br  |
 |   log2( h\_chroma\_subsample )                             | ur  |
 |   log2( v\_chroma\_subsample )                             | ur  |
 |   alpha\_plane                                             | br  |
-|   if( version \> 1 ) {                                     |     |
+|   if( version \>= 3 ) {                                    |     |
 |       num\_h\_slices - 1                                   | ur  |
 |       num\_v\_slices - 1                                   | ur  |
 |       quant\_table\_count                                  | ur  |
 |   }                                                        |     |
 |   for( i = 0; i \< quant\_table\_count; i++ )              |     |
 |       QuantizationTable( i )                               |     |
-|   if( version \> 1 ) {                                     |     |
+|   if( version \>= 3 ) {                                    |     |
 |       for( i = 0; i \< quant\_table\_count; i++ ) {        |     |
 |           states\_coded                                    | br  |
 |           if( states\_coded )                              |     |
@@ -684,8 +684,8 @@ Inferred to be 0 if not present.
 
 **version** specifies the version of the bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
-Decoders SHOULD reject a file with version < 2 && ConfigurationRecordIsPresent == 1.
-Decoders SHOULD reject a file with version >= 2 && ConfigurationRecordIsPresent == 0.
+Decoders SHOULD reject a file with version =< 1 && ConfigurationRecordIsPresent == 1.
+Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
 |:-------|:------------------------|
@@ -857,7 +857,7 @@ MAX\_CONTEXT\_INPUTS is 5.
 
 ### Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting version 2 and if frame\_width * frame\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
+To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_width * frame\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each frame, each position in the slice raster MUST be filled by one and only one slice of the frame (no missing slice position, no slice overlapping).
