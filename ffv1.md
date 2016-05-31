@@ -518,23 +518,25 @@ See [NUT](#references) for more information about elements.
 
 ## Frame
 
+A frame consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
+
 |                                                        |
 |---------------------------------------------------|---:|
 |Frame( ) {                                         |type|
 |    keyframe                                       |  br|
 |    if( keyframe && !ConfigurationRecordIsPresent )|    |
 |         Parameters( )                             |    |
-|    for( i = 0; i \< slice\_count; i++ )           |    |
-|        Slice( i )                                 |    |
+|    while ( remaining\_bits\_in\_bitstream() )     |    |
+|        Slice( )                                   |    |
 |}                                                  |    |
 
 ## Slice
 
 |                                                                    |
 |------------------------------------------------------------|:------|
-|Slice( i ) {                                                | type  |
+|Slice( ) {                                                  | type  |
 |    if( version \>= 3 )                                     |       |
-|        SliceHeader( i )                                    |       |
+|        SliceHeader( )                                      |       |
 |    SliceContent( )                                         |       |
 |    if ( coder\_type == 0 )                                 |       |
 |        while ( !byte\_aligned() )                          |       |
@@ -550,13 +552,13 @@ MUST be 0.
 
 |                                                            |    |
 |------------------------------------------------------------|---:|
-| SliceHeader( i ) {                                         |type|
+| SliceHeader( ) {                                           |type|
 |    slice\_x                                                | ur |
 |    slice\_y                                                | ur |
 |    slice\_width - 1                                        | ur |
 |    slice\_height - 1                                       | ur |
-|    for( j = 0; j \< quant\_table\_index\_count; j++ )      |    |
-|        quant\_table\_index [ i ][ j ]                      | ur |
+|    for( i = 0; i \< quant\_table\_index\_count; i++ )      |    |
+|        quant\_table\_index [ i ]                           | ur |
 |    picture\_structure                                      | ur |
 |    sar\_num                                                | ur |
 |    sar\_den                                                | ur |
@@ -807,8 +809,6 @@ Inferred to be 0 if not present.
 **initial\_state\_delta** [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and
 pred = j ? initial\_states[ i ][j - 1][ k ] : 128
 initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
-
-**slice\_count** indicates the number of slices in the current frame, slice\_count is 1 if it is not explicitly coded.
 
 **ec** indicates the error detection/correction type.
 
