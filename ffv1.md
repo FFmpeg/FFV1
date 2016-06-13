@@ -74,9 +74,7 @@ __-a__          means negation of a.
 
 __a \* b__      means a multiplied by b.
 
-__a / b__       means a divided by b with truncation of the result toward zero.
-
-__a % b__       means remainder of a divided by b.
+__a / b__       means a divided by b.
 
 __a & b__       means bit-wise "and" of a and b.
 
@@ -125,6 +123,16 @@ __!a__          means boolean logical "not".
 __a ? b : c__   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
 
+## Mathematical functions
+
+---------------             ----------------------------------------------------------------
+__&lfloor;a&rfloor;__       the largest integer less than or equal to a  
+---------------             ----------------------------------------------------------------
+
+---------------             ----------------------------------------------------------------
+__&lceil;a&rceil;__         the smallest integer greater than or equal to a  
+---------------             ----------------------------------------------------------------
+
 ## Order of operation precedence
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
@@ -153,7 +161,7 @@ __a...b__ means any value starting from a to b, inclusive.
 
 **remaining\_bits\_in\_bitstream( )** means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
-**byte\_aligned( )** means remaining\_bits\_in\_bitstream( ) % 8 is 0.
+**byte\_aligned( )** means remaining\_bits\_in\_bitstream( ) is a multiple of 8.
 
 \pagebreak
 
@@ -462,9 +470,9 @@ The same context which is initialized to 128 is used for all fields in the heade
 
 The following MUST be provided by external means during initialization of the decoder:
 
-**frame\_width** is defined as frame width in pixels.
+**frame\_pixel\_width** is defined as frame width in pixels.
 
-**frame\_height** is defined as frame height in pixels.
+**frame\_pixel\_height** is defined as frame height in pixels.
 
 Default values at the decoder initialization phase:
 
@@ -618,18 +626,18 @@ Inferred to be 0 if not present.
 
 ## Slice Content
 
-|                                                                    |
-|------------------------------------------------------------|:------|
-|SliceContent( ) {                                           | type  |
-|    if( colorspace\_type == 0) {                            |       |
-|        for( p = 0; p \< primary\_color\_count; p++ ) {     |       |
-|            Plane( p )                                      |       |
-|    } else if( colorspace\_type == 1 ) {                    |       |
-|        for( y = 0; y \< height; y++ )                      |       |
-|            for( p = 0; p \< primary\_color\_count; p++ ) { |       |
-|                Line( p, y )                                |       |
-|    }                                                       |       |
-|}                                                           |       |
+|                                                                      |
+|--------------------------------------------------------------|:------|
+|SliceContent( ) {                                             | type  |
+|    if( colorspace\_type == 0) {                              |       |
+|        for( p = 0; p \< primary\_color\_count; p++ ) {       |       |
+|            Plane( p )                                        |       |
+|    } else if( colorspace\_type == 1 ) {                      |       |
+|        for( y = 0; y \< height; y++ )                        |       |
+|            for( p = 0; p \< primary\_color\_count; p++ ) {   |       |
+|                Line( p, y )                                  |       |
+|    }                                                         |       |
+|}                                                             |       |
 
 **primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
@@ -837,15 +845,15 @@ Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
 
 Stored values: 1, 3, 1
 
-```c
-QuantizationTable( i ) {                          // type
-    scale = 1
-    for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {
-        QuantizationTablePerContext( i, j, scale )
-        scale *= 2 * len_count[ i ][ j ] - 1
-    }
-    context_count[ i ] = ( scale + 1 ) / 2
-```
+|                                                                           |
+|---------------------------------------------------------------------------|
+| QuantizationTable( i ) {                                                  |
+|   scale = 1                                                               |
+|   for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {                             |
+|       QuantizationTablePerContext( i, j, scale )                          |
+|       scale \*= 2 \* len_count[ i ][ j ] - 1                              |
+|   }                                                                       |
+|   context_count[ i ] = ( scale + 1 ) / 2                                  |
 
 
 MAX\_CONTEXT\_INPUTS is 5.
@@ -875,7 +883,7 @@ MAX\_CONTEXT\_INPUTS is 5.
 
 ### Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_width * frame\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
+To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each frame, each position in the slice raster MUST be filled by one and only one slice of the frame (no missing slice position, no slice overlapping).
