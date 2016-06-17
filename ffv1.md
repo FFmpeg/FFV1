@@ -1,7 +1,3 @@
-% FFV1 Video Codec Specification
-% created by Michael Niedermayer <michaelni@gmx.at>
-% updated by Jerome Martinez <jerome@mediaarea.net>
-
 # Introduction
 
 The FFV1 video codec is a simple and efficient lossless intra-frame only codec.
