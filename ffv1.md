@@ -31,7 +31,7 @@ For reference, below is an excerpt of RFC 2119:
               the particular behavior is acceptable or even useful, but the full
               implications should be understood and the case carefully weighed before
               implementing any behavior described with this label.
-              &nbsp; &nbsp;
+
 -----------------------------------------------------------------------------------------
 
 ## Definitions
@@ -57,7 +57,7 @@ YCbCr  A reference to the method of storing the value of a sample by using three
 
 TBA    To Be Announced. Used in reference to the development of future iterations of the
        FFV1 specification.
-       &nbsp; &nbsp;
+
 -----------------------------------------------------------------------------------------
 
 # Conventions
