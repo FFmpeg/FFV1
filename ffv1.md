@@ -652,6 +652,30 @@ Its value is &lfloor;( slice\_y + slice\_height ) * slice\_pixel\_height / num\_
 **slice\_pixel\_y** is the slice vertical position in pixels.  
 Its value is &lfloor;slice_y * frame\_pixel\_height / num\_v\_slices&rfloor;
 
+## Line
+
+|                                                                      |
+|--------------------------------------------------------------|:------|
+|Line( p, y ) {                                                | type  |
+|    if( colorspace\_type == 0) {                              |       |
+|        for( x = 0; x \< plane\_pixel\_width[ p ]; x++ )      |       |
+|            Pixel( p, y, x )                                  |       |
+|    } else if( colorspace\_type == 1 ) {                      |       |
+|        for( x = 0; x \< slice\_pixel\_width; x++ )           |       |
+|            Pixel( p, y, x )                                  |       |
+|    }                                                         |       |
+|}                                                             |       |
+
+**plane\_pixel\_width[ p ]** is the width in pixels of plane p of the slice.  
+plane\_pixel\_width[ 0 ] and plane\_pixel\_width[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_width  
+if chroma\_planes is set to 1, plane\_pixel\_width[ 1 ] and plane\_pixel\_width[ 2 ] value is &lceil;slice\_pixel\_width / v\_chroma\_subsample&rceil;
+
+**slice\_pixel\_width** is the width in pixels of the slice.  
+Its value is &lfloor;( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices&rfloor; - slice\_pixel\_x  
+
+**slice\_pixel\_x** is the slice horizontal position in pixels.  
+Its value is &lfloor;slice_x * frame\_pixel\_width / num\_h\_slices&rfloor;
+
 ## Slice Footer
 
 Note: slice footer is always byte aligned.
