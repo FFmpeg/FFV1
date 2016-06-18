@@ -631,15 +631,26 @@ Inferred to be 0 if not present.
 |SliceContent( ) {                                             | type  |
 |    if( colorspace\_type == 0) {                              |       |
 |        for( p = 0; p \< primary\_color\_count; p++ ) {       |       |
-|            Plane( p )                                        |       |
+|            for( y = 0; y \< plane\_pixel\_height[ p ]; y++ ) |       |
+|                Line( p, y )                                  |       |
 |    } else if( colorspace\_type == 1 ) {                      |       |
-|        for( y = 0; y \< height; y++ )                        |       |
+|        for( y = 0; y \< slice\_pixel\_height; y++ )          |       |
 |            for( p = 0; p \< primary\_color\_count; p++ ) {   |       |
 |                Line( p, y )                                  |       |
 |    }                                                         |       |
 |}                                                             |       |
 
 **primary\_color\_count** is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+
+**plane\_pixel\_height[ p ]** is the height in pixels of plane p of the slice.  
+plane\_pixel\_height[ 0 ] and plane\_pixel\_height[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_height  
+if chroma\_planes is set to 1, plane\_pixel\_height[ 1 ] and plane\_pixel\_height[ 2 ] value is &lceil;slice\_pixel\_height / v\_chroma\_subsample&rceil;
+
+**slice\_pixel\_height** is the height in pixels of the slice.  
+Its value is &lfloor;( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices&rfloor; - slice\_pixel\_y  
+
+**slice\_pixel\_y** is the slice vertical position in pixels.  
+Its value is &lfloor;slice_y * frame\_pixel\_height / num\_v\_slices&rfloor;
 
 ## Slice Footer
 
