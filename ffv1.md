@@ -1,5 +1,6 @@
 % FFV1 Video Codec Specification
-% by Michael Niedermayer <michaelni@gmx.at>
+% created by Michael Niedermayer <michaelni@gmx.at>
+% updated by Jerome Martinez <jerome@mediaarea.net>
 
 # Introduction
 
