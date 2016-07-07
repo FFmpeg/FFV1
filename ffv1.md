@@ -6,29 +6,9 @@ The latest version of this document is available at <https://raw.github.com/FFmp
 
 This document assumes familiarity with mathematical and coding concepts such as Range coding and YCbCr colorspaces.
 
-# Terms and Definitions
+# Notation and Conventions
 
-## Terms
-
-The key words MUST, MUST NOT, SHOULD, and SHOULD NOT in this document are to be interpreted as described in [RFC 2119.](#references)
-
-For reference, below is an excerpt of RFC 2119:
-
-------------- ---------------------------------------------------------------------------
-"MUST"        means that the definition is an absolute requirement of the specification.
-
-"MUST NOT"    means that the definition is an absolute prohibition of the specification.
-
-"SHOULD"      means that there may exist valid reasons in particular circumstances to
-              ignore a particular item, but the full implications must be understood and
-              carefully weighed before choosing a different course.
-
-"SHOULD NOT"  means that there may exist valid reasons in particular circumstances when
-              the particular behavior is acceptable or even useful, but the full
-              implications should be understood and the case carefully weighed before
-              implementing any behavior described with this label.
-
------------------------------------------------------------------------------------------
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
 
 ## Definitions
 
@@ -56,11 +36,11 @@ TBA    To Be Announced. Used in reference to the development of future iteration
 
 -----------------------------------------------------------------------------------------
 
-# Conventions
+## Conventions
 
 Note: the operators and the order of precedence are the same as used in the C programming language [ISO/IEC 9899](#references).
 
-## Arithmetic operators
+### Arithmetic operators
 
 ------------- ----------------------------------------------------------------
 `a + b`       means a plus b.
@@ -82,7 +62,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 --------------- ----------------------------------------------------------------
 
-## Assignment operators
+### Assignment operators
 
 ------------- ----------------------------------------------------------------
 `a = b`       means a is assigned b.
@@ -96,7 +76,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a -= b`      is equivalent to a = a - b.
 --------------- ----------------------------------------------------------------
 
-## Comparison operators
+### Comparison operators
 
 ------------- ----------------------------------------------------------------
 `a > b`       means a is greater than b.
@@ -120,7 +100,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a ? b : c`   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
 
-## Mathematical functions
+### Mathematical functions
 
 ------------------- -----------------------------------------------
 $\lfloor a \rfloor$ the largest integer less than or equal to a
@@ -130,7 +110,7 @@ $\lfloor a \rfloor$ the largest integer less than or equal to a
 $\lceil a \rceil$   the smallest integer greater than or equal to a
 ------------------- -----------------------------------------------
 
-## Order of operation precedence
+### Order of operation precedence
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
 
@@ -150,11 +130,11 @@ a ? b : c
 a = b, a += b, a -= b
 ```
 
-## Range
+### Range
 
 `a...b` means any value starting from a to b, inclusive.
 
-## Bitstream functions
+### Bitstream functions
 
 `remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
@@ -814,7 +794,7 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 | 0     | reserved\*                                      |
 | Other | the actual bits for each luma and chroma sample |
 
-\* Encoders MUST not store bits_per_raw_sample = 0
+\* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 `h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
