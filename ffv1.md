@@ -122,13 +122,13 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 ## Mathematical functions
 
----------------             ----------------------------------------------------------------
-__&lfloor;a&rfloor;__       the largest integer less than or equal to a  
----------------             ----------------------------------------------------------------
+------------------- -----------------------------------------------
+$\lfloor a \rfloor$ the largest integer less than or equal to a
+------------------- -----------------------------------------------
 
----------------             ----------------------------------------------------------------
-__&lceil;a&rceil;__         the smallest integer greater than or equal to a  
----------------             ----------------------------------------------------------------
+------------------- -----------------------------------------------
+$\lceil a \rceil$   the smallest integer greater than or equal to a
+------------------- -----------------------------------------------
 
 ## Order of operation precedence
 
@@ -641,13 +641,13 @@ Inferred to be 0 if not present.
 
 `plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.  
 plane\_pixel\_height[ 0 ] and plane\_pixel\_height[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_height  
-if chroma\_planes is set to 1, plane\_pixel\_height[ 1 ] and plane\_pixel\_height[ 2 ] value is &lceil;slice\_pixel\_height / v\_chroma\_subsample&rceil;
+if chroma\_planes is set to 1, plane\_pixel\_height[ 1 ] and plane\_pixel\_height[ 2 ] value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$
 
 `slice_pixel_height` is the height in pixels of the slice.  
-Its value is &lfloor;( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices&rfloor; - slice\_pixel\_y  
+Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$
 
 `slice_pixel_y` is the slice vertical position in pixels.  
-Its value is &lfloor;slice_y * frame\_pixel\_height / num\_v\_slices&rfloor;
+Its value is $\lfloor slice_y * frame\_pixel\_height / num\_v\_slices \rfloor$
 
 ## Line
 
@@ -665,13 +665,13 @@ Its value is &lfloor;slice_y * frame\_pixel\_height / num\_v\_slices&rfloor;
 
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.  
 plane\_pixel\_width[ 0 ] and plane\_pixel\_width[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_width  
-if chroma\_planes is set to 1, plane\_pixel\_width[ 1 ] and plane\_pixel\_width[ 2 ] value is &lceil;slice\_pixel\_width / v\_chroma\_subsample&rceil;
+if chroma\_planes is set to 1, plane\_pixel\_width[ 1 ] and plane\_pixel\_width[ 2 ] value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$
 
 `slice_pixel_width` is the width in pixels of the slice.  
-Its value is &lfloor;( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices&rfloor; - slice\_pixel\_x  
+Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$
 
 `slice_pixel_x` is the slice horizontal position in pixels.  
-Its value is &lfloor;slice_x * frame\_pixel\_width / num\_h\_slices&rfloor;
+Its value is $\lfloor slice_x * frame\_pixel\_width / num\_h\_slices \rfloor$
 
 ## Slice Footer
 
