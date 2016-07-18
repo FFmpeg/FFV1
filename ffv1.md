@@ -49,7 +49,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `-a`          means negation of a.
 
-`a \* b`      means a multiplied by b.
+`a * b`       means a multiplied by b.
 
 `a / b`       means a divided by b.
 
