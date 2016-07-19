@@ -69,7 +69,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a++`         is equivalent to a = a + 1.
 
-`a–`          is equivalent to a = a - 1.
+`a--`          is equivalent to a = a - 1.
 
 `a += b`      is equivalent to a = a + b.
 
@@ -115,7 +115,7 @@ $\lceil a \rceil$   the smallest integer greater than or equal to a
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
 
 ```
-a++, a–
+a++, a--
 !a, -a
 a * b, a / b, a % b
 a + b, a - b
@@ -139,8 +139,6 @@ a = b, a += b, a -= b
 `remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
 
 `byte_aligned( )` means `remaining_bits_in_bitstream( )` is a multiple of 8.
-
-\pagebreak
 
 # General Description
 
