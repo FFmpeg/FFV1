@@ -968,7 +968,7 @@ JPEG-LS FCD 14495 <https://www.jpeg.org/public/fcd14495p.pdf>
 
 H.264 Draft <http://bs.hhi.de/~wiegand/JVT-G050.pdf>
 
-HuffYuv <http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html> [2016-07-30 dead link]
+HuffYuv <http://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html>
 
 FFmpeg <https://ffmpeg.org>
 
