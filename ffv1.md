@@ -167,6 +167,18 @@ left, top, diag are the left, top and left-top samples
 
 Note, this is also used in [JPEG-LS and HuffYuv](#references).
 
+Exception for the media predictor:
+if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
+
+median(left16s, top16s, left16s + top16s - diag16s)
+
+with:  
+- left16s = left >= 32768 ? ( left - 65536 ) : left  
+- top16s = top >= 32768 ? ( top - 65536 ) : top  
+- diag16s = diag >= 32768 ? ( diag - 65536 ) : diag  
+
+Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG 2000 RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG 2000 RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the bitstream.
+
 ## Context
 
 |   |   |   |   |
