@@ -478,7 +478,7 @@ ConfigurationRecord( NumBytes ) {
     while( remaining_bits_in_bitstream( ) > 32 )
         reserved_for_future_use                     // u(1)
     configuration_record_crc_parity                 // u(32)
-````
+```
 
 `reserved_for_future_use` has semantics that are reserved for future use.
 Encoders conforming to this version of this specification SHALL NOT write this value.
