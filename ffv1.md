@@ -8,7 +8,7 @@ This document assumes familiarity with mathematical and coding concepts such as 
 
 # Notation and Conventions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [@!RFC2119].
 
 ## Definitions
 
@@ -38,7 +38,7 @@ TBA    To Be Announced. Used in reference to the development of future iteration
 
 ## Conventions
 
-Note: the operators and the order of precedence are the same as used in the C programming language [ISO/IEC 9899](#references).
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
 ### Arithmetic operators
 
@@ -165,7 +165,7 @@ median(left, top, left + top - diag)
 
 left, top, diag are the left, top and left-top samples
 
-Note, this is also used in [JPEG-LS and HuffYuv](#references).
+Note, this is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 Exception for the media predictor:
 if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
@@ -215,7 +215,7 @@ $r=Cr+g$
 
 $b=Cb+g$
 
-[JPEG2000](#references)
+[@!ISO.15444-1.2016]
 
 ## Coding of the sample difference
 
@@ -225,7 +225,7 @@ $coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1
 
 ### Range coding mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264](#references) but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel N. Martin* in 1979 [RangeCoder](#references).
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2014] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel* and *N. Martin* in 1979 [@?range-coding].
 
 #### Range binary values
 
@@ -435,7 +435,7 @@ if (run_count == 0 && run_mode == 1) {                        |
 }                                                             |
 ```
 
-The log2\_run function is also used within [JPEGLS](#references).
+The log2\_run function is also used within [@ISO.14495-1.1999].
 
 #### Level coding
 
@@ -501,21 +501,19 @@ This configuration record can be placed in any file format supporting configurat
 ### In AVI File Format
 
 The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
-See [AVI](#references) for more information about chunks.
+See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
 ### In ISO/IEC 14496-12 (MP4 File Format)
 
-The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream.
-See [ISO14496_12](#references) for more information about boxes.
+The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
 ### In NUT File Format
 
-The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream.
-See [NUT](#references) for more information about elements.
+The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
 
 `NumBytes` is defined as the size, in bytes, of the codec\_specific\_data element as indicated in the "length" field of codec\_specific\_data
 
@@ -942,19 +940,19 @@ For each Frame with keyframe value of 0, each slice MUST have the same value of 
 
 # Security Considerations
 
-Like any other codec, (such as [OPUS](#references)), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
+Like any other codec, (such as [@RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [DOS](#references). It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
 
-The reference implementation [REFIMPL](#references) contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
+The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
-The reference implementation [REFIMPL](#references) was validated in the following conditions:
+The reference implementation [@REFIMPL] was validated in the following conditions:
 
 * Sending the decoder valid packets generated by the reference encoder and verifying that the decoder's output matches the encoders input.
 * Sending the decoder packets generated by the reference encoder and then subjected to random corruption.
 * Sending the decoder random packets that are not FFV1.
 
-In all of the conditions above, the decoder and encoder was run inside the Valgrind [VALGRIND](#references) memory debugger as well as clangs address sanitizer [ASAN](#references), which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
+In all of the conditions above, the decoder and encoder was run inside the [@VALGRIND] memory debugger as well as clangs address sanitizer [@Address-Sanitizer], which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
 
 
 # Appendixes
@@ -993,42 +991,6 @@ See <https://github.com/FFmpeg/FFV1/commits/master>
 # ToDo
 
 -   mean,k estimation for the Golomb Rice codes
-
-# Bibliography
-
-## References
-
-RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels <https://www.ietf.org/rfc/rfc2119.txt>
-
-ISO/IEC 9899 - Programming languages - C <http://www.open-std.org/JTC1/SC22/WG14/www/standards>
-
-JPEG-LS FCD 14495 <https://www.jpeg.org/public/fcd14495p.pdf>
-
-H.264 Draft <http://bs.hhi.de/~wiegand/JVT-G050.pdf>
-
-HuffYuv <http://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html>
-
-FFmpeg <https://ffmpeg.org>
-
-JPEG2000 <https://www.jpeg.org/jpeg2000/>
-
-Range encoding: an algorithm for removing redundancy from a digitised message. Presented by G. Nigel N. Martin at the Video & Data Recording Conference, IBM UK Scientific Center held in Southampton July 24-27 1979.
-
-AVI RIFF File Format <https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx>
-
-Information technology Coding of audio-visual objects Part 12: ISO base media file format <https://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=61988>
-
-NUT Open Container Format <https://www.ffmpeg.org/~michael/nut.txt>
-
-DOS Handley, M., Rescorla, E., and IAB, "Internet Denial-of-Service Considerations", RFC 4732, December 2006.
-
-VALGRIND "Valgrind website", <http://valgrind.org/>.
-
-ASAN Addresss Sanitizer, <http://clang.llvm.org/docs/AddressSanitizer.html>.
-
-REFIMPL, The reference FFV1 implementation / the FFV1 codec in FFmpeg, <https://ffmpeg.org/>.
-
-OPUS, Definition of the Opus Audio Codec, <https://www.ietf.org/rfc/rfc6716.txt>
 
 # Copyright
 
