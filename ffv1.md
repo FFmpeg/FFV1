@@ -383,7 +383,7 @@ This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the
 #### Suffix
 
 |              |                                                         |
-|:-------------|---------------------------------------------------------|
+|:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
 
@@ -598,7 +598,7 @@ Inferred to be 0 if not present.
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
-|---------|-----------------------------|
+|---------|:----------------------------|
 |0        |                     unknown |
 |1        |             top field first |
 |2        |          bottom field first |
@@ -620,7 +620,7 @@ Inferred to be 0 if not present.
 Inferred to be 0 if not present.
 
 |value  | slice coding mode            |
-|-------|------------------------------|
+|-------|:-----------------------------|
 | 0     | normal Range Coding or VLC   |
 | 1     | raw PCM                      |
 | Other | reserved for future use      |
@@ -702,8 +702,8 @@ Note: this allows finding the start of slices before previous slices have been f
 
 `error_status` specifies the error status.
 
-| value |     error status                     |
-|-------|--------------------------------------|
+| value | error status                         |
+|-------|:-------------------------------------|
 | 0     | no error                             |
 | 1     | slice contains a correctable error   |
 | 2     | slice contains a uncorrectable error |
@@ -775,7 +775,7 @@ After a version is considered stable (a micro-version value is assigned to be th
 Meaning of micro_version for version 3:
 
 |value  | micro\_version          |
-|-------|-------------------------|
+|-------|:------------------------|
 |0...3  | reserved\*              |
 |4      | first stable variant    |
 |Other  | reserved for future use |
@@ -785,7 +785,7 @@ Meaning of micro_version for version 3:
 Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):
 
 |value   | micro_version           |
-|--------|-------------------------|
+|--------|:------------------------|
 |0...TBA | reserved\*              |
 |TBA     | first stable variant    |
 |Other   | reserved for future use |
@@ -795,7 +795,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 `coder_type` specifies the coder used
 
 |value  | coder used                                      |
-|-------|-------------------------------------------------|
+|-------|:------------------------------------------------|
 | 0     | Golomb Rice                                     |
 | 1     | Range Coder with default state transition table |
 | 2     | Range Coder with custom state transition table  |
@@ -807,7 +807,7 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 `colorspace_type` specifies the color space.
 
 |value  | color space used                |
-|-------|---------------------------------|
+|-------|:--------------------------------|
 | 0     | YCbCr                           |
 | 1     | JPEG 2000 RCT                   |
 | Other | reserved for future use         |
@@ -815,14 +815,14 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 `chroma_planes` indicates if chroma (color) planes are present.
 
 |value  | color space used                |
-|-------|---------------------------------|
+|-------|:--------------------------------|
 |0      |   chroma planes are not present |
 |1      |   chroma planes are present     |
 
 `bits_per_raw_sample` indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
 
 |value  | bits for each luma and chroma sample            |
-|-------|-------------------------------------------------|
+|-------|:------------------------------------------------|
 | 0     | reserved\*                                      |
 | Other | the actual bits for each luma and chroma sample |
 
@@ -837,7 +837,7 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 :   indicates if a transparency plane is present.
 
 |value  | color space used                 |
-|-------|----------------------------------|
+|-------|:---------------------------------|
 | 0     | transparency plane is not present|
 | 1     | transparency plane is present    |
 
@@ -854,7 +854,7 @@ Inferred to be 1 if not present.
 Inferred to be 0 if not present.
 
 | value | initial states                                               |
-|-------|--------------------------------------------------------------|
+|-------|:-------------------------------------------------------------|
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
@@ -865,7 +865,7 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 `ec` indicates the error detection/correction type.
 
 |value | error detection/correction type          |
-|------|------------------------------------------|
+|------|:-----------------------------------------|
 |0     | 32bit CRC on the global header           |
 |1     | 32bit CRC per slice and the global header|
 |Other | reserved for future use                  |
@@ -874,7 +874,7 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
     Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
-|-------|------------------------------------------------------------------|
+|-------|:-----------------------------------------------------------------|
 |0      | frames are independent or dependent (keyframes and non keyframes)|
 |1      | frames are independent (keyframes only)                          |
 |Other  | reserved for future use                                          |
