@@ -94,13 +94,10 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 ### Mathematical functions
 
-------------------- -----------------------------------------------
-$\lfloor a \rfloor$ the largest integer less than or equal to a
-------------------- -----------------------------------------------
-
-------------------- -----------------------------------------------
-$\lceil a \rceil$   the smallest integer greater than or equal to a
-------------------- -----------------------------------------------
+--------------------- -----------------------------------------------
+$$\lfloor a \rfloor$$ the largest integer less than or equal to a
+$$\lceil a \rceil$$   the smallest integer greater than or equal to a
+--------------------- -----------------------------------------------
 
 ### Order of operation precedence
 
@@ -181,7 +178,7 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
 
-$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$
+$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
 
 If the context is smaller than 0 then -context is used and the difference between the sample and its predicted value is encoded with a flipped sign.
 
@@ -189,23 +186,23 @@ If the context is smaller than 0 then -context is used and the difference betwee
 
 There are 5 quantization tables for the 5 sample differences, both the number of quantization steps and their distribution are stored in the bitstream. Each quantization table has exactly 256 entries, and the 8 least significant bits of the sample difference are used as index:
 
-$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$
+$$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$$
 
 ## Colorspace
 
 ### JPEG2000-RCT
 
-$Cb=b-g$
+$$Cb=b-g$$
 
-$Cr=r-g$
+$$Cr=r-g$$
 
-$Y=g+(Cb+Cr)>>2$
+$$Y=g+(Cb+Cr)>>2$$
 
-$g=Y-(Cb+Cr)>>2$
+$$g=Y-(Cb+Cr)>>2$$
 
-$r=Cr+g$
+$$r=Cr+g$$
 
-$b=Cb+g$
+$$b=Cb+g$$
 
 [JPEG2000](#references)
 
@@ -213,7 +210,7 @@ $b=Cb+g$
 
 Instead of coding the n+1 bits of the sample difference with Huffman-, or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 
-$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$
+$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
 
 ### Range coding mode
 
@@ -223,27 +220,27 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264]
 
 To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
 
-$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$
+$$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$$
 
-$\begin{array}{ccccccccc}
+$$\begin{array}{ccccccccc}
 S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
 S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
-\end{array}$
+\end{array}$$
 
-$\begin{array}{ccc}
+$$\begin{array}{ccc}
 S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k
-\end{array}$
+\end{array}$$
 
-$\begin{array}{ccccccc}
+$$\begin{array}{ccccccc}
 R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
 R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
-\end{array}$
+\end{array}$$
 
-$R_{0}=65280$
+$$R_{0}=65280$$
 
-$L_{0}=2^{8}B_{0}+B_{1}$
+$$L_{0}=2^{8}B_{0}+B_{1}$$
 
-$j_{0}=2$
+$$j_{0}=2$$
 
 #### Range non binary values
 
@@ -280,9 +277,9 @@ At keyframes all Range coder state variables are set to their initial state.
 #### State transition table
 
 
-$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$
+$$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$$
 
-$zero\_state_{i}=256-one\_state_{256-i}$
+$$zero\_state_{i}=256-one\_state_{256-i}$$
 
 #### default_state_transition
 
