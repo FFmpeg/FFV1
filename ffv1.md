@@ -258,24 +258,27 @@ $j_{0}=2$
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
-void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
-    int i;
-    put_rac(c, state+0, !v);
-    if (v) {
-        int a= ABS(v);
-        int e= log2(a);
-
-        for (i=0; i<e; i++)
-            put_rac(c, state+1+MIN(i,9), 1);  //1..10
-
-        put_rac(c, state+1+MIN(i,9), 0);
-        for (i=e-1; i>=0; i--)
-            put_rac(c, state+22+MIN(i,9), (a>>i)&1); //22..31
-
-        if (is_signed)
-            put_rac(c, state+11 + MIN(e, 10), v < 0); //11..21
-    }
-}
+function                                                      | type
+--------------------------------------------------------------|-----
+void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
+is_signed) {                                                  |
+    int i;                                                    |
+    put_rac(c, state+0, !v);                                  |
+    if (v) {                                                  |
+        int a= ABS(v);                                        |
+        int e= log2(a);                                       |
+                                                              |
+        for (i=0; i<e; i++)                                   |
+            put_rac(c, state+1+MIN(i,9), 1);  //1..10         |
+                                                              |
+        put_rac(c, state+1+MIN(i,9), 0);                      |
+        for (i=e-1; i>=0; i--)                                |
+            put_rac(c, state+22+MIN(i,9), (a>>i)&1); //22..31 |
+                                                              |
+        if (is_signed)                                        |
+            put_rac(c, state+11 + MIN(e, 10), v < 0); //11..21|
+    }                                                         |
+}                                                             |
 ```
 
 #### Initial values for the context model
@@ -404,30 +407,32 @@ Run mode is entered when the context is 0, and left as soon as a non-0 differenc
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index which determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
 
 ```c
-log2_run[41]={
- 0, 0, 0, 0, 1, 1, 1, 1,
- 2, 2, 2, 2, 3, 3, 3, 3,
- 4, 4, 5, 5, 6, 6, 7, 7,
- 8, 9,10,11,12,13,14,15,
-16,17,18,19,20,21,22,23,
-24,
-};
-
-if (run_count == 0 && run_mode == 1) {
-    if (get_bits1()) {
-        run_count = 1 << log2_run[run_index];
-        if (x + run_count <= w)
-            run_index++;
-    } else {
-        if (log2_run[run_index])
-            run_count = get_bits(log2_run[run_index]);
-        else
-            run_count = 0;
-        if (run_index)
-            run_index--;
-        run_mode = 2;
-    }
-}
+function                                                      | type
+--------------------------------------------------------------|-----
+log2_run[41]={                                                |
+ 0, 0, 0, 0, 1, 1, 1, 1,                                      |
+ 2, 2, 2, 2, 3, 3, 3, 3,                                      |
+ 4, 4, 5, 5, 6, 6, 7, 7,                                      |
+ 8, 9,10,11,12,13,14,15,                                      |
+16,17,18,19,20,21,22,23,                                      |
+24,                                                           |
+};                                                            |
+                                                              |
+if (run_count == 0 && run_mode == 1) {                        |
+    if (get_bits1()) {                                        |
+        run_count = 1 << log2_run[run_index];                 |
+        if (x + run_count <= w)                               |
+            run_index++;                                      |
+    } else {                                                  |
+        if (log2_run[run_index])                              |
+            run_count = get_bits(log2_run[run_index]);        |
+        else                                                  |
+            run_count = 0;                                    |
+        if (run_index)                                        |
+            run_index--;                                      |
+        run_mode = 2;                                         |
+    }                                                         |
+}                                                             |
 ```
 
 The log2\_run function is also used within [JPEGLS](#references).
@@ -437,7 +442,7 @@ The log2\_run function is also used within [JPEGLS](#references).
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
 ```c
-    if(diff>0) diff--;
+    if (diff>0) diff--;
     encode(diff);
 ```
 
@@ -472,12 +477,15 @@ It contains the parameters used for all frames.
 The size of the configuration record, NumBytes, is supplied by the underlying container.
 
 ```c
-ConfigurationRecord( NumBytes ) {
-    ConfigurationRecordIsPresent = 1
-    Parameters( )
-    while( remaining_bits_in_bitstream( ) > 32 )
-        reserved_for_future_use                     // u(1)
-    configuration_record_crc_parity                 // u(32)
+function                                                      | type
+--------------------------------------------------------------|-----
+ConfigurationRecord( NumBytes ) {                             |
+    ConfigurationRecordIsPresent = 1                          |
+    Parameters( )                                             |
+    while( remaining_bits_in_bitstream( ) > 32 )              |
+        reserved_for_future_use                               | u(1)
+    configuration_record_crc_parity                           | u(32)
+}                                                             |
 ```
 
 `reserved_for_future_use` has semantics that are reserved for future use.
@@ -515,53 +523,59 @@ See [NUT](#references) for more information about elements.
 
 A frame consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
 
-|                                                        |
-|---------------------------------------------------|---:|
-|Frame( ) {                                         |type|
-|    keyframe                                       |  br|
-|    if( keyframe && !ConfigurationRecordIsPresent )|    |
-|         Parameters( )                             |    |
-|    while ( remaining\_bits\_in\_bitstream() )     |    |
-|        Slice( )                                   |    |
-|}                                                  |    |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+Frame( ) {                                                    |
+    keyframe                                                  | br
+    if (keyframe && !ConfigurationRecordIsPresent             |
+        Parameters( )                                         |
+    while ( remaining_bits_in_bitstream() )                   |
+        Slice( )                                              |
+}                                                             |
+```
 
 ## Slice
 
-|                                                                    |
-|------------------------------------------------------------|:------|
-|Slice( ) {                                                  | type  |
-|    if( version \>= 3 )                                     |       |
-|        SliceHeader( )                                      |       |
-|    SliceContent( )                                         |       |
-|    if ( coder\_type == 0 )                                 |       |
-|        while ( !byte\_aligned() )                          |       |
-|            padding                                         |  u(1) |
-|    if( version \>= 3 )                                     |       |
-|        SliceFooter( )                                      |       |
-|}                                                           |       |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+Slice( ) {                                                    |
+    if (version >= 3)                                         |
+        SliceHeader( )                                        |
+    SliceContent( )                                           |
+    if (coder_type == 0)                                      |
+        while (!byte_aligned())                               |
+            padding                                           | u(1)
+    if (version >= 3)                                         |
+        SliceFooter( )                                        |
+}                                                             |
+```
 
 `padding` specifies a bit without any significance and used only for byte alignment.
 MUST be 0.
 
 ## Slice Header
 
-|                                                            |    |
-|------------------------------------------------------------|---:|
-| SliceHeader( ) {                                           |type|
-|    slice\_x                                                | ur |
-|    slice\_y                                                | ur |
-|    slice\_width - 1                                        | ur |
-|    slice\_height - 1                                       | ur |
-|    for( i = 0; i \< quant\_table\_index\_count; i++ )      |    |
-|        quant\_table\_index [ i ]                           | ur |
-|    picture\_structure                                      | ur |
-|    sar\_num                                                | ur |
-|    sar\_den                                                | ur |
-|    if( version \>= 4 ) {                                   |    |
-|        reset\_contexts                                     | br |
-|        slice\_coding\_mode                                 | ur |
-|    }                                                       |    |
-| }                                                          |    |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+SliceHeader( ) {                                              |
+    slice_x                                                   | ur
+    slice_y                                                   | ur
+    slice_width - 1                                           | ur
+    slice_height - 1                                          | ur
+    for( i = 0; i < quant_table_index_count; i++ )            |
+        quant_table_index [ i ]                               | ur
+    picture_structure                                         | ur
+    sar_num                                                   | ur
+    sar_den                                                   | ur
+    if (version >= 4) {                                       |
+        reset_contexts                                        | br
+        slice_coding_mode                                     | ur
+   }                                                          |
+}                                                             |
+```
 
 `slice_x` indicates the x position on the slice raster formed by num_h_slices.
 Inferred to be 0 if not present.
@@ -613,19 +627,21 @@ Inferred to be 0 if not present.
 
 ## Slice Content
 
-|                                                                      |
-|--------------------------------------------------------------|:------|
-|SliceContent( ) {                                             | type  |
-|    if( colorspace\_type == 0) {                              |       |
-|        for( p = 0; p \< primary\_color\_count; p++ ) {       |       |
-|            for( y = 0; y \< plane\_pixel\_height[ p ]; y++ ) |       |
-|                Line( p, y )                                  |       |
-|    } else if( colorspace\_type == 1 ) {                      |       |
-|        for( y = 0; y \< slice\_pixel\_height; y++ )          |       |
-|            for( p = 0; p \< primary\_color\_count; p++ ) {   |       |
-|                Line( p, y )                                  |       |
-|    }                                                         |       |
-|}                                                             |       |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+SliceContent( ) {                                             |
+    if (colorspace_type == 0) {                               |
+        for( p = 0; p < primary_color_count; p++ ) {          |
+            for( y = 0; y < plane_pixel_height[ p ]; y++ )    |
+                Line( p, y )                                  |
+    } else if (colorspace_type == 1) {                        |
+        for( y = 0; y < slice_pixel_height; y++ )             |
+            for( p = 0; p < primary_color_count; p++ ) {      |
+                Line( p, y )                                  |
+    }                                                         |
+}                                                             |
+```
 
 `primary_color_count` is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
@@ -641,17 +657,19 @@ Its value is $\lfloor slice_y * frame\_pixel\_height / num\_v\_slices \rfloor$
 
 ## Line
 
-|                                                                      |
-|--------------------------------------------------------------|:------|
-|Line( p, y ) {                                                | type  |
-|    if( colorspace\_type == 0) {                              |       |
-|        for( x = 0; x \< plane\_pixel\_width[ p ]; x++ )      |       |
-|            Pixel( p, y, x )                                  |       |
-|    } else if( colorspace\_type == 1 ) {                      |       |
-|        for( x = 0; x \< slice\_pixel\_width; x++ )           |       |
-|            Pixel( p, y, x )                                  |       |
-|    }                                                         |       |
-|}                                                             |       |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+Line( p, y ) {                                                |
+    if (colorspace_type == 0) {                               |
+        for( x = 0; x < plane_pixel_width[ p ]; x++ )         |
+            Pixel( p, y, x )                                  |
+    } else if (colorspace_type == 1) {                        |
+        for( x = 0; x < slice_pixel_width; x++ )              |
+            Pixel( p, y, x )                                  |
+    }                                                         |
+}                                                             |
+```
 
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.
 plane\_pixel\_width[ 0 ] and plane\_pixel\_width[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_width
@@ -667,15 +685,17 @@ Its value is $\lfloor slice_x * frame\_pixel\_width / num\_h\_slices \rfloor$
 
 Note: slice footer is always byte aligned.
 
-|                                                                    |
-|------------------------------------------------------------|:------|
-|SliceFooter( ) {                                            | type  |
-|    slice\_size                                             | u(24) |
-|    if( ec ) {                                              |       |
-|        error\_status                                       |  u(8) |
-|        slice\_crc\_parity                                  | u(32) |
-|    }                                                       |       |
-|}                                                           |       |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+SliceFooter( ) {                                              |
+    slice_size                                                | u(24)
+    if (ec) {                                                 |
+        error_status                                          | u(8)
+        slice_crc_parity                                      | u(32)
+    }                                                         |
+}                                                             |
+```
 
 `slice_size` indicates the size of the slice in bytes.
 Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
@@ -695,42 +715,44 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 
 ## Parameters
 
-|                                                            |     |
-|------------------------------------------------------------|----:|
-| Parameters( ) {                                            | type|
-|   version                                                  | ur  |
-|   if( version \>= 3 )                                      |     |
-|       micro\_version                                       | ur  |
-|   coder\_type                                              | ur  |
-|   if( coder\_type \> 1 )                                   |     |
-|       for( i = 1; i \< 256; i++ )                          |     |
-|           state\_transition\_delta[ i ]                    | sr  |
-|   colorspace\_type                                         | ur  |
-|   if( version \>= 1 )                                      |     |
-|       bits\_per\_raw\_sample                               | ur  |
-|   chroma\_planes                                           | br  |
-|   log2( h\_chroma\_subsample )                             | ur  |
-|   log2( v\_chroma\_subsample )                             | ur  |
-|   alpha\_plane                                             | br  |
-|   if( version \>= 3 ) {                                    |     |
-|       num\_h\_slices - 1                                   | ur  |
-|       num\_v\_slices - 1                                   | ur  |
-|       quant\_table\_count                                  | ur  |
-|   }                                                        |     |
-|   for( i = 0; i \< quant\_table\_count; i++ )              |     |
-|       QuantizationTable( i )                               |     |
-|   if( version \>= 3 ) {                                    |     |
-|       for( i = 0; i \< quant\_table\_count; i++ ) {        |     |
-|           states\_coded                                    | br  |
-|           if( states\_coded )                              |     |
-|               for( j = 0; j \< context\_count[ i ]; j++ )  |     |
-|                   for( k = 0; k \< CONTEXT\_SIZE; k++ )    |     |
-|                       initial\_state\_delta[ i ][ j ][ k ] | sr  |
-|       }                                                    |     |
-|       ec                                                   | ur  |
-|       intra                                                | ur  |
-|   }                                                        |     |
-|}                                                           |     |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+Parameters( ) {                                               |
+    version                                                   | ur
+    if (version >= 3)                                         |
+        micro_version                                         | ur
+    coder_type                                                | ur
+    if (coder_type > 1)                                       |
+        for (i = 1; i < 256; i++)                             |
+            state_transition_delta[ i ]                       | sr
+    colorspace_type                                           | ur
+    if (version >= 1)                                         |
+        bits_per_raw_sample                                   | ur
+    chroma_planes                                             | br
+    log2( h_chroma_subsample )                                | ur
+    log2( v_chroma_subsample )                                | ur
+    alpha_plane                                               | br
+    if (version >= 3) {                                       |
+        num_h_slices - 1                                      | ur
+        num_v_slices - 1                                      | ur
+        quant_table_count                                     | ur
+    }                                                         |
+    for( i = 0; i < quant_table_count; i++ )                  |
+        QuantizationTable( i )                                |
+    if (version >= 3) {                                       |
+        for( i = 0; i < quant_table_count; i++ ) {            |
+            states_coded                                      | br
+            if (states_coded)                                 |
+                for( j = 0; j < context_count[ i ]; j++ )     |
+                    for( k = 0; k < CONTEXT_SIZE; k++ )       |
+                        initial_state_delta[ i ][ j ][ k ]    | sr
+        }                                                     |
+        ec                                                    | ur
+        intra                                                 | ur
+    }                                                         |
+}                                                             |
+```
 
 `version` specifies the version of the bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
@@ -867,37 +889,43 @@ Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
 
 Stored values: 1, 3, 1
 
-|                                                                           |
-|---------------------------------------------------------------------------|
-| QuantizationTable( i ) {                                                  |
-|   scale = 1                                                               |
-|   for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {                             |
-|       QuantizationTablePerContext( i, j, scale )                          |
-|       scale \*= 2 \* len_count[ i ][ j ] - 1                              |
-|   }                                                                       |
-|   context_count[ i ] = ( scale + 1 ) / 2                                  |
-
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+QuantizationTable( i ) {                                      |
+    scale = 1                                                 |
+    for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {               |
+        QuantizationTablePerContext( i, j, scale )            |
+        scale *= 2 * len_count[ i ][ j ] - 1                  |
+    }                                                         |
+    context_count[ i ] = ( scale + 1 ) / 2                    |
+}                                                             |
+```
 
 MAX\_CONTEXT\_INPUTS is 5.
 
-|                                                                           |      |
-|---------------------------------------------------------------------------|------|
-| QuantizationTablePerContext(i, j, scale) {                                | type |
-|    v = 0                                                                  |      |
-|    for( k = 0; k \< 128; ) {                                              |      |
-|        len - 1                                                            | sr   |
-|        for( a = 0; a \< len; a++ ) {                                      |      |
-|            quant\_tables[ i ][ j ][ k ] = scale* v                        |      |
-|            k++                                                            |      |
-|        }                                                                  |      |
-|        v++                                                                |      |
-|    }                                                                      |      |
-|    for( k = 1; k \< 128; k++ ) {                                          |      |
-|        quant\_tables[ i ][ j ][ 256 - k ] = -quant\_tables[ i ][ j ][ k ] |      |
-|    }                                                                      |      |
-|    quant\_tables[ i ][ j ][ 128 ] = -quant\_tables[ i ][ j ][ 127 ]       |      |
-|    len\_count[ i ][ j ] = v                                               |      |
-|}                                                                          |      |
+```c
+function                                                      | type
+--------------------------------------------------------------|-----
+QuantizationTablePerContext(i, j, scale) {                    |
+    v = 0                                                     |
+    for( k = 0; k < 128; ) {                                  |
+        len - 1                                               | sr
+        for( a = 0; a < len; a++ ) {                          |
+            quant_tables[ i ][ j ][ k ] = scale* v            |
+            k++                                               |
+        }                                                     |
+        v++                                                   |
+    }                                                         |
+    for( k = 1; k < 128; k++ ) {                              |
+        quant_tables[ i ][ j ][ 256 - k ] = \                 |
+        -quant_tables[ i ][ j ][ k ]                          |
+    }                                                         |
+    quant_tables[ i ][ j ][ 128 ] = \                         |
+    -quant_tables[ i ][ j ][ 127 ]                            |
+    len_count[ i ][ j ] = v                                   |
+}                                                             |
+```
 
 `quant_tables` indicates the quantification table values.
 
