@@ -174,11 +174,15 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 ## Context
 
-|   |   |   |   |
-|---|---|---|---|
+```
++---+---+---+---+
 |   |   | T |   |
++---+---+---+---+
 |   |tl | t |tr |
++---+---+---+---+
 | L | l | X |   |
++---+---+---+---+
+```
 
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
 
