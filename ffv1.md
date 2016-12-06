@@ -91,11 +91,11 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a != b`      means a is not equalto b.
 
-`a && b`      means boolean logical "and" of a and b.
+`a && b`      means Boolean logical "and" of a and b.
 
-`a || b`      means boolean logical "or" of a and b.
+`a || b`      means Boolean logical "or" of a and b.
 
-`!a`          means boolean logical "not".
+`!a`          means Boolean logical "not".
 
 `a ? b : c`   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
@@ -449,7 +449,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
 | sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
-| br   | Range coded boolean (1-bit) symbol with the method described in [Range binary values](#range-binary-values)  |
+| br   | Range coded Boolean (1-bit) symbol with the method described in [Range binary values](#range-binary-values)  |
 | ur   | Range coded unsigned scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 
