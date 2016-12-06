@@ -148,7 +148,7 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 ## Border
 
-For the purpose of the predictior and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
+For the purpose of the predictor and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
 
 |   |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|---|
@@ -225,7 +225,7 @@ $coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1
 
 ### Range coding mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264](#references) but due to the uncertain patent/royality situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel N. Martin* in 1979 [RangeCoder](#references).
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from [H.264](#references) but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel N. Martin* in 1979 [RangeCoder](#references).
 
 #### Range binary values
 
@@ -255,7 +255,7 @@ $j_{0}=2$
 
 #### Range non binary values
 
-To encode scalar integers it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
 void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
@@ -327,7 +327,7 @@ $zero\_state_{i}=256-one\_state_{256-i}$
 
 #### alternative state transition table
 
-The alternative state transition table has been build using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type has to be set to 2 and the difference to the default has to be stored in the parameters. The reference implemenation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been build using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type has to be set to 2 and the difference to the default has to be stored in the parameters. The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -445,7 +445,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 # Bitstream
 
-|Symbol| Defintion                                              |
+|Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
 | sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
@@ -484,15 +484,15 @@ ConfigurationRecord( NumBytes ) {
 Encoders conforming to this version of this specification SHALL NOT write this value.
 Decoders conforming to this version of this specification SHALL ignore its value.
 
-`configuration_record_crc_parity` 32 bits that are choosen so that the configuration record as a whole has a crc remainder of 0.
+`configuration_record_crc_parity` 32 bits that are chosen so that the configuration record as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
-The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 This configuration record can be placed in any file format supporting configuration records, fitting as much as possible with how the file format uses to store configuration records. The configuration record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
 
 ### In AVI File Format
 
-The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bistream.
+The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
 See [AVI](#references) for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
@@ -583,7 +583,7 @@ Inferred to be 0 if not present.
 `picture_structure` specifies the picture structure.
 Inferred to be 0 if not present.
 
-|value    |  picure structure used      |
+|value    |  picture structure used     |
 |---------|-----------------------------|
 |0        |                     unknown |
 |1        |             top field first |
@@ -689,9 +689,9 @@ Note: this allows finding the start of slices before previous slices have been f
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
 
-`slice_crc_parity` 32 bits that are choosen so that the slice as a whole has a crc remainder of 0.
+`slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
-The CRC generator polynom used is the standard IEEE CRC polynom (0x104C11DB7) with initial value 0.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ## Parameters
 
@@ -760,7 +760,7 @@ Meaning of micro_version for version 3:
 
 \* were development versions which may be incompatible with the stable variants.
 
-Meaning of micro_version for version 4 (note: at the time of writting of this specification, version 4 is not considered stable so the first stable version value is to be annonced in the future):
+Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):
 
 |value   | micro_version           |
 |--------|-------------------------|
@@ -851,11 +851,11 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 `intra` indicates the relationship between frames.
     Inferred to be 0 if not present.
 
-|value  | relationship                                                |
-|-------|-------------------------------------------------------------|
-|0      | frames are independent or dependent (key and non key frames)|
-|1      | frames are independent (key frames only)                    |
-|Other  | reserved for future use                                     |
+|value  | relationship                                                     |
+|-------|------------------------------------------------------------------|
+|0      | frames are independent or dependent (keyframes and non keyframes)|
+|1      | frames are independent (keyframes only)                          |
+|Other  | reserved for future use                                          |
 
 ## Quantization Tables
 
@@ -937,9 +937,9 @@ In all of the conditions above, the decoder and encoder was run inside the Valgr
 
 The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
-After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherant...) or if there is no possibility of seek into the stream.
+After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
 
-Architecture overwiew of slices in a frame:
+Architecture overview of slices in a frame:
 
 |                                                               |
 |:--------------------------------------------------------------|
