@@ -365,7 +365,7 @@ The alternative state transition table has been build using iterative minimizati
 
 ### Huffman coding mode
 
-This coding mode uses golomb rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits so that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits so that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -964,7 +964,7 @@ See <https://github.com/FFmpeg/FFV1/commits/master>
 
 # ToDo
 
--   mean,k estimation for the golomb rice codes
+-   mean,k estimation for the Golomb Rice codes
 
 # Bibliography
 
