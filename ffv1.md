@@ -136,7 +136,11 @@ a = b, a += b, a -= b
 
 ### Bitstream functions
 
+#### remaining_bits_in_bitstream
+
 `remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
+
+#### byte_aligned
 
 `byte_aligned( )` means `remaining_bits_in_bitstream( )` is a multiple of 8.
 
@@ -488,9 +492,13 @@ ConfigurationRecord( NumBytes ) {                             |
 }                                                             |
 ```
 
+### reserved_for_future_use
+
 `reserved_for_future_use` has semantics that are reserved for future use.
 Encoders conforming to this version of this specification SHALL NOT write this value.
 Decoders conforming to this version of this specification SHALL ignore its value.
+
+### configuration_record_crc_parity
 
 `configuration_record_crc_parity` 32 bits that are chosen so that the configuration record as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
@@ -577,22 +585,36 @@ SliceHeader( ) {                                              |
 }                                                             |
 ```
 
+### slice_x
+
 `slice_x` indicates the x position on the slice raster formed by num_h_slices.
 Inferred to be 0 if not present.
+
+### slice_y
 
 `slice_y` indicates the y position on the slice raster formed by num_v_slices.
 Inferred to be 0 if not present.
 
+### slice_width
+
 `slice_width` indicates the width on the slice raster formed by num_h_slices.
 Inferred to be 1 if not present.
+
+### slice_height
 
 `slice_height` indicates the height on the slice raster formed by num_v_slices.
 Inferred to be 1 if not present.
 
+### quant_table_index_count
+
 `quant_table_index_count` is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+
+### quant_table_index
 
 `quant_table_index` indicates the index to select the quantization table set and the initial states for the slice.
 Inferred to be 0 if not present.
+
+### picture_structure
 
 `picture_structure` specifies the picture structure.
 Inferred to be 0 if not present.
@@ -605,16 +627,24 @@ Inferred to be 0 if not present.
 |3        |                 progressive |
 |Other    |     reserved for future use |
 
+### sar_num
+
 `sar_num` specifies the sample aspect ratio numerator.
 Inferred to be 0 if not present.
 MUST be 0 if sample aspect ratio is unknown.
+
+### sar_den
 
 `sar_den` specifies the sample aspect ratio numerator.
 Inferred to be 0 if not present.
 MUST be 0 if sample aspect ratio is unknown.
 
+### reset_contexts
+
 `reset_contexts` indicates if slice contexts must be reset.
 Inferred to be 0 if not present.
+
+### slice_coding_mode
 
 `slice_coding_mode` indicates the slice coding mode.
 Inferred to be 0 if not present.
@@ -643,14 +673,22 @@ SliceContent( ) {                                             |
 }                                                             |
 ```
 
+### primary_color_count
+
 `primary_color_count` is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+
+### plane_pixel_height
 
 `plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
 plane\_pixel\_height[ 0 ] and plane\_pixel\_height[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_height
 if chroma\_planes is set to 1, plane\_pixel\_height[ 1 ] and plane\_pixel\_height[ 2 ] value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$
 
+### slice_pixel_height
+
 `slice_pixel_height` is the height in pixels of the slice.
 Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$
+
+### slice_pixel_y
 
 `slice_pixel_y` is the slice vertical position in pixels.
 Its value is $\lfloor slice_y * frame\_pixel\_height / num\_v\_slices \rfloor$
@@ -671,12 +709,18 @@ Line( p, y ) {                                                |
 }                                                             |
 ```
 
+### plane_pixel_width
+
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.
 plane\_pixel\_width[ 0 ] and plane\_pixel\_width[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_width
 if chroma\_planes is set to 1, plane\_pixel\_width[ 1 ] and plane\_pixel\_width[ 2 ] value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$
 
+### slice_pixel_width
+
 `slice_pixel_width` is the width in pixels of the slice.
 Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$
+
+### slice_pixel_x
 
 `slice_pixel_x` is the slice horizontal position in pixels.
 Its value is $\lfloor slice_x * frame\_pixel\_width / num\_h\_slices \rfloor$
@@ -697,8 +741,12 @@ SliceFooter( ) {                                              |
 }                                                             |
 ```
 
+### slice_size
+
 `slice_size` indicates the size of the slice in bytes.
 Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
+
+### error_status
 
 `error_status` specifies the error status.
 
@@ -708,6 +756,8 @@ Note: this allows finding the start of slices before previous slices have been f
 | 1     | slice contains a correctable error   |
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
+
+### slice_crc_parity
 
 `slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
@@ -754,6 +804,8 @@ Parameters( ) {                                               |
 }                                                             |
 ```
 
+### version
+
 `version` specifies the version of the bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
 Decoders SHOULD reject a file with version =< 1 && ConfigurationRecordIsPresent == 1.
@@ -768,6 +820,8 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 |Other   |  reserved for future use|
 
 \* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
+
+### micro_version
 
 `micro_version` specifies the micro-version of the bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
@@ -792,6 +846,8 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 
 \* were development versions which may be incompatible with the stable variants.
 
+### coder_type
+
 `coder_type` specifies the coder used
 
 |value  | coder used                                      |
@@ -801,8 +857,12 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
+### state_transition_delta
+
 `state_transition_delta` specifies the Range coder custom state transition table.
 If state_transition_delta is not present in the bitstream, all Range coder custom state transition table elements are assumed to be 0.
+
+### colorspace_type
 
 `colorspace_type` specifies the color space.
 
@@ -812,12 +872,16 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 | 1     | JPEG 2000 RCT                   |
 | Other | reserved for future use         |
 
+### chroma_planes
+
 `chroma_planes` indicates if chroma (color) planes are present.
 
 |value  | color space used                |
 |-------|---------------------------------|
 |0      |   chroma planes are not present |
 |1      |   chroma planes are present     |
+
+### bits_per_raw_sample
 
 `bits_per_raw_sample` indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
 
@@ -829,9 +893,15 @@ If state_transition_delta is not present in the bitstream, all Range coder custo
 \* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
+### h_chroma_subsample
+
 `h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
 
+### v_chroma_subsample
+
 `v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$)
+
+### alpha_plane
 
 `alpha_plane`
 :   indicates if a transparency plane is present.
@@ -841,14 +911,22 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 | 0     | transparency plane is not present|
 | 1     | transparency plane is present    |
 
+### num_h_slices
+
 `num_h_slices` indicates the number of horizontal elements of the slice raster.
 Inferred to be 1 if not present.
+
+### num_v_slices
 
 `num_v_slices` indicates the number of vertical elements of the slice raster.
 Inferred to be 1 if not present.
 
+### quant_table_count
+
 `quant_table_count` indicates the number of quantization table sets.
 Inferred to be 1 if not present.
+
+### states_coded
 
 `states_coded` indicates if the respective quantization table set has the initial states coded.
 Inferred to be 0 if not present.
@@ -858,9 +936,13 @@ Inferred to be 0 if not present.
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
+### initial_state_delta
+
 `initial_state_delta` [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and
 pred = j ? initial\_states[ i ][j - 1][ k ] : 128
 initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+
+### ec
 
 `ec` indicates the error detection/correction type.
 
@@ -869,6 +951,8 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 |0     | 32bit CRC on the global header           |
 |1     | 32bit CRC per slice and the global header|
 |Other | reserved for future use                  |
+
+### intra
 
 `intra` indicates the relationship between frames.
     Inferred to be 0 if not present.
@@ -927,7 +1011,11 @@ QuantizationTablePerContext(i, j, scale) {                    |
 }                                                             |
 ```
 
+### quant_tables
+
 `quant_tables` indicates the quantification table values.
+
+### context_count
 
 `context_count` indicates the count of contexts.
 
