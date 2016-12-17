@@ -13,7 +13,7 @@ ffv1.html: ffv1.md
 
 ffv1.pdf:  ffv1.md
 	cat pdf_frontmatter.md "$<" pdf_backmatter.md | sed "s|\[@!|\[|g;s|\[@?|\[|g;s|\[@|\[|g" > merged.md
-	pandoc --toc -s --number-sections --latex-engine=xelatex -V geometry:margin=1in -o "$@" merged.md
+	pandoc --toc -s --number-sections --latex-engine=xelatex -V geometry:margin=1in --variable urlcolor=blue -o "$@" merged.md
 
 draft-niedermayer-cellar-ffv1-00.html: ffv1.md
 	cat rfc_frontmatter.md "$<" > merged.md
