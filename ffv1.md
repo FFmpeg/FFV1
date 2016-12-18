@@ -135,8 +135,6 @@ a = b, a += b, a -= b
 
 # General Description
 
-Each frame is split in 1 to 4 planes (Y, Cb, Cr, Alpha). In the case of the normal YCbCr colorspace the Y plane is coded first followed by the Cb and Cr planes, if an Alpha/transparency plane exists, it is coded last. In the case of the JPEG2000-RCT colorspace the lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding; the interleaved coding order is also Y, Cb, Cr, Alpha.
-
 Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored see [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
 ## Border
@@ -198,7 +196,22 @@ $$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$$
 
 ## Colorspace
 
+FFV1 supports two colorspaces: YCbCr and JPEG2000-RCT. Both colorspaces allow an optional Alpha plane that can be used to code transparency data.
+
+### YCbCr
+
+In YCbCr colorspace, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 frame using YCbCr MUST use one of the following arrangements:
+
+- Y
+- Y, Alpha
+- Y, Cb, Cr
+- Y, Cb, Cr, Alpha
+
+When FFV1 uses the YCbCr colorspace, the Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
+
 ### JPEG2000-RCT
+
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr colorspace. Reversible conversions between YCbCr and RGB use the following formulae.
 
 $$Cb=b-g$$
 
@@ -214,9 +227,30 @@ $$b=Cb+g$$
 
 [@!ISO.15444-1.2016]
 
+An FFV1 frame using JPEG2000-RCT MUST use one of the following arrangements:
+
+- Y, Cb, Cr
+- Y, Cb, Cr, Alpha
+
+When FFV1 uses the JPEG2000-RCT colorspace, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+
+As an example, a frame that is two pixels wide and two pixels high, could be comprised of the following structure:
+
++------------------------+------------------------+
+| Pixel[1,1]             | Pixel[2,1]             |
+| Y[1,1] Cb[1,1] Cr[1,1] | Y[2,1] Cb[2,1] Cr[2,1] |
++------------------------+------------------------+
+| Pixel[1,2]             | Pixel[2,2]             |
+| Y[1,2] Cb[1,2] Cr[1,2] | Y[2,2] Cb[2,2] Cr[2,2] |
++------------------------+------------------------+
+
+In JPEG2000-RCT colorspace, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
+
+Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
+
 ## Coding of the sample difference
 
-Instead of coding the n+1 bits of the sample difference with Huffman-, or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the sample difference with Huffman or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 
 $$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
 
