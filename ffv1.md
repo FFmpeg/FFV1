@@ -469,9 +469,9 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with version >= 3, a configuration record is stored in the underlying container, at the track header level.
+In the case of a bitstream with version >= 3, a Configuration Record is stored in the underlying container, at the track header level.
 It contains the parameters used for all frames.
-The size of the configuration record, NumBytes, is supplied by the underlying container.
+The size of the Configuration Record, NumBytes, is supplied by the underlying container.
 
 ```c
 function                                                      | type
@@ -493,11 +493,11 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 ### configuration_record_crc_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the configuration record as a whole has a crc remainder of 0.
+`configuration_record_crc_parity` 32 bits that are chosen so that the Configuration Record as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
-This configuration record can be placed in any file format supporting configuration records, fitting as much as possible with how the file format uses to store configuration records. The configuration record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
+This Configuration Record can be placed in any file format supporting Configuration Records, fitting as much as possible with how the file format uses to store Configuration Records. The Configuration Record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
 
 ### In AVI File Format
 
