@@ -937,11 +937,11 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 
 `ec` indicates the error detection/correction type.
 
-|value | error detection/correction type          |
-|------|:-----------------------------------------|
-|0     | 32bit CRC on the global header           |
-|1     | 32bit CRC per slice and the global header|
-|Other | reserved for future use                  |
+|value | error detection/correction type           |
+|------|:------------------------------------------|
+|0     | 32-bit CRC on the global header           |
+|1     | 32-bit CRC per slice and the global header|
+|Other | reserved for future use                   |
 
 ### intra
 
