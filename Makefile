@@ -26,4 +26,4 @@ draft-niedermayer-cellar-ffv1-00.txt: ffv1.md
 	xml2rfc draft-niedermayer-cellar-ffv1-00.xml -o "$@"
 
 clean:
-	rm -f ffv1.pdf ffv1.html draft-niedermayer-cellar-ffv1-00.txt draft-niedermayer-cellar-ffv1-00.html merged_ffv1html.md merged_ffv1pdf.md merged_rfchtml.md merged_rfctxt.md draft-niedermayer-cellar-ffv1-00.xml
+	rm -f ffv1.pdf ffv1.html draft-niedermayer-cellar-ffv1-0* merged_ffv1html.md merged_ffv1pdf.md merged_rfchtml.md merged_rfctxt.md
