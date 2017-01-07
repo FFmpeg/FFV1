@@ -4,7 +4,7 @@ The FFV1 video codec is a simple and efficient lossless intra-frame only codec.
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 
-This document assumes familiarity with mathematical and coding concepts such as Range coding and YCbCr colorspaces.
+This document assumes familiarity with mathematical and coding concepts such as Range coding [@?range-coding] and YCbCr colorspaces [@?YCbCr].
 
 # Notation and Conventions
 
