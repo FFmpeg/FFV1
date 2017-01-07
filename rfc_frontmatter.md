@@ -74,7 +74,7 @@ This document defines FFV1, a lossless intra-frame video encoding format. FFV1 i
     </author>
     <date year="undated" />
   </front>
-</reference> 
+</reference>
 
 <reference anchor="HuffYUV" target="https://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html">
   <front>
