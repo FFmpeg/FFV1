@@ -66,6 +66,8 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a += b`      is equivalent to a is assigned a + b.
 
 `a -= b`      is equivalent to a is assigned a - b.
+
+`a *= b`      is equivalent to a is assigned a * b.
 --------------- ----------------------------------------------------------------
 
 ### Comparison operators
@@ -123,7 +125,7 @@ a | b
 a && b
 a || b
 a ? b : c
-a = b, a += b, a -= b
+a = b, a += b, a -= b, a *= b
 ```
 
 ### Range
