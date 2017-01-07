@@ -96,7 +96,14 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 --------------------- -----------------------------------------------
 $$\lfloor a \rfloor$$ the largest integer less than or equal to a
+
 $$\lceil a \rceil$$   the smallest integer greater than or equal to a
+
+abs(a)                the absolute value of a, i.e. abs(a) = sign(a)*a
+
+log2(a)               the base-two logarithm of a
+
+min(a,b)              the smallest of two values a and b
 --------------------- -----------------------------------------------
 
 ### Order of operation precedence
@@ -266,18 +273,18 @@ is_signed) {                                                  |
     int i;                                                    |
     put_rac(c, state+0, !v);                                  |
     if (v) {                                                  |
-        int a= ABS(v);                                        |
+        int a= abs(v);                                        |
         int e= log2(a);                                       |
                                                               |
         for (i=0; i<e; i++)                                   |
-            put_rac(c, state+1+MIN(i,9), 1);  //1..10         |
+            put_rac(c, state+1+min(i,9), 1);  //1..10         |
                                                               |
-        put_rac(c, state+1+MIN(i,9), 0);                      |
+        put_rac(c, state+1+min(i,9), 0);                      |
         for (i=e-1; i>=0; i--)                                |
-            put_rac(c, state+22+MIN(i,9), (a>>i)&1); //22..31 |
+            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
                                                               |
         if (is_signed)                                        |
-            put_rac(c, state+11 + MIN(e, 10), v < 0); //11..21|
+            put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
     }                                                         |
 }                                                             |
 ```
