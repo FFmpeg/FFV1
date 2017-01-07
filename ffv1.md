@@ -123,11 +123,15 @@ a = b, a += b, a -= b
 
 `a...b` means any value starting from a to b, inclusive.
 
+### NumBytes
+
+NumBytes is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the Configuration Record and Frame. FFV1 relies on its container to store the NumBytes values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+
 ### Bitstream functions
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in the bitstream. It is computed from the NumBytes value multiplied by 8 minus the count of bits already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in that bitstream component. It is computed from the NumBytes value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
 
 #### byte_aligned
 
@@ -469,9 +473,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with version >= 3, a Configuration Record is stored in the underlying container, at the track header level.
-It contains the parameters used for all frames.
-The size of the Configuration Record, NumBytes, is supplied by the underlying container.
+In the case of a bitstream with `version >= 3`, a Configuration Record is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the Configuration Record, NumBytes, is supplied by the underlying container.
 
 ```c
 function                                                      | type
@@ -479,7 +481,7 @@ function                                                      | type
 ConfigurationRecord( NumBytes ) {                             |
     ConfigurationRecordIsPresent = 1                          |
     Parameters( )                                             |
-    while( remaining_bits_in_bitstream( ) > 32 )              |
+    while( remaining_bits_in_bitstream( NumBytes ) > 32 )     |
         reserved_for_future_use                               | u(1)
     configuration_record_crc_parity                           | u(32)
 }                                                             |
@@ -497,22 +499,24 @@ Decoders conforming to this version of this specification SHALL ignore its value
 This is equivalent to storing the crc remainder in the 32-bit parity.
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
+### Mapping FFV1 into Containers
+
 This Configuration Record can be placed in any file format supporting Configuration Records, fitting as much as possible with how the file format uses to store Configuration Records. The Configuration Record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
 
-### In AVI File Format
+#### In AVI File Format
 
 The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
-### In ISO/IEC 14496-12 (MP4 File Format)
+#### In ISO/IEC 14496-12 (MP4 File Format)
 
 The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
-### In NUT File Format
+#### In NUT File Format
 
 The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
 
@@ -525,11 +529,11 @@ A frame consists of the keyframe field, parameters (if version <=1), and a seque
 ```c
 function                                                      | type
 --------------------------------------------------------------|-----
-Frame( ) {                                                    |
+Frame( NumBytes ) {                                           |
     keyframe                                                  | br
     if (keyframe && !ConfigurationRecordIsPresent             |
         Parameters( )                                         |
-    while ( remaining_bits_in_bitstream() )                   |
+    while ( remaining_bits_in_bitstream( NumBytes ) )         |
         Slice( )                                              |
 }                                                             |
 ```
