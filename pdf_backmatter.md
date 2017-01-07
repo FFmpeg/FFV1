@@ -34,3 +34,5 @@ ASAN Addresss Sanitizer, <http://clang.llvm.org/docs/AddressSanitizer.html>.
 REFIMPL, The reference FFV1 implementation / the FFV1 codec in FFmpeg, <https://ffmpeg.org/>.
 
 OPUS, Definition of the Opus Audio Codec, <https://www.ietf.org/rfc/rfc6716.txt>
+
+YCbCr, Wikipedia, "YCbCr", <https://en.wikipedia.org/w/index.php?title=YCbCr>.

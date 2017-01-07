@@ -120,4 +120,14 @@ This document defines FFV1, a lossless intra-frame video encoding format. FFV1 i
   </front>
 </reference>
 
+<reference anchor="YCbCr" target="https://en.wikipedia.org/w/index.php?title=YCbCr">
+  <front>
+    <title>YCbCr</title>
+    <author>
+      <organization>Wikipedia</organization>
+    </author>
+    <date year="undated" />
+  </front>
+</reference>
+
 {mainmatter}
