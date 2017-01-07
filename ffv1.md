@@ -135,7 +135,7 @@ NumBytes is a non-negative integer that expresses the size in 8-bit octets of pa
 
 #### byte_aligned
 
-`byte_aligned( )` means `remaining_bits_in_bitstream( )` is a multiple of 8.
+`byte_aligned( )` is true if `remaining_bits_in_bitstream( NumBytes )` is a multiple of 8, otherwise false.
 
 # General Description
 
@@ -330,7 +330,7 @@ $$zero\_state_{i}=256-one\_state_{256-i}$$
 
 #### alternative state transition table
 
-The alternative state transition table has been build using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type has to be set to 2 and the difference to the default has to be stored in the parameters. The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been build using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type MUST be set to 2 and the difference to the default MUST be stored in the parameters. The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -368,7 +368,7 @@ The alternative state transition table has been build using iterative minimizati
 
 ### Huffman coding mode
 
-This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits so that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -400,7 +400,7 @@ This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the
 
 #### Run mode
 
-Run mode is entered when the context is 0, and left as soon as a non-0 difference is found, the level is identical to the predicted one, the run and the first different level is coded.
+Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level is coded.
 
 #### Run length coding
 
