@@ -59,13 +59,13 @@ Note: the operators and the order of precedence are the same as used in the C pr
 ------------- ----------------------------------------------------------------
 `a = b`       means a is assigned b.
 
-`a++`         is equivalent to a = a + 1.
+`a++`         is equivalent to a is assigned a + 1.
 
-`a--`         is equivalent to a = a - 1.
+`a--`         is equivalent to a is assigned a - 1.
 
-`a += b`      is equivalent to a = a + b.
+`a += b`      is equivalent to a is assigned a + b.
 
-`a -= b`      is equivalent to a = a - b.
+`a -= b`      is equivalent to a is assigned a - b.
 --------------- ----------------------------------------------------------------
 
 ### Comparison operators
