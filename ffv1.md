@@ -249,6 +249,7 @@ When FFV1 uses the JPEG2000-RCT colorspace, the horizontal lines are interleaved
 
 As an example, a frame that is two pixels wide and two pixels high, could be comprised of the following structure:
 
+```
 +------------------------+------------------------+
 | Pixel[1,1]             | Pixel[2,1]             |
 | Y[1,1] Cb[1,1] Cr[1,1] | Y[2,1] Cb[2,1] Cr[2,1] |
@@ -256,6 +257,7 @@ As an example, a frame that is two pixels wide and two pixels high, could be com
 | Pixel[1,2]             | Pixel[2,2]             |
 | Y[1,2] Cb[1,2] Cr[1,2] | Y[2,2] Cb[2,2] Cr[2,2] |
 +------------------------+------------------------+
+```
 
 In JPEG2000-RCT colorspace, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
 
