@@ -11,6 +11,8 @@
 % initials="M."
 % surname="Niedermayer"
 % fullname="Michael Niedermayer"
+% [author.address]
+% email="michael@niedermayer.cc"
 
 .# Abstract
 
