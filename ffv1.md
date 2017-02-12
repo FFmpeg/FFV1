@@ -97,15 +97,21 @@ Note: the operators and the order of precedence are the same as used in the C pr
 ### Mathematical functions
 
 --------------------- -----------------------------------------------
-$$\lfloor a \rfloor$$ the largest integer less than or equal to a
+PDF:$$\lfloor a \rfloor$$ the largest integer less than or equal to a
+RFC:floor(a)              the largest integer less than or equal to a
 
-$$\lceil a \rceil$$   the smallest integer greater than or equal to a
+PDF:$$\lceil a \rceil$$   the smallest integer greater than or equal to a
+RFC:ceil(a)               the largest integer less than or equal to a
 
 abs(a)                the absolute value of a, i.e. abs(a) = sign(a)*a
 
 log2(a)               the base-two logarithm of a
 
 min(a,b)              the smallest of two values a and b
+
+RFC:a_{b}                 the b-th value of a sequence of a
+RFC:
+RFC:a_{b,c}               the 'b,c'-th value of a sequence of a
 --------------------- -----------------------------------------------
 
 ### Order of operation precedence
@@ -197,7 +203,14 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
 
-$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
+PDF:$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
+RFC:```
+RFC:context =              Q_0[l−tl] +
+RFC:          abs(Q_0) * ( Q_1[tl−t] +
+RFC:          abs(Q_1) * ( Q_2[t−tr] +
+RFC:          abs(Q_2) * ( Q_3[L−l]  +
+RFC:          abs(Q_3) *   Q_4[T−t]  )))
+RFC:```
 
 If the context is smaller than 0 then -context is used and the difference between the sample and its predicted value is encoded with a flipped sign.
 
@@ -205,7 +218,10 @@ If the context is smaller than 0 then -context is used and the difference betwee
 
 There are 5 quantization tables for the 5 sample differences, both the number of quantization steps and their distribution are stored in the bitstream. Each quantization table has exactly 256 entries, and the 8 least significant bits of the sample difference are used as index:
 
-$$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$$
+PDF:$$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$$
+RFC:```
+RFC:Q_{i}[a − b] = Table_{i}[(a − b)&255]
+RFC:```
 
 ## Colorspace
 
@@ -226,17 +242,35 @@ When FFV1 uses the YCbCr colorspace, the Y plane MUST be coded first. If the Cb 
 
 JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr colorspace. Reversible conversions between YCbCr and RGB use the following formulae.
 
-$$Cb=b-g$$
+PDF:$$Cb=b-g$$
+RFC:```
+RFC:Cb=b-g
+RFC:```
 
-$$Cr=r-g$$
+PDF:$$Cr=r-g$$
+RFC:```
+RFC:Cr=r-g
+RFC:```
 
-$$Y=g+(Cb+Cr)>>2$$
+PDF:$$Y=g+(Cb+Cr)>>2$$
+RFC:```
+RFC:Y=g+(Cb+Cr)>>2
+RFC:```
 
-$$g=Y-(Cb+Cr)>>2$$
+PDF:$$g=Y-(Cb+Cr)>>2$$
+RFC:```
+RFC:g=Y-(Cb+Cr)>>2
+RFC:```
 
-$$r=Cr+g$$
+PDF:$$r=Cr+g$$
+RFC:```
+RFC:r=Cr+g
+RFC:```
 
-$$b=Cb+g$$
+PDF:$$b=Cb+g$$
+RFC:```
+RFC:b=Cb+g
+RFC:```
 
 [@!ISO.15444-1.2016]
 
@@ -267,7 +301,11 @@ Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1
 
 Instead of coding the n+1 bits of the sample difference with Huffman or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 
-$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
+PDF:$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
+RFC:```
+RFC:coder_input =
+RFC:    [(sample_difference + 2^(bits−1)) & (2^bits − 1)] − 2^(bits−1)
+RFC:```
 
 ### Range coding mode
 
@@ -275,29 +313,73 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range binary values
 
-To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
+PDF:To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
+RFC:To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0,i}` is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
 
-$$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$$
+PDF:$$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$$
+RFC:```
+RFC:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2^8 )
+RFC:```
 
-$$\begin{array}{ccccccccc}
-S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
-S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
-\end{array}$$
+PDF:$$\begin{array}{ccccccccc}
+PDF:S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
+PDF:S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
+PDF:\end{array}$$
+RFC:```
+RFC:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
+RFC:          l_i =  L_i                     XOR
+RFC:          t_i =  R_i - r_i               <==
+RFC:          b_i =  0                       <==>
+RFC:          L_i <  R_i - r_i
+RFC:```
+RFC:
+RFC:```
+RFC:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  XOR
+RFC:          l_i =  L_i - R_i + r_i         XOR
+RFC:          t_i =  r_i                     <==
+RFC:          b_i =  1                       <==>
+RFC:          L_i >= R_i - r_i
+RFC:```
 
-$$\begin{array}{ccc}
-S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k
-\end{array}$$
+PDF:$$\begin{array}{ccc}
+PDF:S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k
+PDF:\end{array}$$
+RFC:```
+RFC:S_{i+1,k} = S_{i,k} <== C_i != k
+RFC:```
 
-$$\begin{array}{ccccccc}
-R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
-R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
-\end{array}$$
+PDF:$$\begin{array}{ccccccc}
+PDF:R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
+PDF:R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
+PDF:\end{array}$$
+RFC:```
+RFC:R_{i+1} =  2^8 * t_{i}                   XOR
+RFC:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       XOR
+RFC:j_{i+1} =  j_{i} + 1                     <==
+RFC:t_{i}   <  2^8
+RFC:```
+RFC:
+RFC:```
+RFC:R_{i+1} =  t_{i}                         XOR
+RFC:L_{i+1} =  l_{i}                         XOR
+RFC:j_{i+1} =  j_{i}                         <==
+RFC:t_{i}   >= 2^8
+RFC:```
 
-$$R_{0}=65280$$
+PDF:$$R_{0}=65280$$
+RFC:```
+RFC:R_{0} = 65280
+RFC:```
 
-$$L_{0}=2^{8}B_{0}+B_{1}$$
+PDF:$$L_{0}=2^{8}B_{0}+B_{1}$$
+RFC:```
+RFC:L_{0} = 2^8 * B_{0} + B_{1}
+RFC:```
 
-$$j_{0}=2$$
+PDF:$$j_{0}=2$$
+RFC:```
+RFC:j_{0} = 2
+RFC:```
 
 #### Range non binary values
 
@@ -333,9 +415,16 @@ At keyframes all Range coder state variables are set to their initial state.
 
 #### State transition table
 
-$$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$$
+PDF:$$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$$
+RFC:```
+RFC:one_state_{i} =
+RFC:       default_state_transition_{i} + state_transition_delta_{i}
+RFC:```
 
-$$zero\_state_{i}=256-one\_state_{256-i}$$
+PDF:$$zero\_state_{i}=256-one\_state_{256-i}$$
+RFC:```
+RFC:zero_state_{i} = 256 - one_state_{256-i}
+RFC:```
 
 #### default_state_transition
 
@@ -723,18 +812,21 @@ SliceContent( ) {                                             |
 ### plane_pixel_height
 
 `plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
-plane\_pixel\_height[ 0 ] and plane\_pixel\_height[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_height
-if chroma\_planes is set to 1, plane\_pixel\_height[ 1 ] and plane\_pixel\_height[ 2 ] value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$
+`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
+PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$.
+RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / v_chroma_subsample)`.
 
 ### slice_pixel_height
 
 `slice_pixel_height` is the height in pixels of the slice.
-Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$
+PDF:Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$.
+RFC:Its value is `floor(( slice_y + slice_height ) * slice_pixel_height / num_v_slices) - slice_pixel_y`.
 
 ### slice_pixel_y
 
 `slice_pixel_y` is the slice vertical position in pixels.
-Its value is $\lfloor slice_y * frame\_pixel\_height / num\_v\_slices \rfloor$
+PDF:Its value is $\lfloor slice\_y * frame\_pixel\_height / num\_v\_slices \rfloor$.
+RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
 
 ## Line
 
@@ -755,18 +847,21 @@ Line( p, y ) {                                                |
 ### plane_pixel_width
 
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.
-plane\_pixel\_width[ 0 ] and plane\_pixel\_width[ 1 + ( chroma\_planes ? 2 : 0 ) ] value is slice\_pixel\_width
-if chroma\_planes is set to 1, plane\_pixel\_width[ 1 ] and plane\_pixel\_width[ 2 ] value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$
+`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
+PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$.
+RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / v_chroma_subsample)`.
 
 ### slice_pixel_width
 
 `slice_pixel_width` is the width in pixels of the slice.
-Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$
+PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
+RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
 
 ### slice_pixel_x
 
 `slice_pixel_x` is the slice horizontal position in pixels.
-Its value is $\lfloor slice_x * frame\_pixel\_width / num\_h\_slices \rfloor$
+PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
+RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ## Slice Footer
 
@@ -938,11 +1033,13 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 ### h_chroma_subsample
 
-`h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$)
+PDF:`h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).
+RFC:`h_chroma_subsample` indicates the subsample factor between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
 
 ### v_chroma_subsample
 
-`v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$)
+PDF:`v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).
+RFC:`v_chroma_subsample` indicates the subsample factor between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
 
 ### alpha_plane
 
