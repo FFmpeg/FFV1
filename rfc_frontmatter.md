@@ -13,6 +13,13 @@
 % fullname="Michael Niedermayer"
 % [author.address]
 % email="michael@niedermayer.cc"
+%
+% [[author]]
+% initials="D."
+% surname="Rice"
+% fullname="Dave Rice"
+% [author.address]
+% email="dave@dericed.com"
 
 .# Abstract
 
