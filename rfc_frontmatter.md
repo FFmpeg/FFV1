@@ -20,6 +20,13 @@
 % fullname="Dave Rice"
 % [author.address]
 % email="dave@dericed.com"
+%
+% [[author]]
+% initials="J."
+% surname="Martinez"
+% fullname="Jerome Martinez"
+% [author.address]
+% email="jerome@mediaarea.net"
 
 .# Abstract
 
