@@ -272,6 +272,41 @@ RFC:```
 RFC:b=Cb+g
 RFC:```
 
+Exception for the reversible conversions between YCbCr and RGB:
+if bits_per_raw_sample is between 9 and 15 inclusive, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+
+PDF:$$Cb=g-b$$
+RFC:```
+RFC:Cb=g-b
+RFC:```
+
+PDF:$$Cr=r-b$$
+RFC:```
+RFC:Cr=r-b
+RFC:```
+
+PDF:$$Y=b+(Cb+Cr)>>2$$
+RFC:```
+RFC:Y=b+(Cb+Cr)>>2
+RFC:```
+
+PDF:$$b=Y-(Cb+Cr)>>2$$
+RFC:```
+RFC:b=Y-(Cb+Cr)>>2
+RFC:```
+
+PDF:$$r=Cr+b$$
+RFC:```
+RFC:r=Cr+b
+RFC:```
+
+PDF:$$g=Cb+b$$
+RFC:```
+RFC:g=Cb+b
+RFC:```
+
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the bitstream.
+
 [@!ISO.15444-1.2016]
 
 An FFV1 frame using JPEG2000-RCT MUST use one of the following arrangements:
