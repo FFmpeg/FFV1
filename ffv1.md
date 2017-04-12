@@ -4,7 +4,7 @@ The FFV1 video codec is a simple and efficient lossless intra-frame only codec.
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 
-This document assumes familiarity with mathematical and coding concepts such as Range coding [@?range-coding] and YCbCr colorspaces [@?YCbCr].
+This document assumes familiarity with mathematical and coding concepts such as Range coding [@?range-coding] and YCbCr color spaces [@?YCbCr].
 
 # Notation and Conventions
 
@@ -223,24 +223,24 @@ RFC:```
 RFC:Q_{i}[a − b] = Table_{i}[(a − b)&255]
 RFC:```
 
-## Colorspace
+## Color space
 
-FFV1 supports two colorspaces: YCbCr and JPEG2000-RCT. Both colorspaces allow an optional Alpha plane that can be used to code transparency data.
+FFV1 supports two color spaces: YCbCr and JPEG2000-RCT. Both color spaces allow an optional Alpha plane that can be used to code transparency data.
 
 ### YCbCr
 
-In YCbCr colorspace, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 frame using YCbCr MUST use one of the following arrangements:
+In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 frame using YCbCr MUST use one of the following arrangements:
 
 - Y
 - Y, Alpha
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
-When FFV1 uses the YCbCr colorspace, the Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
+When FFV1 uses the YCbCr color space, the Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
 
 ### JPEG2000-RCT
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr colorspace. Reversible conversions between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space. Reversible conversions between YCbCr and RGB use the following formulae.
 
 PDF:$$Cb=b-g$$
 RFC:```
@@ -279,7 +279,7 @@ An FFV1 frame using JPEG2000-RCT MUST use one of the following arrangements:
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
-When FFV1 uses the JPEG2000-RCT colorspace, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+When FFV1 uses the JPEG2000-RCT color space, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
 As an example, a frame that is two pixels wide and two pixels high, could be comprised of the following structure:
 
@@ -293,7 +293,7 @@ As an example, a frame that is two pixels wide and two pixels high, could be com
 +------------------------+------------------------+
 ```
 
-In JPEG2000-RCT colorspace, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
+In JPEG2000-RCT color space, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
 
 Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
 
