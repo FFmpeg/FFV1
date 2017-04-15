@@ -7,9 +7,9 @@ RFC 2119 - Key words for use in RFCs to Indicate Requirement Levels <https://www
 
 ISO/IEC 9899 - Programming languages - C <http://www.open-std.org/JTC1/SC22/WG14/www/standards>
 
-JPEG-LS FCD 14495 <https://www.jpeg.org/public/fcd14495p.pdf>
+JPEG-LS FCD 14495 <https://web.archive.org/web/20100714152616/https://www.jpeg.org/public/fcd14495p.pdf>
 
-H.264 Draft <http://bs.hhi.de/~wiegand/JVT-G050.pdf>
+H.264 Draft <https://web.archive.org/web/20040329042235/http://bs.hhi.de/~wiegand/JVT-G050.pdf>
 
 HuffYuv <http://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html>
 
