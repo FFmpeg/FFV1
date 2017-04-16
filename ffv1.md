@@ -1222,7 +1222,7 @@ See <https://github.com/FFmpeg/FFV1/commits/master>
 
 -   mean,k estimation for the Golomb Rice codes
 
-# Copyright
-
-Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>
-This text can be used under the GNU Free Documentation License or GNU General Public License. See <http://www.gnu.org/licenses/fdl.txt>.
+PDF:# Copyright
+PDF:
+PDF:Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>
+PDF:This text can be used under the GNU Free Documentation License or GNU General Public License. See <http://www.gnu.org/licenses/fdl.txt>.
