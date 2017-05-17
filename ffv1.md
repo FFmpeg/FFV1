@@ -158,16 +158,29 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 ## Border
 
-For the purpose of the predictor and context, samples above the coded slice are assumed to be 0; samples to the right of the coded slice are identical to the closest left sample; samples to the left of the coded slice are identical to the top right sample (if there is one), otherwise 0.
+A border is assumed for each coded slice for the purpose of the predictor and context according to the following rules:
 
-|   |   |   |   |   |   |   |   |
-|---|---|---|---|---|---|---|---|
+- one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row
+- one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
+- an additional column of samples to the left of the coded slice and two rows of samples above the coded slice are assumed to be `0`
+
+The following table depicts a slice of samples `a,b,c,d,e,f,g,h,i` along with its assumed border.
+
+```
++---+---+---+---+---+---+---+---+
 | 0 | 0 |   | 0 | 0 | 0 |   | 0 |
++---+---+---+---+---+---+---+---+
 | 0 | 0 |   | 0 | 0 | 0 |   | 0 |
++---+---+---+---+---+---+---+---+
 |   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
 | 0 | 0 |   | a | b | c |   | c |
-| 0 | a |   | d |   | e |   | e |
-| 0 | d |   | f | g | h |   | h |
++---+---+---+---+---+---+---+---+
+| 0 | a |   | d | e | f |   | f |
++---+---+---+---+---+---+---+---+
+| 0 | d |   | g | h | i |   | i |
++---+---+---+---+---+---+---+---+
+```
 
 ## Median predictor
 
