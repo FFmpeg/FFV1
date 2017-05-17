@@ -201,7 +201,7 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 +---+---+---+---+
 ```
 
-The quantized sample differences L-l, l-tl, tl-t, t-T, t-tr are used as context:
+The quantized sample differences L-l, l-tl, tl-t, T-t, t-tr are used as context:
 
 PDF:$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
 RFC:```
