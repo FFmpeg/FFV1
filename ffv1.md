@@ -134,6 +134,10 @@ a ? b : c
 a = b, a += b, a -= b, a *= b
 ```
 
+### Pseudo-code
+
+Several components of FFV1 are described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.1990] as uses its `if/else`, `while` and `for` functions as well as functions defined within this document.
+
 ### Range
 
 `a...b` means any value starting from a to b, inclusive.
@@ -421,7 +425,7 @@ RFC:```
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
 is_signed) {                                                  |
@@ -576,7 +580,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index which determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 log2_run[41]={                                                |
  0, 0, 0, 0, 1, 1, 1, 1,                                      |
@@ -644,7 +648,7 @@ Default values at the decoder initialization phase:
 In the case of a bitstream with `version >= 3`, a Configuration Record is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the Configuration Record, NumBytes, is supplied by the underlying container.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 ConfigurationRecord( NumBytes ) {                             |
     ConfigurationRecordIsPresent = 1                          |
@@ -699,7 +703,7 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 A frame consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Frame( NumBytes ) {                                           |
     keyframe                                                  | br
@@ -713,7 +717,7 @@ Frame( NumBytes ) {                                           |
 ## Slice
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Slice( ) {                                                    |
     if (version >= 3)                                         |
@@ -733,7 +737,7 @@ MUST be 0.
 ## Slice Header
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceHeader( ) {                                              |
     slice_x                                                   | ur
@@ -825,7 +829,7 @@ Inferred to be 0 if not present.
 ## Slice Content
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
     if (colorspace_type == 0) {                               |
@@ -866,7 +870,7 @@ RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
 ## Line
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
@@ -903,7 +907,7 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 Note: slice footer is always byte aligned.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceFooter( ) {                                              |
     slice_size                                                | u(24)
@@ -939,7 +943,7 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 ## Parameters
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Parameters( ) {                                               |
     version                                                   | ur
@@ -1149,7 +1153,7 @@ Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
 Stored values: 1, 3, 1
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 QuantizationTable( i ) {                                      |
     scale = 1                                                 |
@@ -1164,7 +1168,7 @@ QuantizationTable( i ) {                                      |
 MAX\_CONTEXT\_INPUTS is 5.
 
 ```c
-function                                                      | type
+pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 QuantizationTablePerContext(i, j, scale) {                    |
     v = 0                                                     |
