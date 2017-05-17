@@ -1157,7 +1157,7 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 
 ## Quantization Tables
 
-The quantization tables are stored by storing the number of equal entries -1 of the first half of the table using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign.
+The quantization tables are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign.
 
 example:
 
