@@ -729,6 +729,13 @@ Frame( NumBytes ) {                                           |
 
 ## Slice
 
+A `Slice` is a spatially distinct region of a `Frame` that is encoded separately from any other region of that `Frame`. A `Slice` is comprised the following four components in this storage order:
+
+- `SliceHeader` (Present if the `version` (see [the section on version](#version)) is greater than or equal to `3`)
+- `SliceContent` (MUST be present)
+- `padding` (If and only if the `coder_type` is equal to 0 (which indicates that the `Golomb Rice` coder is used) and the `SliceContent` is not `byte_aligned`, then the `SliceContent` MUST be followed with `padding` until `byte_aligned`.)
+- `SliceFooter` (Present if the `version` is greater than or equal to `3`.)
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
