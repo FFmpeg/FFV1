@@ -103,6 +103,8 @@ RFC:floor(a)              the largest integer less than or equal to a
 PDF:$$\lceil a \rceil$$   the smallest integer greater than or equal to a
 RFC:ceil(a)               the largest integer less than or equal to a
 
+sign(a)               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0
+
 abs(a)                the absolute value of a, i.e. abs(a) = sign(a)*a
 
 log2(a)               the base-two logarithm of a
