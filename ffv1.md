@@ -89,7 +89,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a || b`      means Boolean logical "or" of a and b.
 
-`!a`          means Boolean logical "not".
+`!a`          means Boolean logical "not" of a.
 
 `a ? b : c`   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
