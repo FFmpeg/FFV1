@@ -19,7 +19,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a sample.
 
-`VLC`:   Variable Length Code.
+`VLC`:   Variable Length Code, a code which maps source symbols to a variable number of bits.
 
 `RGB`:   A reference to the method of storing the value of a sample by using three numeric values that represent Red, Green, and Blue.
 
