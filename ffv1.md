@@ -240,7 +240,7 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 ## Context
 
-Relative to any sample `X`, as represented in [the Template for Context and Median Prediction](#template), the quantized sample differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
+Relative to any sample `X`, as represented in [the Template for Context and Median Prediction](#template), the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
 PDF:$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
 RFC:```
@@ -253,14 +253,28 @@ RFC:```
 
 If the context is smaller than 0 then -context is used and the difference between the sample and its predicted value is encoded with a flipped sign.
 
-## Quantization
+## Quantization Table Sets
 
-There are 5 quantization tables for the 5 sample differences, both the number of quantization steps and their distribution are stored in the bitstream. Each quantization table has exactly 256 entries, and the 8 least significant bits of the sample difference are used as index:
+The bitstream contains 1 or more Quantization Table Sets.  
+Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences.  
+For each Quantization Table, both the number of quantization steps and their distribution are stored in the bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
-PDF:$$Q_{i}[a-b]=Table_{i}[(a-b)\&255]$$
+PDF:$$Q_{j}[k]=quant_tables[i][j][k\&255]$$
 RFC:```
-RFC:Q_{i}[a − b] = Table_{i}[(a − b)&255]
+RFC:Q_{j}[k] = quant_tables[i][j][k&255]
 RFC:```
+
+In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
+
+## Quantization Table Set indexes
+
+For each plane of each slice, a Quantization Table Set is selected from an index:
+
+- For Y plane, `quant_table_set_index [ 0 ]` index is used
+- For Cb and Cr planes, `quant_table_set_index [ 1 ]` index is used
+- For Alpha plane, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
+
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with bitstreams in the wild.
 
 ## Color space
 
@@ -371,9 +385,9 @@ In JPEG2000-RCT color space, the coding order would be left to right and then to
 
 Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
 
-## Coding of the sample difference
+## Coding of the Sample Difference
 
-Instead of coding the n+1 bits of the sample difference with Huffman or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
 
 PDF:$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
 RFC:```
@@ -779,8 +793,8 @@ SliceHeader( ) {                                              |
     slice_y                                                   | ur
     slice_width - 1                                           | ur
     slice_height - 1                                          | ur
-    for( i = 0; i < quant_table_index_count; i++ )            |
-        quant_table_index [ i ]                               | ur
+    for( i = 0; i < quant_table_set_index_count; i++ )        |
+        quant_table_set_index [ i ]                           | ur
     picture_structure                                         | ur
     sar_num                                                   | ur
     sar_den                                                   | ur
@@ -811,13 +825,13 @@ Inferred to be 1 if not present.
 `slice_height` indicates the height on the slice raster formed by num_v_slices.
 Inferred to be 1 if not present.
 
-### quant_table_index_count
+### quant_table_set_index_count
 
-`quant_table_index_count` is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+`quant_table_set_index_count` is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
 
-### quant_table_index
+### quant_table_set_index
 
-`quant_table_index` indicates the index to select the quantization table set and the initial states for the slice.
+`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.
 Inferred to be 0 if not present.
 
 ### picture_structure
@@ -998,12 +1012,12 @@ Parameters( ) {                                               |
     if (version >= 3) {                                       |
         num_h_slices - 1                                      | ur
         num_v_slices - 1                                      | ur
-        quant_table_count                                     | ur
+        quant_table_set_count                                 | ur
     }                                                         |
-    for( i = 0; i < quant_table_count; i++ )                  |
-        QuantizationTable( i )                                |
+    for( i = 0; i < quant_table_set_count; i++ )              |
+        QuantizationTableSet( i )                             |
     if (version >= 3) {                                       |
-        for( i = 0; i < quant_table_count; i++ ) {            |
+        for( i = 0; i < quant_table_set_count; i++ ) {        |
             states_coded                                      | br
             if (states_coded)                                 |
                 for( j = 0; j < context_count[ i ]; j++ )     |
@@ -1135,14 +1149,15 @@ Inferred to be 1 if not present.
 `num_v_slices` indicates the number of vertical elements of the slice raster.
 Inferred to be 1 if not present.
 
-### quant_table_count
+### quant_table_set_count
 
-`quant_table_count` indicates the number of quantization table sets.
+`quant_table_set_count` indicates the number of Quantization Table Sets.
 Inferred to be 1 if not present.
+MUST NOT be 0.
 
 ### states_coded
 
-`states_coded` indicates if the respective quantization table set has the initial states coded.
+`states_coded` indicates if the respective Quantization Table Set has the initial states coded.
 Inferred to be 0 if not present.
 
 | value | initial states                                               |
@@ -1177,23 +1192,23 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 |1      | frames are independent (keyframes only)                          |
 |Other  | reserved for future use                                          |
 
-## Quantization Tables
+## Quantization Table Set
 
-The quantization tables are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign.
+The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign.
 
 example:
 
-Table: 0 0 1 1 1 1 2 2-2-2-2-1-1-1-1 0
+Table: 0 0 1 1 1 1 2 2 -2 -2 -2 -1 -1 -1 -1 0
 
 Stored values: 1, 3, 1
 
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
-QuantizationTable( i ) {                                      |
+QuantizationTableSet( i ) {                                   |
     scale = 1                                                 |
     for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {               |
-        QuantizationTablePerContext( i, j, scale )            |
+        QuantizationTable( i, j, scale )                      |
         scale *= 2 * len_count[ i ][ j ] - 1                  |
     }                                                         |
     context_count[ i ] = ( scale + 1 ) / 2                    |
@@ -1205,7 +1220,7 @@ MAX\_CONTEXT\_INPUTS is 5.
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
-QuantizationTablePerContext(i, j, scale) {                    |
+QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
     for( k = 0; k < 128; ) {                                  |
         len - 1                                               | sr
@@ -1227,11 +1242,11 @@ QuantizationTablePerContext(i, j, scale) {                    |
 
 ### quant_tables
 
-`quant_tables` indicates the quantification table values.
+`quant_tables[ i ][ j ][ k ]` indicates the quantification table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Set Quantization Table Set `i`.
 
 ### context_count
 
-`context_count` indicates the count of contexts.
+`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`.
 
 ### Restrictions
 
