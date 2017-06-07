@@ -111,6 +111,10 @@ log2(a)               the base-two logarithm of a
 
 min(a,b)              the smallest of two values a and b
 
+max(a,b)              the largest of two values a and b
+
+median(a,b,c)         the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c)
+
 RFC:a_{b}                 the b-th value of a sequence of a
 RFC:
 RFC:a_{b,c}               the 'b,c'-th value of a sequence of a
@@ -189,27 +193,7 @@ The following table depicts a slice of samples `a,b,c,d,e,f,g,h,i` along with it
 ```
 
 ## Median predictor
-
-median(left, top, left + top - diag)
-
-left, top, diag are the left, top and left-top samples
-
-Note, this is also used in [@ISO.14495-1.1999] and [@HuffYUV].
-
-Exception for the media predictor:
-if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
-
-median(left16s, top16s, left16s + top16s - diag16s)
-
-with:
-- left16s = left >= 32768 ? ( left - 65536 ) : left
-- top16s = top >= 32768 ? ( top - 65536 ) : top
-- diag16s = diag >= 32768 ? ( diag - 65536 ) : diag
-
-Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the bitstream.
-
-## Context
-
+RFC:{#template}
 ```
 +---+---+---+---+
 |   |   | T |   |
@@ -219,8 +203,31 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 | L | l | X |   |
 +---+---+---+---+
 ```
+Figure: Template used for context and median prediction
 
-Relative to any sample `X`, the quantized sample differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
+The prediction for any sample value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
+
+`median(l, t, l + t - tl)`.
+
+Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
+
+Exception for the media predictor:
+if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
+
+`median(left16s, top16s, left16s + top16s - diag16s)`
+
+where:
+```
+left16s = l  >= 32768 ? ( l  - 65536 ) : l
+top16s  = t  >= 32768 ? ( t  - 65536 ) : t
+diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
+```
+
+Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the bitstream.
+
+## Context
+
+Relative to any sample `X`, as represented in [the Template for Context and Median Prediction](#template), the quantized sample differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
 PDF:$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
 RFC:```
