@@ -1000,7 +1000,7 @@ Parameters( ) {                                               |
 
 `version` specifies the version of the bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
-Decoders SHOULD reject a file with version =< 1 && ConfigurationRecordIsPresent == 1.
+Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
