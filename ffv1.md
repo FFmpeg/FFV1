@@ -1292,6 +1292,71 @@ The reference implementation [@REFIMPL] was validated in the following condition
 
 In all of the conditions above, the decoder and encoder was run inside the [@VALGRIND] memory debugger as well as clangs address sanitizer [@Address-Sanitizer], which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
 
+# Media Type Definition
+
+This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
+
+Type name:  video
+
+Subtype name:  FFV1
+
+Required parameters:  None.
+
+Optional parameters:
+
+  This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
+
+  version:  The version of the FFV1 encoding as defined by [in the section on `version`](#version).
+
+  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on `micro_version`](#micro_version).
+
+  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on `coder_type`](#coder_type).
+
+  color_space:  The color_space of the FFV1 encoding as defined by [in the section on `color_space`](#color_space).
+
+  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on `bits_per_raw_sample`](#bits_per_raw_sample).
+
+  max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
+
+Encoding considerations:
+
+  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see [the section on "Mapping FFV1 into Containers"](#mapping-ffv1-into-containers). This media type is framed binary data Section 4.8 of [@!RFC4288].
+
+Security considerations:
+
+  See [the "Security Considerations" section](#security-considerations) of this document.
+
+Interoperability considerations:  None.
+
+Published specification:
+
+  [@!I-D.ietf-cellar-ffv1] and RFC XXXX.
+
+  [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
+
+Applications which use this media type:
+
+  Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
+
+Fragment identifier considerations:  N/A.
+
+Additional information:  None.
+
+Person & email address to contact for further information:  Michael Niedermayer <michael@niedermayer.cc>
+
+Intended usage:  COMMON
+
+Restrictions on usage:  None.
+
+Author:  Dave Rice <dave@dericed.com>
+
+Change controller:  IETF cellar working group delegated from the IESG.
+
+# IANA Considerations
+
+The IANA is requested to register the following values:
+
+   - Media type registration as described in [Media Type Definition](#media-type-definition).
 
 # Appendixes
 
