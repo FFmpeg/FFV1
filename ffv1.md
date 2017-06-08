@@ -1,6 +1,16 @@
 # Introduction
 
-The FFV1 video codec is a simple and efficient lossless intra-frame only codec.
+This document describes FFV1, a lossless video encoding format. The design of FFV1 considers the storage of image characteristics, data fixity, and the optimized use of encoding time and storage requirements. FFV1 is designed to support a wide range of lossless video applications such as long-term audiovisual preservation, scientific imaging, screen recording, and other video encoding scenarios that seek to avoid the generational loss of lossy video encodings.
+
+This document defines a version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:
+
+- Version 0 of FFV1 was the original implementation of FFV1 and has been in non-experimental use since April 14, 2006 [@?FFV1_V0].
+
+- Version 1 of FFV1 adds support of more video bit depths and has been in use since April 24, 2009 [@?FFV1_V1].
+
+- Version 2 of FFV1 only existed in experimental form and is not described by this document.
+
+- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been in non-experimental use since August 17, 2013 [@?FFV1_V3].
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 

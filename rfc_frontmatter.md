@@ -156,4 +156,28 @@ This document defines FFV1, a lossless intra-frame video encoding format. FFV1 i
   </front>
 </reference>
 
+<reference anchor="FFV1_V0" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=b548f2b91b701e1235608ac882ea6df915167c7e">
+  <front>
+    <title>Commit to mark FFV1 version 0 as non-experimental</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date month="April" year="2006" />
+  </front>
+</reference>
+
+<reference anchor="FFV1_V1" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=68f8d33becbd73b4d0aa277f472a6e8e72ea6849">
+  <front>
+    <title>Commit to release FFV1 version 1</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date month="April" year="2009" />
+  </front>
+</reference>
+
+<reference anchor="FFV1_V3" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=abe76b851c05eea8743f6c899cbe5f7409b0f301">
+  <front>
+    <title>Commit to mark FFV1 version 3 as non-experimental</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"
+    <date month="August" year="2013" />
+  </front>
+</reference>
+
 {mainmatter}
