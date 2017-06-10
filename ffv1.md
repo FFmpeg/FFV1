@@ -203,6 +203,9 @@ RFC:{#template}
 | L | l | X |   |
 +---+---+---+---+
 ```
+The identifers for the positions are made of the first letters of the words
+Top, Left and Right.
+
 Figure: Template used for context and median prediction
 
 The prediction for any sample value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
