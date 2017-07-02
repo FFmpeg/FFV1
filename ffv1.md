@@ -1223,7 +1223,7 @@ pseudo-code                                                   | type
 QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
     for( k = 0; k < 128; ) {                                  |
-        len - 1                                               | sr
+        len - 1                                               | ur
         for( a = 0; a < len; a++ ) {                          |
             quant_tables[ i ][ j ][ k ] = scale* v            |
             k++                                               |
