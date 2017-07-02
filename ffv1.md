@@ -262,7 +262,7 @@ The bitstream contains 1 or more Quantization Table Sets.
 Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences.  
 For each Quantization Table, both the number of quantization steps and their distribution are stored in the bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
-PDF:$$Q_{j}[k]=quant_tables[i][j][k\&255]$$
+PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
 RFC:```
 RFC:Q_{j}[k] = quant_tables[i][j][k&255]
 RFC:```
