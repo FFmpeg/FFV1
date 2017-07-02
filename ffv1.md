@@ -202,8 +202,10 @@ The following table depicts a slice of samples `a,b,c,d,e,f,g,h,i` along with it
 +---+---+---+---+---+---+---+---+
 ```
 
-## Median predictor
-RFC:{#template}
+## Samples
+
+Positions used for context and median predictor are:
+
 ```
 +---+---+---+---+
 |   |   | T |   |
@@ -213,10 +215,11 @@ RFC:{#template}
 | L | l | X |   |
 +---+---+---+---+
 ```
-The identifers for the positions are made of the first letters of the words
-Top, Left and Right.
 
-Figure: Template used for context and median prediction
+`X` is the current processed Sample.  
+The identifers are made of the first letters of the words Top, Left and Right.
+
+## Median predictor
 
 The prediction for any sample value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
 
@@ -240,7 +243,7 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 ## Context
 
-Relative to any sample `X`, as represented in [the Template for Context and Median Prediction](#template), the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
+Relative to any sample `X`, the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
 PDF:$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
 RFC:```
