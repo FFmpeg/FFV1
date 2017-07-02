@@ -1251,7 +1251,7 @@ QuantizationTable(i, j, scale) {                              |
 
 `context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`.
 
-### Restrictions
+# Restrictions
 
 To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
