@@ -242,16 +242,16 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 Relative to any sample `X`, as represented in [the Template for Context and Median Prediction](#template), the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
-PDF:$$context=Q_{0}[l-tl]+\left|Q_{0}\right|(Q_{1}[tl-t]+\left|Q_{1}\right|(Q_{2}[t-tr]+\left|Q_{2}\right|(Q_{3}[L-l]+\left|Q_{3}\right|Q_{4}[T-t])))$$
+PDF:$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
 RFC:```
-RFC:context =              Q_0[l−tl] +
-RFC:          abs(Q_0) * ( Q_1[tl−t] +
-RFC:          abs(Q_1) * ( Q_2[t−tr] +
-RFC:          abs(Q_2) * ( Q_3[L−l]  +
-RFC:          abs(Q_3) *   Q_4[T−t]  )))
+RFC:context = Q_{0}[l − tl] +
+RFC:          Q_{1}[tl − t] +
+RFC:          Q_{2}[t − tr] +
+RFC:          Q_{3}[L − l]  +
+RFC:          Q_{4}[T − t]
 RFC:```
 
-If the context is smaller than 0 then -context is used and the difference between the sample and its predicted value is encoded with a flipped sign.
+If `context >= 0` then `context` is used and the difference between the sample and its predicted value is encoded as is, else `-context` is used and the difference between the sample and its predicted value is encoded with a flipped sign.
 
 ## Quantization Table Sets
 
