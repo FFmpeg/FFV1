@@ -721,14 +721,14 @@ ConfigurationRecord( NumBytes ) {                             |
 
 ### reserved_for_future_use
 
-`reserved_for_future_use` has semantics that are reserved for future use.
-Encoders conforming to this version of this specification SHALL NOT write this value.
+`reserved_for_future_use` has semantics that are reserved for future use.  
+Encoders conforming to this version of this specification SHALL NOT write this value.  
 Decoders conforming to this version of this specification SHALL ignore its value.
 
 ### configuration_record_crc_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
-This is equivalent to storing the crc remainder in the 32-bit parity.
+`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.  
+This is equivalent to storing the crc remainder in the 32-bit parity.  
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ### Mapping FFV1 into Containers
@@ -737,7 +737,7 @@ This `Configuration Record` can be placed in any file format supporting `Configu
 
 #### AVI File Format
 
-The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.  
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
@@ -820,22 +820,22 @@ SliceHeader( ) {                                              |
 
 ### slice_x
 
-`slice_x` indicates the x position on the slice raster formed by num_h_slices.
+`slice_x` indicates the x position on the slice raster formed by num_h_slices.  
 Inferred to be 0 if not present.
 
 ### slice_y
 
-`slice_y` indicates the y position on the slice raster formed by num_v_slices.
+`slice_y` indicates the y position on the slice raster formed by num_v_slices.  
 Inferred to be 0 if not present.
 
 ### slice_width
 
-`slice_width` indicates the width on the slice raster formed by num_h_slices.
+`slice_width` indicates the width on the slice raster formed by num_h_slices.  
 Inferred to be 1 if not present.
 
 ### slice_height
 
-`slice_height` indicates the height on the slice raster formed by num_v_slices.
+`slice_height` indicates the height on the slice raster formed by num_v_slices.  
 Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
@@ -844,12 +844,12 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index
 
-`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.
+`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.  
 Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the temporal and spatial relationship of each line of the `Frame`.
+`picture_structure` specifies the temporal and spatial relationship of each line of the `Frame`.  
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
@@ -862,24 +862,24 @@ Inferred to be 0 if not present.
 
 ### sar_num
 
-`sar_num` specifies the sample aspect ratio numerator.
-Inferred to be 0 if not present.
+`sar_num` specifies the sample aspect ratio numerator.  
+Inferred to be 0 if not present.  
 MUST be 0 if sample aspect ratio is unknown.
 
 ### sar_den
 
-`sar_den` specifies the sample aspect ratio numerator.
-Inferred to be 0 if not present.
+`sar_den` specifies the sample aspect ratio numerator.  
+Inferred to be 0 if not present.  
 MUST be 0 if sample aspect ratio is unknown.
 
 ### reset_contexts
 
-`reset_contexts` indicates if slice contexts must be reset.
+`reset_contexts` indicates if slice contexts must be reset.  
 Inferred to be 0 if not present.
 
 ### slice_coding_mode
 
-`slice_coding_mode` indicates the slice coding mode.
+`slice_coding_mode` indicates the slice coding mode.  
 Inferred to be 0 if not present.
 
 |value  | slice coding mode            |
@@ -912,20 +912,20 @@ SliceContent( ) {                                             |
 
 ### plane_pixel_height
 
-`plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
-`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
+`plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.  
+`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.  
 PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / v_chroma_subsample)`.
 
 ### slice_pixel_height
 
-`slice_pixel_height` is the height in pixels of the slice.
+`slice_pixel_height` is the height in pixels of the slice.  
 PDF:Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$.
 RFC:Its value is `floor(( slice_y + slice_height ) * slice_pixel_height / num_v_slices) - slice_pixel_y`.
 
 ### slice_pixel_y
 
-`slice_pixel_y` is the slice vertical position in pixels.
+`slice_pixel_y` is the slice vertical position in pixels.  
 PDF:Its value is $\lfloor slice\_y * frame\_pixel\_height / num\_v\_slices \rfloor$.
 RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
 
@@ -947,20 +947,20 @@ Line( p, y ) {                                                |
 
 ### plane_pixel_width
 
-`plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.
-`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
+`plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.  
+`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.  
 PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / v_chroma_subsample)`.
 
 ### slice_pixel_width
 
-`slice_pixel_width` is the width in pixels of the slice.
+`slice_pixel_width` is the width in pixels of the slice.  
 PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
 RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
 
 ### slice_pixel_x
 
-`slice_pixel_x` is the slice horizontal position in pixels.
+`slice_pixel_x` is the slice horizontal position in pixels.  
 PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
 RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
@@ -982,7 +982,7 @@ SliceFooter( ) {                                              |
 
 ### slice_size
 
-`slice_size` indicates the size of the slice in bytes.
+`slice_size` indicates the size of the slice in bytes.  
 Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
 
 ### error_status
@@ -998,8 +998,8 @@ Note: this allows finding the start of slices before previous slices have been f
 
 ### slice_crc_parity
 
-`slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.
-This is equivalent to storing the crc remainder in the 32-bit parity.
+`slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.  
+This is equivalent to storing the crc remainder in the 32-bit parity.  
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ## Parameters
@@ -1045,9 +1045,9 @@ Parameters( ) {                                               |
 
 ### version
 
-`version` specifies the version of the FFV1 bitstream.
-Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
-Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
+`version` specifies the version of the FFV1 bitstream.  
+Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.  
+Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.  
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
@@ -1062,7 +1062,7 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 ### micro_version
 
-`micro_version` specifies the micro-version of the FFV1 bitstream.
+`micro_version` specifies the micro-version of the FFV1 bitstream.  
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of micro_version for version 3:
@@ -1098,7 +1098,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 
 ### state_transition_delta
 
-`state_transition_delta` specifies the Range coder custom state transition table.
+`state_transition_delta` specifies the Range coder custom state transition table.  
 If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
 ### colorspace_type
@@ -1134,18 +1134,17 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 ### h_chroma_subsample
 
-PDF:`h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).
+PDF:`h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
 RFC:`h_chroma_subsample` indicates the subsample factor between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
 
 ### v_chroma_subsample
 
-PDF:`v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).
+PDF:`v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
 RFC:`v_chroma_subsample` indicates the subsample factor between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
 
 ### alpha_plane
 
-`alpha_plane`
-:   indicates if a transparency plane is present.
+`alpha_plane` indicates if a transparency plane is present.
 
 |value  | color space used                 |
 |-------|:---------------------------------|
@@ -1154,23 +1153,23 @@ RFC:`v_chroma_subsample` indicates the subsample factor between luma and chroma 
 
 ### num_h_slices
 
-`num_h_slices` indicates the number of horizontal elements of the slice raster.
+`num_h_slices` indicates the number of horizontal elements of the slice raster.  
 Inferred to be 1 if not present.
 
 ### num_v_slices
 
-`num_v_slices` indicates the number of vertical elements of the slice raster.
+`num_v_slices` indicates the number of vertical elements of the slice raster.  
 Inferred to be 1 if not present.
 
 ### quant_table_set_count
 
-`quant_table_set_count` indicates the number of Quantization Table Sets.
-Inferred to be 1 if not present.
+`quant_table_set_count` indicates the number of Quantization Table Sets.  
+Inferred to be 1 if not present.  
 MUST NOT be 0.
 
 ### states_coded
 
-`states_coded` indicates if the respective Quantization Table Set has the initial states coded.
+`states_coded` indicates if the respective Quantization Table Set has the initial states coded.  
 Inferred to be 0 if not present.
 
 | value | initial states                                               |
@@ -1180,8 +1179,8 @@ Inferred to be 0 if not present.
 
 ### initial_state_delta
 
-`initial_state_delta` [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and
-pred = j ? initial\_states[ i ][j - 1][ k ] : 128
+`initial_state_delta` [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and  
+pred = j ? initial\_states[ i ][j - 1][ k ] : 128  
 initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
 
 ### ec
@@ -1196,8 +1195,8 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 
 ### intra
 
-`intra` indicates the relationship between the instances of `Frame`.
-    Inferred to be 0 if not present.
+`intra` indicates the relationship between the instances of `Frame`.  
+Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
 |-------|:-----------------------------------------------------------------|
