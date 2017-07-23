@@ -217,7 +217,7 @@ Positions used for context and median predictor are:
 ```
 
 `X` is the current processed Sample.  
-The identifers are made of the first letters of the words Top, Left and Right.
+The identifiers are made of the first letters of the words Top, Left and Right.
 
 ## Median predictor
 
