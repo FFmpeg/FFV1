@@ -885,12 +885,12 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
     if (colorspace_type == 0) {                               |
-        for( p = 0; p < primary_color_count; p++ ) {          |
+        for( p = 0; p < primary_color_count; p++ )            |
             for( y = 0; y < plane_pixel_height[ p ]; y++ )    |
                 Line( p, y )                                  |
     } else if (colorspace_type == 1) {                        |
         for( y = 0; y < slice_pixel_height; y++ )             |
-            for( p = 0; p < primary_color_count; p++ ) {      |
+            for( p = 0; p < primary_color_count; p++ )        |
                 Line( p, y )                                  |
     }                                                         |
 }                                                             |
