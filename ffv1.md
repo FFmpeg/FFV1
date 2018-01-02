@@ -841,7 +841,7 @@ Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the picture structure.
+`picture_structure` specifies the temporal and spatial relationship of each line of the frame.
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
