@@ -239,7 +239,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -258,9 +258,9 @@ If `context >= 0` then `context` is used and the difference between the sample a
 
 ## Quantization Table Sets
 
-The bitstream contains 1 or more Quantization Table Sets.  
+The FFV1 bitstream contains 1 or more Quantization Table Sets.  
 Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences.  
-For each Quantization Table, both the number of quantization steps and their distribution are stored in the bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
 RFC:```
@@ -277,7 +277,7 @@ For each plane of each slice, a Quantization Table Set is selected from an index
 - For Cb and Cr planes, `quant_table_set_index [ 1 ]` index is used
 - For Alpha plane, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with bitstreams in the wild.
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color space
 
@@ -361,7 +361,7 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 [@!ISO.15444-1.2016]
 
@@ -593,7 +593,7 @@ The alternative state transition table has been built using iterative minimizati
 
 ### Huffman coding mode
 
-This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the frame is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -697,7 +697,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
 
 ```c
 pseudo-code                                                   | type
@@ -1037,7 +1037,7 @@ Parameters( ) {                                               |
 
 ### version
 
-`version` specifies the version of the bitstream.
+`version` specifies the version of the FFV1 bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
 Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
@@ -1054,7 +1054,7 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 ### micro_version
 
-`micro_version` specifies the micro-version of the bitstream.
+`micro_version` specifies the micro-version of the FFV1 bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of micro_version for version 3:
@@ -1091,7 +1091,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 ### state_transition_delta
 
 `state_transition_delta` specifies the Range coder custom state transition table.
-If state_transition_delta is not present in the bitstream, all Range coder custom state transition table elements are assumed to be 0.
+If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
 ### colorspace_type
 
@@ -1285,7 +1285,7 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 ### Multi-threading support and independence of slices
 
-The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
+The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
 After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
 
