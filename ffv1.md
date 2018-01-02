@@ -160,13 +160,13 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 ### NumBytes
 
-NumBytes is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the Configuration Record and Frame. FFV1 relies on its container to store the NumBytes values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the `Configuration Record` and `Frame`. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream functions
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in that bitstream component. It is computed from the NumBytes value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in that bitstream component. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
 
 #### byte_aligned
 
@@ -228,7 +228,7 @@ The prediction for any sample value at position `X` may be computed based upon t
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 Exception for the media predictor:
-if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
+if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following media predictor MUST be used:
 
 `median(left16s, top16s, left16s + top16s - diag16s)`
 
@@ -239,7 +239,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -258,9 +258,9 @@ If `context >= 0` then `context` is used and the difference between the sample a
 
 ## Quantization Table Sets
 
-The bitstream contains 1 or more Quantization Table Sets.  
+The FFV1 bitstream contains 1 or more Quantization Table Sets.  
 Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences.  
-For each Quantization Table, both the number of quantization steps and their distribution are stored in the bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
 RFC:```
@@ -277,7 +277,7 @@ For each plane of each slice, a Quantization Table Set is selected from an index
 - For Cb and Cr planes, `quant_table_set_index [ 1 ]` index is used
 - For Alpha plane, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with bitstreams in the wild.
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color space
 
@@ -285,7 +285,7 @@ FFV1 supports two color spaces: YCbCr and JPEG2000-RCT. Both color spaces allow 
 
 ### YCbCr
 
-In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 frame using YCbCr MUST use one of the following arrangements:
+In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
 
 - Y
 - Y, Alpha
@@ -361,18 +361,18 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 [@!ISO.15444-1.2016]
 
-An FFV1 frame using JPEG2000-RCT MUST use one of the following arrangements:
+An FFV1 `Frame` using JPEG2000-RCT MUST use one of the following arrangements:
 
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
 When FFV1 uses the JPEG2000-RCT color space, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
-As an example, a frame that is two pixels wide and two pixels high, could be comprised of the following structure:
+As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
 
 ```
 +------------------------+------------------------+
@@ -593,7 +593,7 @@ The alternative state transition table has been built using iterative minimizati
 
 ### Huffman coding mode
 
-This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream (of the frame) is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -687,9 +687,9 @@ The same context which is initialized to 128 is used for all fields in the heade
 
 The following MUST be provided by external means during initialization of the decoder:
 
-`frame_pixel_width` is defined as frame width in pixels.
+`frame_pixel_width` is defined as `Frame` width in pixels.
 
-`frame_pixel_height` is defined as frame height in pixels.
+`frame_pixel_height` is defined as `Frame` height in pixels.
 
 Default values at the decoder initialization phase:
 
@@ -697,7 +697,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with `version >= 3`, a Configuration Record is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the Configuration Record, NumBytes, is supplied by the underlying container.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
 
 ```c
 pseudo-code                                                   | type
@@ -719,40 +719,42 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 ### configuration_record_crc_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the Configuration Record as a whole has a crc remainder of 0.
+`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ### Mapping FFV1 into Containers
 
-This Configuration Record can be placed in any file format supporting Configuration Records, fitting as much as possible with how the file format uses to store Configuration Records. The Configuration Record storage place and NumBytes are currently defined and supported by this version of this specification for the following container formats:
+This `Configuration Record` can be placed in any file format supporting `Configuration Records`, fitting as much as possible with how the file format uses to store `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported by this version of this specification for the following container formats:
 
-#### In AVI File Format
+#### AVI File Format
 
-The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
-#### In ISO/IEC 14496-12 (MP4 File Format)
+#### ISO Base Media File Format
 
-The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
+The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
-#### In NUT File Format
+#### NUT File Format
 
 The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
 
 `NumBytes` is defined as the size, in bytes, of the codec\_specific\_data element as indicated in the "length" field of codec\_specific\_data
 
-#### In Matroska File Format
+#### Matroska File Format
 
-FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 Configuration Record structure and no other data. See [@Matroska] for more information about elements.
+FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 `Configuration Record` structure and no other data. See [@Matroska] for more information about elements.
+
+`NumBytes` is defined as the `Element Data Size` of the `CodecPrivate` Element.
 
 ## Frame
 
-A frame consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
+A `Frame` consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
 
 ```c
 pseudo-code                                                   | type
@@ -830,7 +832,7 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
 
-`quant_table_set_index_count` is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 )`.
 
 ### quant_table_set_index
 
@@ -839,7 +841,7 @@ Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the picture structure.
+`picture_structure` specifies the temporal and spatial relationship of each line of the `Frame`.
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
@@ -1035,7 +1037,7 @@ Parameters( ) {                                               |
 
 ### version
 
-`version` specifies the version of the bitstream.
+`version` specifies the version of the FFV1 bitstream.
 Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
 Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
@@ -1052,7 +1054,7 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 ### micro_version
 
-`micro_version` specifies the micro-version of the bitstream.
+`micro_version` specifies the micro-version of the FFV1 bitstream.
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of micro_version for version 3:
@@ -1063,7 +1065,7 @@ Meaning of micro_version for version 3:
 |4      | first stable variant    |
 |Other  | reserved for future use |
 
-\* were development versions which may be incompatible with the stable variants.
+\* development versions which may be incompatible with the stable variants.
 
 Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):
 
@@ -1073,11 +1075,11 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 |TBA     | first stable variant    |
 |Other   | reserved for future use |
 
-\* were development versions which may be incompatible with the stable variants.
+\* development versions which may be incompatible with the stable variants.
 
 ### coder_type
 
-`coder_type` specifies the coder used
+`coder_type` specifies the coder used.
 
 |value  | coder used                                      |
 |-------|:------------------------------------------------|
@@ -1089,7 +1091,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 ### state_transition_delta
 
 `state_transition_delta` specifies the Range coder custom state transition table.
-If state_transition_delta is not present in the bitstream, all Range coder custom state transition table elements are assumed to be 0.
+If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
 ### colorspace_type
 
@@ -1186,13 +1188,13 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 
 ### intra
 
-`intra` indicates the relationship between frames.
+`intra` indicates the relationship between the instances of `Frame`.
     Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
 |-------|:-----------------------------------------------------------------|
-|0      | frames are independent or dependent (keyframes and non keyframes)|
-|1      | frames are independent (keyframes only)                          |
+|0      | Frames are independent or dependent (keyframes and non keyframes)|
+|1      | Frames are independent (keyframes only)                          |
 |Other  | reserved for future use                                          |
 
 ## Quantization Table Set
@@ -1256,9 +1258,9 @@ QuantizationTable(i, j, scale) {                              |
 To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
-For each frame, each position in the slice raster MUST be filled by one and only one slice of the frame (no missing slice position, no slice overlapping).
+For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each Frame with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous frame, except if reset\_contexts is 1.
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.
 
 # Security Considerations
 
@@ -1283,11 +1285,11 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 ### Multi-threading support and independence of slices
 
-The bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
+The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
-After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
+After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the `Frame` up to slice\_size of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
 
-Architecture overview of slices in a frame:
+Architecture overview of slices in a `Frame`:
 
 |                                                               |
 |:--------------------------------------------------------------|
