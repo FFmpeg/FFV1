@@ -160,7 +160,7 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the `Configuration Record` and Frame. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the `Configuration Record` and `Frame`. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream functions
 
@@ -285,7 +285,7 @@ FFV1 supports two color spaces: YCbCr and JPEG2000-RCT. Both color spaces allow 
 
 ### YCbCr
 
-In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 frame using YCbCr MUST use one of the following arrangements:
+In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
 
 - Y
 - Y, Alpha
@@ -365,14 +365,14 @@ Background: At the time of this writing, in all known implementations of FFV1 bi
 
 [@!ISO.15444-1.2016]
 
-An FFV1 frame using JPEG2000-RCT MUST use one of the following arrangements:
+An FFV1 `Frame` using JPEG2000-RCT MUST use one of the following arrangements:
 
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
 When FFV1 uses the JPEG2000-RCT color space, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
-As an example, a frame that is two pixels wide and two pixels high, could be comprised of the following structure:
+As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
 
 ```
 +------------------------+------------------------+
@@ -593,7 +593,7 @@ The alternative state transition table has been built using iterative minimizati
 
 ### Huffman coding mode
 
-This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the frame is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -687,9 +687,9 @@ The same context which is initialized to 128 is used for all fields in the heade
 
 The following MUST be provided by external means during initialization of the decoder:
 
-`frame_pixel_width` is defined as frame width in pixels.
+`frame_pixel_width` is defined as `Frame` width in pixels.
 
-`frame_pixel_height` is defined as frame height in pixels.
+`frame_pixel_height` is defined as `Frame` height in pixels.
 
 Default values at the decoder initialization phase:
 
@@ -697,7 +697,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
 
 ```c
 pseudo-code                                                   | type
@@ -754,7 +754,7 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 
 ## Frame
 
-A frame consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
+A `Frame` consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
 
 ```c
 pseudo-code                                                   | type
@@ -841,7 +841,7 @@ Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the temporal and spatial relationship of each line of the frame.
+`picture_structure` specifies the temporal and spatial relationship of each line of the `Frame`.
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
@@ -1188,13 +1188,13 @@ initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) 
 
 ### intra
 
-`intra` indicates the relationship between frames.
+`intra` indicates the relationship between the instances of `Frame`.
     Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
 |-------|:-----------------------------------------------------------------|
-|0      | frames are independent or dependent (keyframes and non keyframes)|
-|1      | frames are independent (keyframes only)                          |
+|0      | Frames are independent or dependent (keyframes and non keyframes)|
+|1      | Frames are independent (keyframes only)                          |
 |Other  | reserved for future use                                          |
 
 ## Quantization Table Set
@@ -1258,9 +1258,9 @@ QuantizationTable(i, j, scale) {                              |
 To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
 Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
-For each frame, each position in the slice raster MUST be filled by one and only one slice of the frame (no missing slice position, no slice overlapping).
+For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each Frame with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous frame, except if reset\_contexts is 1.
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.
 
 # Security Considerations
 
@@ -1287,9 +1287,9 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
-After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the frame up to slice\_size of the first slice at the beginning of the frame, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of corrupted frame (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
+After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the `Frame` up to slice\_size of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seek into the stream.
 
-Architecture overview of slices in a frame:
+Architecture overview of slices in a `Frame`:
 
 |                                                               |
 |:--------------------------------------------------------------|
