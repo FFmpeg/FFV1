@@ -228,7 +228,7 @@ The prediction for any sample value at position `X` may be computed based upon t
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 Exception for the media predictor:
-if colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 ), the following media predictor MUST be used:
+if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following media predictor MUST be used:
 
 `median(left16s, top16s, left16s + top16s - diag16s)`
 
@@ -832,7 +832,7 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
 
-`quant_table_set_index_count` is defined as 1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 ).
+`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 )`.
 
 ### quant_table_set_index
 
