@@ -160,7 +160,7 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the Configuration Record and Frame. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the `Configuration Record` and Frame. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream functions
 
@@ -697,7 +697,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a bitstream with `version >= 3`, a Configuration Record is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the Configuration Record, `NumBytes`, is supplied by the underlying container.
+In the case of a bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all frames. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
 
 ```c
 pseudo-code                                                   | type
@@ -719,24 +719,24 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 ### configuration_record_crc_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the Configuration Record as a whole has a crc remainder of 0.
+`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
 This is equivalent to storing the crc remainder in the 32-bit parity.
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ### Mapping FFV1 into Containers
 
-This Configuration Record can be placed in any file format supporting Configuration Records, fitting as much as possible with how the file format uses to store Configuration Records. The Configuration Record storage place and `NumBytes` are currently defined and supported by this version of this specification for the following container formats:
+This `Configuration Record` can be placed in any file format supporting `Configuration Records`, fitting as much as possible with how the file format uses to store `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported by this version of this specification for the following container formats:
 
 #### AVI File Format
 
-The Configuration Record extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
 
 #### ISO Base Media File Format
 
-The Configuration Record extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
+The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
@@ -748,7 +748,7 @@ The codec\_specific\_data element (in "stream_header" packet) contains the Confi
 
 #### Matroska File Format
 
-FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 Configuration Record structure and no other data. See [@Matroska] for more information about elements.
+FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 `Configuration Record` structure and no other data. See [@Matroska] for more information about elements.
 
 `NumBytes` is defined as the `Element Data Size` of the `CodecPrivate` Element.
 
