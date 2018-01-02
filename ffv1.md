@@ -1065,7 +1065,7 @@ Meaning of micro_version for version 3:
 |4      | first stable variant    |
 |Other  | reserved for future use |
 
-\* were development versions which may be incompatible with the stable variants.
+\* development versions which may be incompatible with the stable variants.
 
 Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):
 
@@ -1075,7 +1075,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 |TBA     | first stable variant    |
 |Other   | reserved for future use |
 
-\* were development versions which may be incompatible with the stable variants.
+\* development versions which may be incompatible with the stable variants.
 
 ### coder_type
 
