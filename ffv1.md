@@ -1079,7 +1079,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 
 ### coder_type
 
-`coder_type` specifies the coder used
+`coder_type` specifies the coder used.
 
 |value  | coder used                                      |
 |-------|:------------------------------------------------|
