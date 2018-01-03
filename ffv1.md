@@ -176,6 +176,10 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 `byte_aligned( )` is true if `remaining_bits_in_bitstream( NumBytes )` is a multiple of 8, otherwise false.
 
+#### get_bits
+
+`get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The current position is increased by `i`.
+
 # General Description
 
 Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored see [Coding of the Sample Difference](#coding-of-the-sample-difference).
@@ -648,7 +652,7 @@ log2_run[41]={                                                |
 };                                                            |
                                                               |
 if (run_count == 0 && run_mode == 1) {                        |
-    if (get_bits1()) {                                        |
+    if (get_bits(1)) {                                        |
         run_count = 1 << log2_run[run_index];                 |
         if (x + run_count <= w)                               |
             run_index++;                                      |
