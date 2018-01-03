@@ -591,9 +591,9 @@ The alternative state transition table has been built using iterative minimizati
 241,243,242,244,245,246,247,248,249,250,251,252,252,253,254,255,
 ```
 
-### Huffman coding mode
+### Golomb Rice mode
 
-This coding mode uses Golomb Rice codes. The VLC code is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -876,7 +876,7 @@ Inferred to be 0 if not present.
 
 |value  | slice coding mode            |
 |-------|:-----------------------------|
-| 0     | normal Range Coding or VLC   |
+| 0     | Range Coding or Golomb Rice  |
 | 1     | raw PCM                      |
 | Other | reserved for future use      |
 
