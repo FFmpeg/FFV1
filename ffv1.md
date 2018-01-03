@@ -806,7 +806,7 @@ SliceHeader( ) {                                              |
     if (version >= 4) {                                       |
         reset_contexts                                        | br
         slice_coding_mode                                     | ur
-   }                                                          |
+    }                                                         |
 }                                                             |
 ```
 
