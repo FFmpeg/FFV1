@@ -914,8 +914,8 @@ SliceContent( ) {                                             |
 
 `plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.  
 `plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.  
-PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / v\_chroma\_subsample \rceil$.
-RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / v_chroma_subsample)`.
+PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / log2\_v\_chroma\_subsample \rceil$.
+RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / log2_v_chroma_subsample)`.
 
 ### slice_pixel_height
 
@@ -949,8 +949,8 @@ Line( p, y ) {                                                |
 
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.  
 `plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.  
-PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / v\_chroma\_subsample \rceil$.
-RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / v_chroma_subsample)`.
+PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_v\_chroma\_subsample) \rceil$.
+RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_v_chroma_subsample))`.
 
 ### slice_pixel_width
 
@@ -1019,8 +1019,8 @@ Parameters( ) {                                               |
     if (version >= 1)                                         |
         bits_per_raw_sample                                   | ur
     chroma_planes                                             | br
-    log2( h_chroma_subsample )                                | ur
-    log2( v_chroma_subsample )                                | ur
+    log2_h_chroma_subsample                                   | ur
+    log2_v_chroma_subsample                                   | ur
     alpha_plane                                               | br
     if (version >= 3) {                                       |
         num_h_slices - 1                                      | ur
@@ -1132,15 +1132,15 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 \* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
-### h_chroma_subsample
+### log2_h_chroma_subsample
 
-PDF:`h_chroma_subsample` indicates the subsample factor between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
-RFC:`h_chroma_subsample` indicates the subsample factor between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
+PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
+RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
 
-### v_chroma_subsample
+### log2_v_chroma_subsample
 
-PDF:`v_chroma_subsample` indicates the subsample factor between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
-RFC:`v_chroma_subsample` indicates the subsample factor between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
+PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
+RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
 
 ### alpha_plane
 
