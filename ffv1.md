@@ -170,7 +170,7 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the current position in that bitstream component. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that bitstream component. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
 
 #### byte_aligned
 
@@ -178,7 +178,7 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 #### get_bits
 
-`get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The current position is increased by `i`.
+`get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The pointer is increased by `i`.
 
 # General Description
 
