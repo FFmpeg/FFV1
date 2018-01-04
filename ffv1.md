@@ -949,8 +949,8 @@ Line( p, y ) {                                                |
 
 `plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.  
 `plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.  
-PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_v\_chroma\_subsample) \rceil$.
-RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_v_chroma_subsample))`.
+PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_h\_chroma\_subsample) \rceil$.
+RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_h_chroma_subsample))`.
 
 ### slice_pixel_width
 
