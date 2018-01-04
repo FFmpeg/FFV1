@@ -1114,12 +1114,12 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### bits_per_raw_sample
 
-`bits_per_raw_sample` indicates the number of bits for each luma and chroma sample. Inferred to be 8 if not present.
+`bits_per_raw_sample` indicates the number of bits for each sample. Inferred to be 8 if not present.
 
-|value  | bits for each luma and chroma sample            |
+|value  | bits for each sample                            |
 |-------|:------------------------------------------------|
 | 0     | reserved\*                                      |
-| Other | the actual bits for each luma and chroma sample |
+| Other | the actual bits for each sample                 |
 
 \* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
