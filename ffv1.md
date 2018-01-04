@@ -180,7 +180,7 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 A border is assumed for each coded slice for the purpose of the predictor and context according to the following rules:
 
-- one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row
+- one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost sample of the column of samples to the left of the coded slice is assumed to be `0`
 - one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
 - an additional column of samples to the left of the coded slice and two rows of samples above the coded slice are assumed to be `0`
 
