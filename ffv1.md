@@ -811,10 +811,6 @@ SliceHeader( ) {                                              |
     picture_structure                                         | ur
     sar_num                                                   | ur
     sar_den                                                   | ur
-    if (version >= 4) {                                       |
-        reset_contexts                                        | br
-        slice_coding_mode                                     | ur
-    }                                                         |
 }                                                             |
 ```
 
@@ -871,22 +867,6 @@ MUST be 0 if sample aspect ratio is unknown.
 `sar_den` specifies the sample aspect ratio numerator.
 Inferred to be 0 if not present.
 MUST be 0 if sample aspect ratio is unknown.
-
-### reset_contexts
-
-`reset_contexts` indicates if slice contexts must be reset.
-Inferred to be 0 if not present.
-
-### slice_coding_mode
-
-`slice_coding_mode` indicates the slice coding mode.
-Inferred to be 0 if not present.
-
-|value  | slice coding mode            |
-|-------|:-----------------------------|
-| 0     | normal Range Coding or VLC   |
-| 1     | raw PCM                      |
-| Other | reserved for future use      |
 
 ## Slice Content
 
@@ -1268,7 +1248,7 @@ Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`.
 
 # Security Considerations
 
