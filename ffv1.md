@@ -23,17 +23,21 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
+`Sample`: The smallest addressable representation of a color component or a luminance component in a frame. Examples of sample are Luminance, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
+
+`Pixel`: The smallest addressable representation of a color in a frame. It is composed of 1 or more samples.
+
 `ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method.
 
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
-`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a sample.
+`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a Pixel.
 
 `VLC`:   Variable Length Code, a code which maps source symbols to a variable number of bits.
 
-`RGB`:   A reference to the method of storing the value of a sample by using three numeric values that represent Red, Green, and Blue.
+`RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a sample by using three numeric values that represent the luminance of the sample (Y) and the chrominance of the sample (Cb and Cr).
+`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luminance of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr).
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
@@ -239,7 +243,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing pixel values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -929,10 +933,10 @@ pseudo-code                                                   | type
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
         for( x = 0; x < plane_pixel_width[ p ]; x++ )         |
-            Pixel( p, y, x )                                  |
+            Sample( p, y, x )                                 |
     } else if (colorspace_type == 1) {                        |
         for( x = 0; x < slice_pixel_width; x++ )              |
-            Pixel( p, y, x )                                  |
+            Sample( p, y, x )                                 |
     }                                                         |
 }                                                             |
 ```
@@ -1266,7 +1270,7 @@ For each `Frame` with keyframe value of 0, each slice MUST have the same value o
 
 Like any other codec, (such as [@RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in Pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
 
 The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
