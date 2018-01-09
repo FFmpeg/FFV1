@@ -23,7 +23,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
-`Sample`: The smallest addressable representation of a color component or a luminance component in a frame. Examples of sample are Luminance, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
+`Sample`: The smallest addressable representation of a color component or a luma component in a frame. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
 
 `Pixel`: The smallest addressable representation of a color in a frame. It is composed of 1 or more samples.
 
@@ -37,7 +37,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luminance of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr).
+`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr).
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
