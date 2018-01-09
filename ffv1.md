@@ -1179,9 +1179,18 @@ Inferred to be 0 if not present.
 
 ### initial_state_delta
 
-`initial_state_delta` [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and  
-pred = j ? initial\_states[ i ][j - 1][ k ] : 128  
-initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
+
+PDF:$$pred = j ? initial\_states[ i ][j - 1][ k ] : 128$$
+RFC:```
+RFC:pred = j ? initial_states[ i ][j - 1][ k ] : 128
+RFC:```
+
+PDF:initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+RFC:```
+RFC:initial_state[ i ][ j ][ k ] =
+RFC:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+RFC:```
 
 ### ec
 
