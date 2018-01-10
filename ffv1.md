@@ -686,7 +686,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
-| sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#huffman-coding-mode) |
+| sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#golomb-rice-mode) |
 | br   | Range coded Boolean (1-bit) symbol with the method described in [Range binary values](#range-binary-values)  |
 | ur   | Range coded unsigned scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
