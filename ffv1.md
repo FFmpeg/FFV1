@@ -224,8 +224,7 @@ Positions used for context and median predictor are:
 +---+---+---+---+
 ```
 
-`X` is the current processed Sample.  
-The identifiers are made of the first letters of the words Top, Left and Right.
+`X` is the current processed Sample. The identifiers are made of the first letters of the words Top, Left and Right.
 
 ## Median predictor
 
@@ -266,9 +265,7 @@ If `context >= 0` then `context` is used and the difference between the sample a
 
 ## Quantization Table Sets
 
-The FFV1 bitstream contains 1 or more Quantization Table Sets.  
-Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences.  
-For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+The FFV1 bitstream contains 1 or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
 RFC:```
@@ -336,8 +333,7 @@ RFC:```
 RFC:b=Cb+g
 RFC:```
 
-Exception for the reversible conversions between YCbCr and RGB:
-if bits_per_raw_sample is between 9 and 15 inclusive, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 PDF:$$Cb=g-b$$
 RFC:```
@@ -1179,9 +1175,18 @@ Inferred to be 0 if not present.
 
 ### initial_state_delta
 
-`initial_state_delta` [ i ][ j ][ k ] indicates the initial Range coder state, it is encoded using k as context index and  
-pred = j ? initial\_states[ i ][j - 1][ k ] : 128  
-initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
+
+PDF:$$pred = j ? initial\_states[ i ][j - 1][ k ] : 128$$
+RFC:```
+RFC:pred = j ? initial_states[ i ][j - 1][ k ] : 128
+RFC:```
+
+PDF:initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+RFC:```
+RFC:initial_state[ i ][ j ][ k ] =
+RFC:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+RFC:```
 
 ### ec
 
