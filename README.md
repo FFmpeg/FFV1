@@ -11,3 +11,7 @@ The FFV1 specification was iniitally written in lyx. In July 2015 the formatting
 The Markdown version of the FFV1 specification may also be converted into XML, HTML, and text formats as an IETF RFC draft. Producing the RFC formats requires mmark version 1.3.4 or higher and xml2rfc version 2.5.1 or higher.
 
 A Makefile is provided that can produce the PDF and RFC outputs.
+
+## Code of Conduct
+
+Please note that this project is developed under the [FFmpeg Code of Conduct](https://www.ffmpeg.org/developer.html#Code-of-conduct). By participating in this project you agree to abide by its terms.
