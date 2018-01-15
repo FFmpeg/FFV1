@@ -37,7 +37,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr).
+`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma and 2 chrominances e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
@@ -246,7 +246,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr color space with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT color space with Range Coder coder, or 16-bit any color space with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT color space with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -284,9 +284,9 @@ For each plane of each slice, a Quantization Table Set is selected from an index
 
 Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
-## Color space
+## Color spaces
 
-FFV1 supports two color spaces: YCbCr and JPEG2000-RCT. Both color spaces allow an optional Alpha plane that can be used to code transparency data.
+FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha plane that can be used to code transparency data.
 
 ### YCbCr
 
@@ -297,11 +297,11 @@ In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST b
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
-When FFV1 uses the YCbCr color space, the Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
+The Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
 
-### JPEG2000-RCT
+### RGB
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space. Reversible conversions between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
 PDF:$$Cb=b-g$$
 RFC:```
@@ -365,16 +365,11 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT color space was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 [@!ISO.15444-1.2016]
 
-An FFV1 `Frame` using JPEG2000-RCT MUST use one of the following arrangements:
-
-- Y, Cb, Cr
-- Y, Cb, Cr, Alpha
-
-When FFV1 uses the JPEG2000-RCT color space, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+When FFV1 uses the JPEG2000-RCT, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
 As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
 
@@ -388,7 +383,7 @@ As an example, a `Frame` that is two pixels wide and two pixels high, could be c
 +------------------------+------------------------+
 ```
 
-In JPEG2000-RCT color space, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
+In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
 
 Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
 
@@ -1099,19 +1094,22 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### colorspace_type
 
-`colorspace_type` specifies the color space.
+`colorspace_type` specifies color space losslessly encoded, Pixel transformation used by the encoder, as well as interleave method.
 
-|value  | color space used                |
-|-------|:--------------------------------|
-| 0     | YCbCr                           |
-| 1     | JPEG2000-RCT                    |
-| Other | reserved for future use         |
+|value  | color space losslessly encoded  | transformation                  | interleave method               |
+|-------|:--------------------------------|:--------------------------------|:--------------------------------|
+| 0     | YCbCr                           | No Pixel transformation         | plane then line                 |
+| 1     | RGB                             | JPEG2000-RCT                    | line then plane                 |
+| Other | reserved for future use         | reserved for future use         | reserved for future use         |
+
+Restrictions:  
+If `colorspace_type` is 1, `chroma_planes` MUST be 1, `h_chroma_subsample` MUST be 1, `v_chroma_subsample` MUST be 1.  
 
 ### chroma_planes
 
 `chroma_planes` indicates if chroma (color) planes are present.
 
-|value  | color space used                |
+|value  | presence                        |
 |-------|:--------------------------------|
 |0      |   chroma planes are not present |
 |1      |   chroma planes are present     |
@@ -1142,7 +1140,7 @@ RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers t
 
 `alpha_plane` indicates if a transparency plane is present.
 
-|value  | color space used                 |
+|value  | presence                         |
 |-------|:---------------------------------|
 | 0     | transparency plane is not present|
 | 1     | transparency plane is present    |
