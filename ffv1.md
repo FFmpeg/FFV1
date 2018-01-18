@@ -933,10 +933,10 @@ pseudo-code                                                   | type
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
         for( x = 0; x < plane_pixel_width[ p ]; x++ )         |
-            Sample( p, y, x )                                 |
+            sample_difference[ p ][ y ][ x ]                  |
     } else if (colorspace_type == 1) {                        |
         for( x = 0; x < slice_pixel_width; x++ )              |
-            Sample( p, y, x )                                 |
+            sample_difference[ p ][ y ][ x ]                  |
     }                                                         |
 }                                                             |
 ```
@@ -959,6 +959,10 @@ RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_sl
 `slice_pixel_x` is the slice horizontal position in pixels.  
 PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
 RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
+
+### sample_difference
+
+`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y` and x position `x`. Sample value is computed based on prediction and context described in [the section on the `Samples`](#samples).  
 
 ## Slice Footer
 
