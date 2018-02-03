@@ -2,15 +2,18 @@
 
 This document describes FFV1, a lossless video encoding format. The design of FFV1 considers the storage of image characteristics, data fixity, and the optimized use of encoding time and storage requirements. FFV1 is designed to support a wide range of lossless video applications such as long-term audiovisual preservation, scientific imaging, screen recording, and other video encoding scenarios that seek to avoid the generational loss of lossy video encodings.
 
-This document defines a version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:
+This document defines a version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
 
-- Version 0 of FFV1 was the original implementation of FFV1 and has been in non-experimental use since April 14, 2006 [@?FFV1_V0].
+- Version 0 of FFV1 was the original implementation of FFV1 and has been in non-experimental use since April 14, 2006 [@?FFV1_V0].{V3}
 
-- Version 1 of FFV1 adds support of more video bit depths and has been in use since April 24, 2009 [@?FFV1_V1].
+- Version 1 of FFV1 adds support of more video bit depths and has been in use since April 24, 2009 [@?FFV1_V1].{V3}
 
-- Version 2 of FFV1 only existed in experimental form and is not described by this document.
+- Version 2 of FFV1 only existed in experimental form and is not described by this document.{V3}
 
-- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been in non-experimental use since August 17, 2013 [@?FFV1_V3].
+- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been in non-experimental use since August 17, 2013 [@?FFV1_V3].{V3}
+
+RFC:This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
+PDF:This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within <https://datatracker.ietf.org/doc/draft-ietf-cellar-ffv1/>.{V4}
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 
@@ -802,10 +805,10 @@ SliceHeader( ) {                                              |
     picture_structure                                         | ur
     sar_num                                                   | ur
     sar_den                                                   | ur
-    if (version >= 4) {                                       |
-        reset_contexts                                        | br
-        slice_coding_mode                                     | ur
-    }                                                         |
+    if (version >= 4) {                                       |   {V4}
+        reset_contexts                                        | br{V4}
+        slice_coding_mode                                     | ur{V4}
+    }                                                         |   {V4}
 }                                                             |
 ```
 
@@ -863,21 +866,21 @@ MUST be 0 if sample aspect ratio is unknown.
 Inferred to be 0 if not present.  
 MUST be 0 if sample aspect ratio is unknown.
 
-### reset_contexts
+### reset_contexts{V4}
 
-`reset_contexts` indicates if slice contexts must be reset.  
-Inferred to be 0 if not present.
+`reset_contexts` indicates if slice contexts must be reset.  {V4}
+Inferred to be 0 if not present.{V4}
 
-### slice_coding_mode
+### slice_coding_mode{V4}
 
-`slice_coding_mode` indicates the slice coding mode.  
-Inferred to be 0 if not present.
+`slice_coding_mode` indicates the slice coding mode.  {V4}
+Inferred to be 0 if not present.{V4}
 
-|value  | slice coding mode            |
-|-------|:-----------------------------|
-| 0     | Range Coding or Golomb Rice  |
-| 1     | raw PCM                      |
-| Other | reserved for future use      |
+|value  | slice coding mode            |{V4}
+|-------|:-----------------------------|{V4}
+| 0     | Range Coding or Golomb Rice  |{V4}
+| 1     | raw PCM                      |{V4}
+| Other | reserved for future use      |{V4}
 
 ## Slice Content
 
@@ -1051,6 +1054,7 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 |1       |  FFV1 version 1         |
 |2       |  reserved\*             |
 |3       |  FFV1 version 3         |
+|4       |  FFV1 version 4         |{V4}
 |Other   |  reserved for future use|
 
 \* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
@@ -1070,15 +1074,15 @@ Meaning of micro_version for version 3:
 
 \* development versions which may be incompatible with the stable variants.
 
-Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):
+Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
 
-|value   | micro_version           |
-|--------|:------------------------|
-|0...TBA | reserved\*              |
-|TBA     | first stable variant    |
-|Other   | reserved for future use |
+|value   | micro_version           |{V4}
+|--------|:------------------------|{V4}
+|0...TBA | reserved\*              |{V4}
+|TBA     | first stable variant    |{V4}
+|Other   | reserved for future use |{V4}
 
-\* development versions which may be incompatible with the stable variants.
+\* development versions which may be incompatible with the stable variants.{V4}
 
 ### coder_type
 
@@ -1274,7 +1278,8 @@ Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`.{V3}
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.{V4}
 
 # Security Considerations
 

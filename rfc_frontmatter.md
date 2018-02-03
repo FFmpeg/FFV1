@@ -1,7 +1,8 @@
 % Title = "FF Video Codec 1"
 % abbrev = "FFV1"
 % category = "std"
-% docName = "draft-ietf-cellar-ffv1-01"
+% docName = "draft-ietf-cellar-ffv1-01"{V3}
+% docName = "draft-ietf-cellar-ffv1-v4-00"{V4}
 % ipr= "trust200902"
 % area = "art"
 % workgroup = "cellar"

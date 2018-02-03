@@ -12,6 +12,10 @@ The Markdown version of the FFV1 specification may also be converted into XML, H
 
 A Makefile is provided that can produce the PDF and RFC outputs.
 
+## Version Handling
+
+The ffv1.md file is currently intended to be used to produce documentation for both FFV1 versions 0, 1, and 3 as well as FFV1 version 4. Lines containing `{V4}` will be suppressed from the version 0,1,3 outputs while lines containing `{V3}` will be suppressed from the version 4 outputs.
+
 ## Code of Conduct
 
 Please note that this project is developed under the [FFmpeg Code of Conduct](https://www.ffmpeg.org/developer.html#Code-of-conduct). By participating in this project you agree to abide by its terms.
