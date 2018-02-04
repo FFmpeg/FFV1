@@ -1234,7 +1234,7 @@ QuantizationTableSet( i ) {                                   |
         QuantizationTable( i, j, scale )                      |
         scale *= 2 * len_count[ i ][ j ] - 1                  |
     }                                                         |
-    context_count[ i ] = ( scale + 1 ) / 2                    |
+    context_count[ i ] = ceil ( scale / 2 )                   |
 }                                                             |
 ```
 
