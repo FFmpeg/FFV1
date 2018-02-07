@@ -159,7 +159,7 @@ a = b, a += b, a -= b, a *= b
 
 ### Pseudo-code
 
-Several components of FFV1 are described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.1990] as uses its `if/else`, `while` and `for` functions as well as functions defined within this document.
+The FFV1 bitstream is described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.1990] as uses its `if/else`, `while` and `for` functions as well as functions defined within this document.
 
 ### Range
 
@@ -167,13 +167,13 @@ Several components of FFV1 are described in this document using pseudo-code. Not
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 components such as the `Configuration Record` and `Frame`. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream functions
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that bitstream component. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that component already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that Configuration Record or Frame. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that Configuration Record or Frame already read by the bitstream parser.
 
 #### byte_aligned
 
