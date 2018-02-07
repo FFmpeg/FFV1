@@ -336,7 +336,7 @@ RFC:```
 RFC:b=Cb+g
 RFC:```
 
-Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and alpha_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 PDF:$$Cb=g-b$$
 RFC:```
@@ -368,7 +368,7 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 [@!ISO.15444-1.2016]
 
