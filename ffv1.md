@@ -26,7 +26,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
-`Sample`: The smallest addressable representation of a color component or a luma component in a frame. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
+`Sample`: The smallest addressable representation of a color component or a luma component in a frame. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
 
 `Pixel`: The smallest addressable representation of a color in a frame. It is composed of 1 or more samples.
 
@@ -36,11 +36,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a Pixel.
 
-`VLC`:   Variable Length Code, a code which maps source symbols to a variable number of bits.
+`VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
 
 `RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma and 2 chrominances e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
+`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma sample and 2 chrominance samples e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
@@ -476,7 +476,7 @@ RFC:```
 
 #### Range non binary values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
 pseudo-code                                                   | type
@@ -595,7 +595,7 @@ The alternative state transition table has been built using iterative minimizati
 
 ### Golomb Rice mode
 
-This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits, the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Prefix
 
@@ -627,11 +627,11 @@ This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the pref
 
 #### Run mode
 
-Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level is coded.
+Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level are coded.
 
 #### Run length coding
 
-The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index which determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
+The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
 
 ```c
 pseudo-code                                                   | type
@@ -685,7 +685,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 | ur   | Range coded unsigned scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 
-The same context which is initialized to 128 is used for all fields in the header.
+The same context that is initialized to 128 is used for all fields in the header.
 
 The following MUST be provided by external means during initialization of the decoder:
 
@@ -738,7 +738,7 @@ See [@AVI] for more information about chunks.
 
 #### ISO Base Media File Format
 
-The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box which contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
+The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box that contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2015] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
@@ -960,7 +960,7 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ### sample_difference
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y` and x position `x`. Sample value is computed based on prediction and context described in [the section on the `Samples`](#samples).  
+`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y`, and x position `x`. The sample value is computed based on prediction and context described in [the section on the `Samples`](#samples).  
 
 ## Slice Footer
 
@@ -1072,7 +1072,7 @@ Meaning of micro_version for version 3:
 |4      | first stable variant    |
 |Other  | reserved for future use |
 
-\* development versions which may be incompatible with the stable variants.
+\* development versions may be incompatible with the stable variants.
 
 Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
 
@@ -1111,7 +1111,7 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 | Other | reserved for future use         | reserved for future use         | reserved for future use         |
 
 Restrictions:  
-If `colorspace_type` is 1, `chroma_planes` MUST be 1, `h_chroma_subsample` MUST be 1, `v_chroma_subsample` MUST be 1.  
+If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `h_chroma_subsample` MUST be 1, and `v_chroma_subsample` MUST be 1.  
 
 ### chroma_planes
 
@@ -1291,7 +1291,7 @@ The reference implementation [@REFIMPL] contains no known buffer overflow or cas
 
 The reference implementation [@REFIMPL] was validated in the following conditions:
 
-* Sending the decoder valid packets generated by the reference encoder and verifying that the decoder's output matches the encoders input.
+* Sending the decoder valid packets generated by the reference encoder and verifying that the decoder's output matches the encoder's input.
 * Sending the decoder packets generated by the reference encoder and then subjected to random corruption.
 * Sending the decoder random packets that are not FFV1.
 
