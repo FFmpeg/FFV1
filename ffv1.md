@@ -1111,7 +1111,7 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 | Other | reserved for future use         | reserved for future use         | reserved for future use         |
 
 Restrictions:  
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `h_chroma_subsample` MUST be 1, and `v_chroma_subsample` MUST be 1.  
+If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
 
 ### chroma_planes
 
