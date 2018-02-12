@@ -1313,13 +1313,13 @@ Optional parameters:
 
   version:  The version of the FFV1 encoding as defined by [in the section on `version`](#version).
 
-  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on `micro_version`](#micro_version).
+  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on `micro_version`](#microversion).
 
-  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on `coder_type`](#coder_type).
+  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on `coder_type`](#codertype).
 
-  color_space:  The color_space of the FFV1 encoding as defined by [in the section on `color_space`](#color_space).
+  colorspace_type:  The colorspace_type of the FFV1 encoding as defined by [in the section on `colorspace_type`](#colorspacetype).
 
-  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on `bits_per_raw_sample`](#bits_per_raw_sample).
+  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on `bits_per_raw_sample`](#bitsperrawsample).
 
   max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
