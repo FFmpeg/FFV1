@@ -26,9 +26,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
-`Sample`: The smallest addressable representation of a color component or a luma component in a frame. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
+`Container`: Format that encapsulates `Frames` and (when required) a `Configuration Record` into a bitstream.
 
-`Pixel`: The smallest addressable representation of a color in a frame. It is composed of 1 or more samples.
+`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, Blue.
+
+`Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more samples.
 
 `ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method.
 
@@ -167,13 +169,13 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its container to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream functions
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that Configuration Record or Frame. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that Configuration Record or Frame already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
 
 #### byte_aligned
 
@@ -699,7 +701,7 @@ Default values at the decoder initialization phase:
 
 ## Configuration Record
 
-In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying `Container`, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying `Container`.
 
 ```c
 pseudo-code                                                   | type
@@ -727,7 +729,7 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 
 ### Mapping FFV1 into Containers
 
-This `Configuration Record` can be placed in any file format supporting `Configuration Records`, fitting as much as possible with how the file format uses to store `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported by this version of this specification for the following container formats:
+This `Configuration Record` can be placed in any file format supporting `Configuration Records`, fitting as much as possible with how the file format uses to store `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported by this version of this specification for the following formats:
 
 #### AVI File Format
 
