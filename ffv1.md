@@ -26,6 +26,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
+`Container`: Format that encapsulates `Frames` and (when required) a `Configuration Record` into a bitstream.
+
 `Sample`: The smallest addressable representation of a color component or a luma component in a frame. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
 
 `Pixel`: The smallest addressable representation of a color in a frame. It is composed of 1 or more samples.
