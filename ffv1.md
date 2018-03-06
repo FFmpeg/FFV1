@@ -778,12 +778,17 @@ Frame( NumBytes ) {                                           |
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Slice( ) {                                                    |
-    if (version >= 3)                                         |
+    if (version >= 3) {                                       |
         SliceHeader( )                                        |
+        if (coder_type == 0)                                  |
+            TerminateRangeCoder( )                            |
+    }                                                         |
     SliceContent( )                                           |
     if (coder_type == 0)                                      |
         while (!byte_aligned())                               |
             padding                                           | u(1)
+    else                                                      |
+        TerminateRangeCoder( )                                |
     if (version <= 1) {                                       |  
         while (remaining_bits_in_bitstream( NumBytes ) != 0 ) |
             reserved                                          | u(1)
@@ -800,6 +805,23 @@ MUST be 0.
 Encoders SHOULD NOT fill these bits.  
 Decoders SHOULD ignore these bits.  
 Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: due to some non conforming encoders, some bitstreams where found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`, a decoder conforming to the revised specification could not do the difference between a revised bitstream and a buggy bitstream.
+
+## Terminate Range Coder
+
+This part uses a dedicated context which is initialized to 129.
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+TerminateRangeCoder( ) {                                      |
+    terminate_range_coder                                     | br
+}                                                             |
+```
+
+### terminate_range_coder
+
+The encoder SHOULD write a value of 0.  
+The decoder SHOULD ignore the value.  
 
 ## Slice Header
 
