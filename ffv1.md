@@ -782,7 +782,13 @@ Slice( ) {                                                    |
     if (coder_type == 0)                                      |
         while (!byte_aligned())                               |
             padding                                           | u(1)
-    if (version >= 3)                                         |
+    if( version <= 1) {                                       |  
+        if (remaining_bits_in_bitstream( NumBytes ) == 40 )   |
+            ec = 1                                            |
+        else                                                  |
+            ec = 0                                            |
+    }                                                         |
+    if (version >= 3 || ec)                                   |
         SliceFooter( )                                        |
 }                                                             |
 ```
@@ -970,7 +976,8 @@ Note: slice footer is always byte aligned.
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceFooter( ) {                                              |
-    slice_size                                                | u(24)
+    if (version >= 3)                                         |
+        slice_size                                            | u(24)
     if (ec) {                                                 |
         error_status                                          | u(8)
         slice_crc_parity                                      | u(32)
