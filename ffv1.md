@@ -784,6 +784,10 @@ Slice( ) {                                                    |
     if (coder_type == 0)                                      |
         while (!byte_aligned())                               |
             padding                                           | u(1)
+    if (version <= 1) {                                       |  
+        while (remaining_bits_in_bitstream( NumBytes ) != 0 ) |
+            reserved                                          | u(1)
+    }                                                         |
     if (version >= 3)                                         |
         SliceFooter( )                                        |
 }                                                             |
@@ -791,6 +795,11 @@ Slice( ) {                                                    |
 
 `padding` specifies a bit without any significance and used only for byte alignment.
 MUST be 0.
+
+`reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.  
+Encoders SHOULD NOT fill these bits.  
+Decoders SHOULD ignore these bits.  
+Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: due to some non conforming encoders, some bitstreams where found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`, a decoder conforming to the revised specification could not do the difference between a revised bitstream and a buggy bitstream.
 
 ## Slice Header
 
