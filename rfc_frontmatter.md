@@ -1,7 +1,7 @@
 % Title = "FFV1 Video Coding Format Version 0, 1, and 3"{V3}
 % Title = "FFV1 Video Coding Format Version 4"{V4}
 % abbrev = "FFV1"
-% docName = "draft-ietf-cellar-ffv1-02"{V3}
+% docName = "draft-ietf-cellar-ffv1-03"{V3}
 % docName = "draft-ietf-cellar-ffv1-v4-00"{V4}
 % category = "info"{V3}
 % category = "std"{V4}
