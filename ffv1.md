@@ -420,17 +420,17 @@ PDF:S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & 
 PDF:\end{array}$$
 RFC:```
 RFC:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
-RFC:          l_i =  L_i                     XOR
-RFC:          t_i =  R_i - r_i               <==
-RFC:          b_i =  0                       <==>
+RFC:          l_i =  L_i                      XOR
+RFC:          t_i =  R_i - r_i                <==
+RFC:          b_i =  0                        <==>
 RFC:          L_i <  R_i - r_i
 RFC:```
 RFC:
 RFC:```
 RFC:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  XOR
-RFC:          l_i =  L_i - R_i + r_i         XOR
-RFC:          t_i =  r_i                     <==
-RFC:          b_i =  1                       <==>
+RFC:          l_i =  L_i - R_i + r_i          XOR
+RFC:          t_i =  r_i                      <==
+RFC:          b_i =  1                        <==>
 RFC:          L_i >= R_i - r_i
 RFC:```
 
