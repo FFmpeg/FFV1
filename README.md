@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository manages the development of specification documents for FFV1, a lossless intra-frame video codec. The goals of this specification effort are defined within the charter of the [cellar working group](https://datatracker.ietf.org/wg/cellar/charter/) of the [Internet Engineering Task Force](http://ietf.org/). Information within this repository should be considered in draft form. The most recent official version of the specificiation for FFV1 may be found at https://datatracker.ietf.org/doc/draft-niedermayer-cellar-ffv1/. An HTML rendering is also available via http://www.ffmpeg.org/~michael/ffv1.html.
+This repository manages the development of specification documents for FFV1, a lossless intra-frame video codec. The goals of this specification effort are defined within the charter of the [cellar working group](https://datatracker.ietf.org/wg/cellar/charter/) of the [Internet Engineering Task Force](http://ietf.org/). Information within this repository should be considered in draft form. The most recent official version of the specificiation for FFV1 may be found at https://datatracker.ietf.org/doc/draft-ietf-cellar-ffv1/. An HTML rendering is also available via http://www.ffmpeg.org/~michael/ffv1.html.
 
 ## Formatting
 
