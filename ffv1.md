@@ -51,7 +51,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
-### Arithmetic operators
+### Arithmetic Operators
 
 ------------- ----------------------------------------------------------------
 `a + b`       means a plus b.
@@ -73,7 +73,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 --------------- ----------------------------------------------------------------
 
-### Assignment operators
+### Assignment Operators
 
 ------------- ----------------------------------------------------------------
 `a = b`       means a is assigned b.
@@ -89,7 +89,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a *= b`      is equivalent to a is assigned a * b.
 --------------- ----------------------------------------------------------------
 
-### Comparison operators
+### Comparison Operators
 
 ------------- ----------------------------------------------------------------
 `a > b`       means a is greater than b.
@@ -113,14 +113,14 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a ? b : c`   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
 
-### Mathematical functions
+### Mathematical Functions
 
 --------------------- -----------------------------------------------
 PDF:$$\lfloor a \rfloor$$ the largest integer less than or equal to a
 RFC:floor(a)              the largest integer less than or equal to a
 
 PDF:$$\lceil a \rceil$$   the smallest integer greater than or equal to a
-RFC:ceil(a)               the largest integer less than or equal to a
+RFC:ceil(a)               the smallest integer greater than or equal to a
 
 sign(a)               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0
 
@@ -139,7 +139,7 @@ RFC:
 RFC:a_{b,c}               the 'b,c'-th value of a sequence of a
 --------------------- -----------------------------------------------
 
-### Order of operation precedence
+### Order of Operation Precedence
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
 
@@ -171,7 +171,7 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 `NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
-### Bitstream functions
+### Bitstream Functions
 
 #### remaining_bits_in_bitstream
 
@@ -231,7 +231,7 @@ Positions used for context and median predictor are:
 
 `X` is the current processed Sample. The identifiers are made of the first letters of the words Top, Left and Right.
 
-## Median predictor
+## Median Predictor
 
 The prediction for any sample value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
 
@@ -279,7 +279,7 @@ RFC:```
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
 
-## Quantization Table Set indexes
+## Quantization Table Set Indexes
 
 For each plane of each slice, a Quantization Table Set is selected from an index:
 
@@ -306,7 +306,7 @@ The Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST
 
 ### RGB
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
 PDF:$$Cb=b-g$$
 RFC:```
@@ -372,8 +372,6 @@ RFC:```
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
-[@!ISO.15444-1.2016]
-
 When FFV1 uses the JPEG2000-RCT, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
 As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
@@ -402,11 +400,11 @@ RFC:coder_input =
 RFC:    [(sample_difference + 2^(bits−1)) & (2^bits − 1)] − 2^(bits−1)
 RFC:```
 
-### Range coding mode
+### Range Coding Mode
 
 Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2014] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by *G. Nigel* and *N. Martin* in 1979 [@?range-coding].
 
-#### Range binary values
+#### Range Binary Values
 
 PDF:To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
 RFC:To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0,i}` is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
@@ -422,17 +420,17 @@ PDF:S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & 
 PDF:\end{array}$$
 RFC:```
 RFC:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
-RFC:          l_i =  L_i                     XOR
-RFC:          t_i =  R_i - r_i               <==
-RFC:          b_i =  0                       <==>
+RFC:          l_i =  L_i                      XOR
+RFC:          t_i =  R_i - r_i                <==
+RFC:          b_i =  0                        <==>
 RFC:          L_i <  R_i - r_i
 RFC:```
 RFC:
 RFC:```
 RFC:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  XOR
-RFC:          l_i =  L_i - R_i + r_i         XOR
-RFC:          t_i =  r_i                     <==
-RFC:          b_i =  1                       <==>
+RFC:          l_i =  L_i - R_i + r_i          XOR
+RFC:          t_i =  r_i                      <==
+RFC:          b_i =  1                        <==>
 RFC:          L_i >= R_i - r_i
 RFC:```
 
@@ -476,7 +474,7 @@ RFC:```
 RFC:j_{0} = 2
 RFC:```
 
-#### Range non binary values
+#### Range Non Binary Values
 
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
@@ -504,11 +502,11 @@ is_signed) {                                                  |
 }                                                             |
 ```
 
-#### Initial values for the context model
+#### Initial Values for the Context Model
 
 At keyframes all Range coder state variables are set to their initial state.
 
-#### State transition table
+#### State Transition Table
 
 PDF:$$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$$
 RFC:```
@@ -557,7 +555,7 @@ RFC:```
 241,242,243,244,245,246,247,248,248,  0,  0,  0,  0,  0,  0,  0,
 ```
 
-#### alternative state transition table
+#### Alternative State Transition Table
 
 The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type MUST be set to 2 and the difference to the default MUST be stored in the parameters. The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
@@ -595,7 +593,7 @@ The alternative state transition table has been built using iterative minimizati
 241,243,242,244,245,246,247,248,249,250,251,252,252,253,254,255,
 ```
 
-### Golomb Rice mode
+### Golomb Rice Mode
 
 This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
@@ -627,11 +625,11 @@ This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the pref
 | 2   | ``01 01``                 | 5     |
 | any | ``000000000000 10000000`` | 139   |
 
-#### Run mode
+#### Run Mode
 
 Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level are coded.
 
-#### Run length coding
+#### Run Length Coding
 
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
 
@@ -666,7 +664,7 @@ if (run_count == 0 && run_mode == 1) {                        |
 
 The log2\_run function is also used within [@ISO.14495-1.1999].
 
-#### Level coding
+#### Level Coding
 
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
@@ -1294,9 +1292,9 @@ For each `Frame` with keyframe value of 0, each slice MUST have the same value o
 
 # Security Considerations
 
-Like any other codec, (such as [@RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
+Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in Pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in Pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
 
 The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
@@ -1378,7 +1376,7 @@ The IANA is requested to register the following values:
 
 ## Decoder implementation suggestions
 
-### Multi-threading support and independence of slices
+### Multi-threading Support and Independence of Slices
 
 The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
