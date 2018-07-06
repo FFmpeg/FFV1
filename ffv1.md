@@ -1408,10 +1408,6 @@ After having checked keyframe field, a decoder SHOULD parse slice_size fields, f
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
 
-# ToDo
-
--   mean,k estimation for the Golomb Rice codes
-
 PDF:# Copyright
 PDF:
 PDF:Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>
