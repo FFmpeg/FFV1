@@ -49,9 +49,10 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Conventions
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
 ### Arithmetic Operators
+
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
 ------------- ----------------------------------------------------------------
 `a + b`       means a plus b.
