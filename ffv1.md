@@ -1047,6 +1047,13 @@ Parameters( ) {                                               |
         ec                                                    | ur
         intra                                                 | ur
     }                                                         |
+    if (version == 3 && micro_version >= 5) {                 |{V3}
+    if ((version == 3 && micro_version >= 5)                  |{V4}
+      || version >= 4) {                                      |{V4}
+        width                                                 | ur
+        height                                                | ur
+        Metadata( )                                           |
+    }                                                         |
 }                                                             |
 ```
 
@@ -1079,6 +1086,7 @@ Meaning of micro_version for version 3:
 |-------|:------------------------|
 |0...3  | reserved\*              |
 |4      | first stable variant    |
+|5      | frame size and metadata |
 |Other  | reserved for future use |
 
 \* development versions may be incompatible with the stable variants.
@@ -1224,6 +1232,14 @@ Inferred to be 0 if not present.
 |1      | Frames are independent (keyframes only)                          |
 |Other  | reserved for future use                                          |
 
+### width
+
+0 if unspecified in the bitstream (provided by container)
+
+### height
+
+0 if unspecified in the bitstream (provided by container)
+
 ## Quantization Table Set
 
 The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
@@ -1279,6 +1295,54 @@ QuantizationTable(i, j, scale) {                              |
 ### context_count
 
 `context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`.
+
+## Metadata
+
+(Intro TODO). A tool using a bitstream conforming to this specification SHOULD prioritize metadata in the bitstream over metadata in the container.
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+Metadata( ) {                                                 |
+    metadata_count                                            | ur
+    for( i = 0; i < metadata_count; i++ ) {                   |
+        metadata_id                                           | ur
+        metadata_type                                         | ur
+        metadata_size [ i ] - 1                               | ur
+        for( j = 0; j < metadata_size [ i ]; j++ ) {          |
+            if (metadata_type == 0)                           |
+                metadata_content [ i ] [ j ]                  | br
+            if (metadata_type == 1)                           |
+                metadata_content [ i ] [ j ]                  | ur
+            if (metadata_type == 2)                           |
+                metadata_content [ i ] [ j ]                  | sr
+        }                                                     |
+    }                                                         |
+}                                                             |
+```
+
+### metadata_count
+
+### metadata_id
+
+|value  | metadata meaning                                                 |
+|-------|:-----------------------------------------------------------------|
+|0      | Range (1 = Broadcast, 2 = Full...)                               |
+|1      | Primaries                                                        |
+|2      | TransferCharacteristics                                          |
+|3      | MatrixCoefficients                                               |
+|4      | MaxCLL                                                           |
+|5      | MaxFALL                                                          |
+|6      | PrimaryRChromaticityX                                            |
+|...    | (TODO)                                                           |
+|       | WhitePointChromaticityY                                          |
+|       | ChromaSitingHorz                                                 |
+|       | Encoding library name and version (e.g. "Lavc57.107.100 ffv1")   |
+|Other  | reserved for future use                                          |
+
+### metadata_type
+
+### metadata_content
 
 # Restrictions
 
