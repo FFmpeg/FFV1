@@ -1148,7 +1148,7 @@ SliceContent( ) {                                             |
 
 ### primary_color_count
 
-`primary_color_count` is defined as 1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 ).
+`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 )`.
 
 ### plane_pixel_height
 
