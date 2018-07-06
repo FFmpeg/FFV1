@@ -1108,7 +1108,7 @@ MUST be 0 if sample aspect ratio is unknown.
 
 ### sar_den
 
-`sar_den` specifies the sample aspect ratio numerator.  
+`sar_den` specifies the sample aspect ratio denominator.  
 Inferred to be 0 if not present.  
 MUST be 0 if sample aspect ratio is unknown.
 
