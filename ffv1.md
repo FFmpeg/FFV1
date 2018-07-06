@@ -1227,7 +1227,7 @@ SliceFooter( ) {                                              |
 ### slice_size
 
 `slice_size` indicates the size of the slice in bytes.  
-Note: this allows finding the start of slices before previous slices have been fully decoded. And allows this way parallel decoding as well as error resilience.
+Note: this allows finding the start of slices before previous slices have been fully decoded, and allows parallel decoding as well as error resilience.
 
 ### error_status
 
