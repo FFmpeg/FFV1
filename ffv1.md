@@ -697,6 +697,221 @@ Default values at the decoder initialization phase:
 
 `ConfigurationRecordIsPresent` is set to 0.
 
+## Parameters
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+Parameters( ) {                                               |
+    version                                                   | ur
+    if (version >= 3)                                         |
+        micro_version                                         | ur
+    coder_type                                                | ur
+    if (coder_type > 1)                                       |
+        for (i = 1; i < 256; i++)                             |
+            state_transition_delta[ i ]                       | sr
+    colorspace_type                                           | ur
+    if (version >= 1)                                         |
+        bits_per_raw_sample                                   | ur
+    chroma_planes                                             | br
+    log2_h_chroma_subsample                                   | ur
+    log2_v_chroma_subsample                                   | ur
+    alpha_plane                                               | br
+    if (version >= 3) {                                       |
+        num_h_slices - 1                                      | ur
+        num_v_slices - 1                                      | ur
+        quant_table_set_count                                 | ur
+    }                                                         |
+    for( i = 0; i < quant_table_set_count; i++ )              |
+        QuantizationTableSet( i )                             |
+    if (version >= 3) {                                       |
+        for( i = 0; i < quant_table_set_count; i++ ) {        |
+            states_coded                                      | br
+            if (states_coded)                                 |
+                for( j = 0; j < context_count[ i ]; j++ )     |
+                    for( k = 0; k < CONTEXT_SIZE; k++ )       |
+                        initial_state_delta[ i ][ j ][ k ]    | sr
+        }                                                     |
+        ec                                                    | ur
+        intra                                                 | ur
+    }                                                         |
+}                                                             |
+```
+
+### version
+
+`version` specifies the version of the FFV1 bitstream.  
+Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.  
+Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.  
+Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
+
+|value   | version                 |
+|:-------|:------------------------|
+|0       |  FFV1 version 0         |
+|1       |  FFV1 version 1         |
+|2       |  reserved\*             |
+|3       |  FFV1 version 3         |
+|4       |  FFV1 version 4         |{V4}
+|Other   |  reserved for future use|
+
+\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
+
+### micro_version
+
+`micro_version` specifies the micro-version of the FFV1 bitstream.  
+After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
+
+Meaning of micro_version for version 3:
+
+|value  | micro\_version          |
+|-------|:------------------------|
+|0...3  | reserved\*              |
+|4      | first stable variant    |
+|Other  | reserved for future use |
+
+\* development versions may be incompatible with the stable variants.
+
+Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
+
+|value   | micro_version           |{V4}
+|--------|:------------------------|{V4}
+|0...TBA | reserved\*              |{V4}
+|TBA     | first stable variant    |{V4}
+|Other   | reserved for future use |{V4}
+
+\* development versions which may be incompatible with the stable variants.{V4}
+
+### coder_type
+
+`coder_type` specifies the coder used.
+
+|value  | coder used                                      |
+|-------|:------------------------------------------------|
+| 0     | Golomb Rice                                     |
+| 1     | Range Coder with default state transition table |
+| 2     | Range Coder with custom state transition table  |
+| Other | reserved for future use                         |
+
+### state_transition_delta
+
+`state_transition_delta` specifies the Range coder custom state transition table.  
+If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
+
+### colorspace_type
+
+`colorspace_type` specifies color space losslessly encoded, Pixel transformation used by the encoder, as well as interleave method.
+
+|value  | color space losslessly encoded  | transformation                  | interleave method               |
+|-------|:--------------------------------|:--------------------------------|:--------------------------------|
+| 0     | YCbCr                           | No Pixel transformation         | plane then line                 |
+| 1     | RGB                             | JPEG2000-RCT                    | line then plane                 |
+| Other | reserved for future use         | reserved for future use         | reserved for future use         |
+
+Restrictions:  
+If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
+
+### chroma_planes
+
+`chroma_planes` indicates if chroma (color) planes are present.
+
+|value  | presence                        |
+|-------|:--------------------------------|
+|0      |   chroma planes are not present |
+|1      |   chroma planes are present     |
+
+### bits_per_raw_sample
+
+`bits_per_raw_sample` indicates the number of bits for each sample. Inferred to be 8 if not present.
+
+|value  | bits for each sample                            |
+|-------|:------------------------------------------------|
+| 0     | reserved\*                                      |
+| Other | the actual bits for each sample                 |
+
+\* Encoders MUST NOT store bits_per_raw_sample = 0
+Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
+
+### log2_h_chroma_subsample
+
+PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
+RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
+
+### log2_v_chroma_subsample
+
+PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
+RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
+
+### alpha_plane
+
+`alpha_plane` indicates if a transparency plane is present.
+
+|value  | presence                         |
+|-------|:---------------------------------|
+| 0     | transparency plane is not present|
+| 1     | transparency plane is present    |
+
+### num_h_slices
+
+`num_h_slices` indicates the number of horizontal elements of the slice raster.  
+Inferred to be 1 if not present.
+
+### num_v_slices
+
+`num_v_slices` indicates the number of vertical elements of the slice raster.  
+Inferred to be 1 if not present.
+
+### quant_table_set_count
+
+`quant_table_set_count` indicates the number of Quantization Table Sets.  
+Inferred to be 1 if not present.  
+MUST NOT be 0.
+
+### states_coded
+
+`states_coded` indicates if the respective Quantization Table Set has the initial states coded.  
+Inferred to be 0 if not present.
+
+| value | initial states                                               |
+|-------|:-------------------------------------------------------------|
+|   0   |  initial states are not present and are assumed to be all 128|
+|   1   |  initial states are present                                  |
+
+### initial_state_delta
+
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
+
+PDF:$$pred = j ? initial\_states[ i ][j - 1][ k ] : 128$$
+RFC:```
+RFC:pred = j ? initial_states[ i ][j - 1][ k ] : 128
+RFC:```
+
+PDF:initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+RFC:```
+RFC:initial_state[ i ][ j ][ k ] =
+RFC:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+RFC:```
+
+### ec
+
+`ec` indicates the error detection/correction type.
+
+|value | error detection/correction type           |
+|------|:------------------------------------------|
+|0     | 32-bit CRC on the global header           |
+|1     | 32-bit CRC per slice and the global header|
+|Other | reserved for future use                   |
+
+### intra
+
+`intra` indicates the relationship between the instances of `Frame`.  
+Inferred to be 0 if not present.
+
+|value  | relationship                                                     |
+|-------|:-----------------------------------------------------------------|
+|0      | Frames are independent or dependent (keyframes and non keyframes)|
+|1      | Frames are independent (keyframes only)                          |
+|Other  | reserved for future use                                          |
+
 ## Configuration Record
 
 In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying `Container`, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying `Container`.
@@ -1008,221 +1223,6 @@ Note: this allows finding the start of slices before previous slices have been f
 `slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.  
 This is equivalent to storing the crc remainder in the 32-bit parity.  
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
-
-## Parameters
-
-```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-Parameters( ) {                                               |
-    version                                                   | ur
-    if (version >= 3)                                         |
-        micro_version                                         | ur
-    coder_type                                                | ur
-    if (coder_type > 1)                                       |
-        for (i = 1; i < 256; i++)                             |
-            state_transition_delta[ i ]                       | sr
-    colorspace_type                                           | ur
-    if (version >= 1)                                         |
-        bits_per_raw_sample                                   | ur
-    chroma_planes                                             | br
-    log2_h_chroma_subsample                                   | ur
-    log2_v_chroma_subsample                                   | ur
-    alpha_plane                                               | br
-    if (version >= 3) {                                       |
-        num_h_slices - 1                                      | ur
-        num_v_slices - 1                                      | ur
-        quant_table_set_count                                 | ur
-    }                                                         |
-    for( i = 0; i < quant_table_set_count; i++ )              |
-        QuantizationTableSet( i )                             |
-    if (version >= 3) {                                       |
-        for( i = 0; i < quant_table_set_count; i++ ) {        |
-            states_coded                                      | br
-            if (states_coded)                                 |
-                for( j = 0; j < context_count[ i ]; j++ )     |
-                    for( k = 0; k < CONTEXT_SIZE; k++ )       |
-                        initial_state_delta[ i ][ j ][ k ]    | sr
-        }                                                     |
-        ec                                                    | ur
-        intra                                                 | ur
-    }                                                         |
-}                                                             |
-```
-
-### version
-
-`version` specifies the version of the FFV1 bitstream.  
-Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.  
-Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.  
-Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
-
-|value   | version                 |
-|:-------|:------------------------|
-|0       |  FFV1 version 0         |
-|1       |  FFV1 version 1         |
-|2       |  reserved\*             |
-|3       |  FFV1 version 3         |
-|4       |  FFV1 version 4         |{V4}
-|Other   |  reserved for future use|
-
-\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
-
-### micro_version
-
-`micro_version` specifies the micro-version of the FFV1 bitstream.  
-After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
-
-Meaning of micro_version for version 3:
-
-|value  | micro\_version          |
-|-------|:------------------------|
-|0...3  | reserved\*              |
-|4      | first stable variant    |
-|Other  | reserved for future use |
-
-\* development versions may be incompatible with the stable variants.
-
-Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
-
-|value   | micro_version           |{V4}
-|--------|:------------------------|{V4}
-|0...TBA | reserved\*              |{V4}
-|TBA     | first stable variant    |{V4}
-|Other   | reserved for future use |{V4}
-
-\* development versions which may be incompatible with the stable variants.{V4}
-
-### coder_type
-
-`coder_type` specifies the coder used.
-
-|value  | coder used                                      |
-|-------|:------------------------------------------------|
-| 0     | Golomb Rice                                     |
-| 1     | Range Coder with default state transition table |
-| 2     | Range Coder with custom state transition table  |
-| Other | reserved for future use                         |
-
-### state_transition_delta
-
-`state_transition_delta` specifies the Range coder custom state transition table.  
-If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
-
-### colorspace_type
-
-`colorspace_type` specifies color space losslessly encoded, Pixel transformation used by the encoder, as well as interleave method.
-
-|value  | color space losslessly encoded  | transformation                  | interleave method               |
-|-------|:--------------------------------|:--------------------------------|:--------------------------------|
-| 0     | YCbCr                           | No Pixel transformation         | plane then line                 |
-| 1     | RGB                             | JPEG2000-RCT                    | line then plane                 |
-| Other | reserved for future use         | reserved for future use         | reserved for future use         |
-
-Restrictions:  
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
-
-### chroma_planes
-
-`chroma_planes` indicates if chroma (color) planes are present.
-
-|value  | presence                        |
-|-------|:--------------------------------|
-|0      |   chroma planes are not present |
-|1      |   chroma planes are present     |
-
-### bits_per_raw_sample
-
-`bits_per_raw_sample` indicates the number of bits for each sample. Inferred to be 8 if not present.
-
-|value  | bits for each sample                            |
-|-------|:------------------------------------------------|
-| 0     | reserved\*                                      |
-| Other | the actual bits for each sample                 |
-
-\* Encoders MUST NOT store bits_per_raw_sample = 0
-Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
-
-### log2_h_chroma_subsample
-
-PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
-RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
-
-### log2_v_chroma_subsample
-
-PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
-RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
-
-### alpha_plane
-
-`alpha_plane` indicates if a transparency plane is present.
-
-|value  | presence                         |
-|-------|:---------------------------------|
-| 0     | transparency plane is not present|
-| 1     | transparency plane is present    |
-
-### num_h_slices
-
-`num_h_slices` indicates the number of horizontal elements of the slice raster.  
-Inferred to be 1 if not present.
-
-### num_v_slices
-
-`num_v_slices` indicates the number of vertical elements of the slice raster.  
-Inferred to be 1 if not present.
-
-### quant_table_set_count
-
-`quant_table_set_count` indicates the number of Quantization Table Sets.  
-Inferred to be 1 if not present.  
-MUST NOT be 0.
-
-### states_coded
-
-`states_coded` indicates if the respective Quantization Table Set has the initial states coded.  
-Inferred to be 0 if not present.
-
-| value | initial states                                               |
-|-------|:-------------------------------------------------------------|
-|   0   |  initial states are not present and are assumed to be all 128|
-|   1   |  initial states are present                                  |
-
-### initial_state_delta
-
-`initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
-
-PDF:$$pred = j ? initial\_states[ i ][j - 1][ k ] : 128$$
-RFC:```
-RFC:pred = j ? initial_states[ i ][j - 1][ k ] : 128
-RFC:```
-
-PDF:initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
-RFC:```
-RFC:initial_state[ i ][ j ][ k ] =
-RFC:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
-RFC:```
-
-### ec
-
-`ec` indicates the error detection/correction type.
-
-|value | error detection/correction type           |
-|------|:------------------------------------------|
-|0     | 32-bit CRC on the global header           |
-|1     | 32-bit CRC per slice and the global header|
-|Other | reserved for future use                   |
-
-### intra
-
-`intra` indicates the relationship between the instances of `Frame`.  
-Inferred to be 0 if not present.
-
-|value  | relationship                                                     |
-|-------|:-----------------------------------------------------------------|
-|0      | Frames are independent or dependent (keyframes and non keyframes)|
-|1      | Frames are independent (keyframes only)                          |
-|Other  | reserved for future use                                          |
 
 ## Quantization Table Set
 
