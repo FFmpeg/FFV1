@@ -8,7 +8,7 @@ This document defines a version 0, 1, and 3 of FFV1. The distinctions of the ver
 
 - Version 1 of FFV1 adds support of more video bit depths and has been in use since April 24, 2009 [@?FFV1_V1].{V3}
 
-- Version 2 of FFV1 only existed in experimental form and is not described by this document.{V3}
+- Version 2 of FFV1 only existed in experimental form and is not described by this document, but is available as a LyX file at <https://github.com/FFmpeg/FFV1/blob/8ad772b6d61c3dd8b0171979a2cd9f11924d5532/ffv1.lyx>.{V3}
 
 - Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been in non-experimental use since August 17, 2013 [@?FFV1_V3].{V3}
 
