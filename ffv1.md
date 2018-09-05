@@ -561,7 +561,7 @@ RFC:```
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type MUST be set to 2 and the difference to the default MUST be stored in the parameters. The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on "Parameters"](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -920,7 +920,7 @@ Inferred to be 0 if not present.
 
 ## Configuration Record
 
-In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying `Container`, at the track header level. It contains the parameters used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying `Container`.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying `Container`, at the track header level. It contains the `Parameters` used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying `Container`.
 
 ```c
 pseudo-code                                                   | type
@@ -977,7 +977,7 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 
 ## Frame
 
-A `Frame` consists of the keyframe field, parameters (if version <=1), and a sequence of independent slices.
+A `Frame` consists of the keyframe field, `Parameters` (if version <=1), and a sequence of independent slices.
 
 ```c
 pseudo-code                                                   | type
