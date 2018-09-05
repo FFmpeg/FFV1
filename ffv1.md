@@ -703,6 +703,8 @@ Default values at the decoder initialization phase:
 
 ## Parameters
 
+The `Parameters` section contains significant characteristics used for all instances of `Frame`. The pseudo-code below describes the contents of the bitstream.
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
