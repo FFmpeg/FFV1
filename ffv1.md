@@ -1106,13 +1106,17 @@ Inferred to be 0 if not present.
 
 `sar_num` specifies the sample aspect ratio numerator.  
 Inferred to be 0 if not present.  
-MUST be 0 if sample aspect ratio is unknown.
+A value of 0 means that aspect ratio is unknown.  
+Encoders MUST write 0 if sample aspect ratio is unknown.  
+If `sar_den` is 0, decoders SHOULD ignore the encoded value and consider that `sar_num` is 0.
 
 ### sar_den
 
 `sar_den` specifies the sample aspect ratio denominator.  
 Inferred to be 0 if not present.  
-MUST be 0 if sample aspect ratio is unknown.
+A value of 0 means that aspect ratio is unknown.  
+Encoders MUST write 0 if sample aspect ratio is unknown.  
+If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `sar_den` is 0.
 
 ### reset_contexts{V4}
 
