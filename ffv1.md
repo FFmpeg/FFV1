@@ -26,11 +26,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 ## Definitions
 
 -------- --------------------------------------------------------------
-`Frame`: An encoded representation of a complete static image.
 
-`Slice`: A spatial sub-section of a `Frame` that is encoded separately from an other region of the same frame.
-
-`Container`: Format that encapsulates `Frames` and (when required) a `Configuration Record` into a bitstream.
+`Container`: Format that encapsulates `Frames` (see [the section on `Frames`](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
 
@@ -195,7 +192,7 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 ## Border
 
-A border is assumed for each coded slice for the purpose of the predictor and context according to the following rules:
+A border is assumed for each coded `Slice` (see [the section on `Slices`](#slice)) for the purpose of the predictor and context according to the following rules:
 
 - one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost sample of the column of samples to the left of the coded slice is assumed to be `0`
 - one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
@@ -703,7 +700,7 @@ Default values at the decoder initialization phase:
 
 ## Parameters
 
-The `Parameters` section contains significant characteristics used for all instances of `Frame`. The pseudo-code below describes the contents of the bitstream.
+The `Parameters` section contains significant characteristics about the decoding configuration used for all instances of `Frame` (in FFV1 version 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and quantization tables. The pseudo-code below describes the contents of the bitstream.
 
 ```c
 pseudo-code                                                   | type
@@ -977,7 +974,9 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 
 ## Frame
 
-A `Frame` consists of the keyframe field, `Parameters` (if version <=1), and a sequence of independent slices.
+A `Frame` is an encoded representation of a complete static image. The whole `Frame` is provided by the underlaying container.
+
+A `Frame` consists of the keyframe field, `Parameters` (if version <=1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
 
 ```c
 pseudo-code                                                   | type
@@ -1011,6 +1010,10 @@ Architecture overview of slices in a `Frame`:
 
 ## Slice
 
+A `Slice` is an independent spatial sub-section of a `Frame` that is encoded separately from an other region of the same `Frame`. The use of more than one `Slice` per `Frame` can be useful for taking advantage of the opportunities of multithreaded encoding and decoding.
+
+A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudo-code below describes the contents of a `Slice`.
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
@@ -1039,6 +1042,8 @@ Decoders SHOULD ignore these bits.
 Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: due to some non conforming encoders, some bitstreams where found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`, a decoder conforming to the revised specification could not do the difference between a revised bitstream and a buggy bitstream.
 
 ## Slice Header
+
+A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudo-code below describes the contents of the `Slice Header`.
 
 ```c
 pseudo-code                                                   | type
@@ -1136,6 +1141,10 @@ Inferred to be 0 if not present.{V4}
 
 ## Slice Content
 
+A `Slice Content` contains all `Line` elements part of the `Slice`.
+
+Depending on the configuration, `Line` elements are ordered by plane then by row (YCbCr) or by row then by plane (RGB).
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
@@ -1177,6 +1186,8 @@ RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
 
 ## Line
 
+A `Line` is a list of the sample differences (relative to the predictor) of primary color components. The pseudo-code below describes the contents of the `Line`.
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
@@ -1216,7 +1227,9 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ## Slice Footer
 
-Note: slice footer is always byte aligned.
+A `Slice Footer` provides information about slice size and (optionally) parity. The pseudo-code below describes the contents of the `Slice Header`.
+
+Note: `Slice Footer` is always byte aligned.
 
 ```c
 pseudo-code                                                   | type
