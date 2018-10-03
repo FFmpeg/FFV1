@@ -190,17 +190,17 @@ a = b, a += b, a -= b, a *= b
 
 # Sample Coding
 
-Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored see [Coding of the Sample Difference](#coding-of-the-sample-difference).
+For each `Slice` (as described in [the section on `Slices`](#slice)) of a `Frame`, the planes, lines, and samples are coded in an order determined by the `Color Space` (see [the section on `Color Space`](#color-space)). Each Sample is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other samples within the same plane and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
 ## Border
 
-A border is assumed for each coded `Slice` (see [the section on `Slices`](#slice)) for the purpose of the median predictor and context according to the following rules:
+A border is assumed for each coded `Slice` for the purpose of the median predictor and context according to the following rules:
 
 - one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost sample of the column of samples to the left of the coded slice is assumed to be `0`
 - one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
 - an additional column of samples to the left of the coded slice and two rows of samples above the coded slice are assumed to be `0`
 
-The following table depicts a slice of samples `a,b,c,d,e,f,g,h,i` along with its assumed border.
+The following table depicts a slice of 9 samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
 
 ```
 +---+---+---+---+---+---+---+---+
@@ -220,7 +220,7 @@ The following table depicts a slice of samples `a,b,c,d,e,f,g,h,i` along with it
 
 ## Samples
 
-Positions used for context and median predictor are:
+Relative to any sample `X`, six other relatively positioned samples from the coded samples and presumed border are identified according to the labels used in the following diagram. The labels for these relatively positioned samples are used within the median predictor and context.
 
 ```
 +---+---+---+---+
@@ -232,7 +232,7 @@ Positions used for context and median predictor are:
 +---+---+---+---+
 ```
 
-`X` is the current processed Sample. The identifiers are made of the first letters of the words Top, Left and Right.
+The labels for these relative samples are made of the first letters of the words Top, Left and Right.
 
 ## Median Predictor
 
@@ -273,7 +273,7 @@ If `context >= 0` then `context` is used and the difference between the sample a
 
 ## Quantization Table Sets
 
-The FFV1 bitstream contains 1 or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables, each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+The FFV1 bitstream contains 1 or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
 RFC:```
@@ -295,6 +295,8 @@ Background: in first implementations of FFV1 bitstream, the index for Cb and Cr 
 ## Color spaces
 
 FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha plane that can be used to code transparency data.
+
+The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each Plane, each Line is coded from top to bottom and for each Line, each Sample is coded from left to right. In JPEG2000-RCT for each Line from top to bottom, each Plane is coded and for each Plane, each Sample is encoded from left to right.
 
 ### YCbCr
 
@@ -375,7 +377,7 @@ RFC:```
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
-When FFV1 uses the JPEG2000-RCT, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+When FFV1 uses the JPEG2000-RCT, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
 As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
 
@@ -395,7 +397,7 @@ Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1
 
 ## Coding of the Sample Difference
 
-Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of RCT), only the n (or n+1) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for JPEG2000-RCT or bits_per_raw_sample otherwise:
 
 PDF:$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
 RFC:```
@@ -560,7 +562,7 @@ RFC:```
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on "Parameters"](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see [the section on coder_type](#codertype)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on "Parameters"](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -808,7 +810,7 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### colorspace_type
 
-`colorspace_type` specifies color space losslessly encoded, Pixel transformation used by the encoder, as well as interleave method.
+`colorspace_type` specifies the color space losslessly encoded, the Pixel transformation used by the encoder, as well as interleave method.
 
 |value  | color space losslessly encoded  | transformation                  | interleave method               |
 |-------|:--------------------------------|:--------------------------------|:--------------------------------|
