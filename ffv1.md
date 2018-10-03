@@ -31,6 +31,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
 
+`Plane`: A discrete component of a static image comprised of samples that represent a specific quantification of samples of that image.
+
 `Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more samples.
 
 `ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method.
