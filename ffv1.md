@@ -192,7 +192,7 @@ Samples within a plane are coded in raster scan order (left->right, top->bottom)
 
 ## Border
 
-A border is assumed for each coded `Slice` (see [the section on `Slices`](#slice)) for the purpose of the predictor and context according to the following rules:
+A border is assumed for each coded `Slice` (see [the section on `Slices`](#slice)) for the purpose of the median predictor and context according to the following rules:
 
 - one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost sample of the column of samples to the left of the coded slice is assumed to be `0`
 - one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
@@ -240,8 +240,8 @@ The prediction for any sample value at position `X` may be computed based upon t
 
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
-Exception for the media predictor:
-if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following media predictor MUST be used:
+Exception for the median predictor:
+if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following median predictor MUST be used:
 
 `median(left16s, top16s, left16s + top16s - diag16s)`
 
@@ -252,7 +252,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the media predictor in the next version of the FFV1 bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -1223,7 +1223,7 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ### sample_difference
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y`, and x position `x`. The sample value is computed based on prediction and context described in [the section on the `Samples`](#samples).  
+`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y`, and x position `x`. The sample value is computed based on median predictor and context described in [the section on the `Samples`](#samples).  
 
 ## Slice Footer
 
