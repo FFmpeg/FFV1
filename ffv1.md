@@ -188,7 +188,7 @@ a = b, a += b, a -= b, a *= b
 
 `get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The pointer is increased by `i`.
 
-# General Description
+# Sample Coding
 
 Samples within a plane are coded in raster scan order (left->right, top->bottom). Each sample is predicted by the median predictor from samples in the same plane and the difference is stored see [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
