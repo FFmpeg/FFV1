@@ -680,6 +680,10 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 # Bitstream
 
+An FFV1 bitstream is composed of a series of 1 or more `Frames` and (when required) a `Configuration Record`.
+
+Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in [the section on `Pseudo-Code`](#pseudocode). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
