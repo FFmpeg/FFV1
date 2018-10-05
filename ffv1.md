@@ -29,23 +29,23 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Container`: Format that encapsulates `Frames` (see [the section on `Frames`](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
-`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of sample are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
+`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
 
-`Plane`: A discrete component of a static image comprised of samples that represent a specific quantification of samples of that image.
+`Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
 
-`Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more samples.
+`Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more `Samples`.
 
 `ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method.
 
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
-`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a Pixel.
+`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a `Pixel`.
 
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
 
-`RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
+`RGB`:   A reference to the method of storing the value of a `Pixel` by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chrominance of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma sample and 2 chrominance samples e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
+`YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples` e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
@@ -190,17 +190,17 @@ a = b, a += b, a -= b, a *= b
 
 # Sample Coding
 
-For each `Slice` (as described in [the section on `Slices`](#slice)) of a `Frame`, the planes, lines, and samples are coded in an order determined by the `Color Space` (see [the section on `Color Space`](#color-space)). Each Sample is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other samples within the same plane and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
+For each `Slice` (as described in [the section on `Slices`](#slice)) of a `Frame`, the `Planes`, `Lines`, and `Samples` are coded in an order determined by the `Color Space` (see [the section on `Color Space`](#color-spaces)). Each `Sample` is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other `Samples` within the same `Plane` and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
 ## Border
 
 A border is assumed for each coded `Slice` for the purpose of the median predictor and context according to the following rules:
 
-- one column of samples to the left of the coded slice is assumed as identical to the samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost sample of the column of samples to the left of the coded slice is assumed to be `0`
-- one column of samples to the right of the coded slice is assumed as identical to the samples of the rightmost column of the coded slice
-- an additional column of samples to the left of the coded slice and two rows of samples above the coded slice are assumed to be `0`
+- one column of `Samples` to the left of the coded slice is assumed as identical to the `Samples` of the leftmost column of the coded slice shifted down by one row. The value of the topmost `Sample` of the column of `Samples` to the left of the coded slice is assumed to be `0`
+- one column of `Samples` to the right of the coded slice is assumed as identical to the `Samples` of the rightmost column of the coded slice
+- an additional column of `Samples` to the left of the coded slice and two rows of `Samples` above the coded slice are assumed to be `0`
 
-The following table depicts a slice of 9 samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
+The following table depicts a slice of 9 `Samples` `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
 
 ```
 +---+---+---+---+---+---+---+---+
@@ -220,7 +220,7 @@ The following table depicts a slice of 9 samples `a,b,c,d,e,f,g,h,i` in a 3x3 ar
 
 ## Samples
 
-Relative to any sample `X`, six other relatively positioned samples from the coded samples and presumed border are identified according to the labels used in the following diagram. The labels for these relatively positioned samples are used within the median predictor and context.
+Relative to any `Sample` `X`, six other relatively positioned `Samples` from the coded `Samples` and presumed border are identified according to the labels used in the following diagram. The labels for these relatively positioned `Samples` are used within the median predictor and context.
 
 ```
 +---+---+---+---+
@@ -232,11 +232,11 @@ Relative to any sample `X`, six other relatively positioned samples from the cod
 +---+---+---+---+
 ```
 
-The labels for these relative samples are made of the first letters of the words Top, Left and Right.
+The labels for these relative `Samples` are made of the first letters of the words Top, Left and Right.
 
 ## Median Predictor
 
-The prediction for any sample value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
+The prediction for any `Sample` value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
 
 `median(l, t, l + t - tl)`.
 
@@ -254,11 +254,11 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing sample values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing `Sample` values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
-Relative to any sample `X`, the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
+Relative to any `Sample` `X`, the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
 PDF:$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
 RFC:```
@@ -269,7 +269,7 @@ RFC:          Q_{3}[L − l]  +
 RFC:          Q_{4}[T − t]
 RFC:```
 
-If `context >= 0` then `context` is used and the difference between the sample and its predicted value is encoded as is, else `-context` is used and the difference between the sample and its predicted value is encoded with a flipped sign.
+If `context >= 0` then `context` is used and the difference between the `Sample` and its predicted value is encoded as is, else `-context` is used and the difference between the `Sample` and its predicted value is encoded with a flipped sign.
 
 ## Quantization Table Sets
 
@@ -284,34 +284,34 @@ In this formula, `i` is the Quantization Table Set index, `j` is the Quantized T
 
 ## Quantization Table Set Indexes
 
-For each plane of each slice, a Quantization Table Set is selected from an index:
+For each `Plane` of each slice, a Quantization Table Set is selected from an index:
 
-- For Y plane, `quant_table_set_index [ 0 ]` index is used
-- For Cb and Cr planes, `quant_table_set_index [ 1 ]` index is used
-- For Alpha plane, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
+- For Y `Plane`, `quant_table_set_index [ 0 ]` index is used
+- For Cb and Cr `Planes`, `quant_table_set_index [ 1 ]` index is used
+- For Alpha `Plane`, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr planes was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr `Planes` was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color spaces
 
-FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha plane that can be used to code transparency data.
+FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha `Plane` that can be used to code transparency data.
 
-The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each Plane, each Line is coded from top to bottom and for each Line, each Sample is coded from left to right. In JPEG2000-RCT for each Line from top to bottom, each Plane is coded and for each Plane, each Sample is encoded from left to right.
+The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each `Plane`, each `Line` is coded from top to bottom and for each `Line`, each `Sample` is coded from left to right. In JPEG2000-RCT for each `Line` from top to bottom, each `Plane` is coded and for each `Plane`, each `Sample` is encoded from left to right.
 
 ### YCbCr
 
-In YCbCr color space, the Cb and Cr planes are optional, but if used then MUST be used together. Omitting the Cb and Cr planes codes the frames in grayscale without color data. An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
+In YCbCr color space, the Cb and Cr `Planes` are optional, but if used then MUST be used together. Omitting the Cb and Cr `Planes` codes the frames in grayscale without color data. An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
 
 - Y
 - Y, Alpha
 - Y, Cb, Cr
 - Y, Cb, Cr, Alpha
 
-The Y plane MUST be coded first. If the Cb and Cr planes are used then they MUST be coded after the Y plane. If an Alpha (transparency) plane is used, then it MUST be coded last.
+The Y `Plane` MUST be coded first. If the Cb and Cr `Planes` are used then they MUST be coded after the Y `Plane`. If an Alpha (transparency) `Plane` is used, then it MUST be coded last.
 
 ### RGB
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) planes losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `Planes` losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
 PDF:$$Cb=b-g$$
 RFC:```
@@ -375,11 +375,11 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR planes were used as BGR planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
-When FFV1 uses the JPEG2000-RCT, the horizontal lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
 
-As an example, a `Frame` that is two pixels wide and two pixels high, could be comprised of the following structure:
+As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could be comprised of the following structure:
 
 ```
 +------------------------+------------------------+
@@ -391,13 +391,13 @@ As an example, a `Frame` that is two pixels wide and two pixels high, could be c
 +------------------------+------------------------+
 ```
 
-In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by lines and stored in this order:
+In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by `Lines` and stored in this order:
 
 Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
 
 ## Coding of the Sample Difference
 
-Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original sample. In the equation below, the term "bits" represents bits_per_raw_sample+1 for JPEG2000-RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original `Sample`. In the equation below, the term "bits" represents bits_per_raw_sample+1 for JPEG2000-RCT or bits_per_raw_sample otherwise:
 
 PDF:$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
 RFC:```
@@ -636,7 +636,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 
 #### Run Length Coding
 
-The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each plane and slice to 0.
+The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
 
 ```c
 pseudo-code                                                   | type
@@ -678,7 +678,7 @@ Level coding is identical to the normal difference coding with the exception tha
     encode(diff);
 ```
 
-Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test samples the use of prediction slightly improved the compression rate.
+Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test `Samples` the use of prediction slightly improved the compression rate.
 
 # Bitstream
 
@@ -698,9 +698,9 @@ The same context that is initialized to 128 is used for all fields in the header
 
 The following MUST be provided by external means during initialization of the decoder:
 
-`frame_pixel_width` is defined as `Frame` width in pixels.
+`frame_pixel_width` is defined as `Frame` width in `Pixels`.
 
-`frame_pixel_height` is defined as `Frame` height in pixels.
+`frame_pixel_height` is defined as `Frame` height in `Pixels`.
 
 Default values at the decoder initialization phase:
 
@@ -814,8 +814,8 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 |value  | color space losslessly encoded  | transformation                  | interleave method               |
 |-------|:--------------------------------|:--------------------------------|:--------------------------------|
-| 0     | YCbCr                           | No Pixel transformation         | plane then line                 |
-| 1     | RGB                             | JPEG2000-RCT                    | line then plane                 |
+| 0     | YCbCr                           | No Pixel transformation         | `Plane` then `Line`             |
+| 1     | RGB                             | JPEG2000-RCT                    | `Line` then `Plane`             |
 | Other | reserved for future use         | reserved for future use         | reserved for future use         |
 
 Restrictions:  
@@ -823,21 +823,21 @@ If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsam
 
 ### chroma_planes
 
-`chroma_planes` indicates if chroma (color) planes are present.
+`chroma_planes` indicates if chroma (color) `Planes` are present.
 
-|value  | presence                        |
-|-------|:--------------------------------|
-|0      |   chroma planes are not present |
-|1      |   chroma planes are present     |
+|value  | presence                          |
+|-------|:----------------------------------|
+|0      |   chroma `Planes` are not present |
+|1      |   chroma `Planes` are present     |
 
 ### bits_per_raw_sample
 
-`bits_per_raw_sample` indicates the number of bits for each sample. Inferred to be 8 if not present.
+`bits_per_raw_sample` indicates the number of bits for each `Sample`. Inferred to be 8 if not present.
 
 |value  | bits for each sample                            |
 |-------|:------------------------------------------------|
 | 0     | reserved\*                                      |
-| Other | the actual bits for each sample                 |
+| Other | the actual bits for each `Sample`               |
 
 \* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
@@ -854,12 +854,12 @@ RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers t
 
 ### alpha_plane
 
-`alpha_plane` indicates if a transparency plane is present.
+`alpha_plane` indicates if a transparency `Plane` is present.
 
-|value  | presence                         |
-|-------|:---------------------------------|
-| 0     | transparency plane is not present|
-| 1     | transparency plane is present    |
+|value  | presence                           |
+|-------|:-----------------------------------|
+| 0     | transparency `Plane` is not present|
+| 1     | transparency `Plane` is present    |
 
 ### num_h_slices
 
@@ -1104,7 +1104,7 @@ Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the temporal and spatial relationship of each line of the `Frame`.  
+`picture_structure` specifies the temporal and spatial relationship of each `Line` of the `Frame`.  
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
@@ -1117,18 +1117,18 @@ Inferred to be 0 if not present.
 
 ### sar_num
 
-`sar_num` specifies the sample aspect ratio numerator.  
+`sar_num` specifies the `Sample` aspect ratio numerator.  
 Inferred to be 0 if not present.  
 A value of 0 means that aspect ratio is unknown.  
-Encoders MUST write 0 if sample aspect ratio is unknown.  
+Encoders MUST write 0 if `Sample` aspect ratio is unknown.  
 If `sar_den` is 0, decoders SHOULD ignore the encoded value and consider that `sar_num` is 0.
 
 ### sar_den
 
-`sar_den` specifies the sample aspect ratio denominator.  
+`sar_den` specifies the `Sample` aspect ratio denominator.  
 Inferred to be 0 if not present.  
 A value of 0 means that aspect ratio is unknown.  
-Encoders MUST write 0 if sample aspect ratio is unknown.  
+Encoders MUST write 0 if `Sample` aspect ratio is unknown.  
 If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `sar_den` is 0.
 
 ### reset_contexts{V4}
@@ -1151,7 +1151,7 @@ Inferred to be 0 if not present.{V4}
 
 A `Slice Content` contains all `Line` elements part of the `Slice`.
 
-Depending on the configuration, `Line` elements are ordered by plane then by row (YCbCr) or by row then by plane (RGB).
+Depending on the configuration, `Line` elements are ordered by `Plane` then by row (YCbCr) or by row then by `Plane` (RGB).
 
 ```c
 pseudo-code                                                   | type
@@ -1212,26 +1212,26 @@ Line( p, y ) {                                                |
 
 ### plane_pixel_width
 
-`plane_pixel_width[ p ]` is the width in pixels of plane p of the slice.  
+`plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the slice.  
 `plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.  
 PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_h\_chroma\_subsample) \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_h_chroma_subsample))`.
 
 ### slice_pixel_width
 
-`slice_pixel_width` is the width in pixels of the slice.  
+`slice_pixel_width` is the width in `Pixels` of the slice.  
 PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
 RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
 
 ### slice_pixel_x
 
-`slice_pixel_x` is the slice horizontal position in pixels.  
+`slice_pixel_x` is the slice horizontal position in `Pixels`.  
 PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
 RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ### sample_difference
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for sample at plane `p`, y position `y`, and x position `x`. The sample value is computed based on median predictor and context described in [the section on the `Samples`](#samples).  
+`sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in [the section on the `Samples`](#samples).  
 
 ## Slice Footer
 
@@ -1332,7 +1332,7 @@ QuantizationTable(i, j, scale) {                              |
 # Restrictions
 
 To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
-Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
+Note: 101376 is the frame size in `Pixels` of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
@@ -1343,7 +1343,7 @@ For each `Frame` with keyframe value of 0, each slice MUST have the same value o
 
 Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in Pixel count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in `Pixel` count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
 
 The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
