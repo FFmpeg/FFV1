@@ -29,7 +29,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Container`: Format that encapsulates `Frames` (see [the section on `Frames`](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
-`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Alpha, Red, Green, and Blue.
+`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Transparency, Red, Green, and Blue.
 
 `Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
 
@@ -288,28 +288,35 @@ For each `Plane` of each slice, a Quantization Table Set is selected from an ind
 
 - For Y `Plane`, `quant_table_set_index [ 0 ]` index is used
 - For Cb and Cr `Planes`, `quant_table_set_index [ 1 ]` index is used
-- For Alpha `Plane`, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
+- For extra `Plane`, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
 Background: in first implementations of FFV1 bitstream, the index for Cb and Cr `Planes` was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color spaces
 
-FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha `Plane` that can be used to code transparency data.
+FFV1 supports several color spaces. The count of allowed coded planes and the meaning of the extra `Plane` are determined by the selected color space.
 
 The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each `Plane`, each `Line` is coded from top to bottom and for each `Line`, each `Sample` is coded from left to right. In JPEG2000-RCT for each `Line` from top to bottom, each `Plane` is coded and for each `Plane`, each `Sample` is encoded from left to right.
 
 ### YCbCr
 
-In YCbCr color space, the Cb and Cr `Planes` are optional, but if used then MUST be used together. Omitting the Cb and Cr `Planes` codes the frames in grayscale without color data. An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
+This color space allows 1 to 4 `Planes`.  
+The Cb and Cr `Planes` are optional, but if used then MUST be used together. Omitting the Cb and Cr `Planes` codes the frames in grayscale without color data.  
+An optional transparency `Plane` can be used to code transparency data.
+
+An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
 
 - Y
-- Y, Alpha
+- Y, Transparency
 - Y, Cb, Cr
-- Y, Cb, Cr, Alpha
+- Y, Cb, Cr, Transparency
 
-The Y `Plane` MUST be coded first. If the Cb and Cr `Planes` are used then they MUST be coded after the Y `Plane`. If an Alpha (transparency) `Plane` is used, then it MUST be coded last.
+The Y `Plane` MUST be coded first. If the Cb and Cr `Planes` are used then they MUST be coded after the Y `Plane`. If a transparency `Plane` is used, then it MUST be coded last.
 
 ### RGB
+
+This color space allows 3 or 4 `Planes`.  
+An optional transparency `Plane` can be used to code transparency data.
 
 JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `Planes` losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
@@ -343,7 +350,7 @@ RFC:```
 RFC:b=Cb+g
 RFC:```
 
-Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and alpha_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and extra_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 PDF:$$Cb=g-b$$
 RFC:```
@@ -375,9 +382,9 @@ RFC:```
 RFC:g=Cb+b
 RFC:```
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and alpha_plane is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and extra_plane is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
-When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used Alpha.
+When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used transparency.
 
 As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could be comprised of the following structure:
 
@@ -727,7 +734,7 @@ Parameters( ) {                                               |
     chroma_planes                                             | br
     log2_h_chroma_subsample                                   | ur
     log2_v_chroma_subsample                                   | ur
-    alpha_plane                                               | br
+    extra_plane                                               | br
     if (version >= 3) {                                       |
         num_h_slices - 1                                      | ur
         num_v_slices - 1                                      | ur
@@ -810,13 +817,13 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### colorspace_type
 
-`colorspace_type` specifies the color space losslessly encoded, the Pixel transformation used by the encoder, as well as interleave method.
+`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, as well as interleave method.
 
-|value  | color space losslessly encoded  | transformation                  | interleave method               |
-|-------|:--------------------------------|:--------------------------------|:--------------------------------|
-| 0     | YCbCr                           | No Pixel transformation         | `Plane` then `Line`             |
-| 1     | RGB                             | JPEG2000-RCT                    | `Line` then `Plane`             |
-| Other | reserved for future use         | reserved for future use         | reserved for future use         |
+|value  | color space encoded     | pixel transformation    | extra plane content     | interleave method       |
+|-------|:------------------------|:------------------------|:------------------------|:------------------------|
+| 0     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     |
+| 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
+| Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 
 Restrictions:  
 If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
@@ -852,14 +859,14 @@ RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers t
 PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
 RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
 
-### alpha_plane
+### extra_plane
 
-`alpha_plane` indicates if a transparency `Plane` is present.
+`extra_plane` indicates if an extra `Plane` is present.
 
-|value  | presence                           |
-|-------|:-----------------------------------|
-| 0     | transparency `Plane` is not present|
-| 1     | transparency `Plane` is present    |
+|value  | presence                     |
+|-------|:-----------------------------|
+| 0     | extra `Plane` is not present |
+| 1     | extra `Plane` is present     |
 
 ### num_h_slices
 
@@ -1095,7 +1102,7 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
 
-`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( alpha_plane ? 1 : 0 )`.
+`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( extra_plane ? 1 : 0 )`.
 
 ### quant_table_set_index
 
@@ -1171,7 +1178,7 @@ SliceContent( ) {                                             |
 
 ### primary_color_count
 
-`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( alpha_plane ? 1 : 0 )`.
+`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )`.
 
 ### plane_pixel_height
 
