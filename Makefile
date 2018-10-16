@@ -1,8 +1,8 @@
 SRC=ffv1.md
 PDF=$(SRC:.md=.pdf)
 HTML=$(SRC:.md=.html)
-VERSION=05
-VERSION-v4=02
+VERSION=06
+VERSION-v4=03
 
 $(info PDF and HTML rendering has been tested with pandoc version 1.13.2.1, some older versions are known to produce very poor output, please ensure your pandoc is recent enough.)
 $(info RFC rendering has been tested with mmark version 1.3.4 and xml2rfc 2.5.1, please ensure these are installed and recent enough.)
