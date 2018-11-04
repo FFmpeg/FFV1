@@ -27,7 +27,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 -------- --------------------------------------------------------------
 
-`Container`: Format that encapsulates `Frames` (see [the section on `Frames`](#frame)) and (when required) a `Configuration Record` into a bitstream.
+`Container`: Format that encapsulates `Frames` (see [the section on Frames](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Transparency, Red, Green, and Blue.
 
@@ -172,7 +172,7 @@ a = b, a += b, a -= b, a *= b
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on Mapping FFV1 into Containers](#mapping-ffv1-into-containers).
 
 ### Bitstream Functions
 
@@ -194,7 +194,7 @@ a = b, a += b, a -= b, a *= b
 
 # Sample Coding
 
-For each `Slice` (as described in [the section on `Slices`](#slice)) of a `Frame`, the `Planes`, `Lines`, and `Samples` are coded in an order determined by the `Color Space` (see [the section on `Color Space`](#color-spaces)). Each `Sample` is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other `Samples` within the same `Plane` and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
+For each `Slice` (as described in [the section on Slices](#slice)) of a `Frame`, the `Planes`, `Lines`, and `Samples` are coded in an order determined by the `Color Space` (see [the section on Color Space](#color-spaces)). Each `Sample` is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other `Samples` within the same `Plane` and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
 
 ## Border
 
@@ -590,7 +590,7 @@ RFC:```
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see [the section on coder_type](#codertype)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on "Parameters"](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see [the section on coder_type](#codertype)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on Parameters](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -712,7 +712,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 An FFV1 bitstream is composed of a series of 1 or more `Frames` and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in [the section on `Pseudo-Code`](#pseudocode). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in [the section on Pseudo-Code](#pseudocode). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
@@ -1259,7 +1259,7 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ### sample_difference
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in [the section on the `Samples`](#samples).  
+`sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in [the section on Samples](#samples).
 
 ## Slice Footer
 
@@ -1398,15 +1398,15 @@ Optional parameters:
 
   This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
 
-  version:  The version of the FFV1 encoding as defined by [in the section on `version`](#version).
+  version:  The version of the FFV1 encoding as defined by [in the section on version](#version).
 
-  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on `micro_version`](#microversion).
+  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on micro_version](#microversion).
 
-  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on `coder_type`](#codertype).
+  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on coder_type](#codertype).
 
-  colorspace_type:  The colorspace_type of the FFV1 encoding as defined by [in the section on `colorspace_type`](#colorspacetype).
+  colorspace_type:  The colorspace_type of the FFV1 encoding as defined by [in the section on colorspace_type](#colorspacetype).
 
-  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on `bits_per_raw_sample`](#bitsperrawsample).
+  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on bits_per_raw_sample](#bits\_per\_raw\_sample).
 
   max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
