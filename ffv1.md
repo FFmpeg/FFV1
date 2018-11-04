@@ -304,8 +304,10 @@ The FFV1 bitstream interleaves data in an order determined by the color space. I
 
 ### YCbCr
 
-This color space allows 1 to 4 `Planes`.  
-The Cb and Cr `Planes` are optional, but if used then MUST be used together. Omitting the Cb and Cr `Planes` codes the frames in grayscale without color data.  
+This color space allows 1 to 4 `Planes`.
+
+The Cb and Cr `Planes` are optional, but if used then MUST be used together. Omitting the Cb and Cr `Planes` codes the frames in grayscale without color data.
+
 An optional transparency `Plane` can be used to code transparency data.
 
 An FFV1 `Frame` using YCbCr MUST use one of the following arrangements:
@@ -319,7 +321,8 @@ The Y `Plane` MUST be coded first. If the Cb and Cr `Planes` are used then they 
 
 ### RGB
 
-This color space allows 3 or 4 `Planes`.  
+This color space allows 3 or 4 `Planes`.
+
 An optional transparency `Plane` can be used to code transparency data.
 
 JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `Planes` losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
@@ -779,9 +782,12 @@ Parameters( ) {                                               |
 
 ### version
 
-`version` specifies the version of the FFV1 bitstream.  
-Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.  
-Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.  
+`version` specifies the version of the FFV1 bitstream.
+
+Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.
+
+Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
+
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
@@ -797,7 +803,8 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 ### micro_version
 
-`micro_version` specifies the micro-version of the FFV1 bitstream.  
+`micro_version` specifies the micro-version of the FFV1 bitstream.
+
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of micro_version for version 3:
@@ -833,6 +840,8 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 
 ### state_transition_delta
 
+`state_transition_delta` specifies the Range coder custom state transition table.
+
 `state_transition_delta` specifies the Range coder custom state transition table.  
 If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
@@ -846,8 +855,7 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 | 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 
-Restrictions:  
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
+Restrictions: If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
 
 ### chroma_planes
 
@@ -872,12 +880,12 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 ### log2_h_chroma_subsample
 
-PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).  
+PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).
 RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
 
 ### log2_v_chroma_subsample
 
-PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).  
+PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).
 RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
 
 ### extra_plane
@@ -891,23 +899,28 @@ RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers t
 
 ### num_h_slices
 
-`num_h_slices` indicates the number of horizontal elements of the slice raster.  
+`num_h_slices` indicates the number of horizontal elements of the slice raster.
+
 Inferred to be 1 if not present.
 
 ### num_v_slices
 
-`num_v_slices` indicates the number of vertical elements of the slice raster.  
+`num_v_slices` indicates the number of vertical elements of the slice raster.
+
 Inferred to be 1 if not present.
 
 ### quant_table_set_count
 
-`quant_table_set_count` indicates the number of Quantization Table Sets.  
-Inferred to be 1 if not present.  
+`quant_table_set_count` indicates the number of Quantization Table Sets.
+
+Inferred to be 1 if not present.
+
 MUST NOT be 0.
 
 ### states_coded
 
-`states_coded` indicates if the respective Quantization Table Set has the initial states coded.  
+`states_coded` indicates if the respective Quantization Table Set has the initial states coded.
+
 Inferred to be 0 if not present.
 
 | value | initial states                                               |
@@ -942,7 +955,8 @@ RFC:```
 
 ### intra
 
-`intra` indicates the relationship between the instances of `Frame`.  
+`intra` indicates the relationship between the instances of `Frame`.
+
 Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
@@ -969,14 +983,18 @@ ConfigurationRecord( NumBytes ) {                             |
 
 ### reserved_for_future_use
 
-`reserved_for_future_use` has semantics that are reserved for future use.  
-Encoders conforming to this version of this specification SHALL NOT write this value.  
+`reserved_for_future_use` has semantics that are reserved for future use.
+
+Encoders conforming to this version of this specification SHALL NOT write this value.
+
 Decoders conforming to this version of this specification SHALL ignore its value.
 
 ### configuration_record_crc_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.  
-This is equivalent to storing the crc remainder in the 32-bit parity.  
+`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
+
+This is equivalent to storing the crc remainder in the 32-bit parity.
+
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ### Mapping FFV1 into Containers
@@ -985,7 +1003,8 @@ This `Configuration Record` can be placed in any file format supporting `Configu
 
 #### AVI File Format
 
-The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.  
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
+
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
@@ -1060,7 +1079,7 @@ Slice( ) {                                                    |
     if (coder_type == 0)                                      |
         while (!byte_aligned())                               |
             padding                                           | u(1)
-    if (version <= 1) {                                       |  
+    if (version <= 1) {                                       |
         while (remaining_bits_in_bitstream( NumBytes ) != 0 ) |
             reserved                                          | u(1)
     }                                                         |
@@ -1072,9 +1091,12 @@ Slice( ) {                                                    |
 `padding` specifies a bit without any significance and used only for byte alignment.
 MUST be 0.
 
-`reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.  
-Encoders SHOULD NOT fill these bits.  
-Decoders SHOULD ignore these bits.  
+`reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.
+
+Encoders SHOULD NOT fill these bits.
+
+Decoders SHOULD ignore these bits.
+
 Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: due to some non conforming encoders, some bitstreams where found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`, a decoder conforming to the revised specification could not do the difference between a revised bitstream and a buggy bitstream.
 
 ## Slice Header
@@ -1103,22 +1125,26 @@ SliceHeader( ) {                                              |
 
 ### slice_x
 
-`slice_x` indicates the x position on the slice raster formed by num_h_slices.  
+`slice_x` indicates the x position on the slice raster formed by num_h_slices.
+
 Inferred to be 0 if not present.
 
 ### slice_y
 
-`slice_y` indicates the y position on the slice raster formed by num_v_slices.  
+`slice_y` indicates the y position on the slice raster formed by num_v_slices.
+
 Inferred to be 0 if not present.
 
 ### slice_width
 
-`slice_width` indicates the width on the slice raster formed by num_h_slices.  
+`slice_width` indicates the width on the slice raster formed by num_h_slices.
+
 Inferred to be 1 if not present.
 
 ### slice_height
 
-`slice_height` indicates the height on the slice raster formed by num_v_slices.  
+`slice_height` indicates the height on the slice raster formed by num_v_slices.
+
 Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
@@ -1127,12 +1153,14 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index
 
-`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.  
+`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.
+
 Inferred to be 0 if not present.
 
 ### picture_structure
 
-`picture_structure` specifies the temporal and spatial relationship of each `Line` of the `Frame`.  
+`picture_structure` specifies the temporal and spatial relationship of each `Line` of the `Frame`.
+
 Inferred to be 0 if not present.
 
 |value    |  picture structure used     |
@@ -1145,28 +1173,36 @@ Inferred to be 0 if not present.
 
 ### sar_num
 
-`sar_num` specifies the `Sample` aspect ratio numerator.  
-Inferred to be 0 if not present.  
-A value of 0 means that aspect ratio is unknown.  
-Encoders MUST write 0 if `Sample` aspect ratio is unknown.  
+`sar_num` specifies the `Sample` aspect ratio numerator.
+
+Inferred to be 0 if not present.
+
+A value of 0 means that aspect ratio is unknown.
+
+Encoders MUST write 0 if `Sample` aspect ratio is unknown.
+
 If `sar_den` is 0, decoders SHOULD ignore the encoded value and consider that `sar_num` is 0.
 
 ### sar_den
 
-`sar_den` specifies the `Sample` aspect ratio denominator.  
-Inferred to be 0 if not present.  
-A value of 0 means that aspect ratio is unknown.  
-Encoders MUST write 0 if `Sample` aspect ratio is unknown.  
+`sar_den` specifies the `Sample` aspect ratio denominator.
+
+Inferred to be 0 if not present.
+
+A value of 0 means that aspect ratio is unknown.
+
+Encoders MUST write 0 if `Sample` aspect ratio is unknown.
+
 If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `sar_den` is 0.
 
 ### reset_contexts{V4}
 
-`reset_contexts` indicates if slice contexts must be reset.  {V4}
+`reset_contexts` indicates if slice contexts must be reset.{V4}
 Inferred to be 0 if not present.{V4}
 
 ### slice_coding_mode{V4}
 
-`slice_coding_mode` indicates the slice coding mode.  {V4}
+`slice_coding_mode` indicates the slice coding mode.{V4}
 Inferred to be 0 if not present.{V4}
 
 |value  | slice coding mode            |{V4}
@@ -1203,20 +1239,24 @@ SliceContent( ) {                                             |
 
 ### plane_pixel_height
 
-`plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.  
-`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.  
+`plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
+
+`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
+
 PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / log2\_v\_chroma\_subsample \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / log2_v_chroma_subsample)`.
 
 ### slice_pixel_height
 
-`slice_pixel_height` is the height in pixels of the slice.  
+`slice_pixel_height` is the height in pixels of the slice.
+
 PDF:Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$.
 RFC:Its value is `floor(( slice_y + slice_height ) * slice_pixel_height / num_v_slices) - slice_pixel_y`.
 
 ### slice_pixel_y
 
-`slice_pixel_y` is the slice vertical position in pixels.  
+`slice_pixel_y` is the slice vertical position in pixels.
+
 PDF:Its value is $\lfloor slice\_y * frame\_pixel\_height / num\_v\_slices \rfloor$.
 RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
 
@@ -1240,20 +1280,24 @@ Line( p, y ) {                                                |
 
 ### plane_pixel_width
 
-`plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the slice.  
-`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.  
+`plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the slice.
+
+`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
+
 PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_h\_chroma\_subsample) \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_h_chroma_subsample))`.
 
 ### slice_pixel_width
 
-`slice_pixel_width` is the width in `Pixels` of the slice.  
+`slice_pixel_width` is the width in `Pixels` of the slice.
+
 PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
 RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
 
 ### slice_pixel_x
 
-`slice_pixel_x` is the slice horizontal position in `Pixels`.  
+`slice_pixel_x` is the slice horizontal position in `Pixels`.
+
 PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
 RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
@@ -1281,7 +1325,8 @@ SliceFooter( ) {                                              |
 
 ### slice_size
 
-`slice_size` indicates the size of the slice in bytes.  
+`slice_size` indicates the size of the slice in bytes.
+
 Note: this allows finding the start of slices before previous slices have been fully decoded, and allows parallel decoding as well as error resilience.
 
 ### error_status
@@ -1297,8 +1342,10 @@ Note: this allows finding the start of slices before previous slices have been f
 
 ### slice_crc_parity
 
-`slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.  
-This is equivalent to storing the crc remainder in the 32-bit parity.  
+`slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.
+
+This is equivalent to storing the crc remainder in the 32-bit parity.
+
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
 ## Quantization Table Set
