@@ -26,23 +26,23 @@ ffv1-v4.pdf:  ffv1.md
 	pandoc --toc -s --number-sections --latex-engine=xelatex -V geometry:margin=1in --variable urlcolor=blue -o "$@" merged_ffv1-v4-pdf.md
 
 draft-ietf-cellar-ffv1-$(VERSION).html: ffv1.md
-	cat rfc_frontmatter.md "$<" | grep -v "^PDF:" | grep -v "{V4}" |  sed "s|^RFC:||g;s|{V3}||g" > merged_rfchtml.md
 	mmark -xml2 -page merged_rfchtml.md > draft-ietf-cellar-ffv1-$(VERSION).xml
 	xml2rfc --html draft-ietf-cellar-ffv1-$(VERSION).xml -o "$@"
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^PDF:" | grep -v "{V4}" |  sed "s|^RFC:||g;s|{V3}||g" > merged_rfchtml.md
 
 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).html: ffv1.md
-	cat rfc_frontmatter.md "$<" | grep -v "^PDF:" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g" > merged_rfchtml-v4.md
 	mmark -xml2 -page merged_rfchtml-v4.md > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 	xml2rfc --html draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml -o "$@"
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^PDF:" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g" > merged_rfchtml-v4.md
 
 draft-ietf-cellar-ffv1-$(VERSION).txt: ffv1.md
-	cat rfc_frontmatter.md "$<" | grep -v "^PDF:" | grep -v "{V4}" | sed "s|^RFC:||g;s|{V3}||g" > merged_rfctxt.md
 	mmark -xml2 -page merged_rfctxt.md > draft-ietf-cellar-ffv1-$(VERSION).xml
 	xml2rfc draft-ietf-cellar-ffv1-$(VERSION).xml -o "$@"
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^PDF:" | grep -v "{V4}" | sed "s|^RFC:||g;s|{V3}||g" > merged_rfctxt.md
 
 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).txt: ffv1.md
-	cat rfc_frontmatter.md "$<" | grep -v "^PDF:" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g" > merged_rfctxt-v4.md
 	mmark -xml2 -page merged_rfctxt-v4.md > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^PDF:" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g" > merged_rfctxt-v4.md
 	xml2rfc draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml -o "$@"
 
 clean:
