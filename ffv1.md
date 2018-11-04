@@ -176,11 +176,11 @@ a = b, a += b, a -= b, a *= b
 
 ### Bitstream Functions
 
-#### remaining_bits_in_bitstream
+#### remaining\_bits\_in\_bitstream
 
 `remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
 
-#### remaining_symbols_in_syntax
+#### remaining\_symbols\_in\_syntax
 
 `remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
 
@@ -555,7 +555,7 @@ RFC:```
 RFC:zero_state_{i} = 256 - one_state_{256-i}
 RFC:```
 
-#### default_state_transition
+#### default\_state\_transition
 
 ```
   0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
@@ -838,11 +838,10 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
-### state_transition_delta
+### state\_transition\_delta
 
 `state_transition_delta` specifies the Range coder custom state transition table.
 
-`state_transition_delta` specifies the Range coder custom state transition table.  
 If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
 ### colorspace_type
@@ -866,7 +865,7 @@ Restrictions: If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h
 |0      |   chroma `Planes` are not present |
 |1      |   chroma `Planes` are present     |
 
-### bits_per_raw_sample
+### bits\_per\_raw\_sample
 
 `bits_per_raw_sample` indicates the number of bits for each `Sample`. Inferred to be 8 if not present.
 
@@ -878,12 +877,12 @@ Restrictions: If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h
 \* Encoders MUST NOT store bits_per_raw_sample = 0
 Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
-### log2_h_chroma_subsample
+### log2\_h\_chroma\_subsample
 
 PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).
 RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
 
-### log2_v_chroma_subsample
+### log2\_v\_chroma\_subsample
 
 PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).
 RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
@@ -897,19 +896,19 @@ RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers t
 | 0     | extra `Plane` is not present |
 | 1     | extra `Plane` is present     |
 
-### num_h_slices
+### num\_h\_slices
 
 `num_h_slices` indicates the number of horizontal elements of the slice raster.
 
 Inferred to be 1 if not present.
 
-### num_v_slices
+### num\_v\_slices
 
 `num_v_slices` indicates the number of vertical elements of the slice raster.
 
 Inferred to be 1 if not present.
 
-### quant_table_set_count
+### quant\_table\_set\_count
 
 `quant_table_set_count` indicates the number of Quantization Table Sets.
 
@@ -928,7 +927,7 @@ Inferred to be 0 if not present.
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
 
-### initial_state_delta
+### initial\_state\_delta
 
 `initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
 
@@ -981,7 +980,7 @@ ConfigurationRecord( NumBytes ) {                             |
 }                                                             |
 ```
 
-### reserved_for_future_use
+### reserved\_for\_future\_use
 
 `reserved_for_future_use` has semantics that are reserved for future use.
 
@@ -989,7 +988,7 @@ Encoders conforming to this version of this specification SHALL NOT write this 
 
 Decoders conforming to this version of this specification SHALL ignore its value.
 
-### configuration_record_crc_parity
+### configuration\_record\_crc\_parity
 
 `configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
 
@@ -1147,11 +1146,11 @@ Inferred to be 1 if not present.
 
 Inferred to be 1 if not present.
 
-### quant_table_set_index_count
+### quant\_table\_set\_index\_count
 
 `quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( extra_plane ? 1 : 0 )`.
 
-### quant_table_set_index
+### quant\_table\_set\_index
 
 `quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.
 
@@ -1200,7 +1199,7 @@ If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `s
 `reset_contexts` indicates if slice contexts must be reset.{V4}
 Inferred to be 0 if not present.{V4}
 
-### slice_coding_mode{V4}
+### slice\_coding\_mode{V4}
 
 `slice_coding_mode` indicates the slice coding mode.{V4}
 Inferred to be 0 if not present.{V4}
@@ -1233,11 +1232,11 @@ SliceContent( ) {                                             |
 }                                                             |
 ```
 
-### primary_color_count
+### primary\_color\_count
 
 `primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )`.
 
-### plane_pixel_height
+### plane\_pixel\_height
 
 `plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
 
@@ -1246,14 +1245,14 @@ SliceContent( ) {                                             |
 PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / log2\_v\_chroma\_subsample \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / log2_v_chroma_subsample)`.
 
-### slice_pixel_height
+### slice\_pixel\_height
 
 `slice_pixel_height` is the height in pixels of the slice.
 
 PDF:Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$.
 RFC:Its value is `floor(( slice_y + slice_height ) * slice_pixel_height / num_v_slices) - slice_pixel_y`.
 
-### slice_pixel_y
+### slice\_pixel\_y
 
 `slice_pixel_y` is the slice vertical position in pixels.
 
@@ -1278,7 +1277,7 @@ Line( p, y ) {                                                |
 }                                                             |
 ```
 
-### plane_pixel_width
+### plane\_pixel\_width
 
 `plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the slice.
 
@@ -1287,14 +1286,14 @@ Line( p, y ) {                                                |
 PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_h\_chroma\_subsample) \rceil$.
 RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_h_chroma_subsample))`.
 
-### slice_pixel_width
+### slice\_pixel\_width
 
 `slice_pixel_width` is the width in `Pixels` of the slice.
 
 PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
 RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
 
-### slice_pixel_x
+### slice\_pixel\_x
 
 `slice_pixel_x` is the slice horizontal position in `Pixels`.
 
@@ -1340,7 +1339,7 @@ Note: this allows finding the start of slices before previous slices have been f
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
 
-### slice_crc_parity
+### slice\_crc\_parity
 
 `slice_crc_parity` 32 bits that are chosen so that the slice as a whole has a crc remainder of 0.
 
