@@ -1,0 +1,13 @@
+#!/bin/bash
+grep "^SVGC" ffv1.md | cut -d : -f2- | while read svg_construct ; do
+    filename=$(echo "$svg_construct" | cut -d = -f1)
+    formula=$(echo "$svg_construct" | cut -d = -f2-)
+    root=$(basename "$filename")
+    echo "\pagenumbering{gobble}" > "${root}.md"
+    printf "$formula" >> "${root}.md"
+    pandoc -V fontsize=12pt -o "${root}.pdf" "${root}.md"
+    pdfcrop "${root}.pdf" "${root}_cropped.pdf"
+    pdf2svg "${root}_cropped.pdf" "${filename}.tmp"
+    sed "s|glyph|${filename}-glyph|g" "${filename}.tmp" > "${filename}"
+    rm "${root}.md" "${root}.pdf" "${root}_cropped.pdf" "${filename}.tmp"
+done

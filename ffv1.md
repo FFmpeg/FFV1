@@ -12,8 +12,7 @@ This document defines a version 0, 1, and 3 of FFV1. The distinctions of the ver
 
 - Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been in non-experimental use since August 17, 2013 [@?FFV1_V3].{V3}
 
-RFC:This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
-PDF:This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within <https://datatracker.ietf.org/doc/draft-ietf-cellar-ffv1/>.{V4}
+This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
 The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
 
@@ -24,8 +23,6 @@ This document assumes familiarity with mathematical and coding concepts such as 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [@!RFC2119].
 
 ## Definitions
-
-PDF:-------- --------------------------------------------------------------
 
 `Container`: Format that encapsulates `Frames` (see [the section on Frames](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
@@ -48,7 +45,6 @@ PDF:-------- --------------------------------------------------------------
 `YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples` e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
-PDF:-------- --------------------------------------------------------------
 
 ## Conventions
 
@@ -60,7 +56,6 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
-PDF:------------- ----------------------------------------------------------------
 `a + b`       means a plus b.
 
 `a - b`       means a minus b.
@@ -78,11 +73,9 @@ PDF:------------- --------------------------------------------------------------
 `a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
 
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
-PDF:--------------- ----------------------------------------------------------------
 
 ### Assignment Operators
 
-PDF:------------- ----------------------------------------------------------------
 `a = b`       means a is assigned b.
 
 `a++`         is equivalent to a is assigned a + 1.
@@ -94,11 +87,9 @@ PDF:------------- --------------------------------------------------------------
 `a -= b`      is equivalent to a is assigned a - b.
 
 `a *= b`      is equivalent to a is assigned a * b.
-PDF:--------------- ----------------------------------------------------------------
 
 ### Comparison Operators
 
-PDF:------------- ----------------------------------------------------------------
 `a > b`       means a is greater than b.
 
 `a >= b`      means a is greater than or equal to b.
@@ -118,16 +109,12 @@ PDF:------------- --------------------------------------------------------------
 `!a`          means Boolean logical "not" of a.
 
 `a ? b : c`   if a is true, then b, otherwise c.
-PDF:--------------- ----------------------------------------------------------------
 
 ### Mathematical Functions
 
-PDF:--------------------- -----------------------------------------------
-PDF:$$\lfloor a \rfloor$$ the largest integer less than or equal to a
-RFC:floor(a)              the largest integer less than or equal to a
+⌊a⌋                   the largest integer less than or equal to a
 
-PDF:$$\lceil a \rceil$$   the smallest integer greater than or equal to a
-RFC:ceil(a)               the smallest integer greater than or equal to a
+⌈a⌉                   the smallest integer greater than or equal to a
 
 sign(a)               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0
 
@@ -141,10 +128,9 @@ max(a,b)              the largest of two values a and b
 
 median(a,b,c)         the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c)
 
-RFC:a_{b}                 the b-th value of a sequence of a
-RFC:
-RFC:a_{b,c}               the 'b,c'-th value of a sequence of a
-PDF:--------------------- -----------------------------------------------
+a~b~                  the b-th value of a sequence of a
+
+a~b,c~                the 'b,c'-th value of a sequence of a
 
 ### Order of Operation Precedence
 
@@ -264,7 +250,8 @@ Background: a two's complement signed 16-bit signed integer was used for storing
 
 Relative to any `Sample` `X`, the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
-PDF:$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
+SVGI:![alt](context.svg "context")
+SVGC:context.svg=$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
 RFC:```
 RFC:context = Q_{0}[l − tl] +
 RFC:          Q_{1}[tl − t] +
@@ -279,7 +266,8 @@ If `context >= 0` then `context` is used and the difference between the `Sample`
 
 The FFV1 bitstream contains 1 or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
-PDF:$$Q_{j}[k]=quant\_tables[i][j][k\&255]$$
+SVGI:![alt](quantizationtablesets.svg "quantization table sets")
+SVGC:quantizationtablesets.svg=Q_{j}[k]=quant\\\_tables[i][j][k\\&255]
 RFC:```
 RFC:Q_{j}[k] = quant_tables[i][j][k&255]
 RFC:```
@@ -327,65 +315,27 @@ An optional transparency `Plane` can be used to code transparency data.
 
 JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `Planes` losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
-PDF:$$Cb=b-g$$
+SVGI:![alt](rgb1.svg "rgb 1")
+SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b-g \\\\\\ Cr & = & r-g \\\\\\ Y & = & g+(Cb+Cr)>>2 \\\\\\ g & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+g \\\\\\ b & = & Cb+g \\\\end{array}$$
 RFC:```
 RFC:Cb=b-g
-RFC:```
-
-PDF:$$Cr=r-g$$
-RFC:```
 RFC:Cr=r-g
-RFC:```
-
-PDF:$$Y=g+(Cb+Cr)>>2$$
-RFC:```
 RFC:Y=g+(Cb+Cr)>>2
-RFC:```
-
-PDF:$$g=Y-(Cb+Cr)>>2$$
-RFC:```
 RFC:g=Y-(Cb+Cr)>>2
-RFC:```
-
-PDF:$$r=Cr+g$$
-RFC:```
 RFC:r=Cr+g
-RFC:```
-
-PDF:$$b=Cb+g$$
-RFC:```
 RFC:b=Cb+g
 RFC:```
 
 Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and extra_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
-PDF:$$Cb=g-b$$
+SVGI:![alt](rgb2.svg "rgb 2")
+SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g-b \\\\\\ Cr & = & r-b \\\\\\ Y & = & b+(Cb+Cr)>>2 \\\\\\ b & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+b \\\\\\ g & = & Cb+b \\\\end{array}$$
 RFC:```
 RFC:Cb=g-b
-RFC:```
-
-PDF:$$Cr=r-b$$
-RFC:```
 RFC:Cr=r-b
-RFC:```
-
-PDF:$$Y=b+(Cb+Cr)>>2$$
-RFC:```
 RFC:Y=b+(Cb+Cr)>>2
-RFC:```
-
-PDF:$$b=Y-(Cb+Cr)>>2$$
-RFC:```
 RFC:b=Y-(Cb+Cr)>>2
-RFC:```
-
-PDF:$$r=Cr+b$$
-RFC:```
 RFC:r=Cr+b
-RFC:```
-
-PDF:$$g=Cb+b$$
-RFC:```
 RFC:g=Cb+b
 RFC:```
 
@@ -413,7 +363,8 @@ Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1
 
 Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original `Sample`. In the equation below, the term "bits" represents bits_per_raw_sample+1 for JPEG2000-RCT or bits_per_raw_sample otherwise:
 
-PDF:$$coder\_input=\left[\left(sample\_difference+2^{bits-1}\right)\&\left(2^{bits}-1\right)\right]-2^{bits-1}$$
+SVGI:![alt](samplediff.svg "coding of the sample difference")
+SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
 RFC:```
 RFC:coder_input =
 RFC:    [(sample_difference + 2^(bits−1)) & (2^bits − 1)] − 2^(bits−1)
@@ -425,18 +376,16 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-PDF:To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
-RFC:To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0,i}` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
+To encode binary digits efficiently a Range coder is used. `C~i~` is the i-th Context. `B~i~` is the i-th byte of the bytestream. `b~i~` is the i-th Range coded binary value, `S~0,i~` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j~n~` bytes.
 
-PDF:$$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$$
+SVGI:![alt](rangebinaryvalues1.svg "range binary values 1")
+SVGC:rangebinaryvalues1.svg=$$r\_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 RFC:```
-RFC:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2^8 )
+RFC:r_{i} = ⌊ ( R_{i} * S_{i,C_{i}} ) / 2^8 ⌋
 RFC:```
 
-PDF:$$\begin{array}{ccccccccc}
-PDF:S_{i+1,C_{i}}=zero\_state_{S_{i,C_{i}}} & \wedge & l{}_{i}=L_{i} & \wedge & t_{i}=R_{i}-r_{i} & \Longleftarrow & b_{i}=0 & \Longleftrightarrow & L_{i}<R_{i}-r_{i}\\
-PDF:S_{i+1,C_{i}}=one\_state_{S_{i,C_{i}}} & \wedge & l_{i}=L_{i}-R_{i}+r_{i} & \wedge & t_{i}=r_{i} & \Longleftarrow & b_{i}=1 & \Longleftrightarrow & L_{i}\geq R_{i}-r_{i}
-PDF:\end{array}$$
+SVGI:![alt](rangebinaryvalues2.svg "range binary values 2")
+SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S\_{i+1,C\_{i}}=zero\\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l{}\_{i}=L\_{i} & \\\\wedge & t\_{i}=R\_{i}-r\_{i} & \\\\Longleftarrow & b\_{i}=0 & \\\\Longleftrightarrow & L\_{i}<R\_{i}-r\_{i} \\\\\\ S\_{i+1,C\_{i}}=one\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l\_{i}=L\_{i}-R\_{i}+r\_{i} & \\\\wedge & t\_{i}=r\_{i} & \\\\Longleftarrow & b\_{i}=1 & \\\\Longleftrightarrow & L\_{i}\\\\geq R\_{i}-r\_{i} \\\\end{array}$$
 RFC:```
 RFC:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
 RFC:          l_i =  L_i                      XOR
@@ -453,17 +402,14 @@ RFC:          b_i =  1                        <==>
 RFC:          L_i >= R_i - r_i
 RFC:```
 
-PDF:$$\begin{array}{ccc}
-PDF:S_{i+1,k}=S_{i,k} & \Longleftarrow & C_{i}\neq k
-PDF:\end{array}$$
+SVGI:![alt](rangebinaryvalues3.svg "range binary values 3")
+SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S\_{i+1,k}=S\_{i,k} & \\\\Longleftarrow & C\_{i} \\\\neq k\\\\end{array}$$
 RFC:```
 RFC:S_{i+1,k} = S_{i,k} <== C_i != k
 RFC:```
 
-PDF:$$\begin{array}{ccccccc}
-PDF:R_{i+1}=2^{8}t_{i} & \wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \wedge & j_{i+1}=j_{i}+1 & \Longleftarrow & t_{i}<2^{8}\\
-PDF:R_{i+1}=t_{i} & \wedge & L_{i+1}=l_{i} & \wedge & j_{i+1}=j_{i} & \Longleftarrow & t_{i}\geq2^{8}
-PDF:\end{array}$$
+SVGI:![alt](rangebinaryvalues4.svg "range binary values 4")
+SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R\_{i+1}=2^{8}t\_{i} & \\\\wedge & L\_{i+1}=2^{8}l\_{i}+B\_{j\_{i}} & \\\\wedge & j\_{i+1}=j\_{i}+1 & \\\\Longleftarrow & t\_{i}<2^{8}\\\\\\ R\_{i+1}=t\_{i} & \\\\wedge & L\_{i+1}=l\_{i} & \\\\wedge & j\_{i+1}=j\_{i} & \\\\Longleftarrow & t\_{i}\\\\geq2^{8}\\\\end{array}$$
 RFC:```
 RFC:R_{i+1} =  2^8 * t_{i}                   XOR
 RFC:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       XOR
@@ -478,17 +424,20 @@ RFC:j_{i+1} =  j_{i}                         <==
 RFC:t_{i}   >= 2^8
 RFC:```
 
-PDF:$$R_{0}=65280$$
+SVGI:![alt](rangebinaryvalues5.svg "range binary values 5")
+SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
 RFC:```
 RFC:R_{0} = 65280
 RFC:```
 
-PDF:$$L_{0}=2^{8}B_{0}+B_{1}$$
+SVGI:![alt](rangebinaryvalues6.svg "range binary values 6")
+SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
 RFC:```
 RFC:L_{0} = 2^8 * B_{0} + B_{1}
 RFC:```
 
-PDF:$$j_{0}=2$$
+SVGI:![alt](rangebinaryvalues7.svg "range binary values 7")
+SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 RFC:```
 RFC:j_{0} = 2
 RFC:```
@@ -544,13 +493,15 @@ At keyframes all Range coder state variables are set to their initial state.
 
 #### State Transition Table
 
-PDF:$$one\_state_{i}=default\_state\_transition_{i}+state\_transition\_delta_{i}$$
+SVGI:![alt](statetransitiontable1.svg "state transition table 1")
+SVGC:statetransitiontable1.svg=$$one\\\_state\_{i}=default\\\_state\\\_transition\_{i}+state\\\_transition\\\_delta\_{i}$$
 RFC:```
 RFC:one_state_{i} =
 RFC:       default_state_transition_{i} + state_transition_delta_{i}
 RFC:```
 
-PDF:$$zero\_state_{i}=256-one\_state_{256-i}$$
+SVGI:![alt](statetransitiontable2.svg "state transition table 2")
+SVGC:statetransitiontable2.svg=$$zero\\\_state\_{i}=256-one\\\_state\_{256-i}$$
 RFC:```
 RFC:zero_state_{i} = 256 - one_state_{256-i}
 RFC:```
@@ -879,13 +830,11 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
 
-PDF:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width ($chroma\_width=2^{-log2\_h\_chroma\_subsample}luma\_width$).
-RFC:`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^(-log2_h_chroma_subsample) * luma_width`).
+`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^-log2_h_chroma_subsample^ * luma_width`).
 
 ### log2\_v\_chroma\_subsample
 
-PDF:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height ($chroma\_height=2^{-log2\_v\_chroma\_subsample}luma\_height$).
-RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^(-log2_v_chroma_subsample) * luma_height`).
+`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^-log2_v_chroma_subsample^ * luma_height`).
 
 ### extra_plane
 
@@ -931,12 +880,14 @@ Inferred to be 0 if not present.
 
 `initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
 
-PDF:$$pred = j ? initial\_states[ i ][j - 1][ k ] : 128$$
+SVGI:![alt](initialstatedelta1.svg "initial state delta 1")
+SVGC:initialstatedelta1.svg=$$pred = j ? initial\\_states[ i ][j - 1][ k ] : 128$$
 RFC:```
 RFC:pred = j ? initial_states[ i ][j - 1][ k ] : 128
 RFC:```
 
-PDF:initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
+SVGI:![alt](initialstatedelta2.svg "initial state delta 2")
+SVGC:initialstatedelta2.svg=initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
 RFC:```
 RFC:initial_state[ i ][ j ][ k ] =
 RFC:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
@@ -1242,22 +1193,19 @@ SliceContent( ) {                                             |
 
 `plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
 
-PDF:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is $\lceil slice\_pixel\_height / log2\_v\_chroma\_subsample \rceil$.
-RFC:If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil(slice_pixel_height / log2_v_chroma_subsample)`.
+If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `⌈slice_pixel_height / log2_v_chroma_subsample⌉`.
 
 ### slice\_pixel\_height
 
 `slice_pixel_height` is the height in pixels of the slice.
 
-PDF:Its value is $\lfloor ( slice\_y + slice\_height ) * slice\_pixel\_height / num\_v\_slices \rfloor - slice\_pixel\_y$.
-RFC:Its value is `floor(( slice_y + slice_height ) * slice_pixel_height / num_v_slices) - slice_pixel_y`.
+Its value is `⌊( slice_y + slice_height ) * slice_pixel_height / num_v_slices⌋ - slice_pixel_y`.
 
 ### slice\_pixel\_y
 
 `slice_pixel_y` is the slice vertical position in pixels.
 
-PDF:Its value is $\lfloor slice\_y * frame\_pixel\_height / num\_v\_slices \rfloor$.
-RFC:Its value is `floor(slice_y * frame_pixel_height / num_v_slices)`.
+Its value is `⌊slice_y * frame_pixel_height / num_v_slices⌋`.
 
 ## Line
 
@@ -1283,22 +1231,19 @@ Line( p, y ) {                                                |
 
 `plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
 
-PDF:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is $\lceil slice\_pixel\_width / ( 1 << log2\_h\_chroma\_subsample) \rceil$.
-RFC:If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil(slice_pixel_width / (1 << log2_h_chroma_subsample))`.
+If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `⌈slice_pixel_width / (1 << log2_h_chroma_subsample)⌉`.
 
 ### slice\_pixel\_width
 
 `slice_pixel_width` is the width in `Pixels` of the slice.
 
-PDF:Its value is $\lfloor ( slice\_x + slice\_width ) * slice\_pixel\_width / num\_h\_slices \rfloor - slice\_pixel\_x$.
-RFC:Its value is `floor(( slice_x + slice_width ) * slice_pixel_width / num_h_slices) - slice_pixel_x`.
+Its value is `⌊( slice_x + slice_width ) * slice_pixel_width / num_h_slices⌋ - slice_pixel_x`.
 
 ### slice\_pixel\_x
 
 `slice_pixel_x` is the slice horizontal position in `Pixels`.
 
-PDF:Its value is $\lfloor slice\_x * frame\_pixel\_width / num\_h\_slices \rfloor$.
-RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
+Its value is `⌊slice_x * frame_pixel_width / num_h_slices⌋`.
 
 ### sample_difference
 
@@ -1366,7 +1311,7 @@ QuantizationTableSet( i ) {                                   |
         QuantizationTable( i, j, scale )                      |
         scale *= 2 * len_count[ i ][ j ] - 1                  |
     }                                                         |
-    context_count[ i ] = ceil ( scale / 2 )                   |
+    context_count[ i ] = ⌈ scale / 2 ⌉                        |
 }                                                             |
 ```
 
@@ -1510,7 +1455,3 @@ After having checked keyframe field, a decoder SHOULD parse slice_size fields, f
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
 
-PDF:# Copyright
-PDF:
-PDF:Copyright 2003-2013 Michael Niedermayer \<michaelni@gmx.at\>
-PDF:This text can be used under the GNU Free Documentation License or GNU General Public License. See <http://www.gnu.org/licenses/fdl.txt>.
