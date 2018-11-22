@@ -294,7 +294,7 @@ Background: in first implementations of FFV1 bitstream, the index for Cb and Cr 
 
 ## Color spaces
 
-FFV1 supports two color spaces: YCbCr and RGB. Both color spaces allow an optional Alpha `Plane` that can be used to code transparency data.
+FFV1 supports several color spaces. Both color spaces allow an optional Alpha `Plane` that can be used to code transparency data.
 
 The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each `Plane`, each `Line` is coded from top to bottom and for each `Line`, each `Sample` is coded from left to right. In JPEG2000-RCT for each `Line` from top to bottom, each `Plane` is coded and for each `Plane`, each `Sample` is encoded from left to right.
 
@@ -394,6 +394,10 @@ As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could 
 In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by `Lines` and stored in this order:
 
 Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
+
+### Color Filter Array
+
+(TODO)
 
 ## Coding of the Sample Difference
 
@@ -722,6 +726,10 @@ Parameters( ) {                                               |
         for (i = 1; i < 256; i++)                             |
             state_transition_delta[ i ]                       | sr
     colorspace_type                                           | ur
+    if (colorspace_type == 2) {                               |
+        for ( i = 0; i < 4; i++ ) {                           |
+            cfa_pattern [ i ]                                 | ur
+    }                                                         |
     if (version >= 1)                                         |
         bits_per_raw_sample                                   | ur
     chroma_planes                                             | br
@@ -810,16 +818,42 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### colorspace_type
 
-`colorspace_type` specifies the color space losslessly encoded, the Pixel transformation used by the encoder, as well as interleave method.
+`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, as well as interleave method.
 
-|value  | color space losslessly encoded  | transformation                  | interleave method               |
-|-------|:--------------------------------|:--------------------------------|:--------------------------------|
-| 0     | YCbCr                           | No Pixel transformation         | `Plane` then `Line`             |
-| 1     | RGB                             | JPEG2000-RCT                    | `Line` then `Plane`             |
-| Other | reserved for future use         | reserved for future use         | reserved for future use         |
+|value  | color space encoded     | pixel transformation    | extra plane content     | interleave method       |
+|-------|:------------------------|:------------------------|:------------------------|:------------------------|
+| 0     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     |
+| 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
+| 2     | Color Filter Array      | JPEG2000-RCT            | Color difference        | `Line` then `Plane`     |
+| Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 
 Restrictions:  
 If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.  
+If `colorspace_type` is 2, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0, transparency MUST be 1.  
+
+### cfa_pattern
+
+`cfa_pattern` indicates the actual color filter array geometric pattern of the image sensor used to capture the single sensor color image.  
+The pattern has a fixed size of 4 values (fixed width of 2, fixed height of 2) and is provided per line top to bottom, and for each line left to right.  
+
+|value  | color                           |
+|-------|:--------------------------------|
+|0      |   red                           |
+|1      |   green                         |
+|2      |   blue                          |
+
+Restrictions:  
+At least 1 component of each color MUST be present.  
+
+As an example, a typical pattern is 0112, which implies:
+
+```
++---+---+
+| R | G |
++---+---+
+| G | B |
++---+---+
+```
 
 ### chroma_planes
 
