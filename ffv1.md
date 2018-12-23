@@ -180,6 +180,10 @@ a = b, a += b, a -= b, a *= b
 
 `remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
 
+#### remaining_symbols_in_syntax
+
+`remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
+
 #### byte_aligned
 
 `byte_aligned( )` is true if `remaining_bits_in_bitstream( NumBytes )` is a multiple of 8, otherwise false.
@@ -940,8 +944,8 @@ pseudo-code                                                   | type
 ConfigurationRecord( NumBytes ) {                             |
     ConfigurationRecordIsPresent = 1                          |
     Parameters( )                                             |
-    while( remaining_bits_in_bitstream( NumBytes ) > 32 )     |
-        reserved_for_future_use                               | u(1)
+    while( remaining_symbols_in_syntax( NumBytes - 4 ) )      |
+        reserved_for_future_use                               | br/ur/sr
     configuration_record_crc_parity                           | u(32)
 }                                                             |
 ```
