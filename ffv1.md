@@ -411,8 +411,8 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-PDF:To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
-RFC:To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0,i}` is the i-th initial state, which is 128. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
+PDF:To encode binary digits efficiently a Range coder is used. $C_{i}$ is the i-th Context. $B_{i}$ is the i-th byte of the bytestream. $b_{i}$ is the i-th Range coded binary value, $S_{0,i}$ is the i-th initial state. The length of the bytestream encoding n binary symbols is $j_{n}$ bytes.
+RFC:To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0,i}` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
 
 PDF:$$r_{i}=\left\lfloor \frac{R_{i}S_{i,C_{i}}}{2^{8}}\right\rfloor$$
 RFC:```
