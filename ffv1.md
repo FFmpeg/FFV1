@@ -483,6 +483,23 @@ RFC:```
 RFC:j_{0} = 2
 RFC:```
 
+##### Termination
+
+The range coder can be used in 3 modes.
+
+* In `Open mode` when decoding, every symbol the reader attempts to read is available. In this mode arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
+
+* In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally 1 byte shorter than the open mode.
+
+* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data the follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value SHALL be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) symbol will be read non-corrupted and be of value 0.
+
+Above describes the range decoding, encoding is defined as any process which produces a decodable bytestream.
+
+There are 3 places where range coder termination is needed in FFV1.
+First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
+Second is the switch from the `Slice Header` which is range coded to Golomb coded slices as `Sentinel mode`.
+Third is the end of range coded Slices which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
+
 #### Range Non Binary Values
 
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
@@ -1348,6 +1365,7 @@ For each `Frame` with keyframe value of 0, each slice MUST have the same value o
 Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
 Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode.  Although problems in encoders are typically rarer, the same applies to the encoder.  Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in `Pixel` count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
+The range coder could, if implemented naively, read one byte over the end. The implementation must ensure that no read outside allocated and initialized memory occurs.
 
 The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
