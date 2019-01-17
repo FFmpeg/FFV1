@@ -516,21 +516,21 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
 is_signed) {                                                  |
-    int i;                                                    |
-    put_rac(c, state+0, !v);                                  |
+    int i                                                     |
+    put_rac(c, state+0, !v)                                   |
     if (v) {                                                  |
-        int a= abs(v);                                        |
-        int e= log2(a);                                       |
+        int a= abs(v)                                         |
+        int e= log2(a)                                        |
                                                               |
         for (i=0; i<e; i++)                                   |
-            put_rac(c, state+1+min(i,9), 1);  //1..10         |
+            put_rac(c, state+1+min(i,9), 1)  //1..10          |
                                                               |
-        put_rac(c, state+1+min(i,9), 0);                      |
+        put_rac(c, state+1+min(i,9), 0)                       |
         for (i=e-1; i>=0; i--)                                |
-            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
+            put_rac(c, state+22+min(i,9), (a>>i)&1)  //22..31 |
                                                               |
         if (is_signed)                                        |
-            put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
+            put_rac(c, state+11 + min(e, 10), v < 0)  //11..21|
     }                                                         |
 }                                                             |
 ```
@@ -670,27 +670,27 @@ The run value is encoded in 2 parts, the prefix part stores the more significant
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 log2_run[41]={                                                |
- 0, 0, 0, 0, 1, 1, 1, 1,                                      |
- 2, 2, 2, 2, 3, 3, 3, 3,                                      |
- 4, 4, 5, 5, 6, 6, 7, 7,                                      |
- 8, 9,10,11,12,13,14,15,                                      |
-16,17,18,19,20,21,22,23,                                      |
-24,                                                           |
-};                                                            |
+     0, 0, 0, 0, 1, 1, 1, 1,                                  |
+     2, 2, 2, 2, 3, 3, 3, 3,                                  |
+     4, 4, 5, 5, 6, 6, 7, 7,                                  |
+     8, 9,10,11,12,13,14,15,                                  |
+    16,17,18,19,20,21,22,23,                                  |
+    24,                                                       |
+}                                                             |
                                                               |
 if (run_count == 0 && run_mode == 1) {                        |
     if (get_bits(1)) {                                        |
-        run_count = 1 << log2_run[run_index];                 |
+        run_count = 1 << log2_run[run_index]                  |
         if (x + run_count <= w)                               |
-            run_index++;                                      |
+            run_index++                                       |
     } else {                                                  |
         if (log2_run[run_index])                              |
-            run_count = get_bits(log2_run[run_index]);        |
+            run_count = get_bits(log2_run[run_index])         |
         else                                                  |
-            run_count = 0;                                    |
+            run_count = 0                                     |
         if (run_index)                                        |
-            run_index--;                                      |
-        run_mode = 2;                                         |
+            run_index--                                       |
+        run_mode = 2                                          |
     }                                                         |
 }                                                             |
 ```
