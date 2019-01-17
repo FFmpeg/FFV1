@@ -512,7 +512,7 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
-pseudo-code                                                   | type
+C-code excerpt                                                | type
 --------------------------------------------------------------|-----
 void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
 is_signed) {                                                  |
@@ -667,7 +667,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
 
 ```c
-pseudo-code                                                   | type
+C-code excerpt                                                | type
 --------------------------------------------------------------|-----
 log2_run[41]={                                                |
  0, 0, 0, 0, 1, 1, 1, 1,                                      |
