@@ -8,6 +8,10 @@ grep "^SVGC" ffv1.md | cut -d : -f2- | while read svg_construct ; do
     pandoc -V fontsize=12pt -o "${root}.pdf" "${root}.md"
     pdfcrop "${root}.pdf" "${root}_cropped.pdf"
     pdf2svg "${root}_cropped.pdf" "${filename}.tmp"
-    sed "s|glyph|${filename}-glyph|g" "${filename}.tmp" > "${filename}"
+    sed "s|style=\"fill:none;stroke-width:0.398;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;\"|stroke=\"black\" stroke-width=\".398\"|g;\
+         s|symbol|g|g;s|glyph|${filename}-glyph|g;\
+         s| style=\"stroke:none;\"||g;\
+         s| overflow=\"visible\"||g;
+         s| style=\"fill:rgb(0%,0%,0%);fill-opacity:1;\"||g" "${filename}.tmp" > "${filename}"
     rm "${root}.md" "${root}.pdf" "${root}_cropped.pdf" "${filename}.tmp"
 done
