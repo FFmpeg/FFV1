@@ -633,6 +633,26 @@ The alternative state transition table has been built using iterative minimizati
 
 This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
+#### Signed Golomb Rice Codes
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+int get_ur_golomb(k) {                                        |
+    for (prefix = 0; prefix < 12; prefix++) {                 |
+        if ( get_bits(1) )                                    |
+            return get_bits(k) + (prefix << k)                |
+    }                                                         |
+    return get_bits(bits) + 11                                |
+}                                                             |
+                                                              |
+int get_sr_golomb(k) {                                        |
+    v = get_ur_golomb(k);                                     |
+    if (v & 1) return - (v >> 1) - 1;                         |
+    else       return   (v >> 1);                             |
+}
+```
+
 #### Prefix
 
 |bits           | value |
@@ -721,7 +741,7 @@ Within the following sub-sections, pseudo-code is used to explain the structure 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
-| sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Huffman Coding Mode](#golomb-rice-mode) |
+| sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Signed Golomb Rice Codes](#golomb-rice-mode) |
 | br   | Range coded Boolean (1-bit) symbol with the method described in [Range binary values](#range-binary-values)  |
 | ur   | Range coded unsigned scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
