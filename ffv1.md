@@ -71,6 +71,8 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a / b`       means a divided by b.
 
+`a ^ b`       means a raised to the b-th power.
+
 `a & b`       means bit-wise "and" of a and b.
 
 `a | b`       means bit-wise "or" of a and b.
@@ -153,6 +155,7 @@ When order of precedence is not indicated explicitly by use of parentheses, oper
 ```
 a++, a--
 !a, -a
+a ^ b
 a * b, a / b, a % b
 a + b, a - b
 a << b, a >> b
