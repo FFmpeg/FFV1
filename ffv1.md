@@ -727,12 +727,67 @@ The log2\_run function is also used within [@ISO.14495-1.1999].
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
 ```c
-    diff = get_vlc_symbol();
+    diff = get_vlc_symbol(context_state);
     if (diff >= 0)
         diff++;
 ```
 
 Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test `Samples` the use of prediction slightly improved the compression rate.
+
+#### Scalar Mode
+
+Each difference is coded with the per context mean prediction removed and a per context value for k.
+
+```c
+get_vlc_symbol(state) {
+    i = state->count;
+    k = 0;
+    while (i < state->error_sum) {
+        k++;
+        i += i;
+    }
+
+    v = get_sr_golomb(k);
+
+    if (2 * state->drift  < -state->count)
+        v =  - 1 - v;
+
+    ret = sign_extend(v + state->bias, bits);
+
+    state->error_sum += abs(v);
+    state->drift     += v;
+
+    if (state->count == 128) {
+        state->count     >>= 1;
+        state->drift     >>= 1;
+        state->error_sum >>= 1;
+    }
+    state->count++;
+    if (state->drift <= -state->count) {
+        state->bias = max(state->bias - 1, -128);
+
+        state->drift = max(state->drift + state->count,
+                           -state->count + 1);
+    } else if (state->drift > 0) {
+        state->bias = min(state->bias + 1, 127);
+
+        state->drift = min(state->drift - state->count, 0);
+    }
+
+    return ret;
+}
+```
+
+#### Initial Values for the VLC context state
+
+At keyframes all coder state variables are set to their initial state.
+
+```c
+    drift     = 0;
+    error_sum = 4;
+    bias      = 0;
+    count     = 1;
+```
 
 # Bitstream
 
