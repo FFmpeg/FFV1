@@ -705,8 +705,9 @@ The log2\_run function is also used within [@ISO.14495-1.1999].
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
 ```c
-    if (diff>0) diff--;
-    encode(diff);
+    diff = get_vlc_symbol();
+    if (diff >= 0)
+        diff++;
 ```
 
 Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test `Samples` the use of prediction slightly improved the compression rate.
