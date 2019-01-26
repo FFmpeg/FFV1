@@ -2,7 +2,7 @@
 
 This document describes FFV1, a lossless video encoding format. The design of FFV1 considers the storage of image characteristics, data fixity, and the optimized use of encoding time and storage requirements. FFV1 is designed to support a wide range of lossless video applications such as long-term audiovisual preservation, scientific imaging, screen recording, and other video encoding scenarios that seek to avoid the generational loss of lossy video encodings.
 
-This document defines a version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
+This document defines version 0, 1 and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
 
 - Version 0 of FFV1 was the original implementation of FFV1 and has been in non-experimental use since April 14, 2006 [@?FFV1_V0].{V3}
 
@@ -35,7 +35,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more `Samples`.
 
-`ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method.
+`ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
@@ -45,7 +45,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RGB`:   A reference to the method of storing the value of a `Pixel` by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples` e.g. YCbCr, YCgCo or ICtCp. Exact meaning of the three numeric values is unspecified.
+`YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples`, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
 -------- --------------------------------------------------------------
