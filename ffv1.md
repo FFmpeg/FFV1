@@ -631,9 +631,11 @@ The alternative state transition table has been built using iterative minimizati
 
 ### Golomb Rice Mode
 
-This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case. The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
 
 #### Signed Golomb Rice Codes
+
+This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
 pseudo-code                                                   | type
@@ -653,7 +655,7 @@ int get_sr_golomb(k) {                                        |
 }
 ```
 
-#### Prefix
+##### Prefix
 
 |bits           | value |
 |:--------------|:------|
@@ -663,14 +665,14 @@ int get_sr_golomb(k) {                                        |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
 
-#### Suffix
+##### Suffix
 
 |              |                                                         |
 |:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
 
-#### Examples
+##### Examples
 
 | k   | bits                      | value |
 |:---:|:--------------------------|------:|
