@@ -665,7 +665,7 @@ This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the pref
 
 Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level are coded.
 
-#### Run Length Coding
+##### Run Length Coding
 
 The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
 
@@ -700,7 +700,7 @@ if (run_count == 0 && run_mode == 1) {                        |
 
 The log2\_run function is also used within [@ISO.14495-1.1999].
 
-#### Level Coding
+##### Level Coding
 
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
