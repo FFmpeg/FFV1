@@ -175,7 +175,7 @@ a = b, a += b, a -= b, a *= b
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the `Mapping FFV1 into Containers`](#mapping-ffv1-into-containers).
 
 ### Bitstream Functions
 
@@ -501,7 +501,7 @@ The range coder can be used in 3 modes.
 
 * In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally 1 byte shorter than the open mode.
 
-* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data the follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value SHALL be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) symbol will be read non-corrupted and be of value 0.
+* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value SHALL be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) symbol will be read non-corrupted and be of value 0.
 
 Above describes the range decoding, encoding is defined as any process which produces a decodable bytestream.
 
@@ -512,7 +512,7 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 
 #### Range Non Binary Values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0 and if not encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
 
 ```c
 pseudo-code                                                   | type
@@ -861,7 +861,7 @@ Parameters( ) {                                               |
 ### version
 
 `version` specifies the version of the FFV1 bitstream.  
-Each version is incompatible with others versions: decoders SHOULD reject a file due to unknown version.  
+Each version is incompatible with other versions: decoders SHOULD reject a file due to an unknown version.  
 Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.  
 Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
 
