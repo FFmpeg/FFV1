@@ -833,10 +833,32 @@ Parameters( ) {                                               |
     colorspace_type                                           | ur
     if (version >= 1)                                         |
         bits_per_raw_sample                                   | ur
-    chroma_planes                                             | br
-    log2_h_chroma_subsample                                   | ur
-    log2_v_chroma_subsample                                   | ur
-    extra_plane                                               | br
+    if (colorspace_type < 2) {                                |
+        chroma_planes                                         | br
+        log2_h_chroma_subsample                               | ur
+        log2_v_chroma_subsample                               | ur
+        extra_plane                                           | br
+    } else {                                                  |
+        plane_count                                           | ur
+        per_plane_metadata_count                              | ur
+        for( i = 0; i < plane_count; i++ ) {                  |
+            plane_type                                        | ur
+            center_frequency                                  | ur
+            frequency_response ( center_frequency )           |
+            color_transfer_characteristic                     | ur
+            black_point                                       | sr
+            white_point                                       | sr
+            unit                                              | sr
+            direction_x                                       | sr
+            direction_y                                       | sr
+            direction_z                                       | sr
+            h_subsample                                       | ur
+            v_subsample                                       | ur
+            for (j = 0; j < per_plane_metadata_count; j++) {  |
+                reserved[j]                                   | sr
+            }                                                 |
+        }                                                     |
+    }                                                         |
     if (version >= 3) {                                       |
         num_h_slices - 1                                      | ur
         num_v_slices - 1                                      | ur
@@ -925,6 +947,7 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 |-------|:------------------------|:------------------------|:------------------------|:------------------------|
 | 0     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     |
 | 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
+| 2     | Multispectral           | Custom                  | Transparency            | TODO/WIP/XXX            |
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 
 Restrictions:  
@@ -969,6 +992,78 @@ RFC:`log2_v_chroma_subsample` indicates the subsample factor, stored in powers t
 |-------|:-----------------------------|
 | 0     | extra `Plane` is not present |
 | 1     | extra `Plane` is present     |
+
+### plane_type
+
+`plane_type` indicates the semantic type of the plane.
+
+|value    | plane_type                                      |
+|---------|:------------------------------------------------|
+| 0       | Unspecified                                     |
+| 1       | Emmissive                                       |
+| 2       | Absorptive                                      |
+| 3       | Reflective                                      |
+| 4       | Retro-Reflective                                |
+| 5       | Mask                                            |
+| 6       | Depth                                           |
+| 7       | Motion                                          |
+| 8       | Error                                           |
+| 9       | Force Field                                     |
+| 10      | Polarization                                    |
+| 11-999  | Reserved                                        |
+
+### per_plane_metadata_count
+
+`per_plane_metadata_count` allows future extension of the information we store about planes
+
+### center_frequency
+
+`center_frequency` indicates the center frequency in hz. Or 0 if unknown or not applicable.
+
+### black_point
+
+`black_point` Value repesenting 0% brightness, -1 if unknown
+
+### white_point
+
+`white_point` Value repesenting 100% brightness, -1 if unknown
+
+### unit
+
+`unit` TODO, we need a way to tie the white point to some physical counterpart like energy when this information is known.
+0 if unknown.
+
+### direction_x, direction_y, direction_z
+
+`direction_*` indicates the direction of motion for planes representing motion,
+the direction of Polarization for planes which can be polarized. 0,0,0 when
+unknown or not applicable.
+
+### color_transfer_characteristic
+
+`color_transfer_characteristic`
+
+|value    | color_transfer_characteristic                                                         |
+|---------|:--------------------------------------------------------------------------------------|
+|0        | Reserved                                                                              |
+|1        | ITU-R BT709 / BT1361                                                                  |
+|2        | Unspecified                                                                           |
+|3        | Reserved                                                                              |
+|4        | Gamma 2.2 also ITU-R BT470M / ITU-R BT1700 625 PAL & SECAM                            |
+|5        | Gamma 2.8 also ITU-R BT470BG                                                          |
+|6        | SMPTE 170M also ITU-R BT601-6 525 or 625 / ITU-R BT1358 525 or 625 / ITU-R BT1700 NTSC|
+|7        | SMPTE 240M                                                                            |
+|8        | Linear transfer characteristics                                                       |
+|9        | Logarithmic transfer characteristic (100:1 range)                                     |
+|10       | Logarithmic transfer characteristic (100 * Sqrt(10) : 1 range)                        |
+|11       | IEC 61966-2-4                                                                         |
+|12       | ITU-R BT1361 Extended Colour Gamut                                                    |
+|13       | IEC 61966-2-1 (sRGB or sYCC)                                                          |
+|14       | ITU-R BT2020 for 10-bit system                                                        |
+|15       | ITU-R BT2020 for 12-bit system                                                        |
+|16       | SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems                                    |
+|17       | SMPTE ST 428-1                                                                        |
+|18       | ARIB STD-B67, known as "Hybrid log-gamma"                                             |
 
 ### num_h_slices
 
