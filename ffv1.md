@@ -1472,13 +1472,13 @@ QuantizationTable(i, j, scale) {                              |
 
 # Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting version 3 and if frame\_pixel\_width * frame\_pixel\_height is more than 101376, slice\_width * slice\_height MUST be less or equal to num\_h\_slices * num\_v\_slices / 4.
+To ensure that fast multithreaded decoding is possible, starting version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
 Note: 101376 is the frame size in `Pixels` of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`.{V3}
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of slice\_x, slice\_y, slice\_width, slice\_height as a slice in the previous `Frame`, except if reset\_contexts is 1.{V4}
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of `slice_x, slice_y, slice_width, slice_height` as a slice in the previous `Frame`.{V3}
+For each `Frame` with keyframe value of 0, each slice MUST have the same value of `slice_x, slice_y, slice_width, slice_height` as a slice in the previous `Frame`, except if `reset_contexts` is 1.{V4}
 
 # Security Considerations
 
