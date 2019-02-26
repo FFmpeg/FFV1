@@ -525,12 +525,12 @@ is_signed) {                                                  |
         int a= abs(v);                                        |
         int e= log2(a);                                       |
                                                               |
-        for (i=0; i<e; i++) {                                 |
+        for (i = 0; i < e; i++) {                             |
             put_rac(c, state+1+min(i,9), 1);  //1..10         |
         }                                                     |
                                                               |
         put_rac(c, state+1+min(i,9), 0);                      |
-        for (i=e-1; i>=0; i--) {                              |
+        for (i = e-1; i >= 0; i--) {                          |
             put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
         }                                                     |
                                                               |
@@ -645,7 +645,7 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 int get_ur_golomb(k) {                                        |
     for (prefix = 0; prefix < 12; prefix++) {                 |
-        if ( get_bits(1) ) {                                  |
+        if (get_bits(1)) {                                    |
             return get_bits(k) + (prefix << k)                |
         }                                                     |
     }                                                         |
@@ -757,8 +757,8 @@ get_vlc_symbol(state) {
 
     v = get_sr_golomb(k);
 
-    if (2 * state->drift  < -state->count) {
-        v =  - 1 - v;
+    if (2 * state->drift < -state->count) {
+        v = -1 - v;
     }
 
     ret = sign_extend(v + state->bias, bits);
@@ -855,15 +855,15 @@ Parameters( ) {                                               |
         num_v_slices - 1                                      | ur
         quant_table_set_count                                 | ur
     }                                                         |
-    for( i = 0; i < quant_table_set_count; i++ ) {            |
+    for (i = 0; i < quant_table_set_count; i++) {             |
         QuantizationTableSet( i )                             |
     }                                                         |
     if (version >= 3) {                                       |
-        for( i = 0; i < quant_table_set_count; i++ ) {        |
+        for (i = 0; i < quant_table_set_count; i++) {         |
             states_coded                                      | br
             if (states_coded) {                               |
-                for( j = 0; j < context_count[ i ]; j++ ) {   |
-                    for( k = 0; k < CONTEXT_SIZE; k++ ) {     |
+                for (j = 0; j < context_count[ i ]; j++) {    |
+                    for (k = 0; k < CONTEXT_SIZE; k++) {      |
                         initial_state_delta[ i ][ j ][ k ]    | sr
                     }                                         |
                 }                                             |
@@ -1059,7 +1059,7 @@ pseudo-code                                                   | type
 ConfigurationRecord( NumBytes ) {                             |
     ConfigurationRecordIsPresent = 1                          |
     Parameters( )                                             |
-    while( remaining_symbols_in_syntax( NumBytes - 4 ) ) {    |
+    while (remaining_symbols_in_syntax(NumBytes - 4)) {       |
         reserved_for_future_use                               | br/ur/sr
     }                                                         |
     configuration_record_crc_parity                           | u(32)
@@ -1121,7 +1121,7 @@ Frame( NumBytes ) {                                           |
     if (keyframe && !ConfigurationRecordIsPresent {           |
         Parameters( )                                         |
     }                                                         |
-    while ( remaining_bits_in_bitstream( NumBytes ) ) {       |
+    while (remaining_bits_in_bitstream( NumBytes )) {         |
         Slice( )                                              |
     }                                                         |
 }                                                             |
@@ -1195,7 +1195,7 @@ SliceHeader( ) {                                              |
     slice_y                                                   | ur
     slice_width - 1                                           | ur
     slice_height - 1                                          | ur
-    for( i = 0; i < quant_table_set_index_count; i++ ) {      |
+    for (i = 0; i < quant_table_set_index_count; i++) {       |
         quant_table_set_index [ i ]                           | ur
     }                                                         |
     picture_structure                                         | ur
@@ -1293,14 +1293,14 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
     if (colorspace_type == 0) {                               |
-        for( p = 0; p < primary_color_count; p++ ) {          |
-            for( y = 0; y < plane_pixel_height[ p ]; y++ ) {  |
+        for (p = 0; p < primary_color_count; p++) {           |
+            for (y = 0; y < plane_pixel_height[ p ]; y++) {   |
                 Line( p, y )                                  |
             }                                                 |
         }                                                     |
     } else if (colorspace_type == 1) {                        |
-        for( y = 0; y < slice_pixel_height; y++ ) {           |
-            for( p = 0; p < primary_color_count; p++ ) {      |
+        for (y = 0; y < slice_pixel_height; y++) {            |
+            for (p = 0; p < primary_color_count; p++) {       |
                 Line( p, y )                                  |
             }                                                 |
         }                                                     |
@@ -1340,11 +1340,11 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
-        for( x = 0; x < plane_pixel_width[ p ]; x++ ) {       |
+        for (x = 0; x < plane_pixel_width[ p ]; x++) {        |
             sample_difference[ p ][ y ][ x ]                  |
         }                                                     |
     } else if (colorspace_type == 1) {                        |
-        for( x = 0; x < slice_pixel_width; x++ ) {            |
+        for (x = 0; x < slice_pixel_width; x++) {             |
             sample_difference[ p ][ y ][ x ]                  |
         }                                                     |
     }                                                         |
@@ -1429,11 +1429,11 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 QuantizationTableSet( i ) {                                   |
     scale = 1                                                 |
-    for( j = 0; j < MAX_CONTEXT_INPUTS; j++ ) {               |
+    for (j = 0; j < MAX_CONTEXT_INPUTS; j++) {                |
         QuantizationTable( i, j, scale )                      |
         scale *= 2 * len_count[ i ][ j ] - 1                  |
     }                                                         |
-    context_count[ i ] = ceil ( scale / 2 )                   |
+    context_count[ i ] = ceil( scale / 2 )                    |
 }                                                             |
 ```
 
@@ -1444,15 +1444,15 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
-    for( k = 0; k < 128; ) {                                  |
+    for (k = 0; k < 128;) {                                   |
         len - 1                                               | ur
-        for( a = 0; a < len; a++ ) {                          |
+        for (a = 0; a < len; a++) {                           |
             quant_tables[ i ][ j ][ k ] = scale* v            |
             k++                                               |
         }                                                     |
         v++                                                   |
     }                                                         |
-    for( k = 1; k < 128; k++ ) {                              |
+    for (k = 1; k < 128; k++) {                               |
         quant_tables[ i ][ j ][ 256 - k ] = \                 |
         -quant_tables[ i ][ j ][ k ]                          |
     }                                                         |
