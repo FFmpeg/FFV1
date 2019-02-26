@@ -525,15 +525,18 @@ is_signed) {                                                  |
         int a= abs(v);                                        |
         int e= log2(a);                                       |
                                                               |
-        for (i=0; i<e; i++)                                   |
+        for (i=0; i<e; i++) {                                 |
             put_rac(c, state+1+min(i,9), 1);  //1..10         |
+        }                                                     |
                                                               |
         put_rac(c, state+1+min(i,9), 0);                      |
-        for (i=e-1; i>=0; i--)                                |
+        for (i=e-1; i>=0; i--) {                              |
             put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
+        }                                                     |
                                                               |
-        if (is_signed)                                        |
+        if (is_signed) {                                      |
             put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
+        }                                                     |
     }                                                         |
 }                                                             |
 ```
@@ -642,8 +645,9 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 int get_ur_golomb(k) {                                        |
     for (prefix = 0; prefix < 12; prefix++) {                 |
-        if ( get_bits(1) )                                    |
+        if ( get_bits(1) ) {                                  |
             return get_bits(k) + (prefix << k)                |
+        }                                                     |
     }                                                         |
     return get_bits(bits) + 11                                |
 }                                                             |
@@ -706,15 +710,18 @@ log2_run[41]={                                                |
 if (run_count == 0 && run_mode == 1) {                        |
     if (get_bits(1)) {                                        |
         run_count = 1 << log2_run[run_index];                 |
-        if (x + run_count <= w)                               |
+        if (x + run_count <= w) {                             |
             run_index++;                                      |
+        }                                                     |
     } else {                                                  |
-        if (log2_run[run_index])                              |
+        if (log2_run[run_index]) {                            |
             run_count = get_bits(log2_run[run_index]);        |
-        else                                                  |
+        } else {                                              |
             run_count = 0;                                    |
-        if (run_index)                                        |
+        }                                                     |
+        if (run_index) {                                      |
             run_index--;                                      |
+        }                                                     |
         run_mode = 2;                                         |
     }                                                         |
 }                                                             |
@@ -728,8 +735,9 @@ Level coding is identical to the normal difference coding with the exception tha
 
 ```c
     diff = get_vlc_symbol(context_state);
-    if (diff >= 0)
+    if (diff >= 0) {
         diff++;
+    }
 ```
 
 Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test `Samples` the use of prediction slightly improved the compression rate.
@@ -749,8 +757,9 @@ get_vlc_symbol(state) {
 
     v = get_sr_golomb(k);
 
-    if (2 * state->drift  < -state->count)
+    if (2 * state->drift  < -state->count) {
         v =  - 1 - v;
+    }
 
     ret = sign_extend(v + state->bias, bits);
 
@@ -824,15 +833,19 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Parameters( ) {                                               |
     version                                                   | ur
-    if (version >= 3)                                         |
+    if (version >= 3) {                                       |
         micro_version                                         | ur
+    }                                                         |
     coder_type                                                | ur
-    if (coder_type > 1)                                       |
-        for (i = 1; i < 256; i++)                             |
+    if (coder_type > 1) {                                     |
+        for (i = 1; i < 256; i++) {                           |
             state_transition_delta[ i ]                       | sr
+        }                                                     |
+    }                                                         |
     colorspace_type                                           | ur
-    if (version >= 1)                                         |
+    if (version >= 1) {                                       |
         bits_per_raw_sample                                   | ur
+    }                                                         |
     chroma_planes                                             | br
     log2_h_chroma_subsample                                   | ur
     log2_v_chroma_subsample                                   | ur
@@ -842,15 +855,19 @@ Parameters( ) {                                               |
         num_v_slices - 1                                      | ur
         quant_table_set_count                                 | ur
     }                                                         |
-    for( i = 0; i < quant_table_set_count; i++ )              |
+    for( i = 0; i < quant_table_set_count; i++ ) {            |
         QuantizationTableSet( i )                             |
+    }                                                         |
     if (version >= 3) {                                       |
         for( i = 0; i < quant_table_set_count; i++ ) {        |
             states_coded                                      | br
-            if (states_coded)                                 |
-                for( j = 0; j < context_count[ i ]; j++ )     |
-                    for( k = 0; k < CONTEXT_SIZE; k++ )       |
+            if (states_coded) {                               |
+                for( j = 0; j < context_count[ i ]; j++ ) {   |
+                    for( k = 0; k < CONTEXT_SIZE; k++ ) {     |
                         initial_state_delta[ i ][ j ][ k ]    | sr
+                    }                                         |
+                }                                             |
+            }                                                 |
         }                                                     |
         ec                                                    | ur
         intra                                                 | ur
@@ -1042,8 +1059,9 @@ pseudo-code                                                   | type
 ConfigurationRecord( NumBytes ) {                             |
     ConfigurationRecordIsPresent = 1                          |
     Parameters( )                                             |
-    while( remaining_symbols_in_syntax( NumBytes - 4 ) )      |
+    while( remaining_symbols_in_syntax( NumBytes - 4 ) ) {    |
         reserved_for_future_use                               | br/ur/sr
+    }                                                         |
     configuration_record_crc_parity                           | u(32)
 }                                                             |
 ```
@@ -1100,10 +1118,12 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Frame( NumBytes ) {                                           |
     keyframe                                                  | br
-    if (keyframe && !ConfigurationRecordIsPresent             |
+    if (keyframe && !ConfigurationRecordIsPresent {           |
         Parameters( )                                         |
-    while ( remaining_bits_in_bitstream( NumBytes ) )         |
+    }                                                         |
+    while ( remaining_bits_in_bitstream( NumBytes ) ) {       |
         Slice( )                                              |
+    }                                                         |
 }                                                             |
 ```
 
@@ -1135,18 +1155,23 @@ A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Slice( ) {                                                    |
-    if (version >= 3)                                         |
+    if (version >= 3) {                                       |
         SliceHeader( )                                        |
-    SliceContent( )                                           |
-    if (coder_type == 0)                                      |
-        while (!byte_aligned())                               |
-            padding                                           | u(1)
-    if (version <= 1) {                                       |  
-        while (remaining_bits_in_bitstream( NumBytes ) != 0 ) |
-            reserved                                          | u(1)
     }                                                         |
-    if (version >= 3)                                         |
+    SliceContent( )                                           |
+    if (coder_type == 0) {                                    |
+        while (!byte_aligned()) {                             |
+            padding                                           | u(1)
+        }                                                     |
+    }                                                         |
+    if (version <= 1) {                                       |  
+        while (remaining_bits_in_bitstream( NumBytes ) != 0) {|
+            reserved                                          | u(1)
+        }                                                     |
+    }                                                         |
+    if (version >= 3) {                                       |
         SliceFooter( )                                        |
+    }                                                         |
 }                                                             |
 ```
 
@@ -1170,8 +1195,9 @@ SliceHeader( ) {                                              |
     slice_y                                                   | ur
     slice_width - 1                                           | ur
     slice_height - 1                                          | ur
-    for( i = 0; i < quant_table_set_index_count; i++ )        |
+    for( i = 0; i < quant_table_set_index_count; i++ ) {      |
         quant_table_set_index [ i ]                           | ur
+    }                                                         |
     picture_structure                                         | ur
     sar_num                                                   | ur
     sar_den                                                   | ur
@@ -1267,13 +1293,17 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
     if (colorspace_type == 0) {                               |
-        for( p = 0; p < primary_color_count; p++ )            |
-            for( y = 0; y < plane_pixel_height[ p ]; y++ )    |
+        for( p = 0; p < primary_color_count; p++ ) {          |
+            for( y = 0; y < plane_pixel_height[ p ]; y++ ) {  |
                 Line( p, y )                                  |
+            }                                                 |
+        }                                                     |
     } else if (colorspace_type == 1) {                        |
-        for( y = 0; y < slice_pixel_height; y++ )             |
-            for( p = 0; p < primary_color_count; p++ )        |
+        for( y = 0; y < slice_pixel_height; y++ ) {           |
+            for( p = 0; p < primary_color_count; p++ ) {      |
                 Line( p, y )                                  |
+            }                                                 |
+        }                                                     |
     }                                                         |
 }                                                             |
 ```
@@ -1310,11 +1340,13 @@ pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
-        for( x = 0; x < plane_pixel_width[ p ]; x++ )         |
+        for( x = 0; x < plane_pixel_width[ p ]; x++ ) {       |
             sample_difference[ p ][ y ][ x ]                  |
+        }                                                     |
     } else if (colorspace_type == 1) {                        |
-        for( x = 0; x < slice_pixel_width; x++ )              |
+        for( x = 0; x < slice_pixel_width; x++ ) {            |
             sample_difference[ p ][ y ][ x ]                  |
+        }                                                     |
     }                                                         |
 }                                                             |
 ```
