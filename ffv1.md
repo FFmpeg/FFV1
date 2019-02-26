@@ -1472,7 +1472,7 @@ QuantizationTable(i, j, scale) {                              |
 
 # Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
+To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
 Note: 101376 is the frame size in `Pixels` of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
