@@ -293,9 +293,9 @@ In this formula, `i` is the Quantization Table Set index, `j` is the Quantized T
 
 For each `Plane` of each slice, a Quantization Table Set is selected from an index:
 
-- For Y `Plane`, `quant_table_set_index [ 0 ]` index is used
-- For Cb and Cr `Planes`, `quant_table_set_index [ 1 ]` index is used
-- For extra `Plane`, `quant_table_set_index [ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
+- For Y `Plane`, `quant_table_set_index[ 0 ]` index is used
+- For Cb and Cr `Planes`, `quant_table_set_index[ 1 ]` index is used
+- For extra `Plane`, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
 Background: in first implementations of FFV1 bitstream, the index for Cb and Cr `Planes` was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
@@ -1196,7 +1196,7 @@ SliceHeader( ) {                                              |
     slice_width - 1                                           | ur
     slice_height - 1                                          | ur
     for (i = 0; i < quant_table_set_index_count; i++) {       |
-        quant_table_set_index [ i ]                           | ur
+        quant_table_set_index[ i ]                            | ur
     }                                                         |
     picture_structure                                         | ur
     sar_num                                                   | ur
@@ -1418,7 +1418,7 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 
 The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
 
-example:
+Example:
 
 Table: 0 0 1 1 1 1 2 2 -2 -2 -2 -1 -1 -1 -1 0
 
@@ -1447,7 +1447,7 @@ QuantizationTable(i, j, scale) {                              |
     for (k = 0; k < 128;) {                                   |
         len - 1                                               | ur
         for (a = 0; a < len; a++) {                           |
-            quant_tables[ i ][ j ][ k ] = scale* v            |
+            quant_tables[ i ][ j ][ k ] = scale * v           |
             k++                                               |
         }                                                     |
         v++                                                   |
