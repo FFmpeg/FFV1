@@ -1376,7 +1376,7 @@ RFC:Its value is `floor(slice_x * frame_pixel_width / num_h_slices)`.
 
 ## Slice Footer
 
-A `Slice Footer` provides information about slice size and (optionally) parity. The pseudo-code below describes the contents of the `Slice Header`.
+A `Slice Footer` provides information about slice size and (optionally) parity. The pseudo-code below describes the contents of the `Slice Footer`.
 
 Note: `Slice Footer` is always byte aligned.
 
