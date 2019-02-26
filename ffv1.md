@@ -1230,7 +1230,7 @@ Inferred to be 1 if not present.
 
 ### quant_table_set_index_count
 
-`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version \<= 3 ) ? 1 : 0 ) + ( extra_plane ? 1 : 0 )`.
+`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version <= 3 ) ? 1 : 0 ) + ( extra_plane ? 1 : 0 )`.
 
 ### quant_table_set_index
 
