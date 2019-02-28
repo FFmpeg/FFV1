@@ -61,65 +61,65 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
 ------------- ----------------------------------------------------------------
-`a + b`       means a plus b.
+`a + b`       means a plus b.
 
-`a - b`       means a minus b.
+`a - b`       means a minus b.
 
 `-a`          means negation of a.
 
-`a * b`       means a multiplied by b.
+`a * b`       means a multiplied by b.
 
-`a / b`       means a divided by b.
+`a / b`       means a divided by b.
 
 `a ^ b`       means a raised to the b-th power.
 
-`a & b`       means bit-wise "and" of a and b.
+`a & b`       means bit-wise "and" of a and b.
 
-`a | b`       means bit-wise "or" of a and b.
+`a | b`       means bit-wise "or" of a and b.
 
-`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
+`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
 
-`a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
+`a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 --------------- ----------------------------------------------------------------
 
 ### Assignment Operators
 
 ------------- ----------------------------------------------------------------
-`a = b`       means a is assigned b.
+`a = b`       means a is assigned b.
 
-`a++`         is equivalent to a is assigned a + 1.
+`a++`         is equivalent to a is assigned a + 1.
 
-`a--`         is equivalent to a is assigned a - 1.
+`a--`         is equivalent to a is assigned a - 1.
 
-`a += b`      is equivalent to a is assigned a + b.
+`a += b`      is equivalent to a is assigned a + b.
 
-`a -= b`      is equivalent to a is assigned a - b.
+`a -= b`      is equivalent to a is assigned a - b.
 
-`a *= b`      is equivalent to a is assigned a * b.
+`a *= b`      is equivalent to a is assigned a * b.
 --------------- ----------------------------------------------------------------
 
 ### Comparison Operators
 
 ------------- ----------------------------------------------------------------
-`a > b`       means a is greater than b.
+`a > b`       means a is greater than b.
 
-`a >= b`      means a is greater than or equal to b.
+`a >= b`      means a is greater than or equal to b.
 
-`a < b`       means a is less than b.
+`a < b`       means a is less than b.
 
-`a <= b`      means a is less than or equal b.
+`a <= b`      means a is less than or equal b.
 
-`a == b`      means a is equal to b.
+`a == b`      means a is equal to b.
 
-`a != b`      means a is not equal to b.
+`a != b`      means a is not equal to b.
 
-`a && b`      means Boolean logical "and" of a and b.
+`a && b`      means Boolean logical "and" of a and b.
 
-`a || b`      means Boolean logical "or" of a and b.
+`a || b`      means Boolean logical "or" of a and b.
 
 `!a`          means Boolean logical "not" of a.
 
-`a ? b : c`   if a is true, then b, otherwise c.
+`a ? b : c`   if a is true, then b, otherwise c.
 --------------- ----------------------------------------------------------------
 
 ### Mathematical Functions
@@ -166,7 +166,7 @@ a | b
 a && b
 a || b
 a ? b : c
-a = b, a += b, a -= b, a *= b
+a = b, a += b, a -= b, a *= b
 ```
 
 ### Range
@@ -181,19 +181,19 @@ a = b, a += b, a -= b, a *= b
 
 #### remaining_bits_in_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
+`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
 
 #### remaining_symbols_in_syntax
 
-`remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
+`remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
 
 #### byte_aligned
 
-`byte_aligned( )` is true if `remaining_bits_in_bitstream( NumBytes )` is a multiple of 8, otherwise false.
+`byte_aligned( )` is true if `remaining_bits_in_bitstream( NumBytes )` is a multiple of 8, otherwise false.
 
 #### get_bits
 
-`get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The pointer is increased by `i`.
+`get_bits( i )` is the action to read the next `i` bits in the bitstream, from most significant bit to least significant bit, and to return the corresponding value. The pointer is increased by `i`.
 
 # Sample Coding
 
@@ -517,27 +517,27 @@ To encode scalar integers, it would be possible to encode each bit separately an
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
-void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
-is_signed) {                                                  |
-    int i;                                                    |
-    put_rac(c, state+0, !v);                                  |
-    if (v) {                                                  |
-        int a= abs(v);                                        |
-        int e= log2(a);                                       |
+void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
+is_signed) {                                                  |
+    int i;                                                    |
+    put_rac(c, state+0, !v);                                  |
+    if (v) {                                                  |
+        int a= abs(v);                                        |
+        int e= log2(a);                                       |
                                                               |
-        for (i = 0; i < e; i++) {                             |
-            put_rac(c, state+1+min(i,9), 1);  //1..10         |
+        for (i = 0; i < e; i++) {                             |
+            put_rac(c, state+1+min(i,9), 1);  //1..10         |
         }                                                     |
                                                               |
-        put_rac(c, state+1+min(i,9), 0);                      |
-        for (i = e-1; i >= 0; i--) {                          |
-            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
+        put_rac(c, state+1+min(i,9), 0);                      |
+        for (i = e-1; i >= 0; i--) {                          |
+            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
         }                                                     |
                                                               |
-        if (is_signed) {                                      |
-            put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
+        if (is_signed) {                                      |
+            put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
         }                                                     |
-    }                                                         |
+    }                                                         |
 }                                                             |
 ```
 
@@ -561,17 +561,17 @@ RFC:```
 #### default_state_transition
 
 ```
-  0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
+  0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
 
- 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 37, 38, 39, 40, 41, 42,
+ 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 37, 38, 39, 40, 41, 42,
 
- 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 56, 57,
+ 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 56, 57,
 
- 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+ 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
 
- 74, 75, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+ 74, 75, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
 
- 89, 90, 91, 92, 93, 94, 94, 95, 96, 97, 98, 99,100,101,102,103,
+ 89, 90, 91, 92, 93, 94, 94, 95, 96, 97, 98, 99,100,101,102,103,
 
 104,105,106,107,108,109,110,111,112,113,114,114,115,116,117,118,
 
@@ -591,7 +591,7 @@ RFC:```
 
 226,227,227,229,229,230,231,232,234,234,235,236,237,238,239,240,
 
-241,242,243,244,245,246,247,248,248,  0,  0,  0,  0,  0,  0,  0,
+241,242,243,244,245,246,247,248,248,  0,  0,  0,  0,  0,  0,  0,
 ```
 
 #### Alternative State Transition Table
@@ -599,17 +599,17 @@ RFC:```
 The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see [the section on coder_type](#codertype)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on "Parameters"](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
-  0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
+  0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
 
- 59, 25, 26, 26, 27, 31, 33, 33, 33, 34, 34, 37, 67, 38, 39, 39,
+ 59, 25, 26, 26, 27, 31, 33, 33, 33, 34, 34, 37, 67, 38, 39, 39,
 
- 40, 40, 41, 79, 43, 44, 45, 45, 48, 48, 64, 50, 51, 52, 88, 52,
+ 40, 40, 41, 79, 43, 44, 45, 45, 48, 48, 64, 50, 51, 52, 88, 52,
 
- 53, 74, 55, 57, 58, 58, 74, 60,101, 61, 62, 84, 66, 66, 68, 69,
+ 53, 74, 55, 57, 58, 58, 74, 60,101, 61, 62, 84, 66, 66, 68, 69,
 
- 87, 82, 71, 97, 73, 73, 82, 75,111, 77, 94, 78, 87, 81, 83, 97,
+ 87, 82, 71, 97, 73, 73, 82, 75,111, 77, 94, 78, 87, 81, 83, 97,
 
- 85, 83, 94, 86, 99, 89, 90, 99,111, 92, 93,134, 95, 98,105, 98,
+ 85, 83, 94, 86, 99, 89, 90, 99,111, 92, 93,134, 95, 98,105, 98,
 
 105,110,102,108,102,118,103,106,106,113,109,112,114,112,116,125,
 
@@ -699,31 +699,31 @@ The run value is encoded in 2 parts, the prefix part stores the more significant
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
 log2_run[41]={                                                |
- 0, 0, 0, 0, 1, 1, 1, 1,                                      |
- 2, 2, 2, 2, 3, 3, 3, 3,                                      |
- 4, 4, 5, 5, 6, 6, 7, 7,                                      |
- 8, 9,10,11,12,13,14,15,                                      |
+ 0, 0, 0, 0, 1, 1, 1, 1,                                      |
+ 2, 2, 2, 2, 3, 3, 3, 3,                                      |
+ 4, 4, 5, 5, 6, 6, 7, 7,                                      |
+ 8, 9,10,11,12,13,14,15,                                      |
 16,17,18,19,20,21,22,23,                                      |
 24,                                                           |
 };                                                            |
                                                               |
-if (run_count == 0 && run_mode == 1) {                        |
-    if (get_bits(1)) {                                        |
-        run_count = 1 << log2_run[run_index];                 |
-        if (x + run_count <= w) {                             |
-            run_index++;                                      |
+if (run_count == 0 && run_mode == 1) {                        |
+    if (get_bits(1)) {                                        |
+        run_count = 1 << log2_run[run_index];                 |
+        if (x + run_count <= w) {                             |
+            run_index++;                                      |
         }                                                     |
-    } else {                                                  |
-        if (log2_run[run_index]) {                            |
-            run_count = get_bits(log2_run[run_index]);        |
+    } else {                                                  |
+        if (log2_run[run_index]) {                            |
+            run_count = get_bits(log2_run[run_index]);        |
         } else {                                              |
-            run_count = 0;                                    |
+            run_count = 0;                                    |
         }                                                     |
-        if (run_index) {                                      |
-            run_index--;                                      |
+        if (run_index) {                                      |
+            run_index--;                                      |
         }                                                     |
-        run_mode = 2;                                         |
-    }                                                         |
+        run_mode = 2;                                         |
+    }                                                         |
 }                                                             |
 ```
 
@@ -891,12 +891,12 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 |4       |  FFV1 version 4         |{V4}
 |Other   |  reserved for future use|
 
-\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
+\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
 
 ### micro_version
 
 `micro_version` specifies the micro-version of the FFV1 bitstream.  
-After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
+After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of micro_version for version 3:
 
@@ -1069,7 +1069,7 @@ ConfigurationRecord( NumBytes ) {                             |
 ### reserved_for_future_use
 
 `reserved_for_future_use` has semantics that are reserved for future use.  
-Encoders conforming to this version of this specification SHALL NOT write this value.  
+Encoders conforming to this version of this specification SHALL NOT write this value.  
 Decoders conforming to this version of this specification SHALL ignore its value.
 
 ### configuration_record_crc_parity
@@ -1084,7 +1084,7 @@ This `Configuration Record` can be placed in any file format supporting `Configu
 
 #### AVI File Format
 
-The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.  
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.  
 See [@AVI] for more information about chunks.
 
 `NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
