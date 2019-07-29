@@ -1519,7 +1519,7 @@ Optional parameters:
 
   colorspace_type:  The colorspace_type of the FFV1 encoding as defined by [in the section on colorspace_type](#colorspacetype).
 
-  bits_per_raw_sample:  The version of the FFV1 encoding as defined by [in the section on bits_per_raw_sample](#bits\_per\_raw\_sample).
+  bits_per_raw_sample:  The bits_per_raw_sample of the FFV1 encoding as defined by [in the section on bits_per_raw_sample](#bits\_per\_raw\_sample).
 
   max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
