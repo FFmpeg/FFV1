@@ -25,7 +25,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
--------- --------------------------------------------------------------
+PDF:-------- --------------------------------------------------------------
 
 `Container`: Format that encapsulates `Frames` (see [the section on Frames](#frame)) and (when required) a `Configuration Record` into a bitstream.
 
@@ -48,7 +48,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 `YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples`, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
--------- --------------------------------------------------------------
+PDF:-------- --------------------------------------------------------------
 
 ## Conventions
 
@@ -60,7 +60,7 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
 
-------------- ----------------------------------------------------------------
+PDF:------------- ----------------------------------------------------------------
 `a + b`       means a plus b.
 
 `a - b`       means a minus b.
@@ -80,11 +80,11 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
 
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
---------------- ----------------------------------------------------------------
+PDF:--------------- ----------------------------------------------------------------
 
 ### Assignment Operators
 
-------------- ----------------------------------------------------------------
+PDF:------------- ----------------------------------------------------------------
 `a = b`       means a is assigned b.
 
 `a++`         is equivalent to a is assigned a + 1.
@@ -96,11 +96,11 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `a -= b`      is equivalent to a is assigned a - b.
 
 `a *= b`      is equivalent to a is assigned a * b.
---------------- ----------------------------------------------------------------
+PDF:--------------- ----------------------------------------------------------------
 
 ### Comparison Operators
 
-------------- ----------------------------------------------------------------
+PDF:------------- ----------------------------------------------------------------
 `a > b`       means a is greater than b.
 
 `a >= b`      means a is greater than or equal to b.
@@ -120,11 +120,11 @@ Note: the operators and the order of precedence are the same as used in the C pr
 `!a`          means Boolean logical "not" of a.
 
 `a ? b : c`   if a is true, then b, otherwise c.
---------------- ----------------------------------------------------------------
+PDF:--------------- ----------------------------------------------------------------
 
 ### Mathematical Functions
 
---------------------- -----------------------------------------------
+PDF:--------------------- -----------------------------------------------
 PDF:$$\lfloor a \rfloor$$ the largest integer less than or equal to a
 RFC:floor(a)              the largest integer less than or equal to a
 
@@ -146,7 +146,7 @@ median(a,b,c)         the numerical middle value in a data set of a, b, and c, i
 RFC:a_{b}                 the b-th value of a sequence of a
 RFC:
 RFC:a_{b,c}               the 'b,c'-th value of a sequence of a
---------------------- -----------------------------------------------
+PDF:--------------------- -----------------------------------------------
 
 ### Order of Operation Precedence
 
