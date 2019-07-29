@@ -1563,15 +1563,15 @@ Optional parameters:
 
   This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
 
-  version:  The version of the FFV1 encoding as defined by [in the section on version](#version).
+  version:  The version of the FFV1 encoding as defined by [the section on version](#version).
 
-  micro_version:  The micro_version of the FFV1 encoding as defined by [in the section on micro_version](#microversion).
+  micro\_version:  The micro\_version of the FFV1 encoding as defined by [the section on micro\_version](#micro-version).
 
-  coder_type:  The coder_type of the FFV1 encoding as defined by [in the section on coder_type](#codertype).
+  coder\_type:  The coder\_type of the FFV1 encoding as defined by [the section on coder\_type](#coder-type).
 
-  colorspace_type:  The colorspace_type of the FFV1 encoding as defined by [in the section on colorspace_type](#colorspacetype).
+  colorspace\_type:  The colorspace\_type of the FFV1 encoding as defined by [the section on colorspace\_type](#colorspace-type).
 
-  bits_per_raw_sample:  The bits_per_raw_sample of the FFV1 encoding as defined by [in the section on bits_per_raw_sample](#bits\_per\_raw\_sample).
+  bits\_per\_raw\_sample:  The bits\_per\_raw\_sample of the FFV1 encoding as defined by [the section on bits\_per\_raw\_sample](#bits-per-raw-sample).
 
   max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
