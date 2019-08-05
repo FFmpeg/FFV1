@@ -1,4 +1,5 @@
 *.html
 *.pdf
+*.svg
 draft-ietf-cellar-ffv1*
 merged*.md
