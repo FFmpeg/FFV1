@@ -1055,16 +1055,16 @@ Inferred to be 0 if not present.
 In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying `Container`, at the track header level. It contains the `Parameters` used for all instances of `Frame`. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying `Container`.
 
 ```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-ConfigurationRecord( NumBytes ) {                             |
-    ConfigurationRecordIsPresent = 1                          |
-    Parameters( )                                             |
-    while (remaining_symbols_in_syntax(NumBytes - 4)) {       |
-        reserved_for_future_use                               | br/ur/sr
-    }                                                         |
-    configuration_record_crc_parity                           | u(32)
-}                                                             |
+pseudo-code                                                | type
+-----------------------------------------------------------|-----
+ConfigurationRecord( NumBytes ) {                          |
+    ConfigurationRecordIsPresent = 1                       |
+    Parameters( )                                          |
+    while (remaining_symbols_in_syntax(NumBytes - 4)) {    |
+        reserved_for_future_use                            | br/ur/sr
+    }                                                      |
+    configuration_record_crc_parity                        | u(32)
+}                                                          |
 ```
 
 ### reserved\_for\_future\_use
