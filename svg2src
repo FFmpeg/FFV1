@@ -1,0 +1,7 @@
+#!/bin/bash
+# this script reads an RFC xml document and when an artwork node references a sidecar .svg file in the @src attribute, then this script replaces the file reference with the url-encoded image data of that file (as permitted by https://tools.ietf.org/html/rfc7991#section-2.5)
+RFC_XML="${1}"
+xmlstarlet select --template --match "//artwork[@type='svg'][substring(@src,string-length(@src)-3)='.svg']" --value-of @src --nl "${RFC_XML}" | while read ARTWORK_SVG ; do
+  ENCODED_SVG="$(echo $(cat "$ARTWORK_SVG") | sed 's/ /%20/g;s/"/%22/g;s/#/%23/g;s/(/%28/g;s/)/%29/g;s/,/%2C/g;s/:/%3A/g;s/</%3C/g;s/=/%3D/g;s/>/%3E/g;s/?/%3F/g')"
+  xmlstarlet edit --inplace --update "//artwork[@src='${ARTWORK_SVG}']/@src" --value "data:image/svg+xml,${ENCODED_SVG}" "${RFC_XML}"
+done
