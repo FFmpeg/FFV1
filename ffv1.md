@@ -116,9 +116,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 
 
-⌊a⌋                   the largest integer less than or equal to a
+floor(a)              the largest integer less than or equal to a
 
-⌈a⌉                   the smallest integer greater than or equal to a
+ceil(a)               the smallest integer greater than or equal to a
 
 sign(a)               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0
 
@@ -399,7 +399,7 @@ SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r\_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 RFC:```
-RFC:r_{i} = ⌊ ( R_{i} * S_{i,C_{i}} ) / 2^8 ⌋
+RFC:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2^8 )
 RFC:```
 
 SVGI:!---
@@ -1343,19 +1343,19 @@ SliceContent( ) {                                             |
 
 `plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
 
-If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `⌈slice_pixel_height / log2_v_chroma_subsample⌉`.
+If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil( slice_pixel_height / log2_v_chroma_subsample )`.
 
 ### slice\_pixel\_height
 
 `slice_pixel_height` is the height in pixels of the slice.
 
-Its value is `⌊( slice_y + slice_height ) * slice_pixel_height / num_v_slices⌋ - slice_pixel_y`.
+Its value is `floor( ( slice_y + slice_height ) * slice_pixel_height / num_v_slices ) - slice_pixel_y`.
 
 ### slice\_pixel\_y
 
 `slice_pixel_y` is the slice vertical position in pixels.
 
-Its value is `⌊slice_y * frame_pixel_height / num_v_slices⌋`.
+Its value is `floor( slice_y * frame_pixel_height / num_v_slices )`.
 
 ## Line
 
@@ -1383,19 +1383,19 @@ Line( p, y ) {                                                |
 
 `plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
 
-If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `⌈slice_pixel_width / (1 << log2_h_chroma_subsample)⌉`.
+If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil( slice_pixel_width / (1 << log2_h_chroma_subsample) )`.
 
 ### slice\_pixel\_width
 
 `slice_pixel_width` is the width in `Pixels` of the slice.
 
-Its value is `⌊( slice_x + slice_width ) * slice_pixel_width / num_h_slices⌋ - slice_pixel_x`.
+Its value is `floor( ( slice_x + slice_width ) * slice_pixel_width / num_h_slices ) - slice_pixel_x`.
 
 ### slice\_pixel\_x
 
 `slice_pixel_x` is the slice horizontal position in `Pixels`.
 
-Its value is `⌊slice_x * frame_pixel_width / num_h_slices⌋`.
+Its value is `floor( slice_x * frame_pixel_width / num_h_slices )`.
 
 ### sample_difference
 
@@ -1463,7 +1463,7 @@ QuantizationTableSet( i ) {                                   |
         QuantizationTable( i, j, scale )                      |
         scale *= 2 * len_count[ i ][ j ] - 1                  |
     }                                                         |
-    context_count[ i ] = ⌈ scale / 2 ⌉                        |
+    context_count[ i ] = ceil( scale / 2 )                    |
 }                                                             |
 ```
 
