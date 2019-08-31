@@ -361,17 +361,17 @@ As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could 
 
 ```
 +------------------------+------------------------+
-| Pixel[1,1]             | Pixel[2,1]             |
-| Y[1,1] Cb[1,1] Cr[1,1] | Y[2,1] Cb[2,1] Cr[2,1] |
+| Pixel(1,1)             | Pixel(2,1)             |
+| Y(1,1) Cb(1,1) Cr(1,1) | Y(2,1) Cb(2,1) Cr(2,1) |
 +------------------------+------------------------+
-| Pixel[1,2]             | Pixel[2,2]             |
-| Y[1,2] Cb[1,2] Cr[1,2] | Y[2,2] Cb[2,2] Cr[2,2] |
+| Pixel(1,2)             | Pixel(2,2)             |
+| Y(1,2) Cb(1,2) Cr(1,2) | Y(2,2) Cb(2,2) Cr(2,2) |
 +------------------------+------------------------+
 ```
 
 In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by `Lines` and stored in this order:
 
-Y[1,1] Y[2,1] Cb[1,1] Cb[2,1] Cr[1,1] Cr[2,1] Y[1,2] Y[2,2] Cb[1,2] Cb[2,2] Cr[1,2] Cr[2,2]
+Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1,2) Cr(2,2)
 
 ## Coding of the Sample Difference
 
