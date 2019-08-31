@@ -261,11 +261,11 @@ SVGI:![svg](context.svg "context")
 SVGI:!---
 SVGC:context.svg=$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
 RFC:```
-RFC:context = Q_{0}[l − tl] +
-RFC:          Q_{1}[tl − t] +
-RFC:          Q_{2}[t − tr] +
-RFC:          Q_{3}[L − l]  +
-RFC:          Q_{4}[T − t]
+RFC:context = Q_{0}[l - tl] +
+RFC:          Q_{1}[tl - t] +
+RFC:          Q_{2}[t - tr] +
+RFC:          Q_{3}[L - l]  +
+RFC:          Q_{4}[T - t]
 RFC:```
 
 If `context >= 0` then `context` is used and the difference between the `Sample` and its predicted value is encoded as is, else `-context` is used and the difference between the `Sample` and its predicted value is encoded with a flipped sign.
@@ -383,7 +383,7 @@ SVGI:!---
 SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
 RFC:```
 RFC:coder_input =
-RFC:    [(sample_difference + 2^(bits−1)) & (2^bits − 1)] − 2^(bits−1)
+RFC:    [(sample_difference + 2^(bits-1)) & (2^bits - 1)] - 2^(bits-1)
 RFC:```
 
 ### Range Coding Mode
