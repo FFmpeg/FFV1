@@ -10,25 +10,25 @@ all: draft-ietf-cellar-ffv1-$(VERSION).html draft-ietf-cellar-ffv1-v4-$(VERSION-
 
 draft-ietf-cellar-ffv1-$(VERSION).html: ffv1.md
 	bash makesvg
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^RFC:" | grep -v "^SVGC" | grep -v "{V4}" |  sed "s|^RFC:||g;s|{V3}||g;s|SVGI:||g" > merged_rfchtml.md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V4}" |  sed "s|^AART:||g;s|{V3}||g;s|SVGI:||g" > merged_rfchtml.md
 	mmark merged_rfchtml.md > draft-ietf-cellar-ffv1-$(VERSION).xml
 	bash svg2src draft-ietf-cellar-ffv1-$(VERSION).xml
 	xml2rfc --html --v3 draft-ietf-cellar-ffv1-$(VERSION).xml -o "$@"
 
 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).html: ffv1.md
 	bash makesvg
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^RFC:" | grep -v "^SVGC" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g;s|SVGI:||g" > merged_rfchtml-v4.md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V3}" | sed "s|^AART:||g;s|{V4}||g;s|SVGI:||g" > merged_rfchtml-v4.md
 	mmark merged_rfchtml-v4.md > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 	bash svg2src draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 	xml2rfc --html --v3 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml -o "$@"
 
 draft-ietf-cellar-ffv1-$(VERSION).txt: ffv1.md
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^SVG" | grep -v "{V4}" | sed "s|^RFC:||g;s|{V3}||g" > merged_rfctxt.md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^SVG" | grep -v "{V4}" | sed "s|^AART:||g;s|{V3}||g" > merged_rfctxt.md
 	mmark merged_rfctxt.md > draft-ietf-cellar-ffv1-$(VERSION).xml
 	xml2rfc --v3 draft-ietf-cellar-ffv1-$(VERSION).xml -o "$@"
 
 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).txt: ffv1.md
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^SVG" | grep -v "{V3}" | sed "s|^RFC:||g;s|{V4}||g" > merged_rfctxt-v4.md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^SVG" | grep -v "{V3}" | sed "s|^AART:||g;s|{V4}||g" > merged_rfctxt-v4.md
 	mmark merged_rfctxt-v4.md > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 	xml2rfc --v3 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml -o "$@"
 
