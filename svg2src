@@ -1,7 +1,21 @@
 #!/bin/bash
-# this script reads an RFC xml document and when an artwork node references a sidecar .svg file in the @src attribute, then this script replaces the file reference with the url-encoded image data of that file (as permitted by https://tools.ietf.org/html/rfc7991#section-2.5)
+# this script reads an RFC xml document and when an artwork node references a sidecar .svg file in the @src attribute, then this script replaces the file reference with the url-encoded image data of that file (as permitted by https://tools.ietf.org/html/rfc7991#section-2.5) and also adds in corresponding ascii-art noted in ffv1.md
 RFC_XML="${1}"
 xmlstarlet select --template --match "//artwork[@type='svg'][substring(@src,string-length(@src)-3)='.svg']" --value-of @src --nl "${RFC_XML}" | while read ARTWORK_SVG ; do
   ENCODED_SVG="$(echo $(cat "$ARTWORK_SVG") | sed 's/ /%20/g;s/"/%22/g;s/#/%23/g;s/(/%28/g;s/)/%29/g;s/,/%2C/g;s/:/%3A/g;s/</%3C/g;s/=/%3D/g;s/>/%3E/g;s/?/%3F/g')"
+  ASCII_ART_FALLBACK="$(sed -n "/^SVGC:${ARTWORK_SVG}/,/^$/p" "$(dirname "${0}")/ffv1.md" | grep "^AART:" | cut -d ":" -f2)"
+  if [[ -n "${ASCII_ART_FALLBACK}" ]] ; then
+    # find an <artwork> node for the SVG data and insert an <artset> node after it
+    xmlstarlet edit --inplace --append "//artwork[@src='${ARTWORK_SVG}']" --type elem -n artset "${RFC_XML}"
+    # move the found <artwork> node into the newly made <artset> node
+    xmlstarlet edit --inplace --move "//artwork[@src='${ARTWORK_SVG}']" "//artset[not(artwork)][1]" "${RFC_XML}"
+    # for that <artset> node add one more <artwork> node after it
+    xmlstarlet edit --inplace --append "//artwork[@src='${ARTWORK_SVG}']" --type elem --name artwork "${RFC_XML}"
+    # for the newly made <artwork> node, add a @type='ascii-art' attribute
+    xmlstarlet edit --inplace --insert "//artwork[not(@type)]" --type attr --name type --value ascii-art "${RFC_XML}"
+    # insert the ASCII_ART_FALLBACK value into that newly made <artwork> node
+    xmlstarlet edit --inplace --update "//artwork[@type='ascii-art'][not(text())]" --value "${ASCII_ART_FALLBACK}" "${RFC_XML}"
+  fi
+  # update the @src attribute of the artwork for the SVG data to contain the encoded SVG XML
   xmlstarlet edit --inplace --update "//artwork[@src='${ARTWORK_SVG}']/@src" --value "data:image/svg+xml,${ENCODED_SVG}" "${RFC_XML}"
 done

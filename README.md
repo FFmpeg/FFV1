@@ -10,7 +10,7 @@ The FFV1 specification was initially written in lyx. In July 2015 the formatting
 
 The Markdown version of the FFV1 specification may also be converted into XML, HTML, and text formats as an IETF RFC draft based on [xml2rfc version 3](https://tools.ietf.org/html/rfc7991). Producing the RFC formats requires mmark version 2.0.48 or higher, xml2rfc version 2.23.1 or higher, xmlstarlet 1.6.1 or higher, pdfcrop v1.38 or higher, and pdf2svg 0.2.3 or higher.
 
-Note that within ffv1.md lines that are prefixed with `SVGI:` refer to an embedded svg image as described in https://mmark.nl/post/syntax/#rfc-7991-xml-output. LaTeX expressions are provided with a `SVGC:` prefix in the form of `SVGC:filename=LaTeX_formula`. Throughout ffv1.md, ASCII-art representations are provided for each LaTeX formula with `AART:` prefixes. Lines prefixed with `AART:` are removed from outputs that support SVG images and lines prefixed with `SVG` are removed from outputs that do not support SVG images.
+Note that within ffv1.md lines that are prefixed with `SVGI:` refer to an embedded svg image as described in https://mmark.nl/post/syntax/#rfc-7991-xml-output. LaTeX expressions are provided with a `SVGC:` prefix in the form of `SVGC:filename=LaTeX_formula`. Throughout ffv1.md, ASCII-art representations are provided for each LaTeX formula with `AART:` prefixes. Lines prefixed with `AART:` MUST immediately follow the line corresponding line prefixed with `SVGC:`. Lines prefixed with `SVGI:`, `SVGC:`, and `AART:` will be converted into an <artset> element in the resulting RFC XML and thus contain both the encoded SVG data as well as optionally the ASCII art fallback.
 
 A Makefile is provided that can produce the RFC outputs.
 

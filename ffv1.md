@@ -260,13 +260,11 @@ SVGI:!---
 SVGI:![svg](context.svg "context")
 SVGI:!---
 SVGC:context.svg=$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
-AART:```
 AART:context = Q_{0}[l - tl] +
 AART:          Q_{1}[tl - t] +
 AART:          Q_{2}[t - tr] +
 AART:          Q_{3}[L - l]  +
 AART:          Q_{4}[T - t]
-AART:```
 
 If `context >= 0` then `context` is used and the difference between the `Sample` and its predicted value is encoded as is, else `-context` is used and the difference between the `Sample` and its predicted value is encoded with a flipped sign.
 
@@ -278,9 +276,7 @@ SVGI:!---
 SVGI:![svg](quantizationtablesets.svg "quantization table sets")
 SVGI:!---
 SVGC:quantizationtablesets.svg=Q_{j}[k]=quant\\\_tables[i][j][k\\&255]
-AART:```
 AART:Q_{j}[k] = quant_tables[i][j][k&255]
-AART:```
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
 
@@ -329,14 +325,12 @@ SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
 SVGI:!---
 SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b-g \\\\\\ Cr & = & r-g \\\\\\ Y & = & g+(Cb+Cr)>>2 \\\\\\ g & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+g \\\\\\ b & = & Cb+g \\\\end{array}$$
-AART:```
 AART:Cb=b-g
 AART:Cr=r-g
 AART:Y=g+(Cb+Cr)>>2
 AART:g=Y-(Cb+Cr)>>2
 AART:r=Cr+g
 AART:b=Cb+g
-AART:```
 
 Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and extra_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
@@ -344,14 +338,12 @@ SVGI:!---
 SVGI:![svg](rgb2.svg "rgb 2")
 SVGI:!---
 SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g-b \\\\\\ Cr & = & r-b \\\\\\ Y & = & b+(Cb+Cr)>>2 \\\\\\ b & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+b \\\\\\ g & = & Cb+b \\\\end{array}$$
-AART:```
 AART:Cb=g-b
 AART:Cr=r-b
 AART:Y=b+(Cb+Cr)>>2
 AART:b=Y-(Cb+Cr)>>2
 AART:r=Cr+b
 AART:g=Cb+b
-AART:```
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and extra_plane is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
@@ -381,10 +373,8 @@ SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
 SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
-AART:```
 AART:coder_input =
 AART:    [(sample_difference + 2^(bits-1)) & (2^bits - 1)] - 2^(bits-1)
-AART:```
 
 ### Range Coding Mode
 
@@ -398,79 +388,61 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r\_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
-AART:```
 AART:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2^8 )
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
 SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S\_{i+1,C\_{i}}=zero\\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l{}\_{i}=L\_{i} & \\\\wedge & t\_{i}=R\_{i}-r\_{i} & \\\\Longleftarrow & b\_{i}=0 & \\\\Longleftrightarrow & L\_{i}<R\_{i}-r\_{i} \\\\\\ S\_{i+1,C\_{i}}=one\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l\_{i}=L\_{i}-R\_{i}+r\_{i} & \\\\wedge & t\_{i}=r\_{i} & \\\\Longleftarrow & b\_{i}=1 & \\\\Longleftrightarrow & L\_{i}\\\\geq R\_{i}-r\_{i} \\\\end{array}$$
-AART:```
 AART:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
 AART:          l_i =  L_i                      XOR
 AART:          t_i =  R_i - r_i                <==
 AART:          b_i =  0                        <==>
 AART:          L_i <  R_i - r_i
-AART:```
 AART:
-AART:```
 AART:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  XOR
 AART:          l_i =  L_i - R_i + r_i          XOR
 AART:          t_i =  r_i                      <==
 AART:          b_i =  1                        <==>
 AART:          L_i >= R_i - r_i
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S\_{i+1,k}=S\_{i,k} & \\\\Longleftarrow & C\_{i} \\\\neq k\\\\end{array}$$
-AART:```
 AART:S_{i+1,k} = S_{i,k} <== C_i != k
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R\_{i+1}=2^{8}t\_{i} & \\\\wedge & L\_{i+1}=2^{8}l\_{i}+B\_{j\_{i}} & \\\\wedge & j\_{i+1}=j\_{i}+1 & \\\\Longleftarrow & t\_{i}<2^{8}\\\\\\ R\_{i+1}=t\_{i} & \\\\wedge & L\_{i+1}=l\_{i} & \\\\wedge & j\_{i+1}=j\_{i} & \\\\Longleftarrow & t\_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:```
 AART:R_{i+1} =  2^8 * t_{i}                   XOR
 AART:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       XOR
 AART:j_{i+1} =  j_{i} + 1                     <==
 AART:t_{i}   <  2^8
-AART:```
 AART:
-AART:```
 AART:R_{i+1} =  t_{i}                         XOR
 AART:L_{i+1} =  l_{i}                         XOR
 AART:j_{i+1} =  j_{i}                         <==
 AART:t_{i}   >= 2^8
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGI:!---
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
-AART:```
 AART:R_{0} = 65280
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGI:!---
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
-AART:```
 AART:L_{0} = 2^8 * B_{0} + B_{1}
-AART:```
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
 SVGI:!---
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
-AART:```
 AART:j_{0} = 2
-AART:```
 
 ##### Termination
 
@@ -530,18 +502,14 @@ SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
 SVGI:!---
 SVGC:statetransitiontable1.svg=$$one\\\_state\_{i}=default\\\_state\\\_transition\_{i}+state\\\_transition\\\_delta\_{i}$$
-AART:```
 AART:one_state_{i} =
 AART:       default_state_transition_{i} + state_transition_delta_{i}
-AART:```
 
 SVGI:!---
 SVGI:![svg](statetransitiontable2.svg "state transition table 2")
 SVGI:!---
 SVGC:statetransitiontable2.svg=$$zero\\\_state\_{i}=256-one\\\_state\_{256-i}$$
-AART:```
 AART:zero_state_{i} = 256 - one_state_{256-i}
-AART:```
 
 #### default\_state\_transition
 
@@ -1015,18 +983,14 @@ SVGI:!---
 SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
 SVGI:!---
 SVGC:initialstatedelta1.svg=$$pred = j ? initial\\_states[ i ][j - 1][ k ] : 128$$
-AART:```
 AART:pred = j ? initial_states[ i ][j - 1][ k ] : 128
-AART:```
 
 SVGI:!---
 SVGI:![svg](initialstatedelta2.svg "initial state delta 2")
 SVGI:!---
 SVGC:initialstatedelta2.svg=initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
-AART:```
 AART:initial_state[ i ][ j ][ k ] =
 AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
-AART:```
 
 ### ec
 
