@@ -1462,7 +1462,7 @@ QuantizationTable(i, j, scale) {                              |
 
 ### context_count
 
-`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`.
+`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` MUST be less than or equal 32768.
 
 # Restrictions
 
