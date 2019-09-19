@@ -958,7 +958,7 @@ Inferred to be 1 if not present.
 
 ### quant\_table\_set\_count
 
-`quant_table_set_count` indicates the number of Quantization Table Sets.
+`quant_table_set_count` indicates the number of Quantization Table Sets. `quant_table_set_count` MUST be less than or equal to 8.
 
 Inferred to be 1 if not present.
 
