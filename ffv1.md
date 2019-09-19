@@ -828,6 +828,8 @@ Parameters( ) {                                               |
 }                                                             |
 ```
 
+CONTEXT_SIZE is 32.
+
 ### version
 
 `version` specifies the version of the FFV1 bitstream.
