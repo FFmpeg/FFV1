@@ -11,13 +11,13 @@ all: draft-ietf-cellar-ffv1-$(VERSION).html draft-ietf-cellar-ffv1-v4-$(VERSION-
 draft-ietf-cellar-ffv1-$(VERSION).xml: ffv1.md
 	bash makesvg
 	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V4}" |  sed "s|^AART:||g;s|{V3}||g;s|SVGI:||g" > merged_rfchtml.md
-	mmark merged_rfchtml.md > draft-ietf-cellar-ffv1-$(VERSION).xml
+	mmark merged_rfchtml.md | sed 's|<date year="undated"></date>|<date>undated</date>|g' > draft-ietf-cellar-ffv1-$(VERSION).xml
 	bash svg2src draft-ietf-cellar-ffv1-$(VERSION).xml
 
 draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml: ffv1.md
 	bash makesvg
 	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V3}" |  sed "s|^AART:||g;s|{V4}||g;s|SVGI:||g" > merged_rfchtml-v4.md
-	mmark merged_rfchtml-v4.md > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
+	mmark merged_rfchtml-v4.md | sed 's|<date year="undated"></date>|<date>undated</date>|g' > draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 	bash svg2src draft-ietf-cellar-ffv1-v4-$(VERSION-v4).xml
 
 draft-ietf-cellar-ffv1-$(VERSION).html: draft-ietf-cellar-ffv1-$(VERSION).xml
