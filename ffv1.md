@@ -1309,7 +1309,7 @@ SliceContent( ) {                                             |
 
 `plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
 
-If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil( slice_pixel_height / log2_v_chroma_subsample )`.
+If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil( slice_pixel_height / (1 << log2_v_chroma_subsample) )`.
 
 ### slice\_pixel\_height
 
