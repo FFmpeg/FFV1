@@ -1408,7 +1408,7 @@ Note: this allows finding the start of slices before previous slices have been f
 
 This is equivalent to storing the crc remainder in the 32-bit parity.
 
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7), with initial value 0, without pre-inversion and without post-inversion.
 
 ## Quantization Table Set
 
