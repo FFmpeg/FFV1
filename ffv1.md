@@ -1045,9 +1045,7 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 `configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
 
-This is equivalent to storing the crc remainder in the 32-bit parity.
-
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
+See slice_crc_parity for details.
 
 ### Mapping FFV1 into Containers
 
