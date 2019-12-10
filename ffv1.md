@@ -195,7 +195,7 @@ A border is assumed for each coded `Slice` for the purpose of the median predict
 - one column of `Samples` to the right of the coded slice is assumed as identical to the `Samples` of the rightmost column of the coded slice
 - an additional column of `Samples` to the left of the coded slice and two rows of `Samples` above the coded slice are assumed to be `0`
 
-The following table depicts a slice of 9 `Samples` `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
+[@figureAssumedBorder] depicts a slice of 9 `Samples` `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
 
 ```
 +---+---+---+---+---+---+---+---+
@@ -212,10 +212,11 @@ The following table depicts a slice of 9 `Samples` `a,b,c,d,e,f,g,h,i` in a 3x3 
 | 0 | d |   | g | h | i |   | i |
 +---+---+---+---+---+---+---+---+
 ```
+Figure: A depiction of FFV1's assumed border for a set example Samples. {#figureAssumedBorder}
 
 ## Samples
 
-Relative to any `Sample` `X`, six other relatively positioned `Samples` from the coded `Samples` and presumed border are identified according to the labels used in the following diagram. The labels for these relatively positioned `Samples` are used within the median predictor and context.
+Relative to any `Sample` `X`, six other relatively positioned `Samples` from the coded `Samples` and presumed border are identified according to the labels used in [@figureRelativeSampleNames]. The labels for these relatively positioned `Samples` are used within the median predictor and context.
 
 ```
 +---+---+---+---+
@@ -226,6 +227,7 @@ Relative to any `Sample` `X`, six other relatively positioned `Samples` from the
 | L | l | X |   |
 +---+---+---+---+
 ```
+Figure: A depiction of how relatively positions Samples are references within this document. {#figureRelativeSampleNames}
 
 The labels for these relative `Samples` are made of the first letters of the words Top, Left and Right.
 
@@ -462,7 +464,7 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 
 #### Range Non Binary Values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by the following code, followed by some comments.
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample], followed by some comments.
 
 ```c
 pseudo-code                                                   | type
@@ -490,6 +492,7 @@ is_signed) {                                                  |
     }                                                         |
 }                                                             |
 ```
+Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
 
 #### Initial Values for the Context Model
 
@@ -548,7 +551,7 @@ AART:zero_state_{i} = 256 - one_state_{256-i}
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -583,6 +586,7 @@ The alternative state transition table has been built using iterative minimizati
 
 241,243,242,244,245,246,247,248,249,250,251,252,252,253,254,255,
 ```
+Figure: Alternative state transition table for Range coding. {#figureAltStateTransition}
 
 ### Golomb Rice Mode
 
@@ -754,7 +758,7 @@ At keyframes all coder state variables are set to their initial state.
 
 An FFV1 bitstream is composed of a series of 1 or more `Frames` and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
@@ -763,6 +767,7 @@ Within the following sub-sections, pseudo-code is used to explain the structure 
 | br   | Range coded Boolean (1-bit) symbol with the method described in (#range-binary-values)           |
 | ur   | Range coded unsigned scalar symbol coded with the method described in (#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in (#range-non-binary-values)   |
+Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
 
 The same context that is initialized to 128 is used for all fields in the header.
 
@@ -778,7 +783,7 @@ Default values at the decoder initialization phase:
 
 ## Parameters
 
-The `Parameters` section contains significant characteristics about the decoding configuration used for all instances of `Frame` (in FFV1 version 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and quantization tables. The pseudo-code below describes the contents of the bitstream.
+The `Parameters` section contains significant characteristics about the decoding configuration used for all instances of `Frame` (in FFV1 version 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and quantization tables. [@figureBitstream] describes the contents of the bitstream.
 
 ```c
 pseudo-code                                                   | type
@@ -826,6 +831,7 @@ Parameters( ) {                                               |
     }                                                         |
 }                                                             |
 ```
+Figure: A pseudo-code description of the bitstream contents. {#figureBitstream}
 
 CONTEXT_SIZE is 32.
 
@@ -863,6 +869,7 @@ Meaning of micro_version for version 3:
 |0...3  | reserved\*              |
 |4      | first stable variant    |
 |Other  | reserved for future use |
+Table: The definitions for micro_version values.
 
 \* development versions may be incompatible with the stable variants.
 
@@ -873,6 +880,7 @@ Meaning of micro_version for version 4 (note: at the time of writing of this spe
 |0...TBA | reserved\*              |{V4}
 |TBA     | first stable variant    |{V4}
 |Other   | reserved for future use |{V4}
+Table: The definitions for micro_version values for FFV1 version 4.{V4}
 
 \* development versions which may be incompatible with the stable variants.{V4}
 
