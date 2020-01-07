@@ -348,7 +348,7 @@ Background: At the time of this writing, in all known implementations of FFV1 bi
 
 When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used transparency.
 
-As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could be comprised of the following structure:
+As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could comprise the following structure:
 
 ```
 +------------------------+------------------------+
