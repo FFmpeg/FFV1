@@ -23,7 +23,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
-`Container`: Format that encapsulates `Frames` (see [the section on Frames](#frame)) and (when required) a `Configuration Record` into a bitstream.
+`Container`: Format that encapsulates `Frames` (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Transparency, Red, Green, and Blue.
 
@@ -163,7 +163,7 @@ a = b, a += b, a -= b, a *= b
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values, see [the section on the Mapping FFV1 into Containers](#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its `Container` to store the `NumBytes` values; see (#mapping-ffv1-into-containers).
 
 ### Bitstream Functions
 
@@ -185,7 +185,7 @@ a = b, a += b, a -= b, a *= b
 
 # Sample Coding
 
-For each `Slice` (as described in [the section on Slices](#slice)) of a `Frame`, the `Planes`, `Lines`, and `Samples` are coded in an order determined by the `Color Space` (see [the section on Color Space](#color-spaces)). Each `Sample` is predicted by the median predictor as described in [the section of the Median Predictor](#median-predictor) from other `Samples` within the same `Plane` and the difference is stored using the method described in [Coding of the Sample Difference](#coding-of-the-sample-difference).
+For each `Slice` (as described in (#slice)) of a `Frame`, the `Planes`, `Lines`, and `Samples` are coded in an order determined by the `Color Space` (see (#color-spaces)). Each `Sample` is predicted by the median predictor as described in (#median-predictor) from other `Samples` within the same `Plane` and the difference is stored using the method described in (#coding-of-the-sample-difference).
 
 ## Border
 
@@ -548,7 +548,7 @@ AART:zero_state_{i} = 256 - one_state_{256-i}
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see [the section on coder_type](#codertype)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see [the section on Parameters](#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses this table by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -754,15 +754,15 @@ At keyframes all coder state variables are set to their initial state.
 
 An FFV1 bitstream is composed of a series of 1 or more `Frames` and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in [the section on Pseudo-Code](#pseudocode). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). The following table lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer using n bits               |
-| sg   | Golomb Rice coded signed scalar symbol coded with the method described in [Signed Golomb Rice Codes](#golomb-rice-mode) |
-| br   | Range coded Boolean (1-bit) symbol with the method described in [Range binary values](#range-binary-values)  |
-| ur   | Range coded unsigned scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
-| sr   | Range coded signed scalar symbol coded with the method described in [Range non binary values](#range-non-binary-values) |
+| sg   | Golomb Rice coded signed scalar symbol coded with the method described in (#golomb-rice-mode)    |
+| br   | Range coded Boolean (1-bit) symbol with the method described in (#range-binary-values)           |
+| ur   | Range coded unsigned scalar symbol coded with the method described in (#range-non-binary-values) |
+| sr   | Range coded signed scalar symbol coded with the method described in (#range-non-binary-values)   |
 
 The same context that is initialized to 128 is used for all fields in the header.
 
@@ -1364,7 +1364,7 @@ Its value is `floor( slice_x * frame_pixel_width / num_h_slices )`.
 
 ### sample_difference
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in [the section on Samples](#samples).
+`sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in (#samples).
 
 ## Slice Footer
 
@@ -1411,7 +1411,7 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 
 ## Quantization Table Set
 
-The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in [Range Non Binary Values](#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
+The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
 
 Example:
 
@@ -1506,25 +1506,25 @@ Optional parameters:
 
   This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
 
-  version:  The version of the FFV1 encoding as defined by [the section on version](#version).
+  version:  The version of the FFV1 encoding as defined by (#version).
 
-  micro\_version:  The micro\_version of the FFV1 encoding as defined by [the section on micro\_version](#micro-version).
+  micro\_version:  The micro\_version of the FFV1 encoding as defined by (#micro-version).
 
-  coder\_type:  The coder\_type of the FFV1 encoding as defined by [the section on coder\_type](#coder-type).
+  coder\_type:  The coder\_type of the FFV1 encoding as defined by (#coder-type).
 
-  colorspace\_type:  The colorspace\_type of the FFV1 encoding as defined by [the section on colorspace\_type](#colorspace-type).
+  colorspace\_type:  The colorspace\_type of the FFV1 encoding as defined by (#colorspace-type).
 
-  bits\_per\_raw\_sample:  The bits\_per\_raw\_sample of the FFV1 encoding as defined by [the section on bits\_per\_raw\_sample](#bits-per-raw-sample).
+  bits\_per\_raw\_sample:  The bits\_per\_raw\_sample of the FFV1 encoding as defined by (#bits-per-raw-sample).
 
   max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
 Encoding considerations:
 
-  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see [the section on "Mapping FFV1 into Containers"](#mapping-ffv1-into-containers). This media type is framed binary data Section 4.8 of [@!RFC6838].
+  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data Section 4.8 of [@!RFC6838].
 
 Security considerations:
 
-  See [the "Security Considerations" section](#security-considerations) of this document.
+  See (#security-considerations) of this document.
 
 Interoperability considerations:  None.
 
@@ -1556,7 +1556,7 @@ Change controller:  IETF cellar working group delegated from the IESG.
 
 The IANA is requested to register the following values:
 
-   - Media type registration as described in [Media Type Definition](#media-type-definition).
+   - Media type registration as described in (#media-type-definition).
 
 # Appendixes
 
