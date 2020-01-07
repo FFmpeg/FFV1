@@ -53,7 +53,7 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 ### Arithmetic Operators
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.1990].
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018].
 
 `a + b`       means a plus b.
 

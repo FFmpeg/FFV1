@@ -1,6 +1,17 @@
 
 {backmatter}
 
+<reference anchor="ISO.9899.2018">
+  <front>
+    <title>Programming languages - C</title>
+    <author>
+      <organization>International Organization for Standardization</organization>
+    </author>
+    <date month="" year="2018"/>
+  </front>
+  <seriesInfo name="ISO" value="Standard 9899"/>
+</reference>
+
 <reference anchor="ISO.15444-1.2016">
   <front>
     <title>Information technology -- JPEG 2000 image coding system: Core coding system</title>
