@@ -14,8 +14,6 @@ This document defines version 0, 1 and 3 of FFV1. The distinctions of the versio
 
 This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
-The latest version of this document is available at <https://raw.github.com/FFmpeg/FFV1/master/ffv1.md>
-
 This document assumes familiarity with mathematical and coding concepts such as Range coding [@?range-coding] and YCbCr color spaces [@?YCbCr].
 
 # Notation and Conventions
