@@ -1074,7 +1074,7 @@ The codec\_specific\_data element (in "stream_header" packet) contains the Confi
 
 #### Matroska File Format
 
-FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 `Configuration Record` structure and no other data. See [@Matroska] for more information about elements.
+FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 `Configuration Record` structure and no other data. See [@!Matroska] for more information about elements.
 
 `NumBytes` is defined as the `Element Data Size` of the `CodecPrivate` Element.
 
