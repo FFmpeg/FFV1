@@ -1155,7 +1155,7 @@ Encoders SHOULD NOT fill these bits.
 
 Decoders SHOULD ignore these bits.
 
-Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: due to some non conforming encoders, some bitstreams where found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`, a decoder conforming to the revised specification could not do the difference between a revised bitstream and a buggy bitstream.
+Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: Due to some non-conforming encoders, some bitstreams were found with 40 extra bits corresponding to "error_status" and "slice_crc_parity". As a result, a decoder conforming to the revised specification could not distinguish between a revised bitstream and a buggy bitstream.
 
 ## Slice Header
 
