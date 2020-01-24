@@ -53,7 +53,7 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 ### Arithmetic Operators
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018].
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018]. With the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators which are re-defined within this section.
 
 `a + b`       means a plus b.
 
@@ -71,7 +71,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a | b`       means bit-wise "or" of a and b.
 
-`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits.
+`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits. This is equivalent to, b times dividing a by 2 with rounding toward negative infinity.
 
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 
