@@ -131,6 +131,9 @@ max(a,b)              the largest of two values a and b
 
 median(a,b,c)         the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c)
 
+A <== B               B implies A
+
+A <==> B              A <== B , B <== A
 
 ### Order of Operation Precedence
 
