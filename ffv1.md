@@ -395,14 +395,14 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
 SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S\_{i+1,C\_{i}}=zero\\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l{}\_{i}=L\_{i} & \\\\wedge & t\_{i}=R\_{i}-r\_{i} & \\\\Longleftarrow & b\_{i}=0 & \\\\Longleftrightarrow & L\_{i}<R\_{i}-r\_{i} \\\\\\ S\_{i+1,C\_{i}}=one\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l\_{i}=L\_{i}-R\_{i}+r\_{i} & \\\\wedge & t\_{i}=r\_{i} & \\\\Longleftarrow & b\_{i}=1 & \\\\Longleftrightarrow & L\_{i}\\\\geq R\_{i}-r\_{i} \\\\end{array}$$
-AART:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} XOR
-AART:          l_i =  L_i                      XOR
+AART:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} AND
+AART:          l_i =  L_i                      AND
 AART:          t_i =  R_i - r_i                <==
 AART:          b_i =  0                        <==>
 AART:          L_i <  R_i - r_i
 AART:
-AART:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  XOR
-AART:          l_i =  L_i - R_i + r_i          XOR
+AART:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  AND
+AART:          l_i =  L_i - R_i + r_i          AND
 AART:          t_i =  r_i                      <==
 AART:          b_i =  1                        <==>
 AART:          L_i >= R_i - r_i
@@ -417,13 +417,13 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R\_{i+1}=2^{8}t\_{i} & \\\\wedge & L\_{i+1}=2^{8}l\_{i}+B\_{j\_{i}} & \\\\wedge & j\_{i+1}=j\_{i}+1 & \\\\Longleftarrow & t\_{i}<2^{8}\\\\\\ R\_{i+1}=t\_{i} & \\\\wedge & L\_{i+1}=l\_{i} & \\\\wedge & j\_{i+1}=j\_{i} & \\\\Longleftarrow & t\_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:R_{i+1} =  2^8 * t_{i}                   XOR
-AART:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       XOR
+AART:R_{i+1} =  2^8 * t_{i}                   AND
+AART:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       AND
 AART:j_{i+1} =  j_{i} + 1                     <==
 AART:t_{i}   <  2^8
 AART:
-AART:R_{i+1} =  t_{i}                         XOR
-AART:L_{i+1} =  l_{i}                         XOR
+AART:R_{i+1} =  t_{i}                         AND
+AART:L_{i+1} =  l_{i}                         AND
 AART:j_{i+1} =  j_{i}                         <==
 AART:t_{i}   >= 2^8
 
