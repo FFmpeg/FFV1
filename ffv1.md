@@ -131,10 +131,6 @@ max(a,b)              the largest of two values a and b
 
 median(a,b,c)         the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c)
 
-a~b~                  the b-th value of a sequence of a
-
-a~b,c.                the 'b,c'-th value of a sequence of a
-
 
 ### Order of Operation Precedence
 
@@ -383,7 +379,7 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-To encode binary digits efficiently a Range coder is used. `C~i~` is the i-th Context. `B~i~` is the i-th byte of the bytestream. `b~i~` is the i-th Range coded binary value, `S~0,i~` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j~n~` bytes.
+To encode binary digits efficiently a Range coder is used. `C(i)` is the i-th Context. `B(i)` is the i-th byte of the bytestream. `b(i)` is the i-th Range coded binary value, `S(0,i)` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j(n)` bytes.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
