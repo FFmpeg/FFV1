@@ -894,6 +894,12 @@ Table: The definitions for micro_version values for FFV1 version 4.{V4}
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
 
+Restrictions:
+
+If `coder_type` is 0, then `bits_per_raw_sample` SHOULD NOT be > 8.
+
+Background: At the time of this writing, there is no known implementations of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and Range Coder is prefered.
+
 ### state\_transition\_delta
 
 `state_transition_delta` specifies the Range coder custom state transition table.
