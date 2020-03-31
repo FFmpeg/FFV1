@@ -1537,7 +1537,7 @@ Interoperability considerations:  None.
 
 Published specification:
 
-  [@!I-D.ietf-cellar-ffv1] and RFC XXXX.
+  RFC XXXX.
 
   [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
