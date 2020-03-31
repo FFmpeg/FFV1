@@ -1565,11 +1565,7 @@ The IANA is requested to register the following values:
 
    - Media type registration as described in (#media-type-definition).
 
-# Appendixes
-
-## Decoder implementation suggestions
-
-### Multi-threading Support and Independence of Slices
+# Appendix A: Multi-theaded decoder implementation suggestions
 
 The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
