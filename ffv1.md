@@ -1578,3 +1578,5 @@ After having checked keyframe field, a decoder SHOULD parse slice_size fields, f
 # Changelog
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
+
+[RFC Editor: Please remove this Changelog section prior to publication.]
