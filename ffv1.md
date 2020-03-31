@@ -467,30 +467,27 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
 
 ```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-void put_symbol(RangeCoder *c, uint8_t *state, int v, int \   |
-is_signed) {                                                  |
-    int i;                                                    |
-    put_rac(c, state+0, !v);                                  |
-    if (v) {                                                  |
-        int a= abs(v);                                        |
-        int e= log2(a);                                       |
-                                                              |
-        for (i = 0; i < e; i++) {                             |
-            put_rac(c, state+1+min(i,9), 1);  //1..10         |
-        }                                                     |
-                                                              |
-        put_rac(c, state+1+min(i,9), 0);                      |
-        for (i = e-1; i >= 0; i--) {                          |
-            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31 |
-        }                                                     |
-                                                              |
-        if (is_signed) {                                      |
-            put_rac(c, state+11 + min(e, 10), v < 0); //11..21|
-        }                                                     |
-    }                                                         |
-}                                                             |
+void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
+    int i;
+    put_rac(c, state+0, !v);
+    if (v) {
+        int a= abs(v);
+        int e= log2(a);
+
+        for (i = 0; i < e; i++) {
+            put_rac(c, state+1+min(i,9), 1);  //1..10
+        }
+
+        put_rac(c, state+1+min(i,9), 0);
+        for (i = e-1; i >= 0; i--) {
+            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31
+        }
+
+        if (is_signed) {
+            put_rac(c, state+11 + min(e, 10), v < 0); //11..21
+        }
+    }
+}
 ```
 Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
 
@@ -601,23 +598,25 @@ The end of the bitstream of the `Frame` is filled with 0-bits until that the bit
 This coding mode uses Golomb Rice codes. The VLC is split into two parts. The prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-int get_ur_golomb(k) {                                        |
-    for (prefix = 0; prefix < 12; prefix++) {                 |
-        if (get_bits(1)) {                                    |
-            return get_bits(k) + (prefix << k)                |
-        }                                                     |
-    }                                                         |
-    return get_bits(bits) + 11                                |
-}                                                             |
-                                                              |
-int get_sr_golomb(k) {                                        |
-    v = get_ur_golomb(k);                                     |
-    if (v & 1) return - (v >> 1) - 1;                         |
-    else       return   (v >> 1);                             |
+int get_ur_golomb(k) {
+    for (prefix = 0; prefix < 12; prefix++) {
+        if (get_bits(1)) {
+            return get_bits(k) + (prefix << k);
+        }
+    }
+    return get_bits(bits) + 11;
 }
 ```
+Figure: A pseudo-code description of the read of an unsigned integer in Golomb Rice mode.
+
+```c
+int get_sr_golomb(k) {
+    v = get_ur_golomb(k);
+    if (v & 1) return - (v >> 1) - 1;
+    else       return   (v >> 1);
+}
+```
+Figure: A pseudo-code description of the read of a signed integer in Golomb Rice mode.
 
 ##### Prefix
 
@@ -660,35 +659,33 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset for each `Plane` and slice to 0.
 
 ```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-log2_run[41]={                                                |
- 0, 0, 0, 0, 1, 1, 1, 1,                                      |
- 2, 2, 2, 2, 3, 3, 3, 3,                                      |
- 4, 4, 5, 5, 6, 6, 7, 7,                                      |
- 8, 9,10,11,12,13,14,15,                                      |
-16,17,18,19,20,21,22,23,                                      |
-24,                                                           |
-};                                                            |
-                                                              |
-if (run_count == 0 && run_mode == 1) {                        |
-    if (get_bits(1)) {                                        |
-        run_count = 1 << log2_run[run_index];                 |
-        if (x + run_count <= w) {                             |
-            run_index++;                                      |
-        }                                                     |
-    } else {                                                  |
-        if (log2_run[run_index]) {                            |
-            run_count = get_bits(log2_run[run_index]);        |
-        } else {                                              |
-            run_count = 0;                                    |
-        }                                                     |
-        if (run_index) {                                      |
-            run_index--;                                      |
-        }                                                     |
-        run_mode = 2;                                         |
-    }                                                         |
-}                                                             |
+log2_run[41] = {
+ 0, 0, 0, 0, 1, 1, 1, 1,
+ 2, 2, 2, 2, 3, 3, 3, 3,
+ 4, 4, 5, 5, 6, 6, 7, 7,
+ 8, 9,10,11,12,13,14,15,
+16,17,18,19,20,21,22,23,
+24,
+};
+
+if (run_count == 0 && run_mode == 1) {
+    if (get_bits(1)) {
+        run_count = 1 << log2_run[run_index];
+        if (x + run_count <= w) {
+            run_index++;
+        }
+    } else {
+        if (log2_run[run_index]) {
+            run_count = get_bits(log2_run[run_index]);
+        } else {
+            run_count = 0;
+        }
+        if (run_index) {
+            run_index--;
+        }
+        run_mode = 2;
+    }
+}
 ```
 
 The `log2_run` array is also used within [@ISO.14495-1.1999].
