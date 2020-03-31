@@ -1020,14 +1020,14 @@ AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
 
 ### intra
 
-`intra` indicates the relationship between the instances of `Frame`.
+`intra` indicates the constraint on `keyframe` in each instance of `Frame`.
 
 Inferred to be 0 if not present.
 
 |value  | relationship                                                     |
 |-------|:-----------------------------------------------------------------|
-|0      | Frames are independent or dependent (keyframes and non keyframes)|
-|1      | Frames are independent (keyframes only)                          |
+|0      | `keyframe` can be 0 or 1 (non keyframes or keyframes)            |
+|1      | `keyframe` MUST be 1 (keyframes only)                            |
 |Other  | reserved for future use                                          |
 
 ## Configuration Record
