@@ -332,7 +332,7 @@ AART:g=Y-(Cb+Cr)>>2
 AART:r=Cr+g
 AART:b=Cb+g
 
-Exception for the JPEG2000-RCT conversion: if bits_per_raw_sample is between 9 and 15 inclusive and extra_plane is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+Exception for the JPEG2000-RCT conversion: if `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 SVGI:!---
 SVGI:![svg](rgb2.svg "rgb 2")
@@ -345,7 +345,7 @@ AART:b=Y-(Cb+Cr)>>2
 AART:r=Cr+b
 AART:g=Cb+b
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when bits_per_raw_sample was between 9 and 15 inclusive and extra_plane is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 Cb and Cr are positively offseted by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
@@ -369,7 +369,7 @@ Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1
 
 ## Coding of the Sample Difference
 
-Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original `Sample`. In the equation below, the term "bits" represents bits_per_raw_sample+1 for JPEG2000-RCT or bits_per_raw_sample otherwise:
+Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original `Sample`. In the equation below, the term "bits" represents `bits_per_raw_sample + 1` for JPEG2000-RCT or `bits_per_raw_sample` otherwise:
 
 SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
@@ -552,7 +552,7 @@ AART:zero_state_{i} = 256 - one_state_{256-i}
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the coder_type (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -650,7 +650,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 
 ##### Run Length Coding
 
-The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the run\_index that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
+The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
 
 ```c
 pseudo-code                                                   | type
@@ -684,7 +684,7 @@ if (run_count == 0 && run_mode == 1) {                        |
 }                                                             |
 ```
 
-The log2\_run function is also used within [@ISO.14495-1.1999].
+The `log2_run` function is also used within [@ISO.14495-1.1999].
 
 ##### Level Coding
 
@@ -857,35 +857,35 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 \* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
 
-### micro_version
+### micro\_version
 
 `micro_version` specifies the micro-version of the FFV1 bitstream.
 
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
-Meaning of micro_version for version 3:
+Meaning of `micro_version` for version 3:
 
 |value  | micro\_version          |
 |-------|:------------------------|
 |0...3  | reserved\*              |
 |4      | first stable variant    |
 |Other  | reserved for future use |
-Table: The definitions for micro_version values.
+Table: The definitions for `micro_version` values.
 
 \* development versions may be incompatible with the stable variants.
 
-Meaning of micro_version for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
+Meaning of `micro_version` for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
 
-|value   | micro_version           |{V4}
+|value   | micro\_version          |{V4}
 |--------|:------------------------|{V4}
 |0...TBA | reserved\*              |{V4}
 |TBA     | first stable variant    |{V4}
 |Other   | reserved for future use |{V4}
-Table: The definitions for micro_version values for FFV1 version 4.{V4}
+Table: The definitions for `micro_version` values for FFV1 version 4.{V4}
 
 \* development versions which may be incompatible with the stable variants.{V4}
 
-### coder_type
+### coder\_type
 
 `coder_type` specifies the coder used.
 
@@ -906,9 +906,9 @@ Background: At the time of this writing, there is no known implementations of FF
 
 `state_transition_delta` specifies the Range coder custom state transition table.
 
-If state_transition_delta is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
+If `state_transition_delta` is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
 
-### colorspace_type
+### colorspace\_type
 
 `colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, as well as interleave method.
 
@@ -922,7 +922,7 @@ Restrictions:
 
 If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
 
-### chroma_planes
+### chroma\_planes
 
 `chroma_planes` indicates if chroma (color) `Planes` are present.
 
@@ -940,8 +940,8 @@ If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsam
 | 0     | reserved\*                                      |
 | Other | the actual bits for each `Sample`               |
 
-\* Encoders MUST NOT store bits_per_raw_sample = 0
-Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
+\* Encoders MUST NOT store `bits_per_raw_sample` = 0
+Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
 
@@ -951,7 +951,7 @@ Decoders SHOULD accept and interpret bits_per_raw_sample = 0 as 8.
 
 `log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^-log2_v_chroma_subsample^ * luma_height`).
 
-### extra_plane
+### `extra\_plane`
 
 `extra_plane` indicates if an extra `Plane` is present.
 
@@ -980,7 +980,7 @@ Inferred to be 1 if not present.
 
 MUST NOT be 0.
 
-### states_coded
+### states\_coded
 
 `states_coded` indicates if the respective Quantization Table Set has the initial states coded.
 
@@ -1083,9 +1083,9 @@ The `Configuration Record` extends the sample description box ("moov", "trak", "
 
 #### NUT File Format
 
-The codec\_specific\_data element (in "stream_header" packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
+The `codec_specific_data` element (in `stream_header` packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
 
-`NumBytes` is defined as the size, in bytes, of the codec\_specific\_data element as indicated in the "length" field of codec\_specific\_data
+`NumBytes` is defined as the size, in bytes, of the `codec_specific_data` element as indicated in the "length" field of `codec_specific_data`.
 
 #### Matroska File Format
 
@@ -1097,7 +1097,7 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 
 A `Frame` is an encoded representation of a complete static image. The whole `Frame` is provided by the underlaying container.
 
-A `Frame` consists of the keyframe field, `Parameters` (if version <=1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
+A `Frame` consists of the `keyframe` field, `Parameters` (if `version` <=1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
 
 ```c
 pseudo-code                                                   | type
@@ -1170,7 +1170,7 @@ Encoders SHOULD NOT fill these bits.
 
 Decoders SHOULD ignore these bits.
 
-Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for version 0 and 1 of the bitstream. Background: Due to some non-conforming encoders, some bitstreams were found with 40 extra bits corresponding to "error_status" and "slice_crc_parity". As a result, a decoder conforming to the revised specification could not distinguish between a revised bitstream and a buggy bitstream.
+Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for `version` 0 and 1 of the bitstream. Background: Due to some non-conforming encoders, some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`. As a result, a decoder conforming to the revised specification could not distinguish between a revised bitstream and a buggy bitstream.
 
 ## Slice Header
 
@@ -1197,25 +1197,25 @@ SliceHeader( ) {                                              |
 }                                                             |
 ```
 
-### slice_x
+### slice\_x
 
 `slice_x` indicates the x position on the slice raster formed by num_h_slices.
 
 Inferred to be 0 if not present.
 
-### slice_y
+### slice\_y
 
 `slice_y` indicates the y position on the slice raster formed by num_v_slices.
 
 Inferred to be 0 if not present.
 
-### slice_width
+### slice\_width
 
 `slice_width` indicates the width on the slice raster formed by num_h_slices.
 
 Inferred to be 1 if not present.
 
-### slice_height
+### slice\_height
 
 `slice_height` indicates the height on the slice raster formed by num_v_slices.
 
@@ -1223,7 +1223,7 @@ Inferred to be 1 if not present.
 
 ### quant\_table\_set\_index\_count
 
-`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version <= 3 ) ? 1 : 0 ) + ( extra_plane ? 1 : 0 )`.
+`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version <= 3 ) ? 1 : 0 ) + ( `extra_plane` ? 1 : 0 )`.
 
 ### quant\_table\_set\_index
 
@@ -1231,7 +1231,7 @@ Inferred to be 1 if not present.
 
 Inferred to be 0 if not present.
 
-### picture_structure
+### picture\_structure
 
 `picture_structure` specifies the temporal and spatial relationship of each `Line` of the `Frame`.
 
@@ -1245,7 +1245,7 @@ Inferred to be 0 if not present.
 |3        |                 progressive |
 |Other    |     reserved for future use |
 
-### sar_num
+### sar\_num
 
 `sar_num` specifies the `Sample` aspect ratio numerator.
 
@@ -1257,7 +1257,7 @@ Encoders MUST write 0 if `Sample` aspect ratio is unknown.
 
 If `sar_den` is 0, decoders SHOULD ignore the encoded value and consider that `sar_num` is 0.
 
-### sar_den
+### sar\_den
 
 `sar_den` specifies the `Sample` aspect ratio denominator.
 
@@ -1269,7 +1269,7 @@ Encoders MUST write 0 if `Sample` aspect ratio is unknown.
 
 If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `sar_den` is 0.
 
-### reset_contexts{V4}
+### reset\_contexts{V4}
 
 `reset_contexts` indicates if slice contexts must be reset.{V4}
 {V4}
@@ -1315,7 +1315,7 @@ SliceContent( ) {                                             |
 
 ### primary\_color\_count
 
-`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )`.
+`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( `extra_plane` ? 1 : 0 )`.
 
 ### plane\_pixel\_height
 
@@ -1377,7 +1377,7 @@ Its value is `floor( ( slice_x + slice_width ) * slice_pixel_width / num_h_slice
 
 Its value is `floor( slice_x * frame_pixel_width / num_h_slices )`.
 
-### sample_difference
+### sample\_difference
 
 `sample_difference[ p ][ y ][ x ]` is the sample difference for `Sample` at `Plane` `p`, y position `y`, and x position `x`. The `Sample` value is computed based on median predictor and context described in (#samples).
 
@@ -1399,13 +1399,13 @@ SliceFooter( ) {                                              |
 }                                                             |
 ```
 
-### slice_size
+### slice\_size
 
 `slice_size` indicates the size of the slice in bytes.
 
 Note: this allows finding the start of slices before previous slices have been fully decoded, and allows parallel decoding as well as error resilience.
 
-### error_status
+### error\_status
 
 `error_status` specifies the error status.
 
@@ -1472,23 +1472,23 @@ QuantizationTable(i, j, scale) {                              |
 }                                                             |
 ```
 
-### quant_tables
+### quant\_tables
 
 `quant_tables[ i ][ j ][ k ]` indicates the quantification table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Set Quantization Table Set `i`.
 
-### context_count
+### context\_count
 
 `context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` MUST be less than or equal to 32768.
 
 # Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
+To ensure that fast multithreaded decoding is possible, starting with `version` 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
 Note: 101376 is the frame size in `Pixels` of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
 
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of `slice_x, slice_y, slice_width, slice_height` as a slice in the previous `Frame`.{V3}
-For each `Frame` with keyframe value of 0, each slice MUST have the same value of `slice_x, slice_y, slice_width, slice_height` as a slice in the previous `Frame`, except if `reset_contexts` is 1.{V4}
+For each `Frame` with `keyframe` value of 0, each slice MUST have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous `Frame`.{V3}
+For each `Frame` with `keyframe` value of 0, each slice MUST have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous `Frame`, except if `reset_contexts` is 1.{V4}
 
 # Security Considerations
 
@@ -1521,17 +1521,17 @@ Optional parameters:
 
   This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
 
-  version:  The version of the FFV1 encoding as defined by (#version).
+  `version`:  The version of the FFV1 encoding as defined by (#version).
 
-  micro\_version:  The micro\_version of the FFV1 encoding as defined by (#micro-version).
+  `micro_version`:  The `micro_version` of the FFV1 encoding as defined by (#micro-version).
 
-  coder\_type:  The coder\_type of the FFV1 encoding as defined by (#coder-type).
+  `coder_type`:  The `coder_type` of the FFV1 encoding as defined by (#coder-type).
 
-  colorspace\_type:  The colorspace\_type of the FFV1 encoding as defined by (#colorspace-type).
+  `colorspace_type`:  The `colorspace_type` of the FFV1 encoding as defined by (#colorspace-type).
 
-  bits\_per\_raw\_sample:  The bits\_per\_raw\_sample of the FFV1 encoding as defined by (#bits-per-raw-sample).
+  `bits_per_raw_sample`:  The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
 
-  max-slices: The value of max-slices is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
+  `max_slices`: The value of `max_slices` is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
 Encoding considerations:
 
@@ -1575,9 +1575,9 @@ The IANA is requested to register the following values:
 
 # Appendix A: Multi-theaded decoder implementation suggestions
 
-The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
+The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a `slice_size` field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
-After having checked keyframe field, a decoder SHOULD parse slice_size fields, from slice\_size of the last slice at the end of the `Frame` up to slice\_size of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, slice\_size of slices not coherent...) or if there is no possibility of seeking into the stream.
+After having checked `keyframe` field, a decoder SHOULD parse `slice_size` fields, from `slice_size` of the last slice at the end of the `Frame` up to `slice_size` of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of slices not coherent...) or if there is no possibility of seeking into the stream.
 
 # Changelog
 
