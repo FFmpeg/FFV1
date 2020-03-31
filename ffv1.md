@@ -1501,7 +1501,7 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 # Media Type Definition
 
-This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
+This section completes the media type registration template defined in [@!RFC6838] and following [@!RFC4855].
 
 Type name:  video
 
