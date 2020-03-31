@@ -1509,7 +1509,7 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 # Media Type Definition
 
-This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
+This section completes the media type registration template defined in [@!RFC6838] and following [@!RFC4855].
 
 Type name:  video
 
@@ -1535,7 +1535,7 @@ Optional parameters:
 
 Encoding considerations:
 
-  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data Section 4.8 of [@!RFC6838].
+  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
 
 Security considerations:
 
@@ -1545,7 +1545,7 @@ Interoperability considerations:  None.
 
 Published specification:
 
-  [@!I-D.ietf-cellar-ffv1] and RFC XXXX.
+  RFC XXXX.
 
   [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
@@ -1573,11 +1573,7 @@ The IANA is requested to register the following values:
 
    - Media type registration as described in (#media-type-definition).
 
-# Appendixes
-
-## Decoder implementation suggestions
-
-### Multi-threading Support and Independence of Slices
+# Appendix A: Multi-theaded decoder implementation suggestions
 
 The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a slice\_size field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
@@ -1586,3 +1582,5 @@ After having checked keyframe field, a decoder SHOULD parse slice_size fields, f
 # Changelog
 
 See <https://github.com/FFmpeg/FFV1/commits/master>
+
+[RFC Editor: Please remove this Changelog section prior to publication.]
