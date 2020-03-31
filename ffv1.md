@@ -1527,7 +1527,7 @@ Optional parameters:
 
 Encoding considerations:
 
-  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data Section 4.8 of [@!RFC6838].
+  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
 
 Security considerations:
 
