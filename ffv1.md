@@ -35,7 +35,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
-`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a `Pixel`.
+`RCT`:   Reversible Color Transform, a near linear, exactly reversible transform that converts between RGB and YCbCr representations of a `Pixel`.
 
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
 
@@ -910,17 +910,23 @@ If state_transition_delta is not present in the FFV1 bitstream, all Range coder 
 
 ### colorspace_type
 
-`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, as well as interleave method.
+`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, interleave method, as well as the format of each `Pixel`.
 
-|value  | color space encoded     | pixel transformation    | extra plane content     | interleave method       |
-|-------|:------------------------|:------------------------|:------------------------|:------------------------|
-| 0     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     |
-| 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
-| Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
+|value  | color space encoded     | pixel transformation    | extra plane content     | interleave method       | Format
+|-------|:------------------------|:------------------------|:------------------------|:------------------------|--------
+| 0     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     | Integer
+| 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     | Integer
+| 2     | YCbCr                   | None                    | Transparency            | `Plane` then `Line`     | IEEE 754
+| 3     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     | IEEE 754
+| Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use | reserved for future use
 
 Restrictions:
 
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
+If `colorspace_type` is 1 or 3, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
+
+If `colorspace_type` is 2 or 3, then `bits_per_raw_sample` MUST be one of the values supported by IEEE 754 (at the moment of writing: 16, 32, 64, 80, 128, 256; in practice only values 16 and 32 are usable).
+
+Note: IEEE 754 `Pixels` are handled exactly the same way as integer `Pixels` during the decoding process, except that the resulting values are flagged as floating-point numbers rather than integers.
 
 ### chroma_planes
 
