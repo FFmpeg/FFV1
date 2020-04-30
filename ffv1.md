@@ -1223,7 +1223,9 @@ Inferred to be 1 if not present.
 
 ### quant\_table\_set\_index\_count
 
-`quant_table_set_index_count` is defined as `1 + ( ( chroma_planes || version <= 3 ) ? 1 : 0 ) + ( `extra_plane` ? 1 : 0 )`.
+`quant_table_set_index_count` is defined as:
+
+1 + ( ( chroma\_planes || version <= 3 ) ? 1 : 0 ) + ( extra\_plane ? 1 : 0 )
 
 ### quant\_table\_set\_index
 
@@ -1315,27 +1317,27 @@ SliceContent( ) {                                             |
 
 ### primary\_color\_count
 
-`primary_color_count` is defined as `1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )`.
+`primary_color_count` is defined as:
+
+1 + ( chroma\_planes ? 2 : 0 ) + ( extra\_plane ? 1 : 0 )
 
 ### plane\_pixel\_height
 
-`plane_pixel_height[ p ]` is the height in pixels of plane p of the slice.
+`plane_pixel_height[ p ]` is the height in `Pixels` of `Plane` p of the `Slice`. It is defined as:
 
-`plane_pixel_height[ 0 ]` and `plane_pixel_height[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_height`.
-
-If `chroma_planes` is set to 1, `plane_pixel_height[ 1 ]` and `plane_pixel_height[ 2 ]` value is `ceil( slice_pixel_height / (1 << log2_v_chroma_subsample) )`.
+(chroma\_planes == 1 && (p == 1 || p == 2)) ? ceil(slice\_pixel\_height / (1 << log2\_v\_chroma\_subsample)) : slice\_pixel\_height
 
 ### slice\_pixel\_height
 
-`slice_pixel_height` is the height in pixels of the slice.
+`slice_pixel_height` is the height in pixels of the slice. It is defined as:
 
-Its value is `floor( ( slice_y + slice_height ) * slice_pixel_height / num_v_slices ) - slice_pixel_y`.
+floor( ( slice\_y + slice\_height ) \* slice\_pixel\_height / num\_v\_slices ) - slice\_pixel\_y.
 
 ### slice\_pixel\_y
 
-`slice_pixel_y` is the slice vertical position in pixels.
+`slice_pixel_y` is the slice vertical position in pixels. It is defined as:
 
-Its value is `floor( slice_y * frame_pixel_height / num_v_slices )`.
+floor( slice_y \* frame\_pixel\_height / num\_v\_slices )
 
 ## Line
 
@@ -1359,23 +1361,21 @@ Line( p, y ) {                                                |
 
 ### plane\_pixel\_width
 
-`plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the slice.
+`plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the `Slice`. It is defined as:
 
-`plane_pixel_width[ 0 ]` and `plane_pixel_width[ 1 + ( chroma_planes ? 2 : 0 ) ]` value is `slice_pixel_width`.
-
-If `chroma_planes` is set to 1, `plane_pixel_width[ 1 ]` and `plane_pixel_width[ 2 ]` value is `ceil( slice_pixel_width / (1 << log2_h_chroma_subsample) )`.
+(chroma\_planes == 1 && (p == 1 || p == 2)) ? ceil( slice\_pixel\_width / (1 << log2\_h\_chroma_subsample) ) : slice\_pixel\_width.
 
 ### slice\_pixel\_width
 
-`slice_pixel_width` is the width in `Pixels` of the slice.
+`slice_pixel_width` is the width in `Pixels` of the slice. It is defined as:
 
-Its value is `floor( ( slice_x + slice_width ) * slice_pixel_width / num_h_slices ) - slice_pixel_x`.
+floor( ( slice\_x + slice\_width ) \* slice\_pixel\_width / num\_h\_slices ) - slice\_pixel\_x
 
 ### slice\_pixel\_x
 
-`slice_pixel_x` is the slice horizontal position in `Pixels`.
+`slice_pixel_x` is the slice horizontal position in `Pixels`. It is defined as:
 
-Its value is `floor( slice_x * frame_pixel_width / num_h_slices )`.
+floor( slice\_x \* frame\_pixel\_width / num\_h\_slices )
 
 ### sample\_difference
 
