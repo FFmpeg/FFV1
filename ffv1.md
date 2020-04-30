@@ -920,9 +920,7 @@ If `state_transition_delta` is not present in the FFV1 bitstream, all Range code
 | 1     | RGB                     | JPEG2000-RCT            | Transparency            | `Line` then `Plane`     |
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 
-Restrictions:
-
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
+FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_chroma_subsample` != 0 || `log2_v_chroma_subsample` != 0) are not part of this specification.
 
 ### chroma\_planes
 
