@@ -842,11 +842,11 @@ CONTEXT_SIZE is 32.
 
 `version` specifies the version of the FFV1 bitstream.
 
-Each version is incompatible with other versions: decoders SHOULD reject a file due to an unknown version.
+Each version is incompatible with other versions: decoders SHOULD reject a content due to an unknown version.
 
-Decoders SHOULD reject a file with version <= 1 && ConfigurationRecordIsPresent == 1.
+Decoders SHOULD reject a content with `version` <= 1 && `ConfigurationRecordIsPresent` == 1.
 
-Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent == 0.
+Decoders SHOULD reject a content with `version` >= 3 && `ConfigurationRecordIsPresent` == 0.
 
 |value   | version                 |
 |:-------|:------------------------|
@@ -863,7 +863,7 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 `micro_version` specifies the micro-version of the FFV1 bitstream.
 
-After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
+After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a content due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of `micro_version` for `version` 3:
 
