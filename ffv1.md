@@ -35,15 +35,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
-`RCT`:   Reversible Color Transform, a near linear, exactly reversible integer transform that converts between RGB and YCbCr representations of a `Pixel`.
-
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
 
 `RGB`:   A reference to the method of storing the value of a `Pixel` by using three numeric values that represent Red, Green, and Blue.
 
 `YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples`, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
-`TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.
+`TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification. {V4}
 
 ## Conventions
 
