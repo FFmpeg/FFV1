@@ -922,7 +922,7 @@ If `state_transition_delta` is not present in the FFV1 bitstream, all Range code
 
 Restrictions:
 
-If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsample` MUST be 0, and `log2_v_chroma_subsample` MUST be 0.
+Decoders SHOULD reject FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_chroma_subsample` != 0 || `log2_v_chroma_subsample` != 0).
 
 ### chroma\_planes
 
