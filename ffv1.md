@@ -1446,7 +1446,7 @@ QuantizationTableSet( i ) {                                   |
 }                                                             |
 ```
 
-MAX\_CONTEXT\_INPUTS is 5.
+`MAX_CONTEXT_INPUTS` is 5.
 
 ```c
 pseudo-code                                                   | type
