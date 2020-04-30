@@ -1172,8 +1172,6 @@ Encoders SHOULD NOT fill these bits.
 
 Decoders SHOULD ignore these bits.
 
-Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for `version` 0 and 1 of the bitstream. Background: Due to some non-conforming encoders, some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`. As a result, a decoder conforming to the revised specification could not distinguish between a revised bitstream and a buggy bitstream.
-
 ## Slice Header
 
 A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudo-code below describes the contents of the `Slice Header`.
@@ -1580,6 +1578,10 @@ The IANA is requested to register the following values:
 The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a `slice_size` field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
 
 After having checked `keyframe` field, a decoder SHOULD parse `slice_size` fields, from `slice_size` of the last slice at the end of the `Frame` up to `slice_size` of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of slices not coherent...) or if there is no possibility of seeking into the stream.
+
+# Appendix B: Future handling of some streams created by non conforming encoders
+
+Some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity` in the `reserved` bits of `Slice()`. Any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` if `version` == 0 or `version` == 1. Else a decoder conforming to the revised specification could not distinguish between a revised bitstream and such buggy bitstream in the wild.
 
 # Changelog
 
