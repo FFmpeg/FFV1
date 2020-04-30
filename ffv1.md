@@ -321,26 +321,26 @@ JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
 SVGI:!---
-SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b-g \\\\\\ Cr & = & r-g \\\\\\ Y & = & g+(Cb+Cr)>>2 \\\\\\ g & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+g \\\\\\ b & = & Cb+g \\\\end{array}$$
-AART:Cb=b-g
-AART:Cr=r-g
-AART:Y=g+(Cb+Cr)>>2
-AART:g=Y-(Cb+Cr)>>2
-AART:r=Cr+g
-AART:b=Cb+g
+SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\\\ g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
+AART:Cb = b - g
+AART:Cr = r - g
+AART:Y = g + (Cb + Cr) >> 2
+AART:g = Y - (Cb + Cr) >> 2
+AART:r = Cr + g
+AART:b = Cb + g
 
 Exception for the JPEG2000-RCT conversion: if `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 SVGI:!---
 SVGI:![svg](rgb2.svg "rgb 2")
 SVGI:!---
-SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g-b \\\\\\ Cr & = & r-b \\\\\\ Y & = & b+(Cb+Cr)>>2 \\\\\\ b & = & Y-(Cb+Cr)>>2 \\\\\\ r & = & Cr+b \\\\\\ g & = & Cb+b \\\\end{array}$$
-AART:Cb=g-b
-AART:Cr=r-b
-AART:Y=b+(Cb+Cr)>>2
-AART:b=Y-(Cb+Cr)>>2
-AART:r=Cr+b
-AART:g=Cb+b
+SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
+AART:Cb = g - b
+AART:Cr = r - b
+AART:Y = b +(Cb + Cr) >> 2
+AART:b = Y -(Cb + Cr) >> 2
+AART:r = Cr + b
+AART:g = Cb + b
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
@@ -373,7 +373,7 @@ SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
 SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
 AART:coder_input =
-AART:    [(sample_difference + 2^(bits-1)) & (2^bits - 1)] - 2^(bits-1)
+AART:    [(sample_difference + 2 ^ (bits-1)) & (2 ^ bits - 1)] - 2 ^ (bits - 1)
 
 ### Range Coding Mode
 
@@ -387,7 +387,7 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r\_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
-AART:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2^8 )
+AART:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2 ^ 8 )
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
@@ -415,15 +415,15 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R\_{i+1}=2^{8}t\_{i} & \\\\wedge & L\_{i+1}=2^{8}l\_{i}+B\_{j\_{i}} & \\\\wedge & j\_{i+1}=j\_{i}+1 & \\\\Longleftarrow & t\_{i}<2^{8}\\\\\\ R\_{i+1}=t\_{i} & \\\\wedge & L\_{i+1}=l\_{i} & \\\\wedge & j\_{i+1}=j\_{i} & \\\\Longleftarrow & t\_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:R_{i+1} =  2^8 * t_{i}                   AND
-AART:L_{i+1} =  2^8 * l_{i} + B_{j_{i}}       AND
+AART:R_{i+1} =  2 ^ 8 * t_{i}                 AND
+AART:L_{i+1} =  2 ^ 8 * l_{i} + B_{j_{i}}     AND
 AART:j_{i+1} =  j_{i} + 1                     <==
-AART:t_{i}   <  2^8
+AART:t_{i}   <  2 ^ 8
 AART:
 AART:R_{i+1} =  t_{i}                         AND
 AART:L_{i+1} =  l_{i}                         AND
 AART:j_{i+1} =  j_{i}                         <==
-AART:t_{i}   >= 2^8
+AART:t_{i}   >= 2 ^ 8
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
@@ -435,7 +435,7 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGI:!---
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
-AART:L_{0} = 2^8 * B_{0} + B_{1}
+AART:L_{0} = 2 ^ 8 * B_{0} + B_{1}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
@@ -944,11 +944,11 @@ Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
 
-`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2^-log2_h_chroma_subsample^ * luma_width`).
+`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2 ^ -log2_h_chroma_subsample * luma_width`).
 
 ### log2\_v\_chroma\_subsample
 
-`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height=2^-log2_v_chroma_subsample^ * luma_height`).
+`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height = 2 ^ -log2_v_chroma_subsample * luma_height`).
 
 ### `extra\_plane`
 
@@ -1096,7 +1096,7 @@ FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less
 
 A `Frame` is an encoded representation of a complete static image. The whole `Frame` is provided by the underlaying container.
 
-A `Frame` consists of the `keyframe` field, `Parameters` (if `version` <=1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
+A `Frame` consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
 
 ```c
 pseudo-code                                                   | type
