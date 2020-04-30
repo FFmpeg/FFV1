@@ -769,6 +769,7 @@ Within the following sub-sections, pseudo-code is used to explain the structure 
 | br   | Range coded Boolean (1-bit) symbol with the method described in (#range-binary-values)           |
 | ur   | Range coded unsigned scalar symbol coded with the method described in (#range-non-binary-values) |
 | sr   | Range coded signed scalar symbol coded with the method described in (#range-non-binary-values)   |
+| sd   | Sample difference coded with the method described in (#coding-of-the-sample-difference)   |
 Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
 
 The same context that is initialized to 128 is used for all fields in the header.
@@ -1348,11 +1349,11 @@ pseudo-code                                                   | type
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
         for (x = 0; x < plane_pixel_width[ p ]; x++) {        |
-            sample_difference[ p ][ y ][ x ]                  |
+            sample_difference[ p ][ y ][ x ]                  | sd
         }                                                     |
     } else if (colorspace_type == 1) {                        |
         for (x = 0; x < slice_pixel_width; x++) {             |
-            sample_difference[ p ][ y ][ x ]                  |
+            sample_difference[ p ][ y ][ x ]                  | sd
         }                                                     |
     }                                                         |
 }                                                             |
