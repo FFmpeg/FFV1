@@ -630,7 +630,9 @@ int get_sr_golomb(k) {                                        |
 |              |                                                         |
 |:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
-|ESC           | the value - 11, in MSB first order, ESC may only be used if the value cannot be coded as non ESC|
+|ESC           | the value - 11, in MSB first order                      |
+
+`ESC` MUST NOT be used if the value can be coded as `non ESC`.
 
 ##### Examples
 
