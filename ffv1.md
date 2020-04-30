@@ -29,7 +29,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
 
-`Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of 1 or more `Samples`.
+`Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of one or more `Samples`.
 
 `ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
@@ -53,7 +53,7 @@ The FFV1 bitstream is described in this document using pseudo-code. Note that th
 
 ### Arithmetic Operators
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018]. With the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators which are re-defined within this section.
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators which are re-defined within this section.
 
 `a + b`       means a plus b.
 
@@ -71,7 +71,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a | b`       means bit-wise "or" of a and b.
 
-`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits. This is equivalent to, b times dividing a by 2 with rounding toward negative infinity.
+`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits. This is equivalent to dividing a by 2, b times, with rounding toward negative infinity.
 
 `a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
 
@@ -250,7 +250,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement signed 16-bit signed integer was used for storing `Sample` values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue is discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement signed 16-bit signed integer was used for storing `Sample` values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Context
 
@@ -270,7 +270,7 @@ If `context >= 0` then `context` is used and the difference between the `Sample`
 
 ## Quantization Table Sets
 
-The FFV1 bitstream contains 1 or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to 1 of the 5 Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 SVGI:!---
 SVGI:![svg](quantizationtablesets.svg "quantization table sets")
@@ -347,7 +347,7 @@ AART:g=Cb+b
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
-Cb and Cr are positively offseted by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
+Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
 When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used transparency.
 
@@ -448,17 +448,17 @@ AART:j_{0} = 2
 
 ##### Termination
 
-The range coder can be used in 3 modes.
+The range coder can be used in three modes.
 
 * In `Open mode` when decoding, every symbol the reader attempts to read is available. In this mode arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
 
-* In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally 1 byte shorter than the open mode.
+* In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
 
 * In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value SHALL be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) symbol will be read non-corrupted and be of value 0.
 
-Above describes the range decoding, encoding is defined as any process which produces a decodable bytestream.
+Above describes the range decoding. Encoding is defined as any process which produces a decodable bytestream.
 
-There are 3 places where range coder termination is needed in FFV1.
+There are three places where range coder termination is needed in FFV1.
 First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
 Second is the switch from the `Slice Header` which is range coded to Golomb coded slices as `Sentinel mode`.
 Third is the end of range coded Slices which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
@@ -595,7 +595,7 @@ The end of the bitstream of the `Frame` is filled with 0-bits until that the bit
 
 #### Signed Golomb Rice Codes
 
-This coding mode uses Golomb Rice codes. The VLC is split into 2 parts, the prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case.
+This coding mode uses Golomb Rice codes. The VLC is split into two parts. The prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
 pseudo-code                                                   | type
@@ -652,7 +652,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 
 ##### Run Length Coding
 
-The run value is encoded in 2 parts, the prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The 2nd part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
+The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
 
 ```c
 pseudo-code                                                   | type
@@ -699,7 +699,7 @@ Level coding is identical to the normal difference coding with the exception tha
     }
 ```
 
-Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference On a small set of test `Samples` the use of prediction slightly improved the compression rate.
+Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test `Samples` the use of prediction slightly improved the compression rate.
 
 #### Scalar Mode
 
@@ -759,7 +759,7 @@ At keyframes all coder state variables are set to their initial state.
 
 # Bitstream
 
-An FFV1 bitstream is composed of a series of 1 or more `Frames` and (when required) a `Configuration Record`.
+An FFV1 bitstream is composed of a series of one or more `Frames` and (when required) a `Configuration Record`.
 
 Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
@@ -902,7 +902,7 @@ Restrictions:
 
 If `coder_type` is 0, then `bits_per_raw_sample` SHOULD NOT be > 8.
 
-Background: At the time of this writing, there is no known implementations of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and Range Coder is prefered.
+Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and Range Coder is prefered.
 
 ### state\_transition\_delta
 
@@ -942,7 +942,7 @@ If `colorspace_type` is 1, then `chroma_planes` MUST be 1, `log2_h_chroma_subsam
 | 0     | reserved\*                                      |
 | Other | the actual bits for each `Sample`               |
 
-\* Encoders MUST NOT store `bits_per_raw_sample` = 0
+\* Encoders MUST NOT store `bits_per_raw_sample` = 0.
 Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
@@ -1059,9 +1059,9 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 ### configuration\_record\_crc\_parity
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a crc remainder of 0.
+`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a CRC remainder of 0.
 
-This is equivalent to storing the crc remainder in the 32-bit parity.
+This is equivalent to storing the CRC remainder in the 32-bit parity.
 
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
 
@@ -1135,7 +1135,7 @@ Architecture overview of slices in a `Frame`:
 
 ## Slice
 
-A `Slice` is an independent spatial sub-section of a `Frame` that is encoded separately from an other region of the same `Frame`. The use of more than one `Slice` per `Frame` can be useful for taking advantage of the opportunities of multithreaded encoding and decoding.
+A `Slice` is an independent spatial sub-section of a `Frame` that is encoded separately from another region of the same `Frame`. The use of more than one `Slice` per `Frame` can be useful for taking advantage of the opportunities of multithreaded encoding and decoding.
 
 A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudo-code below describes the contents of a `Slice`.
 
