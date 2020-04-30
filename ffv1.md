@@ -285,7 +285,7 @@ For each `Plane` of each slice, a Quantization Table Set is selected from an ind
 - For Cb and Cr `Planes`, `quant_table_set_index[ 1 ]` index is used
 - For extra `Plane`, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr `Planes` was stored even if it is not used (chroma_planes set to 0), this index is kept for version <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr `Planes` was stored even if it is not used (chroma_planes set to 0), this index is kept for `version` <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color spaces
 
@@ -862,18 +862,18 @@ Decoders SHOULD reject a file with version >= 3 && ConfigurationRecordIsPresent 
 
 After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject a file due to an unknown micro-version equal or above the micro-version considered as stable.
 
-Meaning of `micro_version` for version 3:
+Meaning of `micro_version` for `version` 3:
 
 |value  | micro\_version          |
 |-------|:------------------------|
 |0...3  | reserved\*              |
 |4      | first stable variant    |
 |Other  | reserved for future use |
-Table: The definitions for `micro_version` values.
+Table: The definitions for `micro_version` values for FFV1 version 3.
 
 \* development versions may be incompatible with the stable variants.
 
-Meaning of `micro_version` for version 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable version value is to be announced in the future):{V4}
+Meaning of `micro_version` for `version` 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable `micro_version` value is to be announced in the future):{V4}
 
 |value   | micro\_version          |{V4}
 |--------|:------------------------|{V4}
@@ -1481,7 +1481,7 @@ QuantizationTable(i, j, scale) {                              |
 
 # Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting with `version` 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
+To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
 Note: 101376 is the frame size in `Pixels` of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each `Frame`, each position in the slice raster MUST be filled by one and only one slice of the `Frame` (no missing slice position, no slice overlapping).
@@ -1520,7 +1520,7 @@ Optional parameters:
 
   This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
 
-  `version`:  The version of the FFV1 encoding as defined by (#version).
+  `version`:  The `version` of the FFV1 encoding as defined by (#version).
 
   `micro_version`:  The `micro_version` of the FFV1 encoding as defined by (#micro-version).
 
