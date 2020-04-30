@@ -1172,8 +1172,6 @@ Encoders SHOULD NOT fill these bits.
 
 Decoders SHOULD ignore these bits.
 
-Note in case these bits are used in a later revision of this specification: any revision of this specification SHOULD care about avoiding to add 40 bits of content after `SliceContent` for `version` 0 and 1 of the bitstream. Background: Due to some non-conforming encoders, some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity`. As a result, a decoder conforming to the revised specification could not distinguish between a revised bitstream and a buggy bitstream.
-
 ## Slice Header
 
 A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudo-code below describes the contents of the `Slice Header`.
