@@ -857,7 +857,7 @@ Decoders SHOULD reject a content with `version` >= 3 && `ConfigurationRecordIsPr
 |4       |  FFV1 version 4         |{V4}
 |Other   |  reserved for future use|
 
-\* Version 2 was never enabled in the encoder thus version 2 files SHOULD NOT exist, and this document does not describe them to keep the text simpler.
+\* Version 2 was never enabled in any known encoder. Decoders SHOULD reject a content with `version` == 2.
 
 ### micro\_version
 
