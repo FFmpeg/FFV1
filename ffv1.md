@@ -113,25 +113,25 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 
 
-floor(a)              the largest integer less than or equal to a
+`floor(a)`              means the largest integer less than or equal to a.
 
-ceil(a)               the smallest integer greater than or equal to a
+`ceil(a)`               means the smallest integer greater than or equal to a.
 
-sign(a)               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0
+`sign(a)`               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0.
 
-abs(a)                the absolute value of a, i.e. abs(a) = sign(a)*a
+`abs(a)`                means the absolute value of a, i.e. `abs(a)` = `sign(a) * a`.
 
-log2(a)               the base-two logarithm of a
+`log2(a)`               means the base-two logarithm of a.
 
-min(a,b)              the smallest of two values a and b
+`min(a,b)`              means the smallest of two values a and b.
 
-max(a,b)              the largest of two values a and b
+`max(a,b)`              means the largest of two values a and b.
 
-median(a,b,c)         the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c)
+`median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c).
 
-A <== B               B implies A
+`A <== B`               means B implies A.
 
-A <==> B              A <== B , B <== A
+`A <==> B`              means A <== B , B <== A.
 
 ### Order of Operation Precedence
 
