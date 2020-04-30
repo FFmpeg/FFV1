@@ -950,7 +950,7 @@ Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 `log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height = 2 ^ -log2_v_chroma_subsample * luma_height`).
 
-### `extra\_plane`
+### extra\_plane
 
 `extra_plane` indicates if an extra `Plane` is present.
 
