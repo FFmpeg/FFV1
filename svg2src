@@ -3,7 +3,7 @@
 RFC_XML="${1}"
 xmlstarlet select --template --match "//artwork[@type='svg'][substring(@src,string-length(@src)-3)='.svg']" --value-of @src --nl "${RFC_XML}" | while read ARTWORK_SVG ; do
   ENCODED_SVG="$(echo $(cat "$ARTWORK_SVG") | sed 's/ /%20/g;s/"/%22/g;s/#/%23/g;s/(/%28/g;s/)/%29/g;s/,/%2C/g;s/:/%3A/g;s/</%3C/g;s/=/%3D/g;s/>/%3E/g;s/?/%3F/g')"
-  ASCII_ART_FALLBACK="$(sed -n "/^SVGC:${ARTWORK_SVG}/,/^$/p" "$(dirname "${0}")/ffv1.md" | grep "^AART:" | cut -d ":" -f2)"
+  ASCII_ART_FALLBACK="$(sed -n "/^SVGC:${ARTWORK_SVG}/,/^$/p" "$(dirname "${0}")/ffv1.md" | grep "^AART:" | cut -d ":" -f2-)"
   if [[ -n "${ASCII_ART_FALLBACK}" ]] ; then
     # find an <artwork> node for the SVG data and insert an <artset> node after it
     xmlstarlet edit --inplace --append "//artwork[@src='${ARTWORK_SVG}']" --type elem -n artset "${RFC_XML}"
