@@ -1063,7 +1063,7 @@ Decoders conforming to this version of this specification SHALL ignore its value
 
 This is equivalent to storing the CRC remainder in the 32-bit parity.
 
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0.
+The CRC generator polynomial used is described in (#slice-crc-parity).
 
 ### Mapping FFV1 into Containers
 
