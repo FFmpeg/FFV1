@@ -687,7 +687,7 @@ if (run_count == 0 && run_mode == 1) {                        |
 }                                                             |
 ```
 
-The `log2_run` function is also used within [@ISO.14495-1.1999].
+The `log2_run` array is also used within [@ISO.14495-1.1999].
 
 ##### Level Coding
 
