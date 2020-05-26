@@ -693,6 +693,22 @@ if (run_count == 0 && run_mode == 1) {                        |
 
 The `log2_run` array is also used within [@ISO.14495-1.1999].
 
+#### Sign extension
+
+`sign_extend` is the function of increasing the number of bits of an input binary number in twos complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It MAY be computed with:
+
+```c
+sign_extend(input_number, input_bits) {
+    negative_bias = 1 << (input_bits - 1);
+    bits_mask = negative_bias - 1;
+    output_number = input_number & bits_mask; // Remove negative bit
+    is_negative = input_number & negative_bias; // Test negative bit
+    if (is_negative)
+        output_number -= negative_bias;
+    return output_number
+}
+```
+
 #### Scalar Mode
 
 Each difference is coded with the per context mean prediction removed and a per context value for k.
