@@ -1511,47 +1511,37 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
 
-Type name:  video
+Type name: video
 
-Subtype name:  FFV1
+Subtype name: FFV1
 
-Required parameters:  None.
+Required parameters: None.
 
-Optional parameters:
+Optional parameters: These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
 
-  These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
+* `version`:  The `version` of the FFV1 encoding as defined by (#version).
 
-  `version`:  The `version` of the FFV1 encoding as defined by (#version).
+* `micro_version`:  The `micro_version` of the FFV1 encoding as defined by (#micro-version).
 
-  `micro_version`:  The `micro_version` of the FFV1 encoding as defined by (#micro-version).
+* `coder_type`:  The `coder_type` of the FFV1 encoding as defined by (#coder-type).
 
-  `coder_type`:  The `coder_type` of the FFV1 encoding as defined by (#coder-type).
+* `colorspace_type`:  The `colorspace_type` of the FFV1 encoding as defined by (#colorspace-type).
 
-  `colorspace_type`:  The `colorspace_type` of the FFV1 encoding as defined by (#colorspace-type).
+* `bits_per_raw_sample`:  The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
 
-  `bits_per_raw_sample`:  The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
+* `max_slices`: The value of `max_slices` is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
-  `max_slices`: The value of `max_slices` is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
+Encoding considerations: This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
 
-Encoding considerations:
+Security considerations: See (#security-considerations) of this document.
 
-  This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
+Interoperability considerations: None.
 
-Security considerations:
-
-  See (#security-considerations) of this document.
-
-Interoperability considerations:  None.
-
-Published specification:
-
-  RFC XXXX.
+Published specification: RFC XXXX.
 
   [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
-Applications which use this media type:
-
-  Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
+Applications which use this media type: Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
 
 Fragment identifier considerations:  N/A.
 
