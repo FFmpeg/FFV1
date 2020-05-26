@@ -1509,7 +1509,7 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 # Media Type Definition
 
-This section completes the media type registration template defined in [@!RFC6838] and following [@!RFC4855].
+This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
 
 Type name:  video
 
@@ -1519,7 +1519,7 @@ Required parameters:  None.
 
 Optional parameters:
 
-  This parameter is used to signal the capabilities of a receiver implementation. This parameter MUST NOT be used for any other purpose.
+  These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
 
   `version`:  The `version` of the FFV1 encoding as defined by (#version).
 
