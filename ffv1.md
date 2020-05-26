@@ -374,8 +374,8 @@ SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
 SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
-AART:coder_input =
-AART:    [(sample_difference + 2 ^ (bits-1)) & (2 ^ bits - 1)] - 2 ^ (bits - 1)
+AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
+AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
 
 ### Range Coding Mode
 
