@@ -689,19 +689,6 @@ if (run_count == 0 && run_mode == 1) {                        |
 
 The `log2_run` array is also used within [@ISO.14495-1.1999].
 
-##### Level Coding
-
-Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
-
-```c
-    diff = get_vlc_symbol(context_state);
-    if (diff >= 0) {
-        diff++;
-    }
-```
-
-Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test `Samples` the use of prediction slightly improved the compression rate.
-
 #### Scalar Mode
 
 Each difference is coded with the per context mean prediction removed and a per context value for k.
@@ -746,6 +733,19 @@ get_vlc_symbol(state) {
     return ret;
 }
 ```
+
+##### Level Coding
+
+Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
+
+```c
+    diff = get_vlc_symbol(context_state);
+    if (diff >= 0) {
+        diff++;
+    }
+```
+
+Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test `Samples` the use of prediction slightly improved the compression rate.
 
 #### Initial Values for the VLC context state
 
