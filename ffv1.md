@@ -774,8 +774,6 @@ Within the following sub-sections, pseudo-code is used to explain the structure 
 | sd   | Sample difference coded with the method described in (#coding-of-the-sample-difference)   |
 Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
 
-The same context that is initialized to 128 is used for all fields in the header.
-
 The following MUST be provided by external means during initialization of the decoder:
 
 `frame_pixel_width` is defined as `Frame` width in `Pixels`.
@@ -789,6 +787,8 @@ Default values at the decoder initialization phase:
 ## Parameters
 
 The `Parameters` section contains significant characteristics about the decoding configuration used for all instances of `Frame` (in FFV1 version 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and quantization tables. [@figureBitstream] describes the contents of the bitstream.
+
+`Parameters` has its own initial states, all set to 128.
 
 ```c
 pseudo-code                                                   | type
@@ -1101,6 +1101,8 @@ A `Frame` is an encoded representation of a complete static image. The whole `Fr
 
 A `Frame` consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent slices. The pseudo-code below describes the contents of a `Frame`.
 
+`keyframe` field has its own initial state, set to 128.
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
@@ -1176,6 +1178,8 @@ Decoders SHOULD ignore these bits.
 
 A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudo-code below describes the contents of the `Slice Header`.
 
+`Slice Header` has its own initial states, all set to 128.
+
 ```c
 pseudo-code                                                   | type
 --------------------------------------------------------------|-----
@@ -1229,7 +1233,7 @@ Inferred to be 1 if not present.
 
 ### quant\_table\_set\_index
 
-`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the slice.
+`quant_table_set_index` indicates the Quantization Table Set index to select the Quantization Table Set and the initial states for the `Slice Content`.
 
 Inferred to be 0 if not present.
 
@@ -1433,6 +1437,8 @@ Example:
 Table: 0 0 1 1 1 1 2 2 -2 -2 -2 -1 -1 -1 -1 0
 
 Stored values: 1, 3, 1
+
+`QuantizationTableSet` has its own initial states, all set to 128.
 
 ```c
 pseudo-code                                                   | type
