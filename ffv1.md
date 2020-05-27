@@ -1016,8 +1016,8 @@ AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
 
 |value | error detection/correction type           |
 |------|:------------------------------------------|
-|0     | 32-bit CRC on the global header           |
-|1     | 32-bit CRC per slice and the global header|
+|0     | 32-bit CRC in `ConfigurationRecord`       |
+|1     | 32-bit CRC in `Slice` and `ConfigurationRecord`|
 |Other | reserved for future use                   |
 
 ### intra
