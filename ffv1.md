@@ -784,6 +784,64 @@ Default values at the decoder initialization phase:
 
 `ConfigurationRecordIsPresent` is set to 0.
 
+## Quantization Table Set
+
+The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
+
+Example:
+
+Table: 0 0 1 1 1 1 2 2 -2 -2 -2 -1 -1 -1 -1 0
+
+Stored values: 1, 3, 1
+
+`QuantizationTableSet` has its own initial states, all set to 128.
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+QuantizationTableSet( i ) {                                   |
+    scale = 1                                                 |
+    for (j = 0; j < MAX_CONTEXT_INPUTS; j++) {                |
+        QuantizationTable( i, j, scale )                      |
+        scale *= 2 * len_count[ i ][ j ] - 1                  |
+    }                                                         |
+    context_count[ i ] = ceil( scale / 2 )                    |
+}                                                             |
+```
+
+`MAX_CONTEXT_INPUTS` is 5.
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+QuantizationTable(i, j, scale) {                              |
+    v = 0                                                     |
+    for (k = 0; k < 128;) {                                   |
+        len - 1                                               | ur
+        for (a = 0; a < len; a++) {                           |
+            quant_tables[ i ][ j ][ k ] = scale * v           |
+            k++                                               |
+        }                                                     |
+        v++                                                   |
+    }                                                         |
+    for (k = 1; k < 128; k++) {                               |
+        quant_tables[ i ][ j ][ 256 - k ] = \                 |
+        -quant_tables[ i ][ j ][ k ]                          |
+    }                                                         |
+    quant_tables[ i ][ j ][ 128 ] = \                         |
+    -quant_tables[ i ][ j ][ 127 ]                            |
+    len_count[ i ][ j ] = v                                   |
+}                                                             |
+```
+
+### quant\_tables
+
+`quant_tables[ i ][ j ][ k ]` indicates the quantification table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Set Quantization Table Set `i`.
+
+### context\_count
+
+`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` MUST be less than or equal to 32768.
+
 ## Parameters
 
 The `Parameters` section contains significant characteristics about the decoding configuration used for all instances of `Frame` (in FFV1 version 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and quantization tables. [@figureBitstream] describes the contents of the bitstream.
@@ -1427,64 +1485,6 @@ Note: this allows finding the start of slices before previous slices have been f
 This is equivalent to storing the crc remainder in the 32-bit parity.
 
 The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7), with initial value 0, without pre-inversion and without post-inversion.
-
-## Quantization Table Set
-
-The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
-
-Example:
-
-Table: 0 0 1 1 1 1 2 2 -2 -2 -2 -1 -1 -1 -1 0
-
-Stored values: 1, 3, 1
-
-`QuantizationTableSet` has its own initial states, all set to 128.
-
-```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-QuantizationTableSet( i ) {                                   |
-    scale = 1                                                 |
-    for (j = 0; j < MAX_CONTEXT_INPUTS; j++) {                |
-        QuantizationTable( i, j, scale )                      |
-        scale *= 2 * len_count[ i ][ j ] - 1                  |
-    }                                                         |
-    context_count[ i ] = ceil( scale / 2 )                    |
-}                                                             |
-```
-
-`MAX_CONTEXT_INPUTS` is 5.
-
-```c
-pseudo-code                                                   | type
---------------------------------------------------------------|-----
-QuantizationTable(i, j, scale) {                              |
-    v = 0                                                     |
-    for (k = 0; k < 128;) {                                   |
-        len - 1                                               | ur
-        for (a = 0; a < len; a++) {                           |
-            quant_tables[ i ][ j ][ k ] = scale * v           |
-            k++                                               |
-        }                                                     |
-        v++                                                   |
-    }                                                         |
-    for (k = 1; k < 128; k++) {                               |
-        quant_tables[ i ][ j ][ 256 - k ] = \                 |
-        -quant_tables[ i ][ j ][ k ]                          |
-    }                                                         |
-    quant_tables[ i ][ j ][ 128 ] = \                         |
-    -quant_tables[ i ][ j ][ 127 ]                            |
-    len_count[ i ][ j ] = v                                   |
-}                                                             |
-```
-
-### quant\_tables
-
-`quant_tables[ i ][ j ][ k ]` indicates the quantification table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Set Quantization Table Set `i`.
-
-### context\_count
-
-`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` MUST be less than or equal to 32768.
 
 # Restrictions
 
