@@ -818,7 +818,7 @@ QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
     for (k = 0; k < 128;) {                                   |
         len - 1                                               | ur
-        for (a = 0; a < len; a++) {                           |
+        for (n = 0; n < len; n++) {                           |
             quant_tables[ i ][ j ][ k ] = scale * v           |
             k++                                               |
         }                                                     |
