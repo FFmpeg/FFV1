@@ -653,7 +653,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 
 ##### Run Length Coding
 
-The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The run_index is reset for each `Plane` and slice to 0.
+The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset for each `Plane` and slice to 0.
 
 ```c
 pseudo-code                                                   | type
