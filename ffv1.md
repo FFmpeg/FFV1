@@ -467,33 +467,37 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
 
 ```c
-void put_symbol(RangeCoder *c, uint8_t *state, int v, int is_signed) {
-    int i;
-    put_rac(c, state+0, !v);
-    if (v) {
-        int a= abs(v);
-        int e= log2(a);
+int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
+    if (get_rac(c, state + 0) {
+        return 0;
+    }
 
-        for (i = 0; i < e; i++) {
-            put_rac(c, state+1+min(i,9), 1);  //1..10
-        }
+    int e = 0;
+    while (get_rac(c, state + 1 + min(e, 9)) { //1..10
+        e++;
+    }
 
-        put_rac(c, state+1+min(i,9), 0);
-        for (i = e-1; i >= 0; i--) {
-            put_rac(c, state+22+min(i,9), (a>>i)&1); //22..31
-        }
+    int a = 1;
+    for (int i = e - 1; i >= 0; i--) {
+        a = a * 2 + get_rac(c, state + 22 + min(i, 9));  // 22..31
+    }
 
-        if (is_signed) {
-            put_rac(c, state+11 + min(e, 10), v < 0); //11..21
-        }
+    if (!is_signed) {
+        return a;
+    }
+
+    if (get_rac(c, state + 11 + min(e, 10))) { //11..21
+        return -a;
+    } else {
+        return a;
     }
 }
 ```
 Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
 
-`put_symbol` is used during the process of (#coding-of-the-sample-difference).
+`get_symbol` is used during the process of (#coding-of-the-sample-difference).
 
-`put_rac` is the process described in (#range-binary-values).
+`get_rac` is the process described in (#range-binary-values).
 
 #### Initial Values for the Context Model
 
