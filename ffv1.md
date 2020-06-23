@@ -274,7 +274,7 @@ The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantizati
 SVGI:!---
 SVGI:![svg](quantizationtablesets.svg "quantization table sets")
 SVGI:!---
-SVGC:quantizationtablesets.svg=Q_{j}[k]=quant\\\_tables[i][j][k\\&255]
+SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
 AART:Q_{j}[k] = quant_tables[i][j][k&255]
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
@@ -373,7 +373,7 @@ Instead of coding the n+1 bits of the Sample Difference with Huffman or Range co
 SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
-SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
+SVGC:samplediff.svg=$$coder\\_input=[(sample\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
 AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
 AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
 
@@ -390,13 +390,13 @@ To encode binary digits efficiently a Range coder is used. `C(i)` is the i-th Co
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
-SVGC:rangebinaryvalues1.svg=$$r\_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
+SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 AART:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2 ^ 8 )
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
-SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S\_{i+1,C\_{i}}=zero\\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l{}\_{i}=L\_{i} & \\\\wedge & t\_{i}=R\_{i}-r\_{i} & \\\\Longleftarrow & b\_{i}=0 & \\\\Longleftrightarrow & L\_{i}<R\_{i}-r\_{i} \\\\\\ S\_{i+1,C\_{i}}=one\_state\_{S\_{i,C\_{i}}} & \\\\wedge & l\_{i}=L\_{i}-R\_{i}+r\_{i} & \\\\wedge & t\_{i}=r\_{i} & \\\\Longleftarrow & b\_{i}=1 & \\\\Longleftrightarrow & L\_{i}\\\\geq R\_{i}-r\_{i} \\\\end{array}$$
+SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} & \\\\Longleftarrow & b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} \\\\\\ S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} & \\\\Longleftarrow & b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} \\\\end{array}$$
 AART:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} AND
 AART:          l_i =  L_i                      AND
 AART:          t_i =  R_i - r_i                <==
@@ -412,13 +412,13 @@ AART:          L_i >= R_i - r_i
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
-SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S\_{i+1,k}=S\_{i,k} & \\\\Longleftarrow & C\_{i} \\\\neq k\\\\end{array}$$
+SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S_{i+1,k}=S_{i,k} & \\\\Longleftarrow & C_{i} \\\\neq k\\\\end{array}$$
 AART:S_{i+1,k} = S_{i,k} <== C_i != k
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
-SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R\_{i+1}=2^{8}t\_{i} & \\\\wedge & L\_{i+1}=2^{8}l\_{i}+B\_{j\_{i}} & \\\\wedge & j\_{i+1}=j\_{i}+1 & \\\\Longleftarrow & t\_{i}<2^{8}\\\\\\ R\_{i+1}=t\_{i} & \\\\wedge & L\_{i+1}=l\_{i} & \\\\wedge & j\_{i+1}=j\_{i} & \\\\Longleftarrow & t\_{i}\\\\geq2^{8}\\\\end{array}$$
+SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1 & \\\\Longleftarrow & t_{i}<2^{8}\\\\\\ R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i} & \\\\Longleftarrow & t_{i}\\\\geq2^{8}\\\\end{array}$$
 AART:R_{i+1} =  2 ^ 8 * t_{i}                 AND
 AART:L_{i+1} =  2 ^ 8 * l_{i} + B_{j_{i}}     AND
 AART:j_{i+1} =  j_{i} + 1                     <==
@@ -510,14 +510,14 @@ At keyframes all Range coder state variables are set to their initial state.
 SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
 SVGI:!---
-SVGC:statetransitiontable1.svg=$$one\\\_state\_{i}=default\\\_state\\\_transition\_{i}+state\\\_transition\\\_delta\_{i}$$
+SVGC:statetransitiontable1.svg=$$one\\_state_{i}=default\\_state\\_transition_{i}+state\\_transition\\_delta_{i}$$
 AART:one_state_{i} =
 AART:       default_state_transition_{i} + state_transition_delta_{i}
 
 SVGI:!---
 SVGI:![svg](statetransitiontable2.svg "state transition table 2")
 SVGI:!---
-SVGC:statetransitiontable2.svg=$$zero\\\_state\_{i}=256-one\\\_state\_{256-i}$$
+SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
 AART:zero_state_{i} = 256 - one_state_{256-i}
 
 #### default\_state\_transition
@@ -1081,7 +1081,7 @@ Inferred to be 0 if not present.
 SVGI:!---
 SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
 SVGI:!---
-SVGC:initialstatedelta1.svg=$$pred = j ? initial\\_states[ i ][j - 1][ k ] : 128$$
+SVGC:initialstatedelta1.svg=pred = j ? initial\_states[ i ][j - 1][ k ] : 128
 AART:pred = j ? initial_states[ i ][j - 1][ k ] : 128
 
 SVGI:!---
