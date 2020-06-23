@@ -377,6 +377,8 @@ SVGC:samplediff.svg=$$coder\\\_input=[(sample\\\_difference+2^{bits-1})\\&(2^{bi
 AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
 AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
 
+Figure: Description of the coding of the Sample Difference in the bitstream. {#figureSampleDifference}
+
 ### Range Coding Mode
 
 Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2014] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel and N. Martin in 1979 [@?range-coding].
@@ -495,7 +497,7 @@ int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
 ```
 Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
 
-`get_symbol` is used during the process of (#coding-of-the-sample-difference).
+`get_symbol` is used for the read out of `sample_difference` indicated in [@figureSampleDifference].
 
 `get_rac` is the process described in (#range-binary-values).
 
