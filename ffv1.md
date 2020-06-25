@@ -27,7 +27,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Container`: Format that encapsulates `Frames` (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
-`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma, Blue Chrominance, Red Chrominance, Transparency, Red, Green, and Blue.
+`Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
 
 `Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
 
@@ -41,7 +41,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `RGB`:   A reference to the method of storing the value of a `Pixel` by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chrominance of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chrominance `Samples`, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
+`YCbCr`: A reference to the method of storing the value of a `Pixel` by using three numeric values that represent the luma of the `Pixel` (Y) and the chroma of the `Pixel` (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma `Sample` and 2 chroma `Samples`, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
 `TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification. {V4}
 
