@@ -1409,7 +1409,11 @@ SliceContent( ) {                                             |
 
 `plane_pixel_height[ p ]` is the height in `Pixels` of `Plane` p of the `Slice`. It is defined as:
 
-(chroma\_planes == 1 && (p == 1 || p == 2)) ? ceil(slice\_pixel\_height / (1 << log2\_v\_chroma\_subsample)) : slice\_pixel\_height
+```
+chroma_planes == 1 && (p == 1 || p == 2)
+    ? ceil(slice_pixel_height / (1 << log2_v_chroma_subsample))
+    : slice_pixel_height
+```
 
 ### slice\_pixel\_height
 
@@ -1447,7 +1451,11 @@ Line( p, y ) {                                                |
 
 `plane_pixel_width[ p ]` is the width in `Pixels` of `Plane` p of the `Slice`. It is defined as:
 
-(chroma\_planes == 1 && (p == 1 || p == 2)) ? ceil( slice\_pixel\_width / (1 << log2\_h\_chroma_subsample) ) : slice\_pixel\_width.
+```
+chroma\_planes == 1 && (p == 1 || p == 2)
+    ? ceil( slice_pixel_width / (1 << log2_h_chroma_subsample) )
+    : slice_pixel_width.
+```
 
 ### slice\_pixel\_width
 
