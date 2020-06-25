@@ -234,20 +234,26 @@ The labels for these relative `Samples` are made of the first letters of the wor
 
 The prediction for any `Sample` value at position `X` may be computed based upon the relative neighboring values of `l`, `t`, and `tl` via this equation:
 
+```
 median(l, t, l + t - tl)
+```
 
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 Exception for the median predictor:
 if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following median predictor MUST be used:
 
+```
 median(left16s, top16s, left16s + top16s - diag16s)
+```
 
 where:
 
+```
 left16s = l  >= 32768 ? ( l  - 65536 ) : l
 top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
+```
 
 Background: a two's complement signed 16-bit signed integer was used for storing `Sample` values in all known implementations of FFV1 bitstream. So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
