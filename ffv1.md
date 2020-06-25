@@ -1425,13 +1425,21 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 `slice_pixel_height` is the height in pixels of the slice. It is defined as:
 
-floor( ( slice\_y + slice\_height ) \* slice\_pixel\_height / num\_v\_slices ) - slice\_pixel\_y.
+```
+floor(
+        ( slice_y + slice_height )
+        * slice_pixel_height
+        / num_v_slices
+    ) - slice_pixel_y.
+```
 
 ### slice\_pixel\_y
 
 `slice_pixel_y` is the slice vertical position in pixels. It is defined as:
 
-floor( slice_y \* frame\_pixel\_height / num\_v\_slices )
+```
+floor( slice_y * frame_pixel_height / num_v_slices )
+```
 
 ## Line
 
@@ -1467,13 +1475,21 @@ chroma\_planes == 1 && (p == 1 || p == 2)
 
 `slice_pixel_width` is the width in `Pixels` of the slice. It is defined as:
 
-floor( ( slice\_x + slice\_width ) \* slice\_pixel\_width / num\_h\_slices ) - slice\_pixel\_x
+```
+floor(
+        ( slice_x + slice_width )
+        * slice_pixel_width
+        / num_h_slices
+    ) - slice_pixel_x
+```
 
 ### slice\_pixel\_x
 
 `slice_pixel_x` is the slice horizontal position in `Pixels`. It is defined as:
 
-floor( slice\_x \* frame\_pixel\_width / num\_h\_slices )
+```
+floor( slice_x * frame_pixel_width / num_h_slices )
+```
 
 ### sample\_difference
 
