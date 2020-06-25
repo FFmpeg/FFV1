@@ -1409,7 +1409,9 @@ SliceContent( ) {                                             |
 
 `primary_color_count` is defined as:
 
-1 + ( chroma\_planes ? 2 : 0 ) + ( extra\_plane ? 1 : 0 )
+```
+1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )
+```
 
 ### plane\_pixel\_height
 
