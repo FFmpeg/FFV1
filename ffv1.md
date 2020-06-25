@@ -51,6 +51,17 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The FFV1 bitstream is described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.1990] and uses its `if/else`, `while` and `for` keywords as well as functions defined within this document.
 
+In some instances, pseudo-code is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudo-code.
+
+```c
+pseudo-code                                                   | type
+--------------------------------------------------------------|-----
+ExamplePseudoCode( ) {                                        |
+    value                                                     | ur
+}                                                             |
+```
+Figure: A depiction of type-labelled pseudo-code used within this document. {#figurePseudoCode}
+
 ### Arithmetic Operators
 
 Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators which are re-defined within this section.
