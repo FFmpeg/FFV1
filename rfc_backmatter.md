@@ -54,9 +54,8 @@
 
 <reference anchor="range-coding">
   <front>
-    <title>Range encoding: an algorithm for removing redundancy from a digitised message.</title>
-    <author initials="G." surname="Nigel" fullname=""/>
-    <author initials="N." surname="Martin" fullname=""/>
+    <title>Range encoding: an algorithm for removing redundancy from a digitised message</title>
+    <author initials="G. N. N." surname="Martin" fullname="G. N. N. Martin"/>
     <date month="July" year="1979" />
   </front>
   <seriesInfo name="Proceedings of the Conference on Video and Data Recording." value="Institution of Electronic and Radio Engineers, Hampshire, England"/>
