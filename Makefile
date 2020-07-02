@@ -1,8 +1,8 @@
 SRC=ffv1.md
 PDF=$(SRC:.md=.pdf)
 HTML=$(SRC:.md=.html)
-VERSION=15
-VERSION-v4=12
+VERSION=16
+VERSION-v4=13
 
 $(info RFC rendering has been tested with mmark version 2.0.48, xml2rfc 2.32.0, xmlstarlet 1.6.1, pdfcrop v1.38, and pdf2svg 0.2.3, please ensure these are installed and recent enough.)
 
