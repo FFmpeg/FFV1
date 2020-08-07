@@ -402,49 +402,49 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-To encode binary digits efficiently a Range coder is used. `C(i)` is the i-th Context. `B(i)` is the i-th byte of the bytestream. `b(i)` is the i-th Range coded binary value, `S(0,i)` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j(n)` bytes.
+To encode binary digits efficiently a Range coder is used. `C_{i}` is the i-th Context. `B_{i}` is the i-th byte of the bytestream. `b_{i}` is the i-th Range coded binary value, `S_{0, i}` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j_{n}` bytes.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
-AART:r_{i} = floor( ( R_{i} * S_{i,C_{i}} ) / 2 ^ 8 )
+AART:r_{i} = floor( ( R_{i} * S_{i, C_{i}} ) / 2 ^ 8 )
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
 SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} & \\\\Longleftarrow & b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} \\\\\\ S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} & \\\\Longleftarrow & b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} \\\\end{array}$$
-AART:S_{i+1,C_{i}} =  zero_state_{S_{i,C_{i}}} AND
-AART:          l_i =  L_i                      AND
-AART:          t_i =  R_i - r_i                <==
-AART:          b_i =  0                        <==>
-AART:          L_i <  R_i - r_i
+AART:S_{i + 1, C_{i}} =  zero_state_{S_{i, C_{i}}}  AND
+AART:           l_{i} =  L_{i}                      AND
+AART:           t_{i} =  R_{i} - r_{i}              <==
+AART:           b_{i} =  0                          <==>
+AART:           L_{i} <  R_{i} - r_{i}
 AART:
-AART:S_{i+1,C_{i}} =  one_state_{S_{i,C_{i}}}  AND
-AART:          l_i =  L_i - R_i + r_i          AND
-AART:          t_i =  r_i                      <==
-AART:          b_i =  1                        <==>
-AART:          L_i >= R_i - r_i
+AART:S_{i + 1, C_{i}} =  one_state_{S_{i, C_{i}}}   AND
+AART:           l_{i} =  L_{i} - R_{i} + r_{i}      AND
+AART:           t_{i} =  r_{i}                      <==
+AART:           b_{i} =  1                          <==>
+AART:           L_{i} >= R_{i} - r_{i}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S_{i+1,k}=S_{i,k} & \\\\Longleftarrow & C_{i} \\\\neq k\\\\end{array}$$
-AART:S_{i+1,k} = S_{i,k} <== C_i != k
+AART:S_{i + 1, k} = S_{i, k} <== C_{i} != k
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1 & \\\\Longleftarrow & t_{i}<2^{8}\\\\\\ R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i} & \\\\Longleftarrow & t_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:R_{i+1} =  2 ^ 8 * t_{i}                 AND
-AART:L_{i+1} =  2 ^ 8 * l_{i} + B_{j_{i}}     AND
-AART:j_{i+1} =  j_{i} + 1                     <==
-AART:t_{i}   <  2 ^ 8
+AART:R_{i + 1} =  2 ^ 8 * t_{i}                     AND
+AART:L_{i + 1} =  2 ^ 8 * l_{i} + B_{j_{i}}         AND
+AART:j_{i + 1} =  j_{i} + 1                         <==
+AART:t_{i}     <  2 ^ 8
 AART:
-AART:R_{i+1} =  t_{i}                         AND
-AART:L_{i+1} =  l_{i}                         AND
-AART:j_{i+1} =  j_{i}                         <==
-AART:t_{i}   >= 2 ^ 8
+AART:R_{i + 1} =  t_{i}                             AND
+AART:L_{i + 1} =  l_{i}                             AND
+AART:j_{i + 1} =  j_{i}                             <==
+AART:t_{i}     >= 2 ^ 8
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
