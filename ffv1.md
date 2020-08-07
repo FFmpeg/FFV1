@@ -1571,6 +1571,8 @@ Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecu
 Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is also to not check for integer overflows in `Pixel` count computations, that is to allocate width * height without considering that the multiplication result may have overflowed the arithmetic types range.
 The range coder could, if implemented naively, read one byte over the end. The implementation must ensure that no read outside allocated and initialized memory occurs.
 
+None of the content carried in FFV1 is intended to be executable.
+
 The reference implementation [@REFIMPL] contains no known buffer overflow or cases where a specially crafted packet or video segment could cause a significant increase in CPU load.
 
 The reference implementation [@REFIMPL] was validated in the following conditions:
