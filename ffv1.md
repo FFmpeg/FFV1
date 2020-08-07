@@ -516,7 +516,7 @@ Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#
 
 `get_symbol` is used for the read out of `sample_difference` indicated in [@figureSampleDifference].
 
-`get_rac` is the process described in (#range-binary-values).
+`get_rac` returns a boolean, computed from the bytestream as described in (#range-binary-values).
 
 #### Initial Values for the Context Model
 
