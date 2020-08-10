@@ -146,6 +146,10 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `A <==> B`              means A <== B , B <== A.
 
+a~b~                    means the b-th value of a sequence of a
+
+a~b,c~                  means the 'b,c'-th value of a sequence of a
+
 ### Order of Operation Precedence
 
 When order of precedence is not indicated explicitly by use of parentheses, operations are evaluated in the following order (from top to bottom, operations of same precedence being evaluated from left to right). This order of operations is based on the order of operations used in Standard C.
