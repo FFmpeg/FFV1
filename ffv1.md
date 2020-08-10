@@ -276,7 +276,7 @@ SVGI:!---
 SVGI:![svg](quantizationtablesets.svg "quantization table sets")
 SVGI:!---
 SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
-AART:Q_{j}[k] = quant_tables[i][j][k&255]
+AART:Q_(j)[k] = quant_tables[i][j][k&255]
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
 
@@ -288,11 +288,11 @@ SVGI:!---
 SVGI:![svg](context.svg "context")
 SVGI:!---
 SVGC:context.svg=$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
-AART:context = Q_{0}[l - tl] +
-AART:          Q_{1}[tl - t] +
-AART:          Q_{2}[t - tr] +
-AART:          Q_{3}[L - l]  +
-AART:          Q_{4}[T - t]
+AART:context = Q_(0)[l - tl] +
+AART:          Q_(1)[tl - t] +
+AART:          Q_(2)[t - tr] +
+AART:          Q_(3)[L - l]  +
+AART:          Q_(4)[T - t]
 
 If `context >= 0` then `context` is used and the difference between the `Sample` and its predicted value is encoded as is, else `-context` is used and the difference between the `Sample` and its predicted value is encoded with a flipped sign.
 
@@ -408,61 +408,61 @@ SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
-AART:r_{i} = floor( ( R_{i} * S_{i, C_{i}} ) / 2 ^ 8 )
+AART:r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
 SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} & \\\\Longleftarrow & b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} \\\\\\ S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} & \\\\Longleftarrow & b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} \\\\end{array}$$
-AART:S_{i + 1, C_{i}} =  zero_state_{S_{i, C_{i}}}  AND
-AART:           l_{i} =  L_{i}                      AND
-AART:           t_{i} =  R_{i} - r_{i}              <==
-AART:           b_{i} =  0                          <==>
-AART:           L_{i} <  R_{i} - r_{i}
+AART:S_(i + 1, C_(i)) =  zero_state_(S_(i, C_(i)))  AND
+AART:           l_(i) =  L_(i)                      AND
+AART:           t_(i) =  R_(i) - r_(i)              <==
+AART:           b_(i) =  0                          <==>
+AART:           L_(i) <  R_(i) - r_(i)
 AART:
-AART:S_{i + 1, C_{i}} =  one_state_{S_{i, C_{i}}}   AND
-AART:           l_{i} =  L_{i} - R_{i} + r_{i}      AND
-AART:           t_{i} =  r_{i}                      <==
-AART:           b_{i} =  1                          <==>
-AART:           L_{i} >= R_{i} - r_{i}
+AART:S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
+AART:           l_(i) =  L_(i) - R_(i) + r_(i)      AND
+AART:           t_(i) =  r_(i)                      <==
+AART:           b_(i) =  1                          <==>
+AART:           L_(i) >= R_(i) - r_(i)
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S_{i+1,k}=S_{i,k} & \\\\Longleftarrow & C_{i} \\\\neq k\\\\end{array}$$
-AART:S_{i + 1, k} = S_{i, k} <== C_{i} != k
+AART:S_(i + 1, k) = S_(i, k) <== C_(i) != k
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1 & \\\\Longleftarrow & t_{i}<2^{8}\\\\\\ R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i} & \\\\Longleftarrow & t_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:R_{i + 1} =  2 ^ 8 * t_{i}                     AND
-AART:L_{i + 1} =  2 ^ 8 * l_{i} + B_{j_{i}}         AND
-AART:j_{i + 1} =  j_{i} + 1                         <==
-AART:t_{i}     <  2 ^ 8
+AART:R_(i + 1) =  2 ^ 8 * t_(i)                     AND
+AART:L_(i + 1) =  2 ^ 8 * l_(i) + B_(j_(i))         AND
+AART:j_(i + 1) =  j_(i) + 1                         <==
+AART:t_(i)     <  2 ^ 8
 AART:
-AART:R_{i + 1} =  t_{i}                             AND
-AART:L_{i + 1} =  l_{i}                             AND
-AART:j_{i + 1} =  j_{i}                             <==
-AART:t_{i}     >= 2 ^ 8
+AART:R_(i + 1) =  t_(i)                             AND
+AART:L_(i + 1) =  l_(i)                             AND
+AART:j_(i + 1) =  j_(i)                             <==
+AART:t_(i)     >= 2 ^ 8
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGI:!---
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
-AART:R_{0} = 65280
+AART:R_(0) = 65280
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGI:!---
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
-AART:L_{0} = 2 ^ 8 * B_{0} + B_{1}
+AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
 SVGI:!---
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
-AART:j_{0} = 2
+AART:j_(0) = 2
 
 ##### Termination
 
@@ -528,14 +528,14 @@ SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
 SVGI:!---
 SVGC:statetransitiontable1.svg=$$one\\_state_{i}=default\\_state\\_transition_{i}+state\\_transition\\_delta_{i}$$
-AART:one_state_{i} =
-AART:       default_state_transition_{i} + state_transition_delta_{i}
+AART:one_state_(i) =
+AART:       default_state_transition_(i) + state_transition_delta_(i)
 
 SVGI:!---
 SVGI:![svg](statetransitiontable2.svg "state transition table 2")
 SVGI:!---
 SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
-AART:zero_state_{i} = 256 - one_state_{256-i}
+AART:zero_state_(i) = 256 - one_state_(256-i)
 
 #### default\_state\_transition
 
