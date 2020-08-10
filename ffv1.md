@@ -402,7 +402,7 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-To encode binary digits efficiently a Range coder is used. `C_(i)` is the i-th Context. `B_(i)` is the i-th byte of the bytestream. `b_(i)` is the i-th Range coded binary value, `S_(0, i)` is the i-th initial state. The length of the bytestream encoding n binary symbols is `j_(n)` bytes.
+To encode binary digits efficiently a Range coder is used. C~i~ is the i-th Context. B~i~ is the i-th byte of the bytestream. b~i~ is the i-th Range coded binary value, S~0,\ i~ is the i-th initial state. The length of the bytestream encoding n binary symbols is j~n~ bytes.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
