@@ -59,7 +59,7 @@
     <author initials="N." surname="Martin" fullname=""/>
     <date month="July" year="1979" />
   </front>
-  <seriesInfo name="Proc. Institution of Electronic and Radio Engineers International Conference on Video and Data Recording" value="" />
+  <seriesInfo name="Proceedings of the Conference on Video and Data Recording." value="Institution of Electronic and Radio Engineers, Hampshire, England"/>
 </reference>
 
 <reference anchor="AVI" target="https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx">
