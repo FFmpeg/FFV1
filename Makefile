@@ -12,7 +12,7 @@ MMARK_CALL := mmark
 XML2RFC := $(XML2RFC_CALL) --v3
 MMARK := $(MMARK_CALL)
 
-$(info RFC rendering has been tested with mmark version 2.0.48, xml2rfc 2.32.0, xmlstarlet 1.6.1, pdfcrop v1.38, and pdf2svg 0.2.3, please ensure these are installed and recent enough.)
+$(info RFC rendering has been tested with mmark version 2.2.8, xml2rfc 2.46.0, xmlstarlet 1.6.1, pdfcrop v1.38, and pdf2svg 0.2.3, please ensure these are installed and recent enough or run ./buildcheck to test.)
 
 all: $(OUTPUT).html $(OUTPUT).txt $(OUTPUT).xml $(OUTPUT-v4).html $(OUTPUT-v4).txt $(OUTPUT-v4).xml
 
