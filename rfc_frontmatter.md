@@ -5,6 +5,7 @@ abbrev = "FFV1"
 ipr= "trust200902"
 area = "art"
 workgroup = "cellar"
+date = @BUILD_DATE@
 keyword = [""]
 
 [seriesInfo]

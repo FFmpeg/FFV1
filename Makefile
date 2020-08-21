@@ -11,10 +11,10 @@ $(info RFC rendering has been tested with mmark version 2.2.8, xml2rfc 2.32.0, x
 all: $(OUTPUT).html $(OUTPUT).txt $(OUTPUT).xml $(OUTPUT-v4).html $(OUTPUT-v4).txt $(OUTPUT-v4).xml
 
 $(OUTPUT).md: ffv1.md 
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V4}" | sed "s|^AART:||g;s|{V3}||g;s|SVGI:||g" > $(OUTPUT).md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V4}" | sed "s|^AART:||g;s|{V3}||g;s|SVGI:||g;s|@BUILD_DATE@|$(shell date +'%F')|" > $(OUTPUT).md
 
 $(OUTPUT-v4).md: ffv1.md 
-	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V3}" | sed "s|^AART:||g;s|{V4}||g;s|SVGI:||g" > $(OUTPUT-v4).md
+	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V3}" | sed "s|^AART:||g;s|{V4}||g;s|SVGI:||g;s|@BUILD_DATE@|$(shell date +'%F')|" > $(OUTPUT-v4).md
 
 %.xml: %.md
 	bash makesvg
