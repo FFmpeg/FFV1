@@ -19,6 +19,7 @@ $(OUTPUT-v4).md: ffv1.md
 %.xml: %.md
 	bash makesvg
 	mmark "$<" | sed 's|<date year="undated"></date>|<date>undated</date>|g' > "$@"
+	xmlstarlet edit --inplace --insert "/rfc" --type attr -name sortRefs -v "true" "$@"
 	bash svg2src "$@"
 
 %.html: %.xml
