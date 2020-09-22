@@ -370,7 +370,7 @@ Background: At the time of this writing, in all known implementations of FFV1 bi
 
 Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
-When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then if used transparency.
+When FFV1 uses the JPEG2000-RCT, the horizontal `Lines` are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
 
 As an example, a `Frame` that is two `Pixels` wide and two `Pixels` high, could comprise the following structure:
 
