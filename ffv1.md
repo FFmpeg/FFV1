@@ -241,7 +241,7 @@ Relative to any `Sample` `X`, six other relatively positioned `Samples` from the
 | L | l | X |   |
 +---+---+---+---+
 ```
-Figure: A depiction of how relatively positions Samples are references within this document. {#figureRelativeSampleNames}
+Figure: A depiction of how relatively positioned Samples are references within this document. {#figureRelativeSampleNames}
 
 The labels for these relative `Samples` are made of the first letters of the words Top, Left and Right.
 
