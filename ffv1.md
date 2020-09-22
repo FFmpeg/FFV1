@@ -256,7 +256,7 @@ median(l, t, l + t - tl)
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 Exception for the median predictor:
-if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )`, the following median predictor MUST be used:
+if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#colorspace-type)), the following median predictor MUST be used:
 
 ```
 median(left16s, top16s, left16s + top16s - diag16s)
