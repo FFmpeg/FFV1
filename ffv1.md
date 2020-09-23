@@ -276,11 +276,13 @@ Background: a two's complement 16-bit signed integer was used for storing `Sampl
 
 The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
-SVGI:!---
-SVGI:![svg](quantizationtablesets.svg "quantization table sets")
-SVGI:!---
+!---
+![svg](quantizationtablesets.svg "quantization table sets")
 SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
-AART:Q_(j)[k] = quant_tables[i][j][k&255]
+``` ascii-art
+Q_(j)[k] = quant_tables[i][j][k&255]
+```
+!---
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
 
@@ -288,15 +290,17 @@ In this formula, `i` is the Quantization Table Set index, `j` is the Quantized T
 
 Relative to any `Sample` `X`, the Quantized Sample Differences `L-l`, `l-tl`, `tl-t`, ` T-t`, and `t-tr` are used as context:
 
-SVGI:!---
-SVGI:![svg](context.svg "context")
-SVGI:!---
+!---
+![svg](context.svg "context")
 SVGC:context.svg=$$context=Q_{0}[l-tl]+Q_{1}[tl-t]+Q_{2}[t-tr]+Q_{3}[L-l]+Q_{4}[T-t]$$
-AART:context = Q_(0)[l - tl] +
-AART:          Q_(1)[tl - t] +
-AART:          Q_(2)[t - tr] +
-AART:          Q_(3)[L - l]  +
-AART:          Q_(4)[T - t]
+``` ascii-art
+context = Q_(0)[l - tl] +
+          Q_(1)[tl - t] +
+          Q_(2)[t - tr] +
+          Q_(3)[L - l]  +
+          Q_(4)[T - t]
+```
+!---
 
 If `context >= 0` then `context` is used and the difference between the `Sample` and its predicted value is encoded as is, else `-context` is used and the difference between the `Sample` and its predicted value is encoded with a flipped sign.
 
@@ -342,29 +346,33 @@ An optional transparency `Plane` can be used to code transparency data.
 
 JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) `Planes` losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
 
-SVGI:!---
-SVGI:![svg](rgb1.svg "rgb 1")
-SVGI:!---
+!---
+![svg](rgb1.svg "rgb 1")
 SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\\\ g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
-AART:Cb = b - g
-AART:Cr = r - g
-AART:Y = g + (Cb + Cr) >> 2
-AART:g = Y - (Cb + Cr) >> 2
-AART:r = Cr + g
-AART:b = Cb + g
+``` ascii-art
+Cb = b - g
+Cr = r - g
+Y = g + (Cb + Cr) >> 2
+g = Y - (Cb + Cr) >> 2
+r = Cr + g
+b = Cb + g
+```
+!---
 
 Exception for the JPEG2000-RCT conversion: if `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
-SVGI:!---
-SVGI:![svg](rgb2.svg "rgb 2")
-SVGI:!---
+!---
+![svg](rgb2.svg "rgb 2")
 SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
-AART:Cb = g - b
-AART:Cr = r - b
-AART:Y = b +(Cb + Cr) >> 2
-AART:b = Y -(Cb + Cr) >> 2
-AART:r = Cr + b
-AART:g = Cb + b
+``` ascii-art
+Cb = g - b
+Cr = r - b
+Y = b +(Cb + Cr) >> 2
+b = Y -(Cb + Cr) >> 2
+r = Cr + b
+g = Cb + b
+```
+!---
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR `Planes` were used as BGR `Planes` during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
@@ -392,12 +400,14 @@ Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1
 
 Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original `Sample`. In the equation below, the term "bits" represents `bits_per_raw_sample + 1` for JPEG2000-RCT or `bits_per_raw_sample` otherwise:
 
-SVGI:!---
-SVGI:![svg](samplediff.svg "coding of the sample difference")
-SVGI:!---
+!---
+![svg](samplediff.svg "coding of the sample difference")
 SVGC:samplediff.svg=$$coder\\_input=[(sample\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
-AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
-AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
+``` ascii-art
+coder_input = [(sample_difference + 2 ^ (bits - 1)) &
+              (2 ^ bits - 1)] - 2 ^ (bits - 1)
+```
+!---
 Figure: Description of the coding of the Sample Difference in the bitstream. {#figureSampleDifference}
 
 ### Range Coding Mode
@@ -408,65 +418,79 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 To encode binary digits efficiently a Range coder is used. C~i~ is the i-th Context. B~i~ is the i-th byte of the bytestream. b~i~ is the i-th Range coded binary value, S~0,\ i~ is the i-th initial state. The length of the bytestream encoding n binary symbols is j~n~ bytes.
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
-SVGI:!---
+!---
+![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
-AART:r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
+``` ascii-art
+r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
+```
+!---
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
-SVGI:!---
+!---
+![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} & \\\\Longleftarrow & b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} \\\\\\ S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} & \\\\Longleftarrow & b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} \\\\end{array}$$
-AART:S_(i + 1, C_(i)) =  zero_state_(S_(i, C_(i)))  AND
-AART:           l_(i) =  L_(i)                      AND
-AART:           t_(i) =  R_(i) - r_(i)              <==
-AART:           b_(i) =  0                          <==>
-AART:           L_(i) <  R_(i) - r_(i)
-AART:
-AART:S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
-AART:           l_(i) =  L_(i) - R_(i) + r_(i)      AND
-AART:           t_(i) =  r_(i)                      <==
-AART:           b_(i) =  1                          <==>
-AART:           L_(i) >= R_(i) - r_(i)
+``` ascii-art
+S_(i + 1, C_(i)) =  zero_state_(S_(i, C_(i)))  AND
+           l_(i) =  L_(i)                      AND
+           t_(i) =  R_(i) - r_(i)              <==
+           b_(i) =  0                          <==>
+           L_(i) <  R_(i) - r_(i)
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
-SVGI:!---
+S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
+           l_(i) =  L_(i) - R_(i) + r_(i)      AND
+           t_(i) =  r_(i)                      <==
+           b_(i) =  1                          <==>
+           L_(i) >= R_(i) - r_(i)
+```
+!---
+
+!---
+![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S_{i+1,k}=S_{i,k} & \\\\Longleftarrow & C_{i} \\\\neq k\\\\end{array}$$
-AART:S_(i + 1, k) = S_(i, k) <== C_(i) != k
+``` ascii-art
+S_(i + 1, k) = S_(i, k) <== C_(i) != k
+```
+!---
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
-SVGI:!---
+!---
+![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1 & \\\\Longleftarrow & t_{i}<2^{8}\\\\\\ R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i} & \\\\Longleftarrow & t_{i}\\\\geq2^{8}\\\\end{array}$$
-AART:R_(i + 1) =  2 ^ 8 * t_(i)                     AND
-AART:L_(i + 1) =  2 ^ 8 * l_(i) + B_(j_(i))         AND
-AART:j_(i + 1) =  j_(i) + 1                         <==
-AART:t_(i)     <  2 ^ 8
-AART:
-AART:R_(i + 1) =  t_(i)                             AND
-AART:L_(i + 1) =  l_(i)                             AND
-AART:j_(i + 1) =  j_(i)                             <==
-AART:t_(i)     >= 2 ^ 8
+``` ascii-art
+R_(i + 1) =  2 ^ 8 * t_(i)                     AND
+L_(i + 1) =  2 ^ 8 * l_(i) + B_(j_(i))         AND
+j_(i + 1) =  j_(i) + 1                         <==
+t_(i)     <  2 ^ 8
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
-SVGI:!---
+R_(i + 1) =  t_(i)                             AND
+L_(i + 1) =  l_(i)                             AND
+j_(i + 1) =  j_(i)                             <==
+t_(i)     >= 2 ^ 8
+```
+!---
+
+!---
+![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
-AART:R_(0) = 65280
+``` ascii-art
+R_(0) = 65280
+```
+!---
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
-SVGI:!---
+!---
+![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
-AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
+``` ascii-art
+L_(0) = 2 ^ 8 * B_(0) + B_(1)
+```
+!---
 
-SVGI:!---
-SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
-SVGI:!---
+!---
+![svg](rangebinaryvalues7.svg "range binary values 7")
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
-AART:j_(0) = 2
+``` ascii-art
+j_(0) = 2
+```
+!---
 
 ##### Termination
 
@@ -528,18 +552,22 @@ At keyframes all Range coder state variables are set to their initial state.
 
 #### State Transition Table
 
-SVGI:!---
-SVGI:![svg](statetransitiontable1.svg "state transition table 1")
-SVGI:!---
+!---
+![svg](statetransitiontable1.svg "state transition table 1")
 SVGC:statetransitiontable1.svg=$$one\\_state_{i}=default\\_state\\_transition_{i}+state\\_transition\\_delta_{i}$$
-AART:one_state_(i) =
-AART:       default_state_transition_(i) + state_transition_delta_(i)
+``` ascii-art
+one_state_(i) =
+       default_state_transition_(i) + state_transition_delta_(i)
+```
+!---
 
-SVGI:!---
-SVGI:![svg](statetransitiontable2.svg "state transition table 2")
-SVGI:!---
+!---
+![svg](statetransitiontable2.svg "state transition table 2")
 SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
-AART:zero_state_(i) = 256 - one_state_(256-i)
+``` ascii-art
+zero_state_(i) = 256 - one_state_(256-i)
+```
+!---
 
 #### default\_state\_transition
 
@@ -1099,18 +1127,22 @@ Inferred to be 0 if not present.
 
 `initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
 
-SVGI:!---
-SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
-SVGI:!---
+!---
+![svg](initialstatedelta1.svg "initial state delta 1")
 SVGC:initialstatedelta1.svg=pred = j ? initial\_states[ i ][j - 1][ k ] : 128
-AART:pred = j ? initial_states[ i ][j - 1][ k ] : 128
+``` ascii-art
+pred = j ? initial_states[ i ][j - 1][ k ] : 128
+```
+!---
 
-SVGI:!---
-SVGI:![svg](initialstatedelta2.svg "initial state delta 2")
-SVGI:!---
+!---
+![svg](initialstatedelta2.svg "initial state delta 2")
 SVGC:initialstatedelta2.svg=initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
-AART:initial_state[ i ][ j ][ k ] =
-AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+``` ascii-art
+initial_state[ i ][ j ][ k ] =
+       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+```
+!---
 
 ### ec
 
