@@ -16,7 +16,7 @@ $(OUTPUT).md: ffv1.md
 $(OUTPUT-v4).md: ffv1.md 
 	cat rfc_frontmatter.md "$<" rfc_backmatter.md | grep -v "^AART:" | grep -v "^SVGC" | grep -v "{V3}" | sed "s|^AART:||g;s|{V4}||g;s|SVGI:||g;s|@BUILD_DATE@|$(shell date +'%F')|" > $(OUTPUT-v4).md
 
-%.xml: %.md
+%.xml: %.md mmark.version-ok
 	bash makesvg
 	mmark "$<" | sed 's|<date year="undated"></date>|<date>undated</date>|g' > "$@"
 	xmlstarlet edit --inplace --insert "/rfc" --type attr -name sortRefs -v "true" "$@"
@@ -29,4 +29,7 @@ $(OUTPUT-v4).md: ffv1.md
 	xml2rfc --v3 "$<" -o "$@"
 
 clean:
-	rm -f ffv1.pdf ffv1-v4.pdf ffv1.html ffv1-v4.html draft-ietf-cellar-ffv1-* merged_*
+	rm -f ffv1.pdf ffv1-v4.pdf ffv1.html ffv1-v4.html draft-ietf-cellar-ffv1-* merged_* mmark.version-ok
+
+mmark.version-ok:
+	test ` mmark --version | sed 's/\.\([0-9][0-9]\)/\1/g;s/\./0/g' ` -ge 20208 && touch mmark.version-ok || (echo mmark version 2.2.8 or later is required && exit 1)
