@@ -6,7 +6,7 @@ VERSION-v4 := 14
 STATUS-v4 := draft-
 OUTPUT-v4 := $(STATUS-v4)ietf-cellar-ffv1-v4-$(VERSION-v4)
 
-$(info RFC rendering has been tested with mmark version 2.2.8, xml2rfc 2.32.0, xmlstarlet 1.6.1, pdfcrop v1.38, and pdf2svg 0.2.3, please ensure these are installed and recent enough.)
+$(info RFC rendering has been tested with mmark version 2.2.8, xml2rfc 2.32.0, xmlstarlet 1.6.1, pandoc 1.19.2.1, pdfcrop v1.38, and pdf2svg 0.2.3, please ensure these are installed and recent enough.)
 
 all: $(OUTPUT).html $(OUTPUT).txt $(OUTPUT).xml $(OUTPUT-v4).html $(OUTPUT-v4).txt $(OUTPUT-v4).xml
 
