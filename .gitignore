@@ -4,3 +4,7 @@
 draft-ietf-cellar-ffv1*
 merged*.md
 metadata.min.js
+mmark.version-ok
+xml2rfc.version-ok
+xmlstarlet.version-ok
+pdfcrop.version-ok
