@@ -31,7 +31,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Symbol`: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
 
-`Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
+`Plane`: A discrete component of a static image composed of `Samples` that represent a specific quantification of `Samples` of that image.
 
 `Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of one or more `Samples`.
 
@@ -138,9 +138,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `log2(a)`               means the base-two logarithm of a.
 
-`min(a,b)`              means the smallest of two values a and b.
+`min(a,b)`              means the smaller of two values a and b.
 
-`max(a,b)`              means the largest of two values a and b.
+`max(a,b)`              means the larger of two values a and b.
 
 `median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c).
 
@@ -175,7 +175,7 @@ a = b, a += b, a -= b, a *= b
 
 ### Range
 
-`a...b` means any value starting from a to b, inclusive.
+`a...b` means any value from a to b, inclusive.
 
 ### NumBytes
 
@@ -243,7 +243,7 @@ Relative to any `Sample` `X`, six other relatively positioned `Samples` from the
 | L | l | X |   |
 +---+---+---+---+
 ```
-Figure: A depiction of how relatively positioned Samples are references within this document. {#figureRelativeSampleNames}
+Figure: A depiction of how relatively positioned Samples are referenced within this document. {#figureRelativeSampleNames}
 
 The labels for these relative `Samples` are made of the first letters of the words Top, Left and Right.
 
@@ -620,7 +620,7 @@ Figure: Alternative state transition table for Range coding. {#figureAltStateTra
 
 ### Golomb Rice Mode
 
-The end of the bitstream of the `Frame` is filled with 0-bits until that the bitstream contains a multiple of 8 bits.
+The end of the bitstream of the `Frame` is padded with 0-bits until the bitstream contains a multiple of 8 bits.
 
 #### Signed Golomb Rice Codes
 
