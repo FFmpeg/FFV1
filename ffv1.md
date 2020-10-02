@@ -526,7 +526,7 @@ Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#
 
 #### Initial Values for the Context Model
 
-At keyframes all Range coder state variables are set to their initial state.
+When `keyframe` (see (#frame)) value is 1, all Range coder state variables are set to their initial state.
 
 #### State Transition Table
 
@@ -795,7 +795,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 #### Initial Values for the VLC context state
 
-At keyframes all coder state variables are set to their initial state.
+When `keyframe` (see (#frame)) value is 1, all coder state variables are set to their initial state.
 
 ```c
     drift     = 0;
