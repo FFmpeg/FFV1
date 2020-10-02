@@ -185,7 +185,7 @@ a = b, a += b, a -= b, a *= b
 
 #### remaining\_bits\_in\_bitstream
 
-`remaining_bits_in_bitstream( )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
+`remaining_bits_in_bitstream( NumBytes )` means the count of remaining bits after the pointer in that `Configuration Record` or `Frame`. It is computed from the `NumBytes` value multiplied by 8 minus the count of bits of that `Configuration Record` or `Frame` already read by the bitstream parser.
 
 #### remaining\_symbols\_in\_syntax
 
