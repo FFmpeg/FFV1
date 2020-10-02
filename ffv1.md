@@ -808,7 +808,7 @@ When `keyframe` (see (#frame)) value is 1, all coder state variables are set to 
 
 An FFV1 bitstream is composed of a series of one or more `Frames` and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+Within the following sub-sections, pseudo-code is used, as described in (#pseudo-code), to explain the structure of each FFV1 bitstream component. [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
 |`Symbol`| Definition                                             |
 |------|--------------------------------------------------------|
