@@ -1274,9 +1274,9 @@ MUST be 0.
 
 `reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.
 
-Encoders SHOULD NOT fill these bits.
+Encoders SHOULD NOT fill `reserved`.
 
-Decoders SHOULD ignore these bits.
+Decoders SHOULD ignore `reserved`.
 
 ## Slice Header
 
