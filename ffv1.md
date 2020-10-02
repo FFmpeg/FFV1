@@ -1155,11 +1155,11 @@ ConfigurationRecord( NumBytes ) {                          |
 
 ### reserved\_for\_future\_use
 
-`reserved_for_future_use` has semantics that are reserved for future use.
+`reserved_for_future_use` is a placeholder for future updates of this specification.
 
-Encoders conforming to this version of this specification SHALL NOT write this value.
+Encoders conforming to this version of this specification SHALL NOT write `reserved_for_future_use`.
 
-Decoders conforming to this version of this specification SHALL ignore its value.
+Decoders conforming to this version of this specification SHALL ignore `reserved_for_future_use`.
 
 ### configuration\_record\_crc\_parity
 
