@@ -1051,11 +1051,11 @@ Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
 
-`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma width (`chroma_width = 2 ^ -log2_h_chroma_subsample * luma_width`).
+`log2_h_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 is raised, between luma and chroma width (`chroma_width = 2 ^ -log2_h_chroma_subsample * luma_width`).
 
 ### log2\_v\_chroma\_subsample
 
-`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 must be raised, between luma and chroma height (`chroma_height = 2 ^ -log2_v_chroma_subsample * luma_height`).
+`log2_v_chroma_subsample` indicates the subsample factor, stored in powers to which the number 2 is raised, between luma and chroma height (`chroma_height = 2 ^ -log2_v_chroma_subsample * luma_height`).
 
 ### extra\_plane
 
@@ -1384,7 +1384,7 @@ If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `s
 
 ### reset\_contexts{V4}
 
-`reset_contexts` indicates if slice contexts must be reset.{V4}
+`reset_contexts` indicates if slice contexts MUST be reset.{V4}
 {V4}
 Inferred to be 0 if not present.{V4}
 
@@ -1575,8 +1575,8 @@ For each `Frame` with `keyframe` value of 0, each slice MUST have the same value
 
 Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads must not cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams must not cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in `Pixel` count computations without considering that the multiplication result may have overflowed the arithmetic types range.
-The range coder could, if implemented naively, read one byte over the end. The implementation must ensure that no read outside allocated and initialized memory occurs.
+Implementations of the FFV1 codec need to take appropriate security considerations into account, as outlined in [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads MUST NOT cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams MUST NOT cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in `Pixel` count computations without considering that the multiplication result may have overflowed the arithmetic types range.
+The range coder could, if implemented naively, read one byte over the end. The implementation MUST ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
 
