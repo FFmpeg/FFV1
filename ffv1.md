@@ -29,13 +29,15 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a `Frame`. Examples of `Sample` are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
 
+`Symbol`: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
+
 `Plane`: A discrete component of a static image comprised of `Samples` that represent a specific quantification of `Samples` of that image.
 
 `Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of one or more `Samples`.
 
-`ESC`:   An ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method is used.
+`ESC`:   An ESCape `Symbol` to indicate that the `Symbol` to be stored is too large for normal storage and that an alternate storage method is used.
 
-`MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
+`MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the `Symbol`.
 
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
 
@@ -51,7 +53,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 The FFV1 bitstream is described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.1990] and uses its `if/else`, `while` and `for` keywords as well as functions defined within this document.
 
-In some instances, pseudo-code is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudo-code.
+In some instances, pseudo-code is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a `Symbol` as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudo-code.
 
 ```c
 pseudo-code                                                   | type
@@ -472,11 +474,11 @@ AART:j_(0) = 2
 
 The range coder can be used in three modes.
 
-* In `Open mode` when decoding, every symbol the reader attempts to read is available. In this mode arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
+* In `Open mode` when decoding, every `Symbol` the reader attempts to read is available. In this mode arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
 
 * In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
 
-* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value SHALL be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) symbol will be read non-corrupted and be of value 0.
+* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary `Symbol` with state 129, which value SHALL be discarded. After reading this `Symbol`, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) `Symbol` will be read non-corrupted and be of value 0.
 
 Above describes the range decoding. Encoding is defined as any process which produces a decodable bytestream.
 
@@ -487,7 +489,7 @@ Third is the end of range coded Slices which need to terminate before the CRC at
 
 #### Range Non Binary Values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit `Symbol` that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single `Symbol` to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
 
 ```c
 int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
@@ -808,14 +810,14 @@ An FFV1 bitstream is composed of a series of one or more `Frames` and (when requ
 
 Within the following sub-sections, pseudo-code is used to explain the structure of each FFV1 bitstream component, as described in (#pseudo-code). [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
 
-|Symbol| Definition                                             |
+|`Symbol`| Definition                                             |
 |------|--------------------------------------------------------|
-| u(n) | unsigned big endian integer using n bits               |
-| sg   | Golomb Rice coded signed scalar symbol coded with the method described in (#golomb-rice-mode)    |
-| br   | Range coded Boolean (1-bit) symbol with the method described in (#range-binary-values)           |
-| ur   | Range coded unsigned scalar symbol coded with the method described in (#range-non-binary-values) |
-| sr   | Range coded signed scalar symbol coded with the method described in (#range-non-binary-values)   |
-| sd   | Sample difference coded with the method described in (#coding-of-the-sample-difference)   |
+| u(n) | unsigned big endian integer `Symbol` using n bits               |
+| sg   | Golomb Rice coded signed scalar `Symbol` coded with the method described in (#golomb-rice-mode)    |
+| br   | Range coded Boolean (1-bit) `Symbol` with the method described in (#range-binary-values)           |
+| ur   | Range coded unsigned scalar `Symbol` coded with the method described in (#range-non-binary-values) |
+| sr   | Range coded signed scalar `Symbol` coded with the method described in (#range-non-binary-values)   |
+| sd   | Sample difference `Symbol` coded with the method described in (#coding-of-the-sample-difference)   |
 Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
 
 The following MUST be provided by external means during initialization of the decoder:
