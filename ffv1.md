@@ -104,23 +104,23 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 ### Comparison Operators
 
-`a > b`       means a is greater than b.
+`a > b`       is true when a is greater than b.
 
-`a >= b`      means a is greater than or equal to b.
+`a >= b`      is true when a is greater than or equal to b.
 
-`a < b`       means a is less than b.
+`a < b`       is true when a is less than b.
 
-`a <= b`      means a is less than or equal b.
+`a <= b`      is true when a is less than or equal b.
 
-`a == b`      means a is equal to b.
+`a == b`      is true when a is equal to b.
 
-`a != b`      means a is not equal to b.
+`a != b`      is true when a is not equal to b.
 
-`a && b`      means Boolean logical "and" of a and b.
+`a && b`      is true when both a is true and b is true.
 
-`a || b`      means Boolean logical "or" of a and b.
+`a || b`      is true when either a is true or b is true.
 
-`!a`          means Boolean logical "not" of a.
+`!a`          is true when a is not true.
 
 `a ? b : c`   if a is true, then b, otherwise c.
 
