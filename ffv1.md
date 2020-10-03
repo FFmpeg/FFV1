@@ -720,6 +720,8 @@ ESC MUST NOT be used if the value can be coded as non ESC.
 
 ##### Examples
 
+[@tableGolombExamples] shows practical examples of how Signed Golomb Rice Codes are decoded based on the series of bits extracted from the bitstream as described by the method above:
+
 | k   | bits                      | value |
 |:---:|:--------------------------|------:|
 | 0   | ``1``                     | 0     |
@@ -728,6 +730,7 @@ ESC MUST NOT be used if the value can be coded as non ESC.
 | 2   | ``1 10``                  | 2     |
 | 2   | ``01 01``                 | 5     |
 | any | ``000000000000 10000000`` | 139   |
+Table: Examples of decoded Signed Golomb Rice Codes. {#tableGolombExamples}
 
 #### Run Mode
 
