@@ -31,7 +31,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Symbol`: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
 
-`Plane`: A discrete component of a static image composed of `Samples` that represent a specific quantification of `Samples` of that image.
+`Line`: A discrete component of a static image composed of `Samples` that represent a specific quantification of `Samples` of that image.
+
+`Plane`: A discrete component of a static image composed of `Lines` that represent a specific quantification of `Lines` of that image.
 
 `Pixel`: The smallest addressable representation of a color in a `Frame`. It is composed of one or more `Samples`.
 
