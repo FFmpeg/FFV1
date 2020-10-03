@@ -164,7 +164,7 @@ When order of precedence is not indicated explicitly by use of parentheses, oper
 a++, a--
 !a, -a
 a ^ b
-a * b, a / b, a % b
+a * b, a / b
 a + b, a - b
 a << b, a >> b
 a < b, a <= b, a > b, a >= b
