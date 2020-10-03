@@ -734,7 +734,7 @@ Table: Examples of decoded Signed Golomb Rice Codes. {#tableGolombExamples}
 
 #### Run Mode
 
-Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The level is identical to the predicted one. The run and the first different level are coded.
+Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The sample difference is identical to the predicted one. The run and the first different sample difference are coded as defined in (#golomb-rice-sample-difference-coding).
 
 ##### Run Length Coding
 
@@ -833,7 +833,7 @@ get_vlc_symbol(state) {
 }
 ```
 
-##### Level Coding
+##### Golomb Rice Sample Difference Coding
 
 Level coding is identical to the normal difference coding with the exception that the 0 value is removed as it cannot occur:
 
