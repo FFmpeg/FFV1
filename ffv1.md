@@ -472,6 +472,52 @@ SVGI:!---
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 AART:j_(0) = 2
 
+```c
+    range = 0xFF00;
+    end   = 0;
+    low   = get_bits(16);
+    if (low >= range) {
+        low = range;
+        end = 1;
+    }
+```
+Figure: A pseudo-code description of the initial states in Range Binary mode.
+
+```c
+refill() {
+    if (range < 256) {
+        range = range * 256;
+        low   = low * 256;
+        if (!end) {
+            c.low += get_bits(8);
+            if (remaining_bits_in_bitstream( NumBytes ) == 0) {
+                end = 1;
+            }
+        }
+    }
+}
+```
+Figure: A pseudo-code description of refilling the Range Binary Value coder buffer.
+
+```c
+get_rac(state) {
+    rangeoff  = (range * state) / 256;
+    range    -= rangeoff;
+    if (low < range) {
+        state = zero_state[state];
+        refill();
+        return 0;
+    } else {
+        low   -= range;
+        state  = one_state[state];
+        range  = rangeoff;
+        refill();
+        return 1;
+    }
+}
+```
+Figure: A pseudo-code description of the read of a binary value in Range Binary mode.
+
 ##### Termination
 
 The range coder can be used in three modes.
