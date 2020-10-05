@@ -1594,7 +1594,11 @@ The reference implementation [@REFIMPL] was validated in the following condition
 
 In all of the conditions above, the decoder and encoder was run inside the [@VALGRIND] memory debugger as well as clangs address sanitizer [@Address-Sanitizer], which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
 
-# Media Type Definition
+# IANA Considerations
+
+The IANA is requested to register the following values:
+
+## Media Type Definition
 
 This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
 
@@ -1643,12 +1647,6 @@ Restrictions on usage:  None.
 Author:  Dave Rice <dave@dericed.com>
 
 Change controller:  IETF cellar working group delegated from the IESG.
-
-# IANA Considerations
-
-The IANA is requested to register the following values:
-
-   - Media type registration as described in (#media-type-definition).
 
 # Changelog
 
