@@ -25,6 +25,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
+`FFV1`: choosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose the first letters originaly means "Fast Forward".
+
 `Container`: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
 `Sample`: The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
