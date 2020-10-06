@@ -419,6 +419,7 @@ SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 AART:r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
+Figure: A formula of the read of a binary value in Range Binary mode. {#figureGetRacFormula}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
@@ -518,7 +519,7 @@ get_rac(state) {
     }
 }
 ```
-Figure: A pseudo-code description of the read of a binary value in Range Binary mode.
+Figure: A pseudo-code description of the read of a binary value in Range Binary mode. {#figureGetRacPseudoCode}
 
 ##### Termination
 
@@ -572,7 +573,7 @@ Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#
 
 `get_symbol` is used for the read out of `sample_difference` indicated in [@figureSampleDifference].
 
-`get_rac` returns a boolean, computed from the bytestream as described in (#range-binary-values).
+`get_rac` returns a boolean, computed from the bytestream as described in [@figureGetRacFormula] as a formula and in [@figureGetRacPseudoCode] as pseudo-code.
 
 #### Initial Values for the Context Model
 
