@@ -261,8 +261,9 @@ median(l, t, l + t - tl)
 
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
-Exception for the median predictor:
-if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#colorspace-type)), the following median predictor MUST be used:
+### Exception
+
+If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#colorspace-type)), the following median predictor MUST be used:
 
 ```
 median(left16s, top16s, left16s + top16s - diag16s)
@@ -359,21 +360,6 @@ AART:g = Y - (Cb + Cr) >> 2
 AART:r = Cr + g
 AART:b = Cb + g
 
-Exception for the JPEG2000-RCT conversion: if `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
-
-SVGI:!---
-SVGI:![svg](rgb2.svg "rgb 2")
-SVGI:!---
-SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
-AART:Cb = g - b
-AART:Cr = r - b
-AART:Y = b +(Cb + Cr) >> 2
-AART:b = Y -(Cb + Cr) >> 2
-AART:r = Cr + b
-AART:g = Cb + b
-
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
-
 Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
 When FFV1 uses the JPEG2000-RCT, the horizontal Lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
@@ -393,6 +379,23 @@ As an example, a Frame that is two Pixels wide and two Pixels high, could compri
 In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by Lines and stored in this order:
 
 Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1,2) Cr(2,2)
+
+#### Exception
+
+If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+
+SVGI:!---
+SVGI:![svg](rgb2.svg "rgb 2")
+SVGI:!---
+SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
+AART:Cb = g - b
+AART:Cr = r - b
+AART:Y = b + (Cb + Cr) >> 2
+AART:b = Y - (Cb + Cr) >> 2
+AART:r = Cr + b
+AART:g = Cb + b
+
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 ## Coding of the Sample Difference
 
