@@ -159,17 +159,6 @@
   </front>
 </reference>
 
-<reference anchor="ISO.9899.1990">
-  <front>
-    <title>Programming languages - C</title>
-    <author>
-      <organization>International Organization for Standardization</organization>
-    </author>
-    <date month="" year="1990" />
-  </front>
-  <seriesInfo name="ISO" value="Standard 9899" />
-</reference>
-
 # Multi-theaded decoder implementation suggestions
 
 This appendix is informative.
