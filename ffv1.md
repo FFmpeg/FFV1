@@ -39,8 +39,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Pixel`: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
 
-`ESC`:   An ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
-
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
 
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
@@ -730,6 +728,8 @@ Figure: A pseudo-code description of the read of a signed integer in Golomb Rice
 |0000 0000 001  | 10    |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
+
+`ESC` is an ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
 ##### Suffix
 
