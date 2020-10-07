@@ -279,6 +279,8 @@ Background: a two's complement 16-bit signed integer was used for storing Sample
 
 ## Quantization Table Sets
 
+Quantization Tables are used on Sample Differences (see (#coding-of-the-sample-difference)), so Quantized Sample Differences are stored in the bitstream.
+
 The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
 SVGI:!---
