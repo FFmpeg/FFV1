@@ -352,13 +352,20 @@ JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) P
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
 SVGI:!---
-SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\\\ g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
+SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\end{array}$$
 AART:Cb = b - g
 AART:Cr = r - g
 AART:Y = g + (Cb + Cr) >> 2
+Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space. {#figureRgbYcbcr}
+
+SVGI:!---
+SVGI:![svg](rgb2.svg "rgb 2")
+SVGI:!---
+SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
 AART:g = Y - (Cb + Cr) >> 2
 AART:r = Cr + g
 AART:b = Cb + g
+Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space. {#figureYcbcrRgb}
 
 Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
@@ -385,15 +392,22 @@ Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1
 If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
 
 SVGI:!---
-SVGI:![svg](rgb2.svg "rgb 2")
+SVGI:![svg](rgb3.svg "rgb 3")
 SVGI:!---
-SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
+SVGC:rgb3.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\end{array}$$
 AART:Cb = g - b
 AART:Cr = r - b
 AART:Y = b + (Cb + Cr) >> 2
+Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space (in case of exception). {#figureRgbYcbcrException}
+
+SVGI:!---
+SVGI:![svg](rgb4.svg "rgb 4")
+SVGI:!---
+SVGC:rgb4.svg=$$\\\\begin{array}{ccccccc}b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
 AART:b = Y - (Cb + Cr) >> 2
 AART:r = Cr + b
 AART:g = Cb + b
+Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
