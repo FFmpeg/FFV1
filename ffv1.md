@@ -598,6 +598,8 @@ When `keyframe` (see (#frame)) value is 1, all Range coder state variables are s
 
 #### State Transition Table
 
+In this mode a State Transition Table is used, indicating in which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
+
 SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
 SVGI:!---
@@ -612,6 +614,8 @@ SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
 AART:zero_state_(i) = 256 - one_state_(256-i)
 
 #### default\_state\_transition
+
+By default, the following State Transition Table is used:
 
 ```
   0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
