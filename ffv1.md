@@ -418,9 +418,9 @@ Instead of coding the n+1 bits of the Sample Difference with Huffman or Range co
 SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
-SVGC:samplediff.svg=$$coder\\_input=[(sample\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
-AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
-AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
+SVGC:samplediff.svg=$$coder\\_input=((sample\\_difference+2^{bits-1})\\&(2^{bits}-1))-2^{bits-1}$$
+AART:coder_input = ((sample_difference + 2 ^ (bits - 1)) &
+AART:              (2 ^ bits - 1)) - 2 ^ (bits - 1)
 Figure: Description of the coding of the Sample Difference in the bitstream. {#figureSampleDifference}
 
 ### Range Coding Mode
