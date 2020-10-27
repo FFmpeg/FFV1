@@ -39,8 +39,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 `Pixel`: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
 
-`ESC`:   An ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
-
 `MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
 
 `VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
@@ -261,8 +259,9 @@ median(l, t, l + t - tl)
 
 Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
-Exception for the median predictor:
-if `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#colorspace-type)), the following median predictor MUST be used:
+### Exception
+
+If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#colorspace-type)), the following median predictor MUST be used:
 
 ```
 median(left16s, top16s, left16s + top16s - diag16s)
@@ -279,6 +278,8 @@ diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
+
+Quantization Tables are used on Sample Differences (see (#coding-of-the-sample-difference)), so Quantized Sample Differences are stored in the bitstream.
 
 The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
 
@@ -351,28 +352,20 @@ JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) P
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
 SVGI:!---
-SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\\\ g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
+SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\\\\\ Y & = & g + ( Cb + Cr)>>2 \\\\end{array}$$
 AART:Cb = b - g
 AART:Cr = r - g
 AART:Y = g + (Cb + Cr) >> 2
-AART:g = Y - (Cb + Cr) >> 2
-AART:r = Cr + g
-AART:b = Cb + g
-
-Exception for the JPEG2000-RCT conversion: if `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space. {#figureRgbYcbcr}
 
 SVGI:!---
 SVGI:![svg](rgb2.svg "rgb 2")
 SVGI:!---
-SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\\\ b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
-AART:Cb = g - b
-AART:Cr = r - b
-AART:Y = b +(Cb + Cr) >> 2
-AART:b = Y -(Cb + Cr) >> 2
-AART:r = Cr + b
-AART:g = Cb + b
-
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r & = & Cr + g \\\\\\ b & = & Cb + g \\\\end{array}$$
+AART:g = Y - (Cb + Cr) >> 2
+AART:r = Cr + g
+AART:b = Cb + g
+Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space. {#figureYcbcrRgb}
 
 Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
@@ -394,6 +387,30 @@ In JPEG2000-RCT, the coding order would be left to right and then top to bottom,
 
 Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1,2) Cr(2,2)
 
+#### Exception
+
+If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+
+SVGI:!---
+SVGI:![svg](rgb3.svg "rgb 3")
+SVGI:!---
+SVGC:rgb3.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\\\\\ Y & = & b + (Cb + Cr)>>2 \\\\end{array}$$
+AART:Cb = g - b
+AART:Cr = r - b
+AART:Y = b + (Cb + Cr) >> 2
+Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space (in case of exception). {#figureRgbYcbcrException}
+
+SVGI:!---
+SVGI:![svg](rgb4.svg "rgb 4")
+SVGI:!---
+SVGC:rgb4.svg=$$\\\\begin{array}{ccccccc}b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = & Cr + b \\\\\\ g & = & Cb + b \\\\end{array}$$
+AART:b = Y - (Cb + Cr) >> 2
+AART:r = Cr + b
+AART:g = Cb + b
+Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
+
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+
 ## Coding of the Sample Difference
 
 Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original Sample. In the equation below, the term "bits" represents `bits_per_raw_sample + 1` for JPEG2000-RCT or `bits_per_raw_sample` otherwise:
@@ -401,9 +418,9 @@ Instead of coding the n+1 bits of the Sample Difference with Huffman or Range co
 SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
 SVGI:!---
-SVGC:samplediff.svg=$$coder\\_input=[(sample\\_difference+2^{bits-1})\\&(2^{bits}-1)]-2^{bits-1}$$
-AART:coder_input = [(sample_difference + 2 ^ (bits - 1)) &
-AART:              (2 ^ bits - 1)] - 2 ^ (bits - 1)
+SVGC:samplediff.svg=$$coder\\_input=((sample\\_difference+2^{bits-1})\\&(2^{bits}-1))-2^{bits-1}$$
+AART:coder_input = ((sample_difference + 2 ^ (bits - 1)) &
+AART:              (2 ^ bits - 1)) - 2 ^ (bits - 1)
 Figure: Description of the coding of the Sample Difference in the bitstream. {#figureSampleDifference}
 
 ### Range Coding Mode
@@ -586,6 +603,8 @@ When `keyframe` (see (#frame)) value is 1, all Range coder state variables are s
 
 #### State Transition Table
 
+In this mode a State Transition Table is used, indicating in which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
+
 SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
 SVGI:!---
@@ -600,6 +619,8 @@ SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
 AART:zero_state_(i) = 256 - one_state_(256-i)
 
 #### default\_state\_transition
+
+By default, the following State Transition Table is used:
 
 ```
   0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
@@ -714,6 +735,8 @@ Figure: A pseudo-code description of the read of a signed integer in Golomb Rice
 |0000 0000 001  | 10    |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
+
+`ESC` is an ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
 ##### Suffix
 
