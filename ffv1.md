@@ -1571,7 +1571,7 @@ Line( p, y ) {                                                |
 `plane_pixel_width[ p ]` is the width in Pixels of Plane p of the `Slice`. It is defined as:
 
 ```
-chroma\_planes == 1 && (p == 1 || p == 2)
+chroma_planes == 1 && (p == 1 || p == 2)
     ? ceil( slice_pixel_width / (1 << log2_h_chroma_subsample) )
     : slice_pixel_width.
 ```
