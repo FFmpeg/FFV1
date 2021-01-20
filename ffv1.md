@@ -25,7 +25,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
-`FFV1`: choosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose the first letters originaly means "Fast Forward".
+`FFV1`: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
 
 `Container`: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
