@@ -895,7 +895,7 @@ Note, this is different from JPEG-LS, which doesn’t use prediction in run mode
 
 #### Initial Values for the VLC context state
 
-When `keyframe` (see (#frame)) value is 1, all coder state variables are set to their initial state.
+When `keyframe` (see (#frame)) value is 1, all VLC coder state variables are set to their initial state.
 
 ```c
     drift     = 0;
