@@ -448,6 +448,27 @@ j_(n)
 : the length of the bytestream encoding n binary symbols.
 
 SVGI:!---
+SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
+SVGI:!---
+SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
+AART:R_(0) = 65280
+Figure: The initial value for "Range".
+
+SVGI:!---
+SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
+SVGI:!---
+SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
+AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
+Figure: The initial value for "Low" is set according to the first two bytes of the bytestream.
+
+SVGI:!---
+SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
+SVGI:!---
+SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
+AART:j_(0) = 2
+Figure: The initial value for "j", the length of the bytestream encoding.
+
+SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
@@ -491,27 +512,6 @@ AART:L_(i + 1) =  l_(i)                             AND
 AART:j_(i + 1) =  j_(i)                             <==
 AART:t_(i)     >= 2 ^ 8
 Figure: The "i+1"-th values for "Range", "Low", and the length of the bytestream encoding are conditionally set depending on the "i-th" value of "t".
-
-SVGI:!---
-SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
-SVGI:!---
-SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
-AART:R_(0) = 65280
-Figure: The initial value for "Range".
-
-SVGI:!---
-SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
-SVGI:!---
-SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
-AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
-Figure: The initial value for "Low" is set according to the first two bytes of the bytestream.
-
-SVGI:!---
-SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
-SVGI:!---
-SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
-AART:j_(0) = 2
-Figure: The initial value for "j", the length of the bytestream encoding.
 
 ```c
     range = 0xFF00;
