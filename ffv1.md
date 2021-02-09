@@ -146,9 +146,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c).
 
-`A <== B`               means B implies A.
+`A ==> B`               means A implies B.
 
-`A <==> B`              means A <== B , B <== A.
+`A <==> B`              means A ==> B , B ==> A.
 
 a~b~                    means the b-th value of a sequence of a
 
@@ -480,39 +480,39 @@ Figure: A formula of the read of a binary value in Range Binary mode. {#figureGe
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
 SVGI:!---
-SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} & \\\\Longleftarrow & b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} \\\\\\ S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} & \\\\Longleftarrow & b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} \\\\end{array}$$
+SVGC:rangebinaryvalues2.svg=$$\\\\begin{array}{ccccccccc} b_{i}=0 & \\\\Longleftrightarrow & L_{i}<R_{i}-r_{i} & \\\\Longrightarrow & S_{i+1,C_{i}}=zero\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i} & \\\\wedge & t_{i}=R_{i}-r_{i} \\\\\\ b_{i}=1 & \\\\Longleftrightarrow & L_{i}\\\\geq R_{i}-r_{i} & \\\\Longrightarrow & S_{i+1,C_{i}}=one\\_state_{S_{i,C_{i}}} & \\\\wedge & l_{i}=L_{i}-R_{i}+r_{i} & \\\\wedge & t_{i}=r_{i} \\\\end{array}$$
+AART:           b_(i) =  0                          <==>
+AART:           L_(i) <  R_(i) - r_(i)              ==>
 AART:S_(i + 1, C_(i)) =  zero_state_(S_(i, C_(i)))  AND
 AART:           l_(i) =  L_(i)                      AND
-AART:           t_(i) =  R_(i) - r_(i)              <==
-AART:           b_(i) =  0                          <==>
-AART:           L_(i) <  R_(i) - r_(i)
+AART:           t_(i) =  R_(i) - r_(i)
 AART:
+AART:           b_(i) =  1                          <==>
+AART:           L_(i) >= R_(i) - r_(i)              ==>
 AART:S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
 AART:           l_(i) =  L_(i) - R_(i) + r_(i)      AND
-AART:           t_(i) =  r_(i)                      <==
-AART:           b_(i) =  1                          <==>
-AART:           L_(i) >= R_(i) - r_(i)
+AART:           t_(i) =  r_(i)
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
-SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}S_{i+1,k}=S_{i,k} & \\\\Longleftarrow & C_{i} \\\\neq k\\\\end{array}$$
-AART:S_(i + 1, k) = S_(i, k) <== C_(i) != k
+SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}C_{i} \\\\neq k & \\\\Longrightarrow & S_{i+1,k}=S_{i,k}\\\\end{array}$$
+AART:C_(i) != k ==> S_(i + 1, k) = S_(i, k)
 Figure: The "i+1,k"-th State is equal to the "i,k"-th State if the value of "k" is unequal to the i-th value of Context.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
 SVGI:!---
-SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1 & \\\\Longleftarrow & t_{i}<2^{8}\\\\\\ R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i} & \\\\Longleftarrow & t_{i}\\\\geq2^{8}\\\\end{array}$$
+SVGC:rangebinaryvalues4.svg=$$\\\\begin{array}{ccccccc} t_{i}<2^{8} & \\\\Longrightarrow & R_{i+1}=2^{8}t_{i} & \\\\wedge & L_{i+1}=2^{8}l_{i}+B_{j_{i}} & \\\\wedge & j_{i+1}=j_{i}+1\\\\\\ t_{i}\\\\geq2^{8} & \\\\Longrightarrow & R_{i+1}=t_{i} & \\\\wedge & L_{i+1}=l_{i} & \\\\wedge & j_{i+1}=j_{i}\\\\end{array}$$
+AART:t_(i)     <  2 ^ 8                             ==>
 AART:R_(i + 1) =  2 ^ 8 * t_(i)                     AND
 AART:L_(i + 1) =  2 ^ 8 * l_(i) + B_(j_(i))         AND
-AART:j_(i + 1) =  j_(i) + 1                         <==
-AART:t_(i)     <  2 ^ 8
+AART:j_(i + 1) =  j_(i) + 1
 AART:
+AART:t_(i)     >= 2 ^ 8                             ==>
 AART:R_(i + 1) =  t_(i)                             AND
 AART:L_(i + 1) =  l_(i)                             AND
-AART:j_(i + 1) =  j_(i)                             <==
-AART:t_(i)     >= 2 ^ 8
+AART:j_(i + 1) =  j_(i)
 Figure: The "i+1"-th values for "Range", "Low", and the length of the bytestream encoding are conditionally set depending on the "i-th" value of "t".
 
 ```c
