@@ -980,7 +980,7 @@ QuantizationTable(i, j, scale) {                              |
 
 ### quant\_tables
 
-`quant_tables[ i ][ j ][ k ]` indicates the quantification table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Set Quantization Table Set `i`.
+`quant_tables[ i ][ j ][ k ]` indicates the quantization table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Quantization Table Set `i`.
 
 ### context\_count
 
