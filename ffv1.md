@@ -289,7 +289,7 @@ SVGI:!---
 SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
 AART:Q_(j)[k] = quant_tables[i][j][k&255]
 
-In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference.
+In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference (see (#quant-tables)).
 
 ## Context
 
