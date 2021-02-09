@@ -447,26 +447,28 @@ S~0,\ i~
 j_(n)
 : the length of the bytestream encoding n binary symbols.
 
+The following Range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incremening from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
+
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGI:!---
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
 AART:R_(0) = 65280
-Figure: The initial value for "Range".
+Figure: The initial value for "Range". {#figureInitializeRange}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGI:!---
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
 AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
-Figure: The initial value for "Low" is set according to the first two bytes of the bytestream.
+Figure: The initial value for "Low" is set according to the first two bytes of the bytestream. {#figureInitializeLow}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
 SVGI:!---
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 AART:j_(0) = 2
-Figure: The initial value for "j", the length of the bytestream encoding.
+Figure: The initial value for "j", the length of the bytestream encoding. {#figureInitializeLength}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
