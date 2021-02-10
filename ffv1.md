@@ -437,6 +437,18 @@ C~i~
 B~i~
 : the i-th byte of the bytestream.
 
+R~i~
+: the Range at the i-th symbol.
+
+r~i~
+: the boundary between two sub-ranges of R~i~: a sub-range of r~i~ values and a sub-range R~i~ - r~i~ values.
+
+L~i~
+: the Low value of the Range at the i-th symbol.
+
+t~i~
+: a temporary variable to transmit sub-ranges between range coding operations.
+
 b~i~
 : the i-th Range coded binary value.
 
