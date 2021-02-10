@@ -444,7 +444,7 @@ b~i~
 S~0,\ i~
 : the i-th initial state.
 
-j_(n)
+j~n~
 : the length of the bytestream encoding n binary symbols.
 
 The following Range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incremening from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
