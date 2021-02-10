@@ -431,7 +431,6 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 To encode binary digits efficiently a Range coder is used.
 
-{spacing="compact"}
 C~i~
 : the i-th Context.
 
