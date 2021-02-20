@@ -491,7 +491,7 @@ SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 AART:r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
-Figure: A formula of the read of a binary value in Range Binary mode. {#figureGetRacFormula}
+Figure: This formula shows the positioning of range split based on the State. {#figureGetRacFormula}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
@@ -508,13 +508,14 @@ AART:           L_(i) >= R_(i) - r_(i)              ==>
 AART:S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
 AART:           l_(i) =  L_(i) - R_(i) + r_(i)      AND
 AART:           t_(i) =  r_(i)
+Figure: This formula shows the linking of the decoded symbol (represented as b~i~), the updated State (represented as S~i+1,C_(i)~), and the updated range (represented as a range from l~i~ to t~i~).
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}C_{i} \\\\neq k & \\\\Longrightarrow & S_{i+1,k}=S_{i,k}\\\\end{array}$$
 AART:C_(i) != k ==> S_(i + 1, k) = S_(i, k)
-Figure: The "i+1,k"-th State is equal to the "i,k"-th State if the value of "k" is unequal to the i-th value of Context.
+Figure: If the value of "k" is unequal to the i-th value of Context, in other words if the State is unchanged from the last symbol coding, then the value of the State is carried over to the next symbol coding.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
@@ -529,7 +530,7 @@ AART:t_(i)     >= 2 ^ 8                             ==>
 AART:R_(i + 1) =  t_(i)                             AND
 AART:L_(i + 1) =  l_(i)                             AND
 AART:j_(i + 1) =  j_(i)
-Figure: The "i+1"-th values for "Range", "Low", and the length of the bytestream encoding are conditionally set depending on the "i-th" value of "t".
+Figure: This formula shows the linking of the Range coder with the reading or writing of the bytestream.
 
 ```c
     range = 0xFF00;
@@ -540,7 +541,7 @@ Figure: The "i+1"-th values for "Range", "Low", and the length of the bytestream
         end = 1;
     }
 ```
-Figure: A pseudo-code description of the initial states in Range Binary mode.
+Figure: A pseudo-code description of the initialization of Range coder variables in Range Binary mode.
 
 ```c
 refill() {
