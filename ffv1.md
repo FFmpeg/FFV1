@@ -448,6 +448,9 @@ r~i~
 L~i~
 : the Low value of the Range at the i-th symbol.
 
+l~i~
+: a temporary variable to carry-over or adjust the Low value of the Range between range coding operations.
+
 t~i~
 : a temporary variable to transmit sub-ranges between range coding operations.
 
