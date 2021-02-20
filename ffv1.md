@@ -486,6 +486,8 @@ SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 AART:j_(0) = 2
 Figure: The initial value for "j", the length of the bytestream encoding. {#figureInitializeLength}
 
+The following equations define how the Range coder variables evolve as it reads or writes symbols.
+
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
