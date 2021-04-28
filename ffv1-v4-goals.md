@@ -5,6 +5,7 @@
 - BAYER support to efficiently store RAW color CCD images
 - Better error resilience
 - Arbitrary color spaces
+- Limit worst case size after compression
 
 Anything that finds no volunteers will be pushed to v5
 
