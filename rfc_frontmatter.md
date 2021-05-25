@@ -14,7 +14,7 @@ stream = "IETF"
 status = "informational"{V3}
 status = "standard"{V4}
 value = "draft-ietf-cellar-ffv1-20"{V3}
-value = "draft-ietf-cellar-ffv1-v4-17"{V4}
+value = "draft-ietf-cellar-ffv1-v4-18"{V4}
 
 [[author]]
 initials="M."
