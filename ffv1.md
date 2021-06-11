@@ -94,9 +94,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a ^ b`       means a raised to the b-th power.
 
-`a & b`       means bit-wise "and" of a and b.
+`a & b`       means bitwise "and" of a and b.
 
-`a | b`       means bit-wise "or" of a and b.
+`a | b`       means bitwise "or" of a and b.
 
 `a >> b`      means arithmetic right shift of the two's complement integer representation of a by b binary digits. This is equivalent to dividing a by 2, b times, with rounding toward negative infinity.
 
@@ -439,7 +439,7 @@ Figure: Description of the coding of the Sample Difference in the bitstream. {#f
 
 ### Range Coding Mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2020], but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
+Early experimental versions of FFV1 used the Context-Adaptive Binary Arithmetic Coding (CABAC) coder from H.264 as defined in [@ISO.14496-10.2020], but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
 
 #### Range Binary Values
 
@@ -1019,7 +1019,7 @@ QuantizationTable(i, j, scale) {                              |
 
 ### `quant_tables`
 
-`quant_tables[ i ][ j ][ k ]` indicates the quantization table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Quantization Table Set `i`.
+`quant_tables[ i ][ j ][ k ]` indicates the Quantization Table value of the Quantized Sample Difference `k` of the Quantization Table `j` of the Quantization Table Set `i`.
 
 ### `context_count`
 
