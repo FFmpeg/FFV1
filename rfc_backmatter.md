@@ -52,7 +52,7 @@
   </front>
 </reference>
 
-<reference anchor="range-coding">
+<reference anchor="Range-Encoding">
   <front>
     <title>Range encoding: an algorithm for removing redundancy from a digitised message</title>
     <author initials="G. N. N." surname="Martin" fullname="G. N. N. Martin"/>

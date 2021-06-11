@@ -14,7 +14,7 @@ This document defines version 0, 1 and 3 of FFV1. The distinctions of the versio
 
 This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
-This document assumes familiarity with mathematical and coding concepts such as Range coding [@?range-coding] and YCbCr color spaces [@?YCbCr].
+This document assumes familiarity with mathematical and coding concepts such as Range encoding [@?Range-Encoding] and YCbCr color spaces [@?YCbCr].
 
 This specification describes the valid bitstream and how to decode such valid bitstream. Bitstreams not conforming to this specification or how they are handled is outside this specification. A decoder could reject every invalid bitstream or attempt to perform error concealment or re-download or use a redundant copy of the invalid part or any other action it deems appropriate.
 
@@ -437,7 +437,7 @@ Figure: Description of the coding of the Sample Difference in the bitstream. {#f
 
 ### Range Coding Mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2014] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?range-coding].
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2014] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
 
 #### Range Binary Values
 
