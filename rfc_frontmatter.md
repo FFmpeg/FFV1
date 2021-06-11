@@ -6,7 +6,7 @@ ipr= "trust200902"
 area = "art"
 workgroup = "cellar"
 date = @BUILD_DATE@
-keyword = [""]
+keyword = ["video preservation","storage","ffmpeg","lossless compression"]
 
 [seriesInfo]
 name = "Internet-Draft"
