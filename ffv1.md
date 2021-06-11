@@ -221,11 +221,11 @@ For each `Slice` (as described in (#slice)) of a Frame, the Planes, Lines, and S
 
 A border is assumed for each coded `Slice` for the purpose of the median predictor and context according to the following rules:
 
-- one column of Samples to the left of the coded slice is assumed as identical to the Samples of the leftmost column of the coded slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded slice is assumed to be `0`
-- one column of Samples to the right of the coded slice is assumed as identical to the Samples of the rightmost column of the coded slice
-- an additional column of Samples to the left of the coded slice and two rows of Samples above the coded slice are assumed to be `0`
+- one column of Samples to the left of the coded Slice is assumed as identical to the Samples of the leftmost column of the coded Slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded Slice is assumed to be `0`
+- one column of Samples to the right of the coded Slice is assumed as identical to the Samples of the rightmost column of the coded Slice
+- an additional column of Samples to the left of the coded Slice and two rows of Samples above the coded Slice are assumed to be `0`
 
-[@figureAssumedBorder] depicts a slice of 9 Samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
+[@figureAssumedBorder] depicts a Slice of 9 Samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
 
 ```
 +---+---+---+---+---+---+---+---+
@@ -322,7 +322,7 @@ If `context >= 0` then `context` is used and the difference between the Sample a
 
 ## Quantization Table Set Indexes
 
-For each Plane of each slice, a Quantization Table Set is selected from an index:
+For each Plane of each Slice, a Quantization Table Set is selected from an index:
 
 - For Y Plane, `quant_table_set_index[ 0 ]` index is used
 - For Cb and Cr Planes, `quant_table_set_index[ 1 ]` index is used
@@ -606,7 +606,7 @@ Above describes the range decoding. Encoding is defined as any process which pro
 
 There are three places where range coder termination is needed in FFV1.
 First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
-Second is the switch from the `Slice Header` which is range coded to Golomb coded slices as `Sentinel mode`.
+Second is the switch from the `Slice Header` which is range coded to Golomb coded Slices as `Sentinel mode`.
 Third is the end of range coded Slices which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
 
 #### Range Non Binary Values
@@ -816,7 +816,7 @@ Run mode is entered when the context is 0 and left as soon as a non-0 difference
 
 ##### Run Length Coding
 
-The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset for each Plane and slice to 0.
+The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset for each Plane and Slice to 0.
 
 ```c
 log2_run[41] = {
@@ -1199,13 +1199,13 @@ Decoders **SHOULD** accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### num\_h\_slices
 
-`num_h_slices` indicates the number of horizontal elements of the slice raster.
+`num_h_slices` indicates the number of horizontal elements of the Slice raster.
 
 Inferred to be 1 if not present.
 
 ### num\_v\_slices
 
-`num_v_slices` indicates the number of vertical elements of the slice raster.
+`num_v_slices` indicates the number of vertical elements of the Slice raster.
 
 Inferred to be 1 if not present.
 
@@ -1334,7 +1334,7 @@ FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or 
 
 A Frame is an encoded representation of a complete static image. The whole Frame is provided by the underlaying container.
 
-A Frame consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent slices. The pseudocode below describes the contents of a Frame.
+A Frame consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent Slices. The pseudocode below describes the contents of a Frame.
 
 `keyframe` field has its own initial state, set to 128.
 
@@ -1352,23 +1352,23 @@ Frame( NumBytes ) {                                           |
 }                                                             |
 ```
 
-Architecture overview of slices in a Frame:
+Architecture overview of Slices in a Frame:
 
 |                                                               |
 |:--------------------------------------------------------------|
-| first slice header                                            |
-| first slice content                                           |
-| first slice footer                                            |
+| first Slice header                                            |
+| first Slice content                                           |
+| first Slice footer                                            |
 |---------------------------------------------------------------|
-| second slice header                                           |
-| second slice content                                          |
-| second slice footer                                           |
+| second Slice header                                           |
+| second Slice content                                          |
+| second Slice footer                                           |
 |---------------------------------------------------------------|
 | ...                                                           |
 |---------------------------------------------------------------|
-| last slice header                                             |
-| last slice content                                            |
-| last slice footer                                             |
+| last Slice header                                             |
+| last Slice content                                            |
+| last Slice footer                                             |
 
 ## Slice
 
@@ -1438,25 +1438,25 @@ SliceHeader( ) {                                              |
 
 ### slice\_x
 
-`slice_x` indicates the x position on the slice raster formed by num_h_slices.
+`slice_x` indicates the x position on the Slice raster formed by num_h_slices.
 
 Inferred to be 0 if not present.
 
 ### slice\_y
 
-`slice_y` indicates the y position on the slice raster formed by num_v_slices.
+`slice_y` indicates the y position on the Slice raster formed by num_v_slices.
 
 Inferred to be 0 if not present.
 
 ### slice\_width
 
-`slice_width` indicates the width on the slice raster formed by num_h_slices.
+`slice_width` indicates the width on the Slice raster formed by num_h_slices.
 
 Inferred to be 1 if not present.
 
 ### slice\_height
 
-`slice_height` indicates the height on the slice raster formed by num_v_slices.
+`slice_height` indicates the height on the Slice raster formed by num_v_slices.
 
 Inferred to be 1 if not present.
 
@@ -1515,17 +1515,17 @@ If `sar_num` is 0, decoders **SHOULD** ignore the encoded value and consider tha
 
 ### reset\_contexts{V4}
 
-`reset_contexts` indicates if slice contexts **MUST** be reset.{V4}
+`reset_contexts` indicates if Slice contexts **MUST** be reset.{V4}
 {V4}
 Inferred to be 0 if not present.{V4}
 
 ### slice\_coding\_mode{V4}
 
-`slice_coding_mode` indicates the slice coding mode.{V4}
+`slice_coding_mode` indicates the Slice coding mode.{V4}
 {V4}
 Inferred to be 0 if not present.{V4}
 
-|value  | slice coding mode            |{V4}
+|value  | Slice coding mode            |{V4}
 |-------|:-----------------------------|{V4}
 | 0     | Range Coding or Golomb Rice  |{V4}
 | 1     | raw PCM                      |{V4}
