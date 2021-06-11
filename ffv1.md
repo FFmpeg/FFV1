@@ -25,29 +25,41 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
-`FFV1`: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
+FFV1:
+: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
 
-`Container`: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
+Container:
+: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
-`Sample`: The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
+Sample:
+: The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
 
-`Symbol`: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
+Symbol:
+: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
 
-`Line`: A discrete component of a static image composed of Samples that represent a specific quantification of Samples of that image.
+Line:
+: A discrete component of a static image composed of Samples that represent a specific quantification of Samples of that image.
 
-`Plane`: A discrete component of a static image composed of Lines that represent a specific quantification of Lines of that image.
+Plane:
+: A discrete component of a static image composed of Lines that represent a specific quantification of Lines of that image.
 
-`Pixel`: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
+Pixel:
+: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
 
-`MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
+MSB:
+: Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
 
-`VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
+VLC:
+: Variable Length Code, a code that maps source symbols to a variable number of bits.
 
-`RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
+RGB:
+: A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chroma of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
+YCbCr:
+: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chroma of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo (luma, blue-difference chroma, red-difference chroma), or ICtCp (intensity, blue-yellow, red-green).
 
-`TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification. {V4}
+TBA:{V4}
+: To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
 
 ## Conventions
 
