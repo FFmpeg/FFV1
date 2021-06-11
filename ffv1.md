@@ -63,20 +63,20 @@ TBA:{V4}
 
 ## Conventions
 
-### Pseudo-code
+### Pseudocode
 
-The FFV1 bitstream is described in this document using pseudo-code. Note that the pseudo-code is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudo-code used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while` and `for` keywords as well as functions defined within this document.
+The FFV1 bitstream is described in this document using pseudocode. Note that the pseudocode is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudocode used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while` and `for` keywords as well as functions defined within this document.
 
-In some instances, pseudo-code is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a Symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudo-code.
+In some instances, pseudocode is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a Symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudocode.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 ExamplePseudoCode( ) {                                        |
     value                                                     | ur
 }                                                             |
 ```
-Figure: A depiction of type-labelled pseudo-code used within this document. {#figurePseudoCode}
+Figure: A depiction of type-labelled pseudocode used within this document. {#figurePseudoCode}
 
 ### Arithmetic Operators
 
@@ -557,7 +557,7 @@ Figure: This formula shows the linking of the Range coder with the reading or wr
         end = 1;
     }
 ```
-Figure: A pseudo-code description of the initialization of Range coder variables in Range Binary mode.
+Figure: A pseudocode description of the initialization of Range coder variables in Range Binary mode.
 
 ```c
 refill() {
@@ -573,7 +573,7 @@ refill() {
     }
 }
 ```
-Figure: A pseudo-code description of refilling the Range Binary Value coder buffer.
+Figure: A pseudocode description of refilling the Range Binary Value coder buffer.
 
 ```c
 get_rac(state) {
@@ -592,7 +592,7 @@ get_rac(state) {
     }
 }
 ```
-Figure: A pseudo-code description of the read of a binary value in Range Binary mode. {#figureGetRacPseudoCode}
+Figure: A pseudocode description of the read of a binary value in Range Binary mode. {#figureGetRacPseudoCode}
 
 ##### Termination
 
@@ -642,11 +642,11 @@ int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
     }
 }
 ```
-Figure: A pseudo-code description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
+Figure: A pseudocode description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
 
 `get_symbol` is used for the read out of `sample_difference` indicated in [@figureSampleDifference].
 
-`get_rac` returns a boolean, computed from the bytestream as described in [@figureGetRacFormula] as a formula and in [@figureGetRacPseudoCode] as pseudo-code.
+`get_rac` returns a boolean, computed from the bytestream as described in [@figureGetRacFormula] as a formula and in [@figureGetRacPseudoCode] as pseudocode.
 
 #### Initial Values for the Context Model
 
@@ -767,7 +767,7 @@ int get_ur_golomb(k) {
     return get_bits(bits) + 11;
 }
 ```
-Figure: A pseudo-code description of the read of an unsigned integer in Golomb Rice mode.
+Figure: A pseudocode description of the read of an unsigned integer in Golomb Rice mode.
 
 ```c
 int get_sr_golomb(k) {
@@ -776,7 +776,7 @@ int get_sr_golomb(k) {
     else       return   (v >> 1);
 }
 ```
-Figure: A pseudo-code description of the read of a signed integer in Golomb Rice mode.
+Figure: A pseudocode description of the read of a signed integer in Golomb Rice mode.
 
 ##### Prefix
 
@@ -946,7 +946,7 @@ When `keyframe` (see (#frame)) value is 1, all VLC coder state variables are set
 
 An FFV1 bitstream is composed of a series of one or more Frames and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudo-code is used, as described in (#pseudo-code), to explain the structure of each FFV1 bitstream component. [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudo-code in order to define the storage of the data referenced in that line of pseudo-code.
+Within the following sub-sections, pseudocode is used, as described in (#pseudocode), to explain the structure of each FFV1 bitstream component. [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudocode in order to define the storage of the data referenced in that line of pseudocode.
 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
@@ -956,7 +956,7 @@ Within the following sub-sections, pseudo-code is used, as described in (#pseudo
 | ur   | Range coded unsigned scalar Symbol coded with the method described in (#range-non-binary-values) |
 | sr   | Range coded signed scalar Symbol coded with the method described in (#range-non-binary-values)   |
 | sd   | Sample difference Symbol coded with the method described in (#coding-of-the-sample-difference)   |
-Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
+Table: Definition of pseudocode symbols for this document. {#tablePseudoCodeSymbols}
 
 The following **MUST** be provided by external means during initialization of the decoder:
 
@@ -970,7 +970,7 @@ Default values at the decoder initialization phase:
 
 ## Quantization Table Set
 
-The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudo-code below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudo-code.
+The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudocode below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudocode.
 
 Example:
 
@@ -981,7 +981,7 @@ Stored values: 1, 3, 1
 `QuantizationTableSet` has its own initial states, all set to 128.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 QuantizationTableSet( i ) {                                   |
     scale = 1                                                 |
@@ -996,7 +996,7 @@ QuantizationTableSet( i ) {                                   |
 `MAX_CONTEXT_INPUTS` is 5.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
@@ -1033,7 +1033,7 @@ The `Parameters` section contains significant characteristics about the decoding
 `Parameters` has its own initial states, all set to 128.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 Parameters( ) {                                               |
     version                                                   | ur
@@ -1078,7 +1078,7 @@ Parameters( ) {                                               |
     }                                                         |
 }                                                             |
 ```
-Figure: A pseudo-code description of the bitstream contents. {#figureBitstream}
+Figure: A pseudocode description of the bitstream contents. {#figureBitstream}
 
 CONTEXT_SIZE is 32.
 
@@ -1290,7 +1290,7 @@ Table: The definitions for `intra` values. {#tableIntra}
 In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying Container as described in (#mapping-ffv1-into-containers). It contains the `Parameters` used for all instances of Frame. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying Container.
 
 ```c
-pseudo-code                                                | type
+pseudocode                                                 | type
 -----------------------------------------------------------|-----
 ConfigurationRecord( NumBytes ) {                          |
     ConfigurationRecordIsPresent = 1                       |
@@ -1352,12 +1352,12 @@ FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or 
 
 A Frame is an encoded representation of a complete static image. The whole Frame is provided by the underlaying container.
 
-A Frame consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent Slices. The pseudo-code below describes the contents of a Frame.
+A Frame consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent Slices. The pseudocode below describes the contents of a Frame.
 
 `keyframe` field has its own initial state, set to 128.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 Frame( NumBytes ) {                                           |
     keyframe                                                  | br
@@ -1392,10 +1392,10 @@ Architecture overview of Slices in a Frame:
 
 A `Slice` is an independent spatial sub-section of a Frame that is encoded separately from another region of the same Frame. The use of more than one `Slice` per Frame can be useful for taking advantage of the opportunities of multithreaded encoding and decoding.
 
-A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudo-code below describes the contents of a `Slice`.
+A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudocode below describes the contents of a `Slice`.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 Slice( ) {                                                    |
     if (version >= 3) {                                       |
@@ -1429,12 +1429,12 @@ Decoders **SHOULD** ignore `reserved`.
 
 ## Slice Header
 
-A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudo-code below describes the contents of the `Slice Header`.
+A `Slice Header` provides information about the decoding configuration of the `Slice`, such as its spatial position, size, and aspect ratio. The pseudocode below describes the contents of the `Slice Header`.
 
 `Slice Header` has its own initial states, all set to 128.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 SliceHeader( ) {                                              |
     slice_x                                                   | ur
@@ -1558,7 +1558,7 @@ A `Slice Content` contains all Line elements part of the `Slice`.
 Depending on the configuration, Line elements are ordered by Plane then by row (YCbCr) or by row then by Plane (RGB).
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
     if (colorspace_type == 0) {                               |
@@ -1617,10 +1617,10 @@ floor( slice_y * frame_pixel_height / num_v_slices )
 
 ## Line
 
-A Line is a list of the sample differences (relative to the predictor) of primary color components. The pseudo-code below describes the contents of the Line.
+A Line is a list of the sample differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the Line.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
@@ -1671,12 +1671,12 @@ floor( slice_x * frame_pixel_width / num_h_slices )
 
 ## Slice Footer
 
-A `Slice Footer` provides information about Slice size and (optionally) parity. The pseudo-code below describes the contents of the `Slice Footer`.
+A `Slice Footer` provides information about Slice size and (optionally) parity. The pseudocode below describes the contents of the `Slice Footer`.
 
 Note: `Slice Footer` is always byte aligned.
 
 ```c
-pseudo-code                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 SliceFooter( ) {                                              |
     slice_size                                                | u(24)
