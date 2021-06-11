@@ -20,7 +20,7 @@ This specification describes the valid bitstream and how to decode such valid bi
 
 # Notation and Conventions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [@!RFC2119] [@!RFC8174] when, and only when, they appear in all capitals, as shown here.
+The key words "**MUST**", "**MUST NOT**", "**REQUIRED**", "**SHALL**", "**SHALL NOT**", "**SHOULD**", "**SHOULD NOT**", "**RECOMMENDED**", "**NOT RECOMMENDED**", "**MAY**", and "**OPTIONAL**" in this document are to be interpreted as described in BCP 14 [@!RFC2119] [@!RFC8174] when, and only when, they appear in all capitals, as shown here.
 
 
 ## Definitions
@@ -273,7 +273,7 @@ Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV
 
 ### Exception
 
-If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#coder-type)), the following median predictor MUST be used:
+If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#coder-type)), the following median predictor **MUST** be used:
 
 ```
 median(left16s, top16s, left16s + top16s - diag16s)
@@ -342,18 +342,18 @@ The FFV1 bitstream interleaves data in an order determined by the color space. I
 
 This color space allows 1 to 4 Planes.
 
-The Cb and Cr Planes are optional, but if used then MUST be used together. Omitting the Cb and Cr Planes codes the frames in grayscale without color data.
+The Cb and Cr Planes are optional, but if used then **MUST** be used together. Omitting the Cb and Cr Planes codes the frames in grayscale without color data.
 
 An optional transparency Plane can be used to code transparency data.
 
-An FFV1 Frame using YCbCr MUST use one of the following arrangements:
+An FFV1 Frame using YCbCr **MUST** use one of the following arrangements:
 
 - Y
 - Y, Transparency
 - Y, Cb, Cr
 - Y, Cb, Cr, Transparency
 
-The Y Plane MUST be coded first. If the Cb and Cr Planes are used then they MUST be coded after the Y Plane. If a transparency Plane is used, then it MUST be coded last.
+The Y Plane **MUST** be coded first. If the Cb and Cr Planes are used then they **MUST** be coded after the Y Plane. If a transparency Plane is used, then it **MUST** be coded last.
 
 ### RGB
 
@@ -403,7 +403,7 @@ Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1
 
 #### Exception
 
-If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB MUST be used instead of the ones above:
+If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB **MUST** be used instead of the ones above:
 
 SVGI:!---
 SVGI:![svg](rgb3.svg "rgb 3")
@@ -602,7 +602,7 @@ The range coder can be used in three modes.
 
 * In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
 
-* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder MAY read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary Symbol with state 129, which value SHALL be discarded. After reading this Symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) Symbol will be read non-corrupted and be of value 0.
+* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder **MAY** read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary Symbol with state 129, which value **SHALL** be discarded. After reading this Symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) Symbol will be read non-corrupted and be of value 0.
 
 Above describes the range decoding. Encoding is defined as any process which produces a decodable bytestream.
 
@@ -712,7 +712,7 @@ Figure: Default state transition table for Range coding. {#figureDefaultStateTra
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) MUST be set to 2 and the difference to the default MUST be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) **MUST** be set to 2 and the difference to the default **MUST** be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -801,7 +801,7 @@ Table: Description of the coding of the Prefix of Signed Golomb Rice Codes {#tab
 |ESC           | the value - 11, in MSB first order                      |
 Table: Description of the coding of the Suffix of Signed Golomb Rice Codes {#tableSignedGolombRiceCodesSuffix}
 
-ESC MUST NOT be used if the value can be coded as non ESC.
+ESC **MUST NOT** be used if the value can be coded as non ESC.
 
 ##### Examples
 
@@ -859,7 +859,7 @@ The `log2_run` array is also used within [@ISO.14495-1.1999].
 
 #### Sign extension
 
-`sign_extend` is the function of increasing the number of bits of an input binary number in twos complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It MAY be computed with:
+`sign_extend` is the function of increasing the number of bits of an input binary number in twos complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It **MAY** be computed with:
 
 ```c
 sign_extend(input_number, input_bits) {
@@ -958,7 +958,7 @@ Within the following sub-sections, pseudo-code is used, as described in (#pseudo
 | sd   | Sample difference Symbol coded with the method described in (#coding-of-the-sample-difference)   |
 Table: Definition of pseudo-code symbols for this document. {#tablePseudoCodeSymbols}
 
-The following MUST be provided by external means during initialization of the decoder:
+The following **MUST** be provided by external means during initialization of the decoder:
 
 `frame_pixel_width` is defined as Frame width in Pixels.
 
@@ -1024,7 +1024,7 @@ QuantizationTable(i, j, scale) {                              |
 
 ### context\_count
 
-`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` MUST be less than or equal to 32768.
+`context_count[ i ]` indicates the count of contexts for Quantization Table Set `i`. `context_count[ i ]` **MUST** be less than or equal to 32768.
 
 ## Parameters
 
@@ -1086,11 +1086,11 @@ CONTEXT_SIZE is 32.
 
 `version` specifies the version of the FFV1 bitstream.
 
-Each version is incompatible with other versions: decoders SHOULD reject FFV1 bitstreams due to an unknown version.
+Each version is incompatible with other versions: decoders **SHOULD** reject FFV1 bitstreams due to an unknown version.
 
-Decoders SHOULD reject FFV1 bitstreams with version <= 1 && ConfigurationRecordIsPresent == 1.
+Decoders **SHOULD** reject FFV1 bitstreams with version <= 1 && ConfigurationRecordIsPresent == 1.
 
-Decoders SHOULD reject FFV1 bitstreams with version >= 3 && ConfigurationRecordIsPresent == 0.
+Decoders **SHOULD** reject FFV1 bitstreams with version >= 3 && ConfigurationRecordIsPresent == 0.
 
 |value   | version                 |
 |:-------|:------------------------|
@@ -1108,7 +1108,7 @@ Table: The definitions for `version` values. {#tableVersion}
 
 `micro_version` specifies the micro-version of the FFV1 bitstream.
 
-After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders SHOULD NOT reject FFV1 bitstreams due to an unknown micro-version equal or above the micro-version considered as stable.
+After a version is considered stable (a micro-version value is assigned to be the first stable variant of a specific version), each new micro-version after this first stable variant is compatible with the previous micro-version: decoders **SHOULD NOT** reject FFV1 bitstreams due to an unknown micro-version equal or above the micro-version considered as stable.
 
 Meaning of `micro_version` for `version` 3:
 
@@ -1146,7 +1146,7 @@ Table: The definitions for `coder_type` values. {#tableCoderType}
 
 Restrictions:
 
-If `coder_type` is 0, then `bits_per_raw_sample` SHOULD NOT be > 8.
+If `coder_type` is 0, then `bits_per_raw_sample` **SHOULD NOT** be > 8.
 
 Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and Range Coder is prefered.
 
@@ -1189,8 +1189,8 @@ Table: The definitions for `chroma_planes` values. {#tableChromaPlanes}
 | Other | the actual bits for each Sample               |
 Table: The definitions for `bits_per_raw_sample` values. {#tableBitsPerRawSample}
 
-\* Encoders MUST NOT store `bits_per_raw_sample` = 0.
-Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
+\* Encoders **MUST NOT** store `bits_per_raw_sample` = 0.
+Decoders **SHOULD** accept and interpret `bits_per_raw_sample` = 0 as 8.
 
 ### log2\_h\_chroma\_subsample
 
@@ -1224,11 +1224,11 @@ Inferred to be 1 if not present.
 
 ### quant\_table\_set\_count
 
-`quant_table_set_count` indicates the number of Quantization Table Sets. `quant_table_set_count` MUST be less than or equal to 8.
+`quant_table_set_count` indicates the number of Quantization Table Sets. `quant_table_set_count` **MUST** be less than or equal to 8.
 
 Inferred to be 1 if not present.
 
-MUST NOT be 0.
+**MUST NOT** be 0.
 
 ### states\_coded
 
@@ -1281,7 +1281,7 @@ Inferred to be 0 if not present.
 |value  | relationship                                                     |
 |-------|:-----------------------------------------------------------------|
 |0      | `keyframe` can be 0 or 1 (non keyframes or keyframes)            |
-|1      | `keyframe` MUST be 1 (keyframes only)                            |
+|1      | `keyframe` **MUST** be 1 (keyframes only)                        |
 |Other  | reserved for future use                                          |
 Table: The definitions for `intra` values. {#tableIntra}
 
@@ -1306,9 +1306,9 @@ ConfigurationRecord( NumBytes ) {                          |
 
 `reserved_for_future_use` is a placeholder for future updates of this specification.
 
-Encoders conforming to this version of this specification SHALL NOT write `reserved_for_future_use`.
+Encoders conforming to this version of this specification **SHALL NOT** write `reserved_for_future_use`.
 
-Decoders conforming to this version of this specification SHALL ignore `reserved_for_future_use`.
+Decoders conforming to this version of this specification **SHALL** ignore `reserved_for_future_use`.
 
 ### configuration\_record\_crc\_parity
 
@@ -1344,7 +1344,7 @@ The `codec_specific_data` element (in `stream_header` packet) contains the Confi
 
 #### Matroska File Format
 
-FFV1 SHOULD use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element SHOULD NOT be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element MUST contain the FFV1 `Configuration Record` structure and no other data. See [@!Matroska] for more information about elements.
+FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element **SHOULD NOT** be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element **MUST** contain the FFV1 `Configuration Record` structure and no other data. See [@!Matroska] for more information about elements.
 
 `NumBytes` is defined as the `Element Data Size` of the `CodecPrivate` Element.
 
@@ -1419,13 +1419,13 @@ Slice( ) {                                                    |
 ```
 
 `padding` specifies a bit without any significance and used only for byte alignment.
-MUST be 0.
+**MUST** be 0.
 
 `reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.
 
-Encoders SHOULD NOT fill `reserved`.
+Encoders **SHOULD NOT** fill `reserved`.
 
-Decoders SHOULD ignore `reserved`.
+Decoders **SHOULD** ignore `reserved`.
 
 ## Slice Header
 
@@ -1516,9 +1516,9 @@ Inferred to be 0 if not present.
 
 A value of 0 means that aspect ratio is unknown.
 
-Encoders MUST write 0 if Sample aspect ratio is unknown.
+Encoders **MUST** write 0 if Sample aspect ratio is unknown.
 
-If `sar_den` is 0, decoders SHOULD ignore the encoded value and consider that `sar_num` is 0.
+If `sar_den` is 0, decoders **SHOULD** ignore the encoded value and consider that `sar_num` is 0.
 
 ### sar\_den
 
@@ -1528,13 +1528,13 @@ Inferred to be 0 if not present.
 
 A value of 0 means that aspect ratio is unknown.
 
-Encoders MUST write 0 if Sample aspect ratio is unknown.
+Encoders **MUST** write 0 if Sample aspect ratio is unknown.
 
-If `sar_num` is 0, decoders SHOULD ignore the encoded value and consider that `sar_den` is 0.
+If `sar_num` is 0, decoders **SHOULD** ignore the encoded value and consider that `sar_den` is 0.
 
 ### reset\_contexts{V4}
 
-`reset_contexts` indicates if slice contexts MUST be reset.{V4}
+`reset_contexts` indicates if slice contexts **MUST** be reset.{V4}
 {V4}
 Inferred to be 0 if not present.{V4}
 
@@ -1715,20 +1715,20 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 
 # Restrictions
 
-To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` MUST be less or equal to `num_h_slices * num_v_slices / 4`.
+To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` **MUST** be less or equal to `num_h_slices * num_v_slices / 4`.
 Note: 101376 is the frame size in Pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
-For each Frame, each position in the slice raster MUST be filled by one and only one slice of the Frame (no missing slice position, no slice overlapping).
+For each Frame, each position in the slice raster **MUST** be filled by one and only one slice of the Frame (no missing slice position, no slice overlapping).
 
-For each Frame with `keyframe` value of 0, each slice MUST have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous Frame.{V3}
-For each Frame with `keyframe` value of 0, each slice MUST have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous Frame, except if `reset_contexts` is 1.{V4}
+For each Frame with `keyframe` value of 0, each slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous Frame.{V3}
+For each Frame with `keyframe` value of 0, each slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a slice in the previous Frame, except if `reset_contexts` is 1.{V4}
 
 # Security Considerations
 
 Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads MUST NOT cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams MUST NOT cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
-The range coder could, if implemented naively, read one byte over the end. The implementation MUST ensure that no read outside allocated and initialized memory occurs.
+Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
+The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
 
@@ -1750,7 +1750,7 @@ Required parameters:
 : None.
 
 Optional parameters:
-: These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
+: These parameters are used to signal the capabilities of a receiver implementation. These parameters **MUST NOT** be used for any other purpose.
     `version`:
     : The `version` of the FFV1 encoding as defined by (#version).
     
