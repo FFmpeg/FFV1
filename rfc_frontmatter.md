@@ -33,7 +33,7 @@ fullname="Dave Rice"
 [[author]]
 initials="J."
 surname="Martinez"
-fullname="Jerome Martinez"
+fullname="Jérôme Martinez"
   [author.address]
   email="jerome@mediaarea.net"
 %%%
