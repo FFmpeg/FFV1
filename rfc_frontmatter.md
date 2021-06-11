@@ -1,5 +1,5 @@
 %%%
-title = "FFV1 Video Coding Format Version 0, 1, and 3"{V3}
+title = "FFV1 Video Coding Format Versions 0, 1, and 3"{V3}
 title = "FFV1 Video Coding Format Version 4"{V4}
 abbrev = "FFV1"
 ipr= "trust200902"
