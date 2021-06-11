@@ -12,14 +12,15 @@
   <seriesInfo name="ISO" value="Standard 9899"/>
 </reference>
 
-<reference anchor="ISO.15444-1.2016">
+<reference anchor="ISO.15444-1.2019">
   <front>
     <title>Information technology -- JPEG 2000 image coding system: Core coding system</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="October" year="2016" />
+    <date year="2019" month="October"/>
   </front>
+    <refcontent>ISO/IEC 15444-1:2019</refcontent>
 </reference>
 
 <reference anchor="ISO.14495-1.1999">
