@@ -211,7 +211,7 @@ In all of the conditions above, the decoder and encoder was run inside the [@VAL
 
 ## FFV1 Decoder in Go
 
-An FFV1 decoder was [@FFV1GO] written in Go by Derek Buitenhuis during the work to development this document.
+An FFV1 decoder [@FFV1GO] was written in Go by Derek Buitenhuis during the work to develop this document.
 
 ## MediaConch
 
