@@ -56,7 +56,7 @@ RGB:
 : A reference to the method of storing the value of a pixel by using three numeric values that represent Red, Green, and Blue.
 
 YCbCr:
-: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). The term YCbCr is used for historical reasons and currently references any color space relying on one luma Sample and two chroma Samples, e.g., YCbCr, YCgCo (luma, blue-difference chroma, red-difference chroma), or ICtCp (intensity, blue-yellow, red-green).
+: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). The term YCbCr is used for historical reasons and currently references any color space relying on one luma Sample and two chroma Samples, e.g., YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo, or ICtCp (intensity, blue-yellow, red-green).
 
 TBA:{V4}
 : To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
