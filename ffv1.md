@@ -1314,7 +1314,7 @@ See [@AVI] for more information about chunks.
 
 #### ISO Base Media File Format
 
-The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box that contains the `ConfigurationRecord` bitstream. See [@ISO.14496-12.2015] for more information about boxes.
+The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box that contains the `ConfigurationRecord` bitstream. See [@ISO.14496-12.2020] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 

@@ -43,13 +43,13 @@
   </front>
 </reference>
 
-<reference anchor="ISO.14496-12.2015">
+<reference anchor="ISO.14496-12.2020">
   <front>
     <title>Information technology -- Coding of audio-visual objects -- Part 12: ISO base media file format</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="December" year="2015" />
+    <date year="2020" month="December"/>
   </front>
 </reference>
 
