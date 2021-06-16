@@ -750,7 +750,7 @@ The end of the bitstream of the Frame is padded with zeroes until the bitstream 
 
 #### Signed Golomb Rice Codes
 
-This coding mode uses Golomb Rice codes. The VLC is split into two parts. The prefix stores the most significant bits, and the suffix stores the k least significant bits or stores the whole number in the ESC case (see (#prefix)).
+This coding mode uses Golomb Rice codes. The VLC is split into two parts: the prefix and suffix. The prefix stores the most significant bits or indicates if the symbol is tool large to be stored (this is known as the ESC case, see (#prefix)). The suffix either stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
 int get_ur_golomb(k) {
@@ -1229,7 +1229,7 @@ Inferred to be 0 if not present.
 
 ### initial\_state\_delta
 
-`initial_state_delta[ i ][ j ][ k ]` indicates the initial range coder state, and it is encoded using `k` as context index and
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial range coder state, and it is encoded using `k` as context index for the range coder and the following pseudocode:
 
 SVGI:!---
 SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
@@ -1373,7 +1373,7 @@ The following is an architecture overview of Slices in a Frame:
 
 ## Slice
 
-A `Slice` is an independent, spatial subsection of a Frame that is encoded separately from another region of the same Frame. The use of more than one `Slice` per Frame provides opportunities for taking advantage of the opportunities of multithreaded encoding and decoding.
+A `Slice` is an independent, spatial subsection of a Frame that is encoded separately from another region of the same Frame. The use of more than one `Slice` per Frame provides opportunities for taking advantage of multithreaded encoding and decoding.
 
 A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudocode below describes the contents of a `Slice`.
 
@@ -1601,7 +1601,7 @@ floor( slice_y * frame_pixel_height / num_v_slices )
 A `Line` is a list of the Sample Differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the `Line`.
 
 ```c
-pseudocode                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 Line( p, y ) {                                                |
     if (colorspace_type == 0) {                               |
@@ -1700,14 +1700,14 @@ Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF (C
 
 For each Frame, each position in the Slice raster **MUST** be filled by one and only one Slice of the Frame (no missing Slice position and no Slice overlapping).
 
-For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a Slice in the previous Frame.{V3}
-For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a Slice in the previous Frame, except if `reset_contexts` is 1.{V4}
+For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, and `slice_height` as a Slice in the previous Frame.{V3}
+For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, and `slice_height` as a Slice in the previous Frame, except if `reset_contexts` is 1.{V4}
 
 # Security Considerations
 
 Like any other codec (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the range of the arithmetic type.
 The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
