@@ -951,7 +951,6 @@ Within the following sub-sections, pseudocode is used, as described in (#pseudoc
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | unsigned big endian integer Symbol using n bits               |
-| sg   | Golomb Rice coded signed scalar Symbol coded with the method described in (#golomb-rice-mode)    |
 | br   | Range coded Boolean (1-bit) Symbol with the method described in (#range-binary-values)           |
 | ur   | Range coded unsigned scalar Symbol coded with the method described in (#range-non-binary-values) |
 | sr   | Range coded signed scalar Symbol coded with the method described in (#range-non-binary-values)   |
