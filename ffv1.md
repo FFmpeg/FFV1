@@ -944,7 +944,6 @@ Within the following subsections, pseudocode as described in (#pseudocode) is us
 |symbol| definition                                             |
 |------|--------------------------------------------------------|
 | u(n) | Unsigned, big-endian integer symbol using n bits               |
-| sg   | Signed scalar symbol that is Golomb Rice coded with the method described in (#golomb-rice-mode)   |
 | br   | Boolean (1-bit) symbol that is range coded with the method described in (#range-binary-values)           |
 | ur   | Unsigned scalar symbol that is range coded with the method described in (#range-nonbinary-values) |
 | sr   | Signed scalar symbol that is range coded with the method described in (#range-nonbinary-values)   |
