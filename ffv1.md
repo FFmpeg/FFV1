@@ -203,7 +203,7 @@ a = b, a += b, a -= b, a *= b
 
 #### remaining\_symbols\_in\_syntax
 
-`remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
+`remaining_symbols_in_syntax( )` is true as long as the range coder has not consumed all the given input bytes.
 
 #### byte_aligned
 
@@ -1457,7 +1457,7 @@ Inferred to be 1 if not present.
 
 ### slice\_height
 
-`slice_height` indicates the height on the Slice raster formed by num_v_slices.
+`slice_height` indicates the height on the Slice raster formed by `num_v_slices`.
 
 Inferred to be 1 if not present.
 
@@ -1578,7 +1578,7 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 ### slice\_pixel\_height
 
-`slice_pixel_height` is the height in pixels of the slice. It is defined as:
+`slice_pixel_height` is the height in pixels of the Slice. It is defined as the following:
 
 ```
 floor(
@@ -1590,7 +1590,7 @@ floor(
 
 ### slice\_pixel\_y
 
-`slice_pixel_y` is the slice vertical position in pixels. It is defined as the following:
+`slice_pixel_y` is the Slice vertical position in pixels. It is defined as the following:
 
 ```
 floor( slice_y * frame_pixel_height / num_v_slices )
@@ -1598,7 +1598,7 @@ floor( slice_y * frame_pixel_height / num_v_slices )
 
 ## Line
 
-A Line is a list of the sample differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the Line.
+A `Line` is a list of the Sample Differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the `Line`.
 
 ```c
 pseudocode                                                   | type
@@ -1618,7 +1618,7 @@ Line( p, y ) {                                                |
 
 ### plane\_pixel\_width
 
-`plane_pixel_width[ p ]` is the width in Pixels of Plane p of the `Slice`. It is defined as the following:
+`plane_pixel_width[ p ]` is the width in pixels of Plane p of the `Slice`. It is defined as the following:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1628,7 +1628,7 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 ### slice\_pixel\_width
 
-`slice_pixel_width` is the width in Pixels of the slice. It is defined as the following:
+`slice_pixel_width` is the width in pixels of the Slice. It is defined as the following:
 
 ```
 floor(
@@ -1640,7 +1640,7 @@ floor(
 
 ### slice\_pixel\_x
 
-`slice_pixel_x` is the slice horizontal position in Pixels. It is defined as the following:
+`slice_pixel_x` is the Slice horizontal position in pixels. It is defined as the following:
 
 ```
 floor( slice_x * frame_pixel_width / num_h_slices )
@@ -1672,7 +1672,7 @@ SliceFooter( ) {                                              |
 
 `slice_size` indicates the size of the Slice in bytes.
 
-Note: this allows finding the start of slices before previous slices have been fully decoded and allows parallel decoding as well as error resilience.
+Note: this allows finding the start of Slices before previous Slices have been fully decoded and allows parallel decoding as well as error resilience.
 
 ### error\_status
 
@@ -1687,7 +1687,7 @@ Note: this allows finding the start of slices before previous slices have been f
 
 ### slice\_crc\_parity
 
-`slice_crc_parity` is 32 bits that are chosen so that the slice as a whole has a CRC remainder of 0.
+`slice_crc_parity` is 32 bits that are chosen so that the Slice as a whole has a CRC remainder of 0.
 
 This is equivalent to storing the CRC remainder in the 32-bit parity.
 
@@ -1714,7 +1714,7 @@ None of the content carried in FFV1 is intended to be executable.
 
 # IANA Considerations
 
-IANA has registered the following values:
+IANA has registered the following values.
 
 ## Media Type Definition
 
