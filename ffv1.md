@@ -988,7 +988,7 @@ QuantizationTableSet( i ) {                                   |
 `MAX_CONTEXT_INPUTS` is 5.
 
 ```c
-pseudocode                                                   | type
+pseudocode                                                    | type
 --------------------------------------------------------------|-----
 QuantizationTable(i, j, scale) {                              |
     v = 0                                                     |
@@ -1020,7 +1020,7 @@ QuantizationTable(i, j, scale) {                              |
 
 ## Parameters
 
-The `Parameters` function contains significant characteristics about the decoding configuration used for all instances of Frame (in FFV1 versions 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and Quantization Tables. [@figureBitstream] describes the contents of the bitstream.
+The `Parameters` section of the bitstream contains significant characteristics about the decoding configuration used for all instances of Frame (in FFV1 versions 0 and 1) or the whole FFV1 bitstream (other versions), including the stream version, color configuration, and Quantization Tables. [@figureBitstream] describes the contents of the bitstream.
 
 `Parameters` has its own initial states, all set to 128.
 
@@ -1568,7 +1568,7 @@ SliceContent( ) {                                             |
 
 ### plane\_pixel\_height
 
-`plane_pixel_height[ p ]` is the height in Pixels of Plane p of the `Slice`. It is defined as the following:
+`plane_pixel_height[ p ]` is the height in pixels of Plane p of the `Slice`. It is defined as the following:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1707,7 +1707,7 @@ For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same v
 
 Like any other codec (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the range of the arithmetic type.
+Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in pixel count computations without considering that the multiplication result may have overflowed the range of the arithmetic type.
 The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
