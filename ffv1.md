@@ -56,7 +56,7 @@ RGB:
 : A reference to the method of storing the value of a pixel by using three numeric values that represent Red, Green, and Blue.
 
 YCbCr:
-: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
+: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo or ICtCp (intensity, blue-yellow, red-green). The exact meaning of the three numeric values is unspecified.
 
 TBA:{V4}
 : To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
@@ -423,7 +423,7 @@ AART:r = Cr + b
 AART:g = Cb + b
 Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, GBR Planes were used as BGR Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, Green Blue Red (GBR) Planes were used as Blue Green Red (BGR) Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 ## Coding of the Sample Difference
 
