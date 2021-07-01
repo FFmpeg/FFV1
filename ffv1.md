@@ -399,7 +399,7 @@ In JPEG 2000 RCT, the coding order is left to right and then top to bottom, with
 
 Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1,2) Cr(2,2)
 
-#### Exception
+#### RGB Exception
 
 If `bits_per_raw_sample` is between 9 and 15 inclusive and `extra_plane` is 0, the following formulae for reversible conversions between YCbCr and RGB **MUST** be used instead of the ones above:
 

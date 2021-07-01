@@ -188,7 +188,7 @@ The FFV1 bitstream is parsable in two ways: in sequential order as described in 
 
 After having checked `keyframe` field, a decoder SHOULD parse `slice_size` fields, from `slice_size` of the last slice at the end of the `Frame` up to `slice_size` of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder MAY fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of slices not coherent...) or if there is no possibility of seeking into the stream.
 
-# Future handling of some streams created by non conforming encoders
+# Future Handling of Some Streams Created by Nonconforming Encoders
 
 This appendix is informative.
 
@@ -216,4 +216,4 @@ An FFV1 decoder [@FFV1GO] was written in Go by Derek Buitenhuis during the work 
 
 ## MediaConch
 
-The developers of the MediaConch project [@MediaConch] created an independent FFV1 decoder as part of that project to validate FFV1 bitstreams. This work led to the discovery of three conflicts between existing FFV1 implementations and this document without the added exceptions.
+The developers of the MediaConch project [@MediaConch] created an independent FFV1 decoder as part of that project to validate FFV1 bitstreams. This work led to the discovery of three conflicts between existing FFV1 implementations and draft versions of this document. These issues are addressed by (#rgb-exception), (#exception), and (#future-handling-of-some-streams-created-by-nonconforming-encoders).
