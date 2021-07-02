@@ -12,15 +12,74 @@
   <refcontent>ISO/IEC 9899:2018</refcontent>
 </reference>
 
-<reference anchor="ISO.15444-1.2019">
+<reference anchor="Matroska" target="https://datatracker.ietf.org/doc/draft-ietf-cellar-matroska/">
   <front>
-    <title>Information technology -- JPEG 2000 image coding system: Core coding system</title>
+    <title>Matroska</title>
     <author>
-      <organization>International Organization for Standardization</organization>
+      <organization>IETF</organization>
     </author>
-    <date year="2019" month="October"/>
+    <date year="2019" />
   </front>
-    <refcontent>ISO/IEC 15444-1:2019</refcontent>
+</reference>
+
+<reference anchor="AVI" target="https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx">
+  <front>
+    <title>AVI RIFF File Reference</title>
+    <author>
+      <organization>Microsoft</organization>
+    </author>
+    <date year="undated" />
+  </front>
+</reference>
+
+<reference anchor="AddressSanitizer" target="https://clang.llvm.org/docs/AddressSanitizer.html">
+  <front>
+    <title>ASAN AddressSanitizer website</title>
+    <author>
+      <organization>The Clang Team</organization>
+    </author>
+    <date year="undated" />
+  </front>
+</reference>
+
+<reference anchor="FFV1GO" target="https://github.com/dwbuiten/go-ffv1">
+  <front>
+    <title>FFV1 Decoder in Go</title>
+    <author initials="D." surname="Buitenhuis" fullname="Derek Buitenhuis"/>
+    <date year="2019" />
+  </front>
+</reference>
+
+<reference anchor="FFV1_V0" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=b548f2b91b701e1235608ac882ea6df915167c7e">
+  <front>
+    <title>Commit to mark FFV1 version 0 as non-experimental</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date month="April" year="2006" />
+  </front>
+</reference>
+
+<reference anchor="FFV1_V1" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=68f8d33becbd73b4d0aa277f472a6e8e72ea6849">
+  <front>
+    <title>Commit to release FFV1 version 1</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date month="April" year="2009" />
+  </front>
+</reference>
+
+<reference anchor="FFV1_V3" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=abe76b851c05eea8743f6c899cbe5f7409b0f301">
+  <front>
+    <title>Commit to mark FFV1 version 3 as non-experimental</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date month="August" year="2013" />
+  </front>
+</reference>
+
+<reference anchor="HuffYUV" target="https://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html">
+  <front>
+    <title>HuffYUV</title>
+    <author initials="B." surname="Rudiak-Gould" fullname="Ben Rudiak-Gould"/>
+    <date month="December" year="2003" />
+  </front>
 </reference>
 
 <reference anchor="ISO.14495-1.1999">
@@ -53,30 +112,13 @@
   </front>
 </reference>
 
-<reference anchor="Range-Encoding">
+<reference anchor="MediaConch" target="https://mediaarea.net/MediaConch">
   <front>
-    <title>Range encoding: an algorithm for removing redundancy from a digitised message</title>
-    <author initials="G. N. N." surname="Martin" fullname="G. N. N. Martin"/>
-    <date month="July" year="1979" />
-  </front>
-  <seriesInfo name="Proceedings of the Conference on Video and Data Recording." value="Institution of Electronic and Radio Engineers, Hampshire, England"/>
-</reference>
-
-<reference anchor="AVI" target="https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx">
-  <front>
-    <title>AVI RIFF File Reference</title>
+    <title>MediaConch</title>
     <author>
-      <organization>Microsoft</organization>
+      <organization>MediaArea.net</organization>
     </author>
-    <date year="undated" />
-  </front>
-</reference>
-
-<reference anchor="HuffYUV" target="https://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html">
-  <front>
-    <title>HuffYUV</title>
-    <author initials="B." surname="Rudiak-Gould" fullname="Ben Rudiak-Gould"/>
-    <date month="December" year="2003" />
+    <date year="2018" />
   </front>
 </reference>
 
@@ -85,6 +127,14 @@
     <title>NUT Open Container Format</title>
     <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
     <date month="December" year="2013" />
+  </front>
+</reference>
+
+<reference anchor="REFIMPL" target="https://ffmpeg.org">
+  <front>
+    <title>The reference FFV1 implementation / the FFV1 codec in FFmpeg</title>
+    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
+    <date year="undated" />
   </front>
 </reference>
 
@@ -98,44 +148,6 @@
   </front>
 </reference>
 
-<reference anchor="AddressSanitizer" target="https://clang.llvm.org/docs/AddressSanitizer.html">
-  <front>
-    <title>ASAN AddressSanitizer website</title>
-    <author>
-      <organization>The Clang Team</organization>
-    </author>
-    <date year="undated" />
-  </front>
-</reference>
-
-<reference anchor="REFIMPL" target="https://ffmpeg.org">
-  <front>
-    <title>The reference FFV1 implementation / the FFV1 codec in FFmpeg</title>
-    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date year="undated" />
-  </front>
-</reference>
-
-<reference anchor="FFV1GO" target="https://github.com/dwbuiten/go-ffv1">
-  <front>
-    <title>FFV1 Decoder in Go</title>
-    <author initials="D." surname="Buitenhuis" fullname="Derek Buitenhuis"/>
-    <date year="2019" />
-  </front>
-</reference>
-
-
-
-<reference anchor="MediaConch" target="https://mediaarea.net/MediaConch">
-  <front>
-    <title>MediaConch</title>
-    <author>
-      <organization>MediaArea.net</organization>
-    </author>
-    <date year="2018" />
-  </front>
-</reference>
-
 <reference anchor="YCbCr" target="https://en.wikipedia.org/w/index.php?title=YCbCr">
   <front>
     <title>YCbCr</title>
@@ -146,38 +158,24 @@
   </front>
 </reference>
 
-<reference anchor="Matroska" target="https://datatracker.ietf.org/doc/draft-ietf-cellar-matroska/">
+<reference anchor="Range-Encoding">
   <front>
-    <title>Matroska</title>
+    <title>Range encoding: an algorithm for removing redundancy from a digitised message</title>
+    <author initials="G. N. N." surname="Martin" fullname="G. N. N. Martin"/>
+    <date month="July" year="1979" />
+  </front>
+  <seriesInfo name="Proceedings of the Conference on Video and Data Recording." value="Institution of Electronic and Radio Engineers, Hampshire, England"/>
+</reference>
+
+<reference anchor="ISO.15444-1.2019">
+  <front>
+    <title>Information technology -- JPEG 2000 image coding system: Core coding system</title>
     <author>
-      <organization>IETF</organization>
+      <organization>International Organization for Standardization</organization>
     </author>
-    <date year="2019" />
+    <date year="2019" month="October"/>
   </front>
-</reference>
-
-<reference anchor="FFV1_V0" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=b548f2b91b701e1235608ac882ea6df915167c7e">
-  <front>
-    <title>Commit to mark FFV1 version 0 as non-experimental</title>
-    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date month="April" year="2006" />
-  </front>
-</reference>
-
-<reference anchor="FFV1_V1" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=68f8d33becbd73b4d0aa277f472a6e8e72ea6849">
-  <front>
-    <title>Commit to release FFV1 version 1</title>
-    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date month="April" year="2009" />
-  </front>
-</reference>
-
-<reference anchor="FFV1_V3" target="https://git.videolan.org/?p=ffmpeg.git;a=commit;h=abe76b851c05eea8743f6c899cbe5f7409b0f301">
-  <front>
-    <title>Commit to mark FFV1 version 3 as non-experimental</title>
-    <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date month="August" year="2013" />
-  </front>
+    <refcontent>ISO/IEC 15444-1:2019</refcontent>
 </reference>
 
 # Multi-theaded decoder implementation suggestions
