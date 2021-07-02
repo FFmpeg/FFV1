@@ -132,11 +132,10 @@
   </front>
 </reference>
 
-<reference anchor="REFIMPL" target="https://ffmpeg.org">
+<reference anchor="REFIMPL" target="https://ffmpeg.org/doxygen/trunk/ffv1_8h.html">
   <front>
     <title>The reference FFV1 implementation / the FFV1 codec in FFmpeg</title>
     <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date year="undated" />
   </front>
 </reference>
 
