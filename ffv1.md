@@ -287,7 +287,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
 
@@ -361,7 +361,7 @@ This color space allows 3 or 4 Planes.
 
 An optional transparency Plane can be used to code transparency data.
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) Planes losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible pixel transformations between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) Planes losslessly in a modified YCbCr color space [@?ISO.15444-1.2016]. Reversible pixel transformations between YCbCr and RGB use the following formulae.
 
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
@@ -1343,7 +1343,7 @@ The `codec_specific_data` element (in `stream_header` packet) contains the Confi
 
 #### Matroska File Format
 
-FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element **SHOULD NOT** be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element **MUST** contain the FFV1 `Configuration Record` structure and no other data. See [@!Matroska] for more information about elements.
+FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or less, the Matroska `CodecPrivate` Element **SHOULD NOT** be used. For FFV1 versions 3 or greater, the Matroska `CodecPrivate` Element **MUST** contain the FFV1 `Configuration Record` structure and no other data. See [@?I-D.ietf-cellar-matroska] for more information about elements.
 
 `NumBytes` is defined as the `Element Data Size` of the `CodecPrivate` Element.
 
@@ -1724,7 +1724,7 @@ For each Frame with `keyframe` value of 0, each Slice **MUST** have the same val
 
 # Security Considerations
 
-Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
+Like any other codec, (such as [@?RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
 Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
 The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
