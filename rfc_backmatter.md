@@ -3,13 +3,13 @@
 
 <reference anchor="ISO.9899.2018">
   <front>
-    <title>Programming languages - C</title>
+    <title>Information technology - Programming languages - C</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="" year="2018"/>
+    <date year="2018" month="June"/>
   </front>
-  <seriesInfo name="ISO" value="Standard 9899"/>
+  <refcontent>ISO/IEC 9899:2018</refcontent>
 </reference>
 
 <reference anchor="ISO.15444-1.2019">
