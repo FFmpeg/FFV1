@@ -288,6 +288,7 @@ SVGI:![svg](quantizationtablesets.svg "quantization table sets")
 SVGI:!---
 SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
 AART:Q_(j)[k] = quant_tables[i][j][k&255]
+Figure: Description of the mapping from sample differences to the corresponding Quantized Sample Differences. {#figureQuantizationSampleDifferenceMapping}
 
 In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference (see (#quant-tables)).
 
@@ -304,6 +305,7 @@ AART:          Q_(1)[tl - t] +
 AART:          Q_(2)[t - tr] +
 AART:          Q_(3)[L - l]  +
 AART:          Q_(4)[T - t]
+Figure: Description of the computing of the Context. {#figureContext}
 
 If `context >= 0` then `context` is used and the difference between the Sample and its predicted value is encoded as is, else `-context` is used and the difference between the Sample and its predicted value is encoded with a flipped sign.
 
@@ -648,12 +650,14 @@ SVGI:!---
 SVGC:statetransitiontable1.svg=$$one\\_state_{i}=default\\_state\\_transition_{i}+state\\_transition\\_delta_{i}$$
 AART:one_state_(i) =
 AART:       default_state_transition_(i) + state_transition_delta_(i)
+Figure: Description of the coding of the state transition table for a `get_rac` readout value of 0. {#figureStateTransitionTable0}
 
 SVGI:!---
 SVGI:![svg](statetransitiontable2.svg "state transition table 2")
 SVGI:!---
 SVGC:statetransitiontable2.svg=$$zero\\_state_{i}=256-one\\_state_{256-i}$$
 AART:zero_state_(i) = 256 - one_state_(256-i)
+Figure: Description of the coding of the state transition table for a `get_rac` readout value of 1. {#figureStateTransitionTable1}
 
 #### default\_state\_transition
 
@@ -692,6 +696,7 @@ By default, the following State Transition Table is used:
 
 241,242,243,244,245,246,247,248,248,  0,  0,  0,  0,  0,  0,  0,
 ```
+Figure: Default state transition table for Range coding. {#figureDefaultStateTransition}
 
 #### Alternative State Transition Table
 
@@ -772,6 +777,7 @@ Figure: A pseudo-code description of the read of a signed integer in Golomb Rice
 |0000 0000 001  | 10    |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
+Table: Description of the coding of the Prefix of Signed Golomb Rice Codes {#tableSignedGolombRiceCodesPrefix}
 
 `ESC` is an ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
@@ -781,6 +787,7 @@ Figure: A pseudo-code description of the read of a signed integer in Golomb Rice
 |:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order                      |
+Table: Description of the coding of the Suffix of Signed Golomb Rice Codes {#tableSignedGolombRiceCodesSuffix}
 
 ESC MUST NOT be used if the value can be coded as non ESC.
 
@@ -1081,6 +1088,7 @@ Decoders SHOULD reject FFV1 bitstreams with version >= 3 && ConfigurationRecordI
 |3       |  FFV1 version 3         |
 |4       |  FFV1 version 4         |{V4}
 |Other   |  reserved for future use|
+Table: The definitions for `version` values. {#tableVersion}
 
 \* Version 2 was experimental and this document does not describe it.
 
@@ -1097,7 +1105,7 @@ Meaning of `micro_version` for `version` 3:
 |0...3  | reserved\*              |
 |4      | first stable variant    |
 |Other  | reserved for future use |
-Table: The definitions for `micro_version` values for FFV1 version 3.
+Table: The definitions for `micro_version` values for FFV1 version 3. {#tableMicroVersion}
 
 \* development versions may be incompatible with the stable variants.
 
@@ -1122,6 +1130,7 @@ Table: The definitions for `micro_version` values for FFV1 version 4.{V4}
 | 1     | Range Coder with default state transition table |
 | 2     | Range Coder with custom state transition table  |
 | Other | reserved for future use                         |
+Table: The definitions for `coder_type` values. {#tableCoderType}
 
 Restrictions:
 
@@ -1144,6 +1153,7 @@ If `state_transition_delta` is not present in the FFV1 bitstream, all Range code
 | 0     | YCbCr                   | None                    | Transparency            | Plane then Line         |
 | 1     | RGB                     | JPEG2000-RCT            | Transparency            | Line then Plane         |
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
+Table: The definitions for `colorspace_type` values. {#tableColorspaceType}
 
 FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_chroma_subsample` != 0 || `log2_v_chroma_subsample` != 0) are not part of this specification.
 
@@ -1155,6 +1165,7 @@ FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_
 |-------|:----------------------------------|
 |0      |   chroma Planes are not present   |
 |1      |   chroma Planes are present       |
+Table: The definitions for `chroma_planes` values. {#tableChromaPlanes}
 
 ### bits\_per\_raw\_sample
 
@@ -1164,6 +1175,7 @@ FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_
 |-------|:------------------------------------------------|
 | 0     | reserved\*                                      |
 | Other | the actual bits for each Sample               |
+Table: The definitions for `bits_per_raw_sample` values. {#tableBitsPerRawSample}
 
 \* Encoders MUST NOT store `bits_per_raw_sample` = 0.
 Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
@@ -1184,6 +1196,7 @@ Decoders SHOULD accept and interpret `bits_per_raw_sample` = 0 as 8.
 |-------|:-----------------------------|
 | 0     | extra Plane is not present |
 | 1     | extra Plane is present     |
+Table: The definitions for `extra_plane` values. {#tableExtraPlane}
 
 ### num\_h\_slices
 
@@ -1215,6 +1228,7 @@ Inferred to be 0 if not present.
 |-------|:-------------------------------------------------------------|
 |   0   |  initial states are not present and are assumed to be all 128|
 |   1   |  initial states are present                                  |
+Table: The definitions for `states_coded` values. {#tableStatesCoded}
 
 ### initial\_state\_delta
 
@@ -1225,6 +1239,7 @@ SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
 SVGI:!---
 SVGC:initialstatedelta1.svg=pred = j ? initial\_states[ i ][j - 1][ k ] : 128
 AART:pred = j ? initial_states[ i ][j - 1][ k ] : 128
+Figure: Predictor value for the coding of `initial_state_delta[ i ][ j ][ k ]`. {#figureInitialStateDeltaPred}
 
 SVGI:!---
 SVGI:![svg](initialstatedelta2.svg "initial state delta 2")
@@ -1232,6 +1247,7 @@ SVGI:!---
 SVGC:initialstatedelta2.svg=initial\_state[ i ][ j ][ k ] = ( pred + initial\_state\_delta[ i ][ j ][ k ] ) & 255
 AART:initial_state[ i ][ j ][ k ] =
 AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
+Figure: Description of the coding of `initial_state_delta[ i ][ j ][ k ]`. {#figureInitialStateDelta}
 
 ### ec
 
@@ -1242,6 +1258,7 @@ AART:       ( pred + initial_state_delta[ i ][ j ][ k ] ) & 255
 |0     | 32-bit CRC in `ConfigurationRecord`       |
 |1     | 32-bit CRC in `Slice` and `ConfigurationRecord`|
 |Other | reserved for future use                   |
+Table: The definitions for `ec` values. {#tableEc}
 
 ### intra
 
@@ -1254,6 +1271,7 @@ Inferred to be 0 if not present.
 |0      | `keyframe` can be 0 or 1 (non keyframes or keyframes)            |
 |1      | `keyframe` MUST be 1 (keyframes only)                            |
 |Other  | reserved for future use                                          |
+Table: The definitions for `intra` values. {#tableIntra}
 
 ## Configuration Record
 
@@ -1476,6 +1494,7 @@ Inferred to be 0 if not present.
 |2        |          bottom field first |
 |3        |                 progressive |
 |Other    |     reserved for future use |
+Table: The definitions for `picture_structure` values. {#tablePictureStructure}
 
 ### sar\_num
 
@@ -1518,6 +1537,7 @@ Inferred to be 0 if not present.{V4}
 | 0     | Range Coding or Golomb Rice  |{V4}
 | 1     | raw PCM                      |{V4}
 | Other | reserved for future use      |{V4}
+Table: The definitions for `slice_coding_mode` values. {#tableSliceCodingMode}
 
 ## Slice Content
 
@@ -1671,6 +1691,7 @@ Note: this allows finding the start of slices before previous slices have been f
 | 1     | slice contains a correctable error   |
 | 2     | slice contains a uncorrectable error |
 | Other | reserved for future use              |
+Table: The definitions for `error_status` values. {#tableErrorStatus}
 
 ### slice\_crc\_parity
 
