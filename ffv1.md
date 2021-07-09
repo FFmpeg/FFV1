@@ -25,29 +25,41 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Definitions
 
-`FFV1`: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
+FFV1:
+: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
 
-`Container`: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
+Container:
+: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
-`Sample`: The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
+Sample:
+: The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
 
-`Symbol`: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
+Symbol:
+: A value stored in the bitstream, which is defined and decoded through one of the methods described in [@tablePseudoCodeSymbols].
 
-`Line`: A discrete component of a static image composed of Samples that represent a specific quantification of Samples of that image.
+Line:
+: A discrete component of a static image composed of Samples that represent a specific quantification of Samples of that image.
 
-`Plane`: A discrete component of a static image composed of Lines that represent a specific quantification of Lines of that image.
+Plane:
+: A discrete component of a static image composed of Lines that represent a specific quantification of Lines of that image.
 
-`Pixel`: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
+Pixel:
+: The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
 
-`MSB`:   Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
+MSB:
+: Most Significant Bit, the bit that can cause the largest change in magnitude of the Symbol.
 
-`VLC`:   Variable Length Code, a code that maps source symbols to a variable number of bits.
+VLC:
+: Variable Length Code, a code that maps source symbols to a variable number of bits.
 
-`RGB`:   A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
+RGB:
+: A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
 
-`YCbCr`: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chroma of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
+YCbCr:
+: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chroma of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
-`TBA`:   To Be Announced. Used in reference to the development of future iterations of the FFV1 specification. {V4}
+TBA:{V4}
+: To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
 
 ## Conventions
 
@@ -1728,51 +1740,72 @@ The IANA is requested to register the following values:
 
 This registration is done using the template defined in [@!RFC6838] and following [@!RFC4855].
 
-Type name: video
+Type name:
+: video
 
-Subtype name: FFV1
+Subtype name:
+: FFV1
 
-Required parameters: None.
+Required parameters:
+: None.
 
-Optional parameters: These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
+Optional parameters:
+: These parameters are used to signal the capabilities of a receiver implementation. These parameters MUST NOT be used for any other purpose.
+    `version`:
+    : The `version` of the FFV1 encoding as defined by (#version).
+    
+    `micro_version`:
+    : The `micro_version` of the FFV1 encoding as defined by (#micro-version).
+    
+    `coder_type`:
+    : The `coder_type` of the FFV1 encoding as defined by (#coder-type).
 
-* `version`:  The `version` of the FFV1 encoding as defined by (#version).
+    `colorspace_type`:
+    : The `colorspace_type` of the FFV1 encoding as defined by (#colorspace-type).
 
-* `micro_version`:  The `micro_version` of the FFV1 encoding as defined by (#micro-version).
+    `bits_per_raw_sample`:
+    : The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
 
-* `coder_type`:  The `coder_type` of the FFV1 encoding as defined by (#coder-type).
+    `max_slices`:
+    : The value of `max_slices` is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
 
-* `colorspace_type`:  The `colorspace_type` of the FFV1 encoding as defined by (#colorspace-type).
+Encoding considerations:
+: This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
 
-* `bits_per_raw_sample`:  The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
+Security considerations:
+: See (#security-considerations) of this document.
 
-* `max_slices`: The value of `max_slices` is an integer indicating the maximum count of slices with a frames of the FFV1 encoding.
+Interoperability considerations:
+: None.
 
-Encoding considerations: This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
+Published specification:
+: RFC XXXX.
 
-Security considerations: See (#security-considerations) of this document.
+[RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
-Interoperability considerations: None.
+Applications which use this media type:
+: Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
 
-Published specification: RFC XXXX.
+Fragment identifier considerations:
+: N/A.
 
-  [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
+Additional information:
+: None.
 
-Applications which use this media type: Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
+Person & email address to contact for further information:
+: Michael Niedermayer <michael@niedermayer.cc>
 
-Fragment identifier considerations:  N/A.
+Intended usage:
+: COMMON
 
-Additional information:  None.
+Restrictions on usage:
+: None.
 
-Person & email address to contact for further information:  Michael Niedermayer <michael@niedermayer.cc>
+Author:
+: Dave Rice <dave@dericed.com>
 
-Intended usage:  COMMON
-
-Restrictions on usage:  None.
-
-Author:  Dave Rice <dave@dericed.com>
-
-Change controller:  IETF cellar working group delegated from the IESG.
+Change controller:
+: IETF cellar working group delegated from the IESG.
 
 # Changelog
 
