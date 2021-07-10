@@ -158,9 +158,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e., a+b+c-min(a,b,c)-max(a,b,c).
 
-`A ==> B`               means A implies B.
+`a ==> b`               means a implies b.
 
-`A <==> B`              means A ==> B , B ==> A.
+`a <==> b`              means a ==> b , b ==> a.
 
 a~b~                    means the b-th value of a sequence of a.
 
