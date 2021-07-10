@@ -205,4 +205,4 @@ An FFV1 decoder was [@FFV1GO] written in Go by Derek Buitenhuis during the work 
 
 ## MediaConch
 
-The developers of the MediaConch project [@MediaConch] created an independent FFV1 decoder as part of that project to validate FFV1 bitstreams. This work led to the discovery of three conflicts between existing FFV1 implementations and this document without the added exceptions.
+The developers of the MediaConch project [@MediaConch] created an independent FFV1 decoder as part of that project to validate FFV1 bitstreams. This work led to the discovery of three conflicts between existing FFV1 implementations and draft versions of this document. These issues are addressed by (#exception), (#rgb-exception), and (#future-handling-of-some-streams-created-by-nonconforming-encoders).
