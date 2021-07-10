@@ -53,10 +53,10 @@ VLC:
 : Variable Length Code, a code that maps source symbols to a variable number of bits.
 
 RGB:
-: A reference to the method of storing the value of a Pixel by using three numeric values that represent Red, Green, and Blue.
+: A reference to the method of storing the value of a pixel by using three numeric values that represent Red, Green, and Blue.
 
 YCbCr:
-: A reference to the method of storing the value of a Pixel by using three numeric values that represent the luma of the Pixel (Y) and the chroma of the Pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
+: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr, YCgCo or ICtCp. The exact meaning of the three numeric values is unspecified.
 
 TBA:{V4}
 : To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
@@ -287,7 +287,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no Pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@!ISO.15444-1.2016]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
 
@@ -361,7 +361,7 @@ This color space allows 3 or 4 Planes.
 
 An optional transparency Plane can be used to code transparency data.
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) Planes losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible Pixel transformations between YCbCr and RGB use the following formulae.
+JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) Planes losslessly in a modified YCbCr color space [@!ISO.15444-1.2016]. Reversible pixel transformations between YCbCr and RGB use the following formulae.
 
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
@@ -385,7 +385,7 @@ Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversi
 
 When FFV1 uses the JPEG2000-RCT, the horizontal Lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
 
-As an example, a Frame that is two Pixels wide and two Pixels high, could comprise the following structure:
+As an example, a Frame that is two pixels wide and two pixels high, could comprise the following structure:
 
 ```
 +------------------------+------------------------+
@@ -959,9 +959,9 @@ Table: Definition of pseudocode symbols for this document. {#tablePseudoCodeSymb
 
 The following **MUST** be provided by external means during initialization of the decoder:
 
-`frame_pixel_width` is defined as Frame width in Pixels.
+`frame_pixel_width` is defined as Frame width in pixels.
 
-`frame_pixel_height` is defined as Frame height in Pixels.
+`frame_pixel_height` is defined as Frame height in pixels.
 
 Default values at the decoder initialization phase:
 
@@ -1586,7 +1586,7 @@ SliceContent( ) {                                             |
 
 ### plane\_pixel\_height
 
-`plane_pixel_height[ p ]` is the height in Pixels of Plane p of the `Slice`. It is defined as:
+`plane_pixel_height[ p ]` is the height in pixels of Plane p of the `Slice`. It is defined as:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1636,7 +1636,7 @@ Line( p, y ) {                                                |
 
 ### plane\_pixel\_width
 
-`plane_pixel_width[ p ]` is the width in Pixels of Plane p of the `Slice`. It is defined as:
+`plane_pixel_width[ p ]` is the width in pixels of Plane p of the `Slice`. It is defined as:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1646,7 +1646,7 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 ### slice\_pixel\_width
 
-`slice_pixel_width` is the width in Pixels of the Slice. It is defined as:
+`slice_pixel_width` is the width in pixels of the Slice. It is defined as:
 
 ```
 floor(
@@ -1658,7 +1658,7 @@ floor(
 
 ### slice\_pixel\_x
 
-`slice_pixel_x` is the Slice horizontal position in Pixels. It is defined as:
+`slice_pixel_x` is the Slice horizontal position in pixels. It is defined as:
 
 ```
 floor( slice_x * frame_pixel_width / num_h_slices )
@@ -1715,7 +1715,7 @@ The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11D
 # Restrictions
 
 To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` **MUST** be less or equal to `num_h_slices * num_v_slices / 4`.
-Note: 101376 is the frame size in Pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
+Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
 
 For each Frame, each position in the Slice raster **MUST** be filled by one and only one Slice of the Frame (no missing Slice position, no Slice overlapping).
 
@@ -1726,7 +1726,7 @@ For each Frame with `keyframe` value of 0, each Slice **MUST** have the same val
 
 Like any other codec, (such as [@!RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in Pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
 The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
