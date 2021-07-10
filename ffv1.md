@@ -332,7 +332,7 @@ For each Plane of each Slice, a Quantization Table Set is selected from an index
 
 Background: in first implementations of FFV1 bitstream, the index for Cb and Cr Planes was stored even if it is not used (`chroma_planes` set to 0), this index is kept for `version <= 3` in order to keep compatibility with FFV1 bitstreams in the wild.
 
-## Color spaces
+## Color Spaces
 
 FFV1 supports several color spaces. The count of allowed coded planes and the meaning of the extra Plane are determined by the selected color space.
 
@@ -857,7 +857,7 @@ if (run_count == 0 && run_mode == 1) {
 
 The `log2_run` array is also used within [@ISO.14495-1.1999].
 
-#### Sign extension
+#### Sign Extension
 
 `sign_extend` is the function of increasing the number of bits of an input binary number in twos complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It **MAY** be computed with:
 
@@ -931,7 +931,7 @@ Level coding is identical to the normal difference coding with the exception tha
 
 Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test Samples, the use of prediction slightly improved the compression rate.
 
-#### Initial Values for the VLC context state
+#### Initial Values for the VLC Context State
 
 When `keyframe` (see (#frame)) value is 1, all VLC coder state variables are set to their initial state.
 

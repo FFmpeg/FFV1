@@ -169,7 +169,7 @@
   </front>
 </reference>
 
-# Multi-theaded decoder implementation suggestions
+# Multithreaded Decoder Implementation Suggestions
 
 This appendix is informative.
 
@@ -177,7 +177,7 @@ The FFV1 bitstream is parsable in two ways: in sequential order as described in 
 
 After having checked `keyframe` field, a decoder **SHOULD** parse `slice_size` fields, from `slice_size` of the last Slice at the end of the `Frame` up to `slice_size` of the first Slice at the beginning of the `Frame`, before parsing Slices, in order to have Slices boundaries. A decoder **MAY** fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of Slices not coherent...) or if there is no possibility of seeking into the stream.
 
-# Future handling of some streams created by non conforming encoders
+# Future Handling of Some Streams Created by Nonconforming Encoders
 
 This appendix is informative.
 
