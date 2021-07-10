@@ -10,7 +10,7 @@ This document defines version 0, 1, and 3 of FFV1. The distinctions of the versi
 
 - Version 2 of FFV1 only existed in experimental form and is not described by this document, but is available as a LyX file at <https://github.com/FFmpeg/FFV1/blob/8ad772b6d61c3dd8b0171979a2cd9f11924d5532/ffv1.lyx>.{V3}
 
-- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded CRC data to support fixity verification of the encoding. Version 3 has been flagged as stable on August 17, 2013 [@?FFV1_V3].{V3}
+- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded Cyclic Redundancy Check (CRC) data to support fixity verification of the encoding. Version 3 has been flagged as stable on August 17, 2013 [@?FFV1_V3].{V3}
 
 This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
@@ -609,7 +609,7 @@ Above describes the range decoding. Encoding is defined as any process which pro
 There are three places where range coder termination is needed in FFV1.
 First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
 Second is the switch from the `Slice Header`, which is range coded to Golomb coded Slices as `Sentinel mode`.
-Third is the end of range coded Slices, which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
+Third is the end of range coded Slices, which need to terminate before the Cyclic Redundancy Check (CRC) at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
 
 #### Range Non Binary Values
 
