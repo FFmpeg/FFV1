@@ -183,9 +183,9 @@
 
 This appendix is informative.
 
-The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each slice. Each slice footer contains a `slice_size` field so the boundary of each slice is computable without having to parse the slice content. That allows multi-threading as well as independence of slice content (a bitstream error in a slice header or slice content has no impact on the decoding of the other slices).
+The FFV1 bitstream is parsable in two ways: in sequential order as described in this document or with the pre-analysis of the footer of each Slice. Each Slice footer contains a `slice_size` field so the boundary of each Slice is computable without having to parse the Slice content. That allows multi-threading as well as independence of Slice content (a bitstream error in a Slice header or Slice content has no impact on the decoding of the other Slices).
 
-After having checked `keyframe` field, a decoder **SHOULD** parse `slice_size` fields, from `slice_size` of the last slice at the end of the `Frame` up to `slice_size` of the first slice at the beginning of the `Frame`, before parsing slices, in order to have slices boundaries. A decoder **MAY** fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of slices not coherent...) or if there is no possibility of seeking into the stream.
+After having checked `keyframe` field, a decoder **SHOULD** parse `slice_size` fields, from `slice_size` of the last Slice at the end of the `Frame` up to `slice_size` of the first Slice at the beginning of the `Frame`, before parsing Slices, in order to have Slices boundaries. A decoder **MAY** fallback on sequential order e.g. in case of a corrupted `Frame` (frame size unknown, `slice_size` of Slices not coherent...) or if there is no possibility of seeking into the stream.
 
 # Future handling of some streams created by non conforming encoders
 
