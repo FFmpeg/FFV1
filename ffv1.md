@@ -2,21 +2,21 @@
 
 This document describes FFV1, a lossless video encoding format. The design of FFV1 considers the storage of image characteristics, data fixity, and the optimized use of encoding time and storage requirements. FFV1 is designed to support a wide range of lossless video applications such as long-term audiovisual preservation, scientific imaging, screen recording, and other video encoding scenarios that seek to avoid the generational loss of lossy video encodings.
 
-This document defines version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
+This document defines versions 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
 
-- Version 0 of FFV1 was the original implementation of FFV1 and has been flagged as stable on April 14, 2006 [@?FFV1_V0].{V3}
+- Version 0 of FFV1 was the original implementation of FFV1 and was flagged as stable on April 14, 2006 [@?FFV1_V0].{V3}
 
-- Version 1 of FFV1 adds support of more video bit depths and has been has been flagged as stable on April 24, 2009 [@?FFV1_V1].{V3}
+- Version 1 of FFV1 adds support of more video bit depths and was has been flagged as stable on April 24, 2009 [@?FFV1_V1].{V3}
 
-- Version 2 of FFV1 only existed in experimental form and is not described by this document, but is available as a LyX file at <https://github.com/FFmpeg/FFV1/blob/8ad772b6d61c3dd8b0171979a2cd9f11924d5532/ffv1.lyx>.{V3}
+- Version 2 of FFV1 only existed in experimental form and is not described by this document, but it is available as a LyX file at <https://github.com/FFmpeg/FFV1/blob/8ad772b6d61c3dd8b0171979a2cd9f11924d5532/ffv1.lyx>.{V3}
 
-- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded Cyclic Redundancy Check (CRC) data to support fixity verification of the encoding. Version 3 has been flagged as stable on August 17, 2013 [@?FFV1_V3].{V3}
+- Version 3 of FFV1 adds several features such as increased description of the characteristics of the encoding images and embedded Cyclic Redundancy Check (CRC) data to support fixity verification of the encoding. Version 3 was flagged as stable on August 17, 2013 [@?FFV1_V3].{V3}
 
 This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
 This document assumes familiarity with mathematical and coding concepts such as Range encoding [@?Range-Encoding] and YCbCr color spaces [@?YCbCr].
 
-This specification describes the valid bitstream and how to decode such valid bitstream. Bitstreams not conforming to this specification or how they are handled is outside this specification. A decoder could reject every invalid bitstream, attempt to perform error concealment, or re-download or use a redundant copy of the invalid part or any other action it deems appropriate.
+This specification describes the valid bitstream and how to decode it.  Nonconformant bitstreams and the nonconformant handling of bitstreams are outside this specification.  A decoder can perform any action that it deems appropriate for an invalid bitstream: reject the bitstream, attempt to perform error concealment, or re-download or use a redundant copy of the invalid part.
 
 # Notation and Conventions
 
@@ -26,10 +26,10 @@ The key words "**MUST**", "**MUST NOT**", "**REQUIRED**", "**SHALL**", "**SHALL 
 ## Definitions
 
 FFV1:
-: chosen name of this video encoding format, short version of "FF Video 1", the letters "FF" coming from "FFmpeg", the name of the reference decoder, whose first letters originally meant "Fast Forward".
+: The chosen name of this video encoding format, which is the short version of "FF Video 1". The letters "FF" come from "FFmpeg", which is the name of the reference decoder whose first letters originally meant "Fast Forward".
 
 Container:
-: Format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
+: A format that encapsulates Frames (see (#frame)) and (when required) a `Configuration Record` into a bitstream.
 
 Sample:
 : The smallest addressable representation of a color component or a luma component in a Frame. Examples of Sample are Luma (Y), Blue-difference Chroma (Cb), Red-difference Chroma (Cr), Transparency, Red, Green, and Blue.
@@ -56,7 +56,7 @@ RGB:
 : A reference to the method of storing the value of a pixel by using three numeric values that represent Red, Green, and Blue.
 
 YCbCr:
-: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g., YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo, or ICtCp (intensity, blue-yellow, red-green). The exact meaning of the three numeric values is unspecified.
+: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). The term YCbCr is used for historical reasons and currently references any color space relying on one luma Sample and two chroma Samples, e.g., YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo, or ICtCp (intensity, blue-yellow, red-green).
 
 TBA:{V4}
 : To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
@@ -65,7 +65,7 @@ TBA:{V4}
 
 ### Pseudocode
 
-The FFV1 bitstream is described in this document using pseudocode. Note that the pseudocode is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudocode used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while`, and `for` keywords as well as functions defined within this document.
+The FFV1 bitstream is described in this document using pseudocode. Note that the pseudocode is used to illustrate the structure of FFV1 and is not intended to specify any particular implementation. The pseudocode used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while`, and `for` keywords as well as functions defined within this document.
 
 In some instances, pseudocode is presented in a two-column format such as shown in [@figurePseudoCode]. In this form, the `type` column provides a symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudocode.
 
@@ -76,11 +76,11 @@ ExamplePseudoCode( ) {                                        |
     value                                                     | ur
 }                                                             |
 ```
-Figure: A depiction of type-labelled pseudocode used within this document. {#figurePseudoCode}
+Figure: A depiction of type-labeled pseudocode used within this document. {#figurePseudoCode}
 
 ### Arithmetic Operators
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators, which are re-defined within this section.
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation-defined behavior) and `^` (power instead of XOR) operators, which are redefined within this section.
 
 `a + b`       means a plus b.
 
@@ -98,9 +98,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `a | b`       means bit-wise "or" of a and b.
 
-`a >> b`      means arithmetic right shift of two’s complement integer representation of a by b binary digits. This is equivalent to dividing a by 2, b times, with rounding toward negative infinity.
+`a >> b`      means arithmetic right shift of the two's complement integer representation of a by b binary digits. This is equivalent to dividing a by 2, b times, with rounding toward negative infinity.
 
-`a << b`      means arithmetic left shift of two’s complement integer representation of a by b binary digits.
+`a << b`      means arithmetic left shift of the two's complement integer representation of a by b binary digits.
 
 ### Assignment Operators
 
@@ -193,7 +193,7 @@ a = b, a += b, a -= b, a *= b
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its container to store the `NumBytes` values; see (#mapping-ffv1-into-containers).
+`NumBytes` is a nonnegative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its container to store the `NumBytes` values; see (#mapping-ffv1-into-containers).
 
 ### Bitstream Functions
 
@@ -221,11 +221,11 @@ For each `Slice` (as described in (#slice)) of a Frame, the Planes, Lines, and S
 
 A border is assumed for each coded `Slice` for the purpose of the median predictor and context according to the following rules:
 
-- one column of Samples to the left of the coded Slice is assumed as identical to the Samples of the leftmost column of the coded Slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded Slice is assumed to be `0`.
-- one column of Samples to the right of the coded Slice is assumed as identical to the Samples of the rightmost column of the coded Slice.
-- an additional column of Samples to the left of the coded Slice and two rows of Samples above the coded Slice are assumed to be `0`.
+- One column of Samples to the left of the coded Slice is assumed as identical to the Samples of the leftmost column of the coded Slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded Slice is assumed to be `0`.
+- One column of Samples to the right of the coded Slice is assumed as identical to the Samples of the rightmost column of the coded Slice.
+- An additional column of Samples to the left of the coded Slice and two rows of Samples above the coded Slice are assumed to be `0`.
 
-[@figureAssumedBorder] depicts a Slice of 9 Samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
+[@figureAssumedBorder] depicts a Slice of nine Samples `a,b,c,d,e,f,g,h,i` in a three-by-three arrangement along with its assumed border.
 
 ```
 +---+---+---+---+---+---+---+---+
@@ -242,7 +242,7 @@ A border is assumed for each coded `Slice` for the purpose of the median predict
 | 0 | d |   | g | h | i |   | i |
 +---+---+---+---+---+---+---+---+
 ```
-Figure: A depiction of FFV1's assumed border for a set example Samples. {#figureAssumedBorder}
+Figure: A depiction of FFV1's assumed border for a set of example Samples. {#figureAssumedBorder}
 
 ## Samples
 
@@ -269,7 +269,7 @@ The prediction for any Sample value at position `X` may be computed based upon t
 median(l, t, l + t - tl)
 ```
 
-Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
+Note that this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV].
 
 ### Exception
 
@@ -287,13 +287,13 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with the range coder coder type, as other potentially impacted configurations (e.g., 15/16-bit JPEG2000-RCT with range coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2019]. In the meanwhile, 16-bit JPEG2000-RCT with range coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only impacted configuration of all known implementations was the 16-bit YCbCr with no pixel transformation and with the range coder coder type, as the other potentially impacted configurations (e.g., the 15/16-bit JPEG 2000 Reversible Color Transform (RCT)  [@?ISO.15444-1.2019] with range coder or the 16-bit content with the Golomb Rice coder type) were not implemented. Meanwhile, the 16-bit JPEG 2000 RCT with range coder was deployed without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) that this exception for the median predictor will be removed in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
 
 Quantization Tables are used on Sample Differences (see (#coding-of-the-sample-difference)), so Quantized Sample Differences are stored in the bitstream.
 
-The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly 5 Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the 8 least significant bits of the Quantized Sample Difference are used as index:
+The FFV1 bitstream contains one or more Quantization Table Sets. Each Quantization Table Set contains exactly five Quantization Tables with each Quantization Table corresponding to one of the five Quantized Sample Differences. For each Quantization Table, both the number of quantization steps and their distribution are stored in the FFV1 bitstream; each Quantization Table has exactly 256 entries, and the eight least significant bits of the Quantized Sample Difference are used as an index:
 
 SVGI:!---
 SVGI:![svg](quantizationtablesets.svg "quantization table sets")
@@ -302,7 +302,7 @@ SVGC:quantizationtablesets.svg=$$Q_{j}[k]=quant\\_tables[i][j][k\\&255]$$
 AART:Q_(j)[k] = quant_tables[i][j][k&255]
 Figure: Description of the mapping from sample differences to the corresponding Quantized Sample Differences. {#figureQuantizationSampleDifferenceMapping}
 
-In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, `k` the Quantized Sample Difference (see (#quant-tables)).
+In this formula, `i` is the Quantization Table Set index, `j` is the Quantized Table index, and `k` is the Quantized Sample Difference (see (#quant-tables)).
 
 ## Context
 
@@ -319,7 +319,7 @@ AART:          Q_(3)[L - l]  +
 AART:          Q_(4)[T - t]
 Figure: Description of the computing of the Context. {#figureContext}
 
-If `context >= 0` then `context` is used and the difference between the Sample and its predicted value is encoded as is, else `-context` is used, and the difference between the Sample and its predicted value is encoded with a flipped sign.
+If `context >= 0` then `context` is used, and the difference between the Sample and its predicted value is encoded as is; else `-context` is used, and the difference between the Sample and its predicted value is encoded with a flipped sign.
 
 
 ## Quantization Table Set Indexes
@@ -330,19 +330,19 @@ For each Plane of each Slice, a Quantization Table Set is selected from an index
 - For Cb and Cr Planes, `quant_table_set_index[ 1 ]` index is used.
 - For extra Plane, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used.
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr Planes was stored even if it is not used (`chroma_planes` set to 0), this index is kept for `version <= 3` in order to keep compatibility with FFV1 bitstreams in the wild.
+Background: in the first implementations of the FFV1 bitstream, the index for Cb and Cr Planes was stored even if it was not used (`chroma_planes` set to 0), this index is kept for `version <= 3` in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color Spaces
 
-FFV1 supports several color spaces. The count of allowed coded planes and the meaning of the extra Plane are determined by the selected color space.
+FFV1 supports several color spaces. The count of allowed coded Planes and the meaning of the extra Plane are determined by the selected color space.
 
-The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each Plane, each Line is coded from top to bottom and for each Line, each Sample is coded from left to right. In JPEG2000-RCT for each Line from top to bottom, each Plane is coded and for each Plane, each Sample is encoded from left to right.
+The FFV1 bitstream interleaves data in an order determined by the color space. In YCbCr for each Plane, each Line is coded from top to bottom, and for each Line, each Sample is coded from left to right. In JPEG 2000 RCT for each Line from top to bottom, each Plane is coded, and for each Plane, each Sample is encoded from left to right.
 
 ### YCbCr
 
-This color space allows 1 to 4 Planes.
+This color space allows one to four Planes.
 
-The Cb and Cr Planes are optional, but if used, then **MUST** be used together. Omitting the Cb and Cr Planes codes the frames in grayscale without color data.
+The Cb and Cr Planes are optional, but if they are used, then they **MUST** be used together. Omitting the Cb and Cr Planes codes the frames in gray scale without color data.
 
 An optional transparency Plane can be used to code transparency data.
 
@@ -357,11 +357,11 @@ The Y Plane **MUST** be coded first. If the Cb and Cr Planes are used, then they
 
 ### RGB
 
-This color space allows 3 or 4 Planes.
+This color space allows three or four Planes.
 
 An optional transparency Plane can be used to code transparency data.
 
-JPEG2000-RCT is a Reversible Color Transform that codes RGB (red, green, blue) Planes losslessly in a modified YCbCr color space [@?ISO.15444-1.2019]. Reversible pixel transformations between YCbCr and RGB use the following formulae.
+JPEG 2000 RCT is a Reversible Color Transform that codes RGB (Red, Green, Blue) Planes losslessly in a modified YCbCr color space [@?ISO.15444-1.2019]. Reversible pixel transformations between YCbCr and RGB use the following formulae:
 
 SVGI:!---
 SVGI:![svg](rgb1.svg "rgb 1")
@@ -381,11 +381,11 @@ AART:r = Cr + g
 AART:b = Cb + g
 Figure: Description of the transformation of pixels from coded, modified YCbCr color space to RGB color space. {#figureYcbcrRgb}
 
-Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr, and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
+Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr, and they are negatively offset by the same value before the conversion from the modified YCbCr to RGB in order to have only nonnegative values after the conversion.
 
-When FFV1 uses the JPEG2000-RCT, the horizontal Lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
+When FFV1 uses the JPEG 2000 RCT, the horizontal Lines are interleaved to improve caching efficiency since it is most likely that the JPEG 2000 RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
 
-As an example, a Frame that is two pixels wide and two pixels high, could comprise the following structure:
+As an example, a Frame that is two pixels wide and two pixels high could comprise the following structure:
 
 ```
 +------------------------+------------------------+
@@ -397,7 +397,7 @@ As an example, a Frame that is two pixels wide and two pixels high, could compri
 +------------------------+------------------------+
 ```
 
-In JPEG2000-RCT, the coding order would be left to right and then top to bottom, with values interleaved by Lines and stored in this order:
+In JPEG 2000 RCT, the coding order is left to right and then top to bottom, with values interleaved by Lines and stored in this order:
 
 Y(1,1) Y(2,1) Cb(1,1) Cb(2,1) Cr(1,1) Cr(2,1) Y(1,2) Y(2,2) Cb(1,2) Cb(2,2) Cr(1,2) Cr(2,2)
 
@@ -423,11 +423,11 @@ AART:r = Cr + b
 AART:g = Cb + b
 Figure: Description of the transformation of pixels from coded, modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
 
-Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, Green Blue Red (GBR) Planes were used as Blue Green Red (BGR) Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
+Background: At the time of this writing, in all known implementations of the FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` was 0, Green Blue Red (GBR) Planes were used as Blue Green Red (BGR) Planes during both encoding and decoding. Meanwhile, 16-bit JPEG 2000 RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
 ## Coding of the Sample Difference
 
-Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG2000-RCT), only the n (or n+1, in the case of JPEG2000-RCT) least significant bits are used, since this is sufficient to recover the original Sample. In the equation below, the term "bits" represents `bits_per_raw_sample + 1` for JPEG2000-RCT or `bits_per_raw_sample` otherwise:
+Instead of coding the n+1 bits of the Sample Difference with Huffman or Range coding (or n+2 bits, in the case of JPEG 2000 RCT), only the n (or n+1, in the case of JPEG 2000 RCT) least significant bits are used, since this is sufficient to recover the original Sample. In (#figureSampleDifference), the term `bits` represents `bits_per_raw_sample + 1` for JPEG 2000 RCT or `bits_per_raw_sample` otherwise:
 
 SVGI:!---
 SVGI:![svg](samplediff.svg "coding of the sample difference")
@@ -443,12 +443,12 @@ Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 a
 
 #### Range Binary Values
 
-To encode binary digits efficiently, a range coder is used. A range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the 2 sub-ranges are proportional to their estimated probability. The quantization table is used to choose the context used from the surrounding image sample values for the case of coding the sample differences. Coding integers is done by coding multiple binary values. The range decoder will read bytes until it can determine which sub-range the input falls into to return the next binary symbol.
+To encode binary digits efficiently, a range coder is used. A range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the two subranges are proportional to their estimated probability. The Quantization Table is used to choose the context used from the surrounding image sample values for the case of coding the Sample Differences. The coding of integers is done by coding multiple binary values. The range decoder will read bytes until it can determine into which subrange the input falls to return the next binary symbol.
 
 To describe Range coding for FFV1, the following values are used:
 
 C~i~
-: the i-th Context.
+: the i-th context.
 
 B~i~
 : the i-th byte of the bytestream.
@@ -457,19 +457,19 @@ R~i~
 : the Range at the i-th symbol.
 
 r~i~
-: the boundary between two sub-ranges of R~i~: a sub-range of r~i~ values and a sub-range R~i~ - r~i~ values.
+: the boundary between two subranges of R~i~: a subrange of r~i~ values and a subrange R~i~ - r~i~ values.
 
 L~i~
 : the Low value of the Range at the i-th symbol.
 
 l~i~
-: a temporary variable to carry-over or adjust the Low value of the Range between range coding operations.
+: a temporary variable to carry over or adjust the Low value of the Range between range coding operations.
 
 t~i~
-: a temporary variable to transmit sub-ranges between range coding operations.
+: a temporary variable to transmit subranges between range coding operations.
 
 b~i~
-: the i-th range coded binary value.
+: the i-th range-coded binary value.
 
 S~0,\ i~
 : the i-th initial state.
@@ -477,28 +477,28 @@ S~0,\ i~
 j~n~
 : the length of the bytestream encoding n binary symbols.
 
-The following range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incremening from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
+The following range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incrementing from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGI:!---
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
 AART:R_(0) = 65280
-Figure: The initial value for Range. {#figureInitializeRange}
+Figure: The initial value for the Range. {#figureInitializeRange}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
 SVGI:!---
 SVGC:rangebinaryvalues6.svg=$$L_{0}=2^{8}B_{0}+B_{1}$$
 AART:L_(0) = 2 ^ 8 * B_(0) + B_(1)
-Figure: The initial value for "Low" is set according to the first two bytes of the bytestream. {#figureInitializeLow}
+Figure: The initial value for Low is set according to the first two bytes of the bytestream. {#figureInitializeLow}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues7.svg "range binary values 7")
 SVGI:!---
 SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 AART:j_(0) = 2
-Figure: The initial value for "j", the length of the bytestream encoding. {#figureInitializeLength}
+Figure: The initial value for `j`, the length of the bytestream encoding. {#figureInitializeLength}
 
 The following equations define how the range coder variables evolve as it reads or writes symbols.
 
@@ -507,7 +507,7 @@ SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
 SVGI:!---
 SVGC:rangebinaryvalues1.svg=$$r_{i}=\\\\lfloor\\\\frac{R_{i}S_{i,C_{i}}}{2^{8}}\\\\rfloor$$
 AART:r_(i) = floor( ( R_(i) * S_(i, C_(i)) ) / 2 ^ 8 )
-Figure: This formula shows the positioning of range split based on the State. {#figureGetRacFormula}
+Figure: This formula shows the positioning of range split based on the state. {#figureGetRacFormula}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues2.svg "range binary values 2")
@@ -524,14 +524,14 @@ AART:           L_(i) >= R_(i) - r_(i)              ==>
 AART:S_(i + 1, C_(i)) =  one_state_(S_(i, C_(i)))   AND
 AART:           l_(i) =  L_(i) - R_(i) + r_(i)      AND
 AART:           t_(i) =  r_(i)
-Figure: This formula shows the linking of the decoded symbol (represented as b~i~), the updated State (represented as S~i+1,C_(i)~), and the updated range (represented as a range from l~i~ to t~i~).
+Figure: This formula shows the linking of the decoded symbol (represented as b~i~), the updated state (represented as S~i+1,C_(i)~), and the updated range (represented as a range from l~i~ to t~i~).
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues3.svg "range binary values 3")
 SVGI:!---
 SVGC:rangebinaryvalues3.svg=$$\\\\begin{array}{ccc}C_{i} \\\\neq k & \\\\Longrightarrow & S_{i+1,k}=S_{i,k}\\\\end{array}$$
 AART:C_(i) != k ==> S_(i + 1, k) = S_(i, k)
-Figure: If the value of "k" is unequal to the i-th value of Context, in other words if the State is unchanged from the last symbol coding, then the value of the State is carried over to the next symbol coding.
+Figure: If the value of `k` is unequal to the i-th value of context, in other words, if the state is unchanged from the last symbol coding, then the value of the state is carried over to the next symbol coding.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues4.svg "range binary values 4")
@@ -596,24 +596,24 @@ Figure: A pseudocode description of the read of a binary value in Range binary m
 
 ##### Termination
 
-The range coder can be used in three modes.
+The range coder can be used in three modes:
 
-* In `Open mode` when decoding, every symbol the reader attempts to read is available. In this mode, arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
+* In Open mode when decoding, every symbol the reader attempts to read is available. In this mode, arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
 
-* In `Closed mode`, the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
+* In Closed mode, the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the Open mode.
 
-* In `Sentinel mode`, the exact length in bytes is not known and thus the range decoder **MAY** read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary symbol with state 129, which value **SHALL** be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined. In this case, the last (sentinel) symbol will be read non-corrupted and be of value 0.
+* In Sentinel mode, the exact length in bytes is not known, and thus the range decoder **MAY** read into the data that follows the range-coded bytestream by one byte. In Sentinel mode, the end of the range-coded bytestream is a binary symbol with state 129, which value **SHALL** be discarded. After reading this symbol, the range decoder will have read one byte beyond the end of the range-coded bytestream. This way the byte position of the end can be determined. Bytestreams written in Sentinel mode can be read in Closed mode if the length can be determined. In this case, the last (sentinel) symbol will be read uncorrupted and be of value 0.
 
-Above describes the range decoding. Encoding is defined as any process which produces a decodable bytestream.
+The above describes the range decoding. Encoding is defined as any process that produces a decodable bytestream.
 
 There are three places where range coder termination is needed in FFV1.
-First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
-Second is the switch from the `Slice Header`, which is range coded to Golomb coded Slices as `Sentinel mode`.
-Third is the end of range coded Slices, which need to terminate before the Cyclic Redundancy Check (CRC) at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
+The first is in the `Configuration Record`, which in this case the size of the range coded bytestream is known and handled as `Closed mode`.
+The second is the switch from the `Slice Header`, which is range coded to Golomb-coded Slices as `Sentinel mode`.
+The third is the end of range-coded Slices, which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
 
 #### Range Non Binary Values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However, that would mean 255 contexts per 8-bit symbol, that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively, assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa, and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However, that would mean 255 contexts per 8-bit symbol, which is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively, it would also be possible to assume a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding). However, for maximum flexibility and simplicity, the chosen method uses a single symbol to encode if a number is 0, and if the number is nonzero, it encodes the number using its exponent, mantissa, and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
 
 ```c
 int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
@@ -642,19 +642,19 @@ int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
     }
 }
 ```
-Figure: A pseudocode description of the contexts of Range Non Binary Values. {#figureRangeNonBinaryValueExample}
+Figure: A pseudocode description of the contexts of Range nonbinary values. {#figureRangeNonBinaryValueExample}
 
 `get_symbol` is used for the read out of `sample_difference` indicated in [@figureSampleDifference].
 
-`get_rac` returns a boolean, computed from the bytestream as described in [@figureGetRacFormula] as a formula and in [@figureGetRacPseudoCode] as pseudocode.
+`get_rac` returns a boolean, computed from the bytestream as described by the formula found in [@figureGetRacFormula] and by the pseudocode found in [@figureGetRacPseudoCode].
 
 #### Initial Values for the Context Model
 
-When `keyframe` (see (#frame)) value is 1, all range coder state variables are set to their initial state.
+When the `keyframe` value (see (#frame)) value is 1, all range coder state variables are set to their initial state.
 
 #### State Transition Table
 
-In this mode, a State Transition Table is used, indicating in which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
+In this model, a state transition table is used, indicating to which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
 
 SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
@@ -673,7 +673,7 @@ Figure: Description of the coding of the state transition table for a `get_rac` 
 
 #### default\_state\_transition
 
-By default, the following State Transition Table is used:
+By default, the following state transition table is used:
 
 ```
   0,  0,  0,  0,  0,  0,  0,  0, 20, 21, 22, 23, 24, 25, 26, 27,
@@ -712,7 +712,7 @@ Figure: Default state transition table for Range coding. {#figureDefaultStateTra
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) **MUST** be set to 2, and the difference to the default **MUST** be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) **MUST** be set to 2, and the difference to the default **MUST** be stored in the `Parameters`, see (#parameters). At the time of this writing, the reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -751,11 +751,11 @@ Figure: Alternative state transition table for Range coding. {#figureAltStateTra
 
 ### Golomb Rice Mode
 
-The end of the bitstream of the Frame is padded with 0-bits until the bitstream contains a multiple of 8 bits.
+The end of the bitstream of the Frame is padded with zeroes until the bitstream contains a multiple of eight bits.
 
 #### Signed Golomb Rice Codes
 
-This coding mode uses Golomb Rice codes. The VLC is split into two parts. The prefix stores the most significant bits and the suffix stores the k least significant bits or stores the whole number in the ESC case.
+This coding mode uses Golomb Rice codes. The VLC is split into two parts: the prefix and suffix. The prefix stores the most significant bits or indicates if the symbol is too large to be stored (this is known as the ESC case, see (#default). The suffix either stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
 int get_ur_golomb(k) {
@@ -789,9 +789,9 @@ Figure: A pseudocode description of the read of a signed integer in Golomb Rice 
 |0000 0000 001  | 10    |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
-Table: Description of the coding of the Prefix of Signed Golomb Rice Codes.{#tableSignedGolombRiceCodesPrefix}
+Table: Description of the coding of the prefix of signed Golomb Rice codes.{#tableSignedGolombRiceCodesPrefix}
 
-`ESC` is an ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method is used.
+ESC is an ESCape symbol to indicate that the symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
 ##### Suffix
 
@@ -799,13 +799,13 @@ Table: Description of the coding of the Prefix of Signed Golomb Rice Codes.{#tab
 |:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order                      |
-Table: Description of the coding of the Suffix of Signed Golomb Rice Codes.{#tableSignedGolombRiceCodesSuffix}
+Table: Description of the coding of the suffix of signed Golomb Rice codes.{#tableSignedGolombRiceCodesSuffix}
 
-ESC **MUST NOT** be used if the value can be coded as non ESC.
+ESC **MUST NOT** be used if the value can be coded as non-ESC.
 
 ##### Examples
 
-[@tableGolombExamples] shows practical examples of how Signed Golomb Rice Codes are decoded based on the series of bits extracted from the bitstream as described by the method above:
+[@tableGolombExamples] shows practical examples of how signed Golomb Rice codes are decoded based on the series of bits extracted from the bitstream as described by the method above:
 
 | k   | bits                      | value |
 |:---:|:--------------------------|------:|
@@ -815,15 +815,15 @@ ESC **MUST NOT** be used if the value can be coded as non ESC.
 | 2   | ``1 10``                  | 2     |
 | 2   | ``01 01``                 | 5     |
 | any | ``000000000000 10000000`` | 139   |
-Table: Examples of decoded Signed Golomb Rice Codes. {#tableGolombExamples}
+Table: Examples of decoded, signed Golomb Rice codes. {#tableGolombExamples}
 
 #### Run Mode
 
-Run mode is entered when the context is 0 and left as soon as a non-0 difference is found. The sample difference is identical to the predicted one. The run and the first different sample difference are coded as defined in (#golomb-rice-sample-difference-coding).
+Run mode is entered when the context is 0 and left as soon as a nonzero difference is found. The Sample Difference is identical to the predicted one. The run and the first different Sample Difference are coded are coded as defined in (#golomb-rice-sample-difference-coding).
 
 ##### Run Length Coding
 
-The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset for each Plane and Slice to 0.
+The run value is encoded in two parts. The prefix part stores the more significant part of the run as well as adjusting the `run_index` that determines the number of bits in the less significant part of the run. The second part of the value stores the less significant part of the run as it is. The `run_index` is reset to zero for each Plane and Slice.
 
 ```c
 log2_run[41] = {
@@ -859,7 +859,7 @@ The `log2_run` array is also used within [@ISO.14495-1.1999].
 
 #### Sign Extension
 
-`sign_extend` is the function of increasing the number of bits of an input binary number in twos complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It **MAY** be computed with:
+`sign_extend` is the function of increasing the number of bits of an input binary number in two's complement signed number representation while preserving the input number's sign (positive/negative) and value, in order to fit in the output bit width. It **MAY** be computed with the following:
 
 ```c
 sign_extend(input_number, input_bits) {
@@ -875,7 +875,7 @@ sign_extend(input_number, input_bits) {
 
 #### Scalar Mode
 
-Each difference is coded with the per context mean prediction removed and a per context value for k.
+Each difference is coded with the per context mean prediction removed and a per context value for `k`.
 
 ```c
 get_vlc_symbol(state) {
@@ -929,7 +929,7 @@ Level coding is identical to the normal difference coding with the exception tha
     }
 ```
 
-Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test Samples, the use of prediction slightly improved the compression rate.
+Note that this is different from JPEG-LS (lossless JPEG), which doesn't use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test Samples, the use of prediction slightly improved the compression rate.
 
 #### Initial Values for the VLC Context State
 
@@ -946,18 +946,18 @@ When `keyframe` (see (#frame)) value is 1, all VLC coder state variables are set
 
 An FFV1 bitstream is composed of a series of one or more Frames and (when required) a `Configuration Record`.
 
-Within the following sub-sections, pseudocode is used, as described in (#pseudocode), to explain the structure of each FFV1 bitstream component. [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudocode in order to define the storage of the data referenced in that line of pseudocode.
+Within the following subsections, pseudocode as described in (#pseudocode), is used to explain the structure of each FFV1 bitstream component. [@tablePseudoCodeSymbols] lists symbols used to annotate that pseudocode in order to define the storage of the data referenced in that line of pseudocode.
 
-|Symbol| Definition                                             |
+|symbol| definition                                             |
 |------|--------------------------------------------------------|
-| u(n) | unsigned, big endian integer symbol using n bits               |
-| br   | Range coded Boolean (1-bit) symbol with the method described in (#range-binary-values)           |
-| ur   | Range coded unsigned scalar symbol coded with the method described in (#range-non-binary-values) |
-| sr   | Range coded signed scalar symbol coded with the method described in (#range-non-binary-values)   |
-| sd   | Sample difference symbol coded with the method described in (#coding-of-the-sample-difference)   |
+| u(n) | Unsigned, big-endian integer symbol using n bits               |
+| br   | Boolean (1-bit) symbol that is range coded with the method described in (#range-binary-values)           |
+| ur   | Unsigned scalar symbol that is range coded with the method described in (#range-non-binary-values) |
+| sr   | Signed scalar symbol that is range coded with the method described in (#range-non-binary-values)   |
+| sd   | Sample difference symbol that is coded with the method described in (#coding-of-the-sample-difference)   |
 Table: Definition of pseudocode symbols for this document. {#tablePseudoCodeSymbols}
 
-The following **MUST** be provided by external means during initialization of the decoder:
+The following **MUST** be provided by external means during the initialization of the decoder:
 
 `frame_pixel_width` is defined as Frame width in pixels.
 
@@ -969,7 +969,7 @@ Default values at the decoder initialization phase:
 
 ## Quantization Table Set
 
-The Quantization Table Sets are stored by storing the number of equal entries -1 of the first half of the table (represented as `len - 1` in the pseudocode below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudocode.
+The Quantization Table Sets store a sequence of values that are equal to one less than the count of equal concurrent entries for each set of equal concurrent entries within the first half of the table (represented as <tt>len - 1</tt> in the pseudocode below) using the method described in (#range-non-binary-values). The second half doesn’t need to be stored as it is identical to the first with flipped sign. `scale` and `len_count[ i ][ j ]` are temporary values used for the computing of `context_count[ i ]` and are not used outside Quantization Table Set pseudocode.
 
 Example:
 
@@ -1118,7 +1118,7 @@ Meaning of `micro_version` for `version` 3:
 |Other  | reserved for future use |
 Table: The definitions for `micro_version` values for FFV1 version 3. {#tableMicroVersion}
 
-\* development versions may be incompatible with the stable variants.
+\* Development versions may be incompatible with the stable variants.
 
 Meaning of `micro_version` for `version` 4 (note: at the time of writing of this specification, version 4 is not considered stable so the first stable `micro_version` value is to be announced in the future):{V4}
 
@@ -1129,7 +1129,7 @@ Meaning of `micro_version` for `version` 4 (note: at the time of writing of this
 |Other   | reserved for future use |{V4}
 Table: The definitions for `micro_version` values for FFV1 version 4.{V4}
 
-\* development versions which may be incompatible with the stable variants.{V4}
+\* Development versions which may be incompatible with the stable variants.{V4}
 
 ### `coder_type`
 
@@ -1147,7 +1147,7 @@ Restrictions:
 
 If `coder_type` is 0, then `bits_per_raw_sample` **SHOULD NOT** be > 8.
 
-Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and range coder is prefered.
+Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting the Golomb Rice algorithm with `bits_per_raw_sample` greater than eight, and range coder is preferred.
 
 ### `state_transition_delta`
 
@@ -1157,12 +1157,12 @@ If `state_transition_delta` is not present in the FFV1 bitstream, all range code
 
 ### `colorspace_type`
 
-`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra plane content, as well as interleave method.
+`colorspace_type` specifies the color space encoded, the pixel transformation used by the encoder, the extra Plane content, as well as interleave method.
 
-|value  | color space encoded     | pixel transformation    | extra plane content     | interleave method       |
+|value  | color space encoded     | pixel transformation    | extra Plane content     | interleave method       |
 |-------|:------------------------|:------------------------|:------------------------|:------------------------|
 | 0     | YCbCr                   | None                    | Transparency            | Plane then Line         |
-| 1     | RGB                     | JPEG2000-RCT            | Transparency            | Line then Plane         |
+| 1     | RGB                     | JPEG 2000 RCT           | Transparency            | Line then Plane         |
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 Table: The definitions for `colorspace_type` values. {#tableColorspaceType}
 
@@ -1243,7 +1243,7 @@ Table: The definitions for `states_coded` values. {#tableStatesCoded}
 
 ### `initial_state_delta`
 
-`initial_state_delta[ i ][ j ][ k ]` indicates the initial range coder state, it is encoded using `k` as context index and
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial range coder state, and it is encoded using `k` as context index for the range coder and the following pseudocode:
 
 SVGI:!---
 SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
@@ -1311,7 +1311,7 @@ Decoders conforming to this version of this specification **SHALL** ignore `rese
 
 ### `configuration_record_crc_parity`
 
-`configuration_record_crc_parity` 32 bits that are chosen so that the `Configuration Record` as a whole has a CRC remainder of 0.
+`configuration_record_crc_parity` is 32 bits that are chosen so that the `Configuration Record` as a whole has a CRC remainder of zero.
 
 This is equivalent to storing the CRC remainder in the 32-bit parity.
 
@@ -1319,25 +1319,25 @@ The CRC generator polynomial used is described in (#slice-crc-parity).
 
 ### Mapping FFV1 into Containers
 
-This `Configuration Record` can be placed in any file format supporting `Configuration Records`, fitting as much as possible with how the file format uses to store `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported by this version of this specification for the following formats:
+This `Configuration Record` can be placed in any file format that supports `Configuration Records`, fitting as much as possible with how the file format stores `Configuration Records`. The `Configuration Record` storage place and `NumBytes` are currently defined and supported for the following formats:
 
 #### Audio Video Interleave (AVI) File Format
 
-The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the ConfigurationRecord bitstream.
+The `Configuration Record` extends the stream format chunk ("AVI ", "hdlr", "strl", "strf") with the `ConfigurationRecord` bitstream.
 
 See [@AVI] for more information about chunks.
 
-`NumBytes` is defined as the size, in bytes, of the strf chunk indicated in the chunk header minus the size of the stream format structure.
+`NumBytes` is defined as the size, in bytes, of the "strf" chunk indicated in the chunk header minus the size of the stream format structure.
 
 #### ISO Base Media File Format
 
-The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box that contains the ConfigurationRecord bitstream. See [@ISO.14496-12.2020] for more information about boxes.
+The `Configuration Record` extends the sample description box ("moov", "trak", "mdia", "minf", "stbl", "stsd") with a "glbl" box that contains the `ConfigurationRecord` bitstream. See [@ISO.14496-12.2020] for more information about boxes.
 
 `NumBytes` is defined as the size, in bytes, of the "glbl" box indicated in the box header minus the size of the box header.
 
 #### NUT File Format
 
-The `codec_specific_data` element (in `stream_header` packet) contains the ConfigurationRecord bitstream. See [@NUT] for more information about elements.
+The `codec_specific_data` element (in `stream_header` packet) contains the `ConfigurationRecord` bitstream. See [@NUT] for more information about elements.
 
 `NumBytes` is defined as the size, in bytes, of the `codec_specific_data` element as indicated in the "length" field of `codec_specific_data`.
 
@@ -1349,11 +1349,11 @@ FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or 
 
 ## Frame
 
-A Frame is an encoded representation of a complete static image. The whole Frame is provided by the underlaying container.
+A `Frame` is an encoded representation of a complete static image. The whole `Frame` is provided by the underlaying container.
 
-A Frame consists of the `keyframe` field, `Parameters` (if `version <= 1`), and a sequence of independent Slices. The pseudocode below describes the contents of a Frame.
+A `Frame` consists of the `keyframe` field, `Parameters` (if `version <= 1`), and a sequence of independent Slices. The pseudocode below describes the contents of a `Frame`.
 
-`keyframe` field has its own initial state, set to 128.
+The `keyframe` field has its own initial state, set to 128.
 
 ```c
 pseudocode                                                    | type
@@ -1369,27 +1369,39 @@ Frame( NumBytes ) {                                           |
 }                                                             |
 ```
 
-Architecture overview of Slices in a Frame:
+The following is an architecture overview of Slices in a Frame:
 
-|                                                               |
-|:--------------------------------------------------------------|
++-----------------------------------------------------------------+
 | first Slice header                                            |
++-----------------------------------------------------------------+
 | first Slice content                                           |
++-----------------------------------------------------------------+
 | first Slice footer                                            |
++-----------------------------------------------------------------+
 |---------------------------------------------------------------|
++-----------------------------------------------------------------+
 | second Slice header                                           |
++-----------------------------------------------------------------+
 | second Slice content                                          |
++-----------------------------------------------------------------+
 | second Slice footer                                           |
++-----------------------------------------------------------------+
 |---------------------------------------------------------------|
++-----------------------------------------------------------------+
 | ...                                                           |
++-----------------------------------------------------------------+
 |---------------------------------------------------------------|
++-----------------------------------------------------------------+
 | last Slice header                                             |
++-----------------------------------------------------------------+
 | last Slice content                                            |
-| last Slice footer                                             |
++-----------------------------------------------------------------+
+| last Slice footer                                               |
++-----------------------------------------------------------------+
 
 ## Slice
 
-A `Slice` is an independent spatial sub-section of a Frame that is encoded separately from another region of the same Frame. The use of more than one `Slice` per Frame can be useful for taking advantage of the opportunities of multithreaded encoding and decoding.
+A `Slice` is an independent, spatial subsection of a Frame that is encoded separately from another region of the same Frame. The use of more than one `Slice` per Frame provides opportunities for taking advantage of multithreaded encoding and decoding.
 
 A `Slice` consists of a `Slice Header` (when relevant), a `Slice Content`, and a `Slice Footer` (when relevant). The pseudocode below describes the contents of a `Slice`.
 
@@ -1418,9 +1430,9 @@ Slice( ) {                                                    |
 ```
 
 `padding` specifies a bit without any significance and used only for byte alignment.
-**MUST** be 0.
+`padding` **MUST** be 0.
 
-`reserved` specifies a bit without any significance in this revision of the specification and may have a significance in a later revision of this specification.
+`reserved` specifies a bit without any significance in this specification but may have a significance in a later revision of this specification.
 
 Encoders **SHOULD NOT** fill `reserved`.
 
@@ -1455,31 +1467,31 @@ SliceHeader( ) {                                              |
 
 ### `slice_x`
 
-`slice_x` indicates the x position on the Slice raster formed by num_h_slices.
+`slice_x` indicates the x position on the Slice raster formed by `num_h_slices`.
 
 Inferred to be 0 if not present.
 
 ### `slice_y`
 
-`slice_y` indicates the y position on the Slice raster formed by num_v_slices.
+`slice_y` indicates the y position on the Slice raster formed by `num_v_slices`.
 
 Inferred to be 0 if not present.
 
 ### `slice_width`
 
-`slice_width` indicates the width on the Slice raster formed by num_h_slices.
+`slice_width` indicates the width on the Slice raster formed by `num_h_slices`.
 
 Inferred to be 1 if not present.
 
 ### `slice_height`
 
-`slice_height` indicates the height on the Slice raster formed by num_v_slices.
+`slice_height` indicates the height on the Slice raster formed by `num_v_slices`.
 
 Inferred to be 1 if not present.
 
 ### `quant_table_set_index_count`
 
-`quant_table_set_index_count` is defined as:
+`quant_table_set_index_count` is defined as the following:
 
 ```
 1 + ( ( chroma_planes || version <= 3 ) ? 1 : 0 )
@@ -1515,7 +1527,7 @@ Inferred to be 0 if not present.
 
 A value of 0 means that aspect ratio is unknown.
 
-Encoders **MUST** write 0 if Sample aspect ratio is unknown.
+Encoders **MUST** write 0 if the Sample aspect ratio is unknown.
 
 If `sar_den` is 0, decoders **SHOULD** ignore the encoded value and consider that `sar_num` is 0.
 
@@ -1527,7 +1539,7 @@ Inferred to be 0 if not present.
 
 A value of 0 means that aspect ratio is unknown.
 
-Encoders **MUST** write 0 if Sample aspect ratio is unknown.
+Encoders **MUST** write 0 if the Sample aspect ratio is unknown.
 
 If `sar_num` is 0, decoders **SHOULD** ignore the encoded value and consider that `sar_den` is 0.
 
@@ -1578,7 +1590,7 @@ SliceContent( ) {                                             |
 
 ### `primary_color_count`
 
-`primary_color_count` is defined as:
+`primary_color_count` is defined as the following:
 
 ```
 1 + ( chroma_planes ? 2 : 0 ) + ( extra_plane ? 1 : 0 )
@@ -1586,7 +1598,7 @@ SliceContent( ) {                                             |
 
 ### `plane_pixel_height`
 
-`plane_pixel_height[ p ]` is the height in pixels of Plane p of the `Slice`. It is defined as:
+`plane_pixel_height[ p ]` is the height in pixels of Plane p of the `Slice`. It is defined as the following:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1596,7 +1608,7 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 ### `slice_pixel_height`
 
-`slice_pixel_height` is the height in pixels of the Slice. It is defined as:
+`slice_pixel_height` is the height in pixels of the Slice. It is defined as the following:
 
 ```
 floor(
@@ -1608,7 +1620,7 @@ floor(
 
 ### `slice_pixel_y`
 
-`slice_pixel_y` is the Slice vertical position in pixels. It is defined as:
+`slice_pixel_y` is the Slice vertical position in pixels. It is defined as the following:
 
 ```
 floor( slice_y * frame_pixel_height / num_v_slices )
@@ -1616,7 +1628,7 @@ floor( slice_y * frame_pixel_height / num_v_slices )
 
 ## Line
 
-A Line is a list of the sample differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the Line.
+A `Line` is a list of the Sample Differences (relative to the predictor) of primary color components. The pseudocode below describes the contents of the `Line`.
 
 ```c
 pseudocode                                                    | type
@@ -1636,7 +1648,7 @@ Line( p, y ) {                                                |
 
 ### `plane_pixel_width`
 
-`plane_pixel_width[ p ]` is the width in pixels of Plane p of the `Slice`. It is defined as:
+`plane_pixel_width[ p ]` is the width in pixels of Plane p of the `Slice`. It is defined as the following:
 
 ```
 chroma_planes == 1 && (p == 1 || p == 2)
@@ -1646,7 +1658,7 @@ chroma_planes == 1 && (p == 1 || p == 2)
 
 ### `slice_pixel_width`
 
-`slice_pixel_width` is the width in pixels of the Slice. It is defined as:
+`slice_pixel_width` is the width in pixels of the Slice. It is defined as the following:
 
 ```
 floor(
@@ -1658,7 +1670,7 @@ floor(
 
 ### `slice_pixel_x`
 
-`slice_pixel_x` is the Slice horizontal position in pixels. It is defined as:
+`slice_pixel_x` is the Slice horizontal position in pixels. It is defined as the following:
 
 ```
 floor( slice_x * frame_pixel_width / num_h_slices )
@@ -1666,7 +1678,7 @@ floor( slice_x * frame_pixel_width / num_h_slices )
 
 ### `sample_difference`
 
-`sample_difference[ p ][ y ][ x ]` is the sample difference for Sample at Plane `p`, y position `y`, and x position `x`. The Sample value is computed based on median predictor and context described in (#samples).
+`sample_difference[ p ][ y ][ x ]` is the Sample Difference for Sample at Plane `p`, y position `y`, and x position `x`. The Sample value is computed based on median predictor and context described in (#samples).
 
 ## Slice Footer
 
@@ -1706,34 +1718,34 @@ Table: The definitions for `error_status` values. {#tableErrorStatus}
 
 ### `slice_crc_parity`
 
-`slice_crc_parity` 32 bits that are chosen so that the Slice as a whole has a crc remainder of 0.
+`slice_crc_parity` is 32 bits that are chosen so that the Slice as a whole has a CRC remainder of 0.
 
-This is equivalent to storing the crc remainder in the 32-bit parity.
+This is equivalent to storing the CRC remainder in the 32-bit parity.
 
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7), with initial value 0, without pre-inversion, and without post-inversion.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0, without pre-inversion, and without post-inversion.
 
 # Restrictions
 
 To ensure that fast multithreaded decoding is possible, starting with version 3 and if `frame_pixel_width * frame_pixel_height` is more than 101376, `slice_width * slice_height` **MUST** be less or equal to `num_h_slices * num_v_slices / 4`.
-Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF ("Common Intermediate Format") frame size format.
+Note: 101376 is the frame size in pixels of a 352x288 frame also known as CIF (Common Intermediate Format) frame size format.
 
-For each Frame, each position in the Slice raster **MUST** be filled by one and only one Slice of the Frame (no missing Slice position, no Slice overlapping).
+For each Frame, each position in the Slice raster **MUST** be filled by one and only one Slice of the Frame (no missing Slice position and no Slice overlapping).
 
-For each Frame with `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a Slice in the previous Frame.{V3}
-For each Frame with `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, `slice_height` as a Slice in the previous Frame, except if `reset_contexts` is 1.{V4}
+For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, and `slice_height` as a Slice in the previous Frame.{V3}
+For each Frame with a `keyframe` value of 0, each Slice **MUST** have the same value of `slice_x`, `slice_y`, `slice_width`, and `slice_height` as a Slice in the previous Frame, except if `reset_contexts` is 1.{V4}
 
 # Security Considerations
 
-Like any other codec, (such as [@?RFC6716]), FFV1 should not be used with insecure ciphers or cipher-modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
+Like any other codec (such as [@?RFC6716]), FFV1 should not be used with insecure ciphers or cipher modes that are vulnerable to known plaintext attacks. Some of the header bits as well as the padding are easily predictable.
 
-Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in pixel count computations without considering that the multiplication result may have overflowed the arithmetic types range.
+Implementations of the FFV1 codec need to take appropriate security considerations into account. Those related to denial of service are outlined in Section 2.1 of [@!RFC4732]. It is extremely important for the decoder to be robust against malicious payloads. Malicious payloads **MUST NOT** cause the decoder to overrun its allocated memory or to take an excessive amount of resources to decode. An overrun in allocated memory could lead to arbitrary code execution by an attacker. The same applies to the encoder, even though problems in encoders are typically rarer. Malicious video streams **MUST NOT** cause the encoder to misbehave because this would allow an attacker to attack transcoding gateways. A frequent security problem in image and video codecs is failure to check for integer overflows. An example is allocating `frame_pixel_width * frame_pixel_height` in pixel count computations without considering that the multiplication result may have overflowed the range of the arithmetic type.
 The range coder could, if implemented naively, read one byte over the end. The implementation **MUST** ensure that no read outside allocated and initialized memory occurs.
 
 None of the content carried in FFV1 is intended to be executable.
 
 # IANA Considerations
 
-The IANA is requested to register the following values:
+IANA has registered the following values.
 
 ## Media Type Definition
 
@@ -1766,7 +1778,7 @@ Optional parameters:
     : The `bits_per_raw_sample` of the FFV1 encoding as defined by (#bits-per-raw-sample).
 
     `max_slices`:
-    : The value of `max_slices` is an integer indicating the maximum count of Slices with a frames of the FFV1 encoding.
+    : The value of `max_slices` is an integer indicating the maximum count of Slices within a Frame of the FFV1 encoding.
 
 Encoding considerations:
 : This media type is defined for encapsulation in several audiovisual container formats and contains binary data; see (#mapping-ffv1-into-containers). This media type is framed binary data; see Section 4.8 of [@!RFC6838].
