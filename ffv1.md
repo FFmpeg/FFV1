@@ -14,7 +14,7 @@ This document defines version 0, 1, and 3 of FFV1. The distinctions of the versi
 
 This document defines a version 4 of FFV1. Prior versions of FFV1 are defined within [@?I-D.ietf-cellar-ffv1].{V4}
 
-This document assumes familiarity with mathematical and coding concepts such as Range coding [@?Range-Encoding] and YCbCr color spaces [@?YCbCr].
+This document assumes familiarity with mathematical and coding concepts such as Range encoding [@?Range-Encoding] and YCbCr color spaces [@?YCbCr].
 
 This specification describes the valid bitstream and how to decode such valid bitstream. Bitstreams not conforming to this specification or how they are handled is outside this specification. A decoder could reject every invalid bitstream, attempt to perform error concealment, or re-download or use a redundant copy of the invalid part or any other action it deems appropriate.
 
@@ -203,7 +203,7 @@ a = b, a += b, a -= b, a *= b
 
 #### remaining\_symbols\_in\_syntax
 
-`remaining_symbols_in_syntax( )` is true as long as the RangeCoder has not consumed all the given input bytes.
+`remaining_symbols_in_syntax( )` is true as long as the range coder has not consumed all the given input bytes.
 
 #### byte_aligned
 
@@ -287,7 +287,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g., 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2019]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with the range coder coder type, as other potentially impacted configurations (e.g., 15/16-bit JPEG2000-RCT with range coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2019]. In the meanwhile, 16-bit JPEG2000-RCT with range coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
 
@@ -439,11 +439,11 @@ Figure: Description of the coding of the Sample Difference in the bitstream. {#f
 
 ### Range Coding Mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2020], but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2020], but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
 
 #### Range Binary Values
 
-To encode binary digits efficiently, a Range coder is used. A Range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the 2 sub-ranges are proportional to their estimated probability. The quantization table is used to choose the context used from the surrounding image sample values for the case of coding the sample differences. Coding integers is done by coding multiple binary values. The range decoder will read bytes until it can determine which sub-range the input falls into to return the next binary symbol.
+To encode binary digits efficiently, a range coder is used. A range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the 2 sub-ranges are proportional to their estimated probability. The quantization table is used to choose the context used from the surrounding image sample values for the case of coding the sample differences. Coding integers is done by coding multiple binary values. The range decoder will read bytes until it can determine which sub-range the input falls into to return the next binary symbol.
 
 To describe Range coding for FFV1, the following values are used:
 
@@ -469,7 +469,7 @@ t~i~
 : a temporary variable to transmit sub-ranges between range coding operations.
 
 b~i~
-: the i-th Range coded binary value.
+: the i-th range coded binary value.
 
 S~0,\ i~
 : the i-th initial state.
@@ -477,14 +477,14 @@ S~0,\ i~
 j~n~
 : the length of the bytestream encoding n binary symbols.
 
-The following Range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incremening from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
+The following range coder state variables are initialized to the following values. The Range is initialized to a value of 65,280 (expressed in base 16 as 0xFF00) as depicted in [@figureInitializeRange]. The Low is initialized according to the value of the first two bytes as depicted in [@figureInitializeLow]. j~i~ tracks the length of the bytestream encoding while incremening from an initial value of j~0~ to a final value of j~n~. j~0~ is initialized to 2 as depicted in [@figureInitializeLength].
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues5.svg "range binary values 5")
 SVGI:!---
 SVGC:rangebinaryvalues5.svg=$$R_{0}=65280$$
 AART:R_(0) = 65280
-Figure: The initial value for "Range". {#figureInitializeRange}
+Figure: The initial value for Range. {#figureInitializeRange}
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues6.svg "range binary values 6")
@@ -500,7 +500,7 @@ SVGC:rangebinaryvalues7.svg=$$j_{0}=2$$
 AART:j_(0) = 2
 Figure: The initial value for "j", the length of the bytestream encoding. {#figureInitializeLength}
 
-The following equations define how the Range coder variables evolve as it reads or writes symbols.
+The following equations define how the range coder variables evolve as it reads or writes symbols.
 
 SVGI:!---
 SVGI:![svg](rangebinaryvalues1.svg "range binary values 1")
@@ -546,7 +546,7 @@ AART:t_(i)     >= 2 ^ 8                             ==>
 AART:R_(i + 1) =  t_(i)                             AND
 AART:L_(i + 1) =  l_(i)                             AND
 AART:j_(i + 1) =  j_(i)
-Figure: This formula shows the linking of the Range coder with the reading or writing of the bytestream.
+Figure: This formula shows the linking of the range coder with the reading or writing of the bytestream.
 
 ```c
     range = 0xFF00;
@@ -557,7 +557,7 @@ Figure: This formula shows the linking of the Range coder with the reading or wr
         end = 1;
     }
 ```
-Figure: A pseudocode description of the initialization of Range coder variables in Range Binary mode.
+Figure: A pseudocode description of the initialization of range coder variables in Range binary mode.
 
 ```c
 refill() {
@@ -573,7 +573,7 @@ refill() {
     }
 }
 ```
-Figure: A pseudocode description of refilling the Range Binary Value coder buffer.
+Figure: A pseudocode description of refilling the binary value buffer of the range coder.
 
 ```c
 get_rac(state) {
@@ -592,7 +592,7 @@ get_rac(state) {
     }
 }
 ```
-Figure: A pseudocode description of the read of a binary value in Range Binary mode. {#figureGetRacPseudoCode}
+Figure: A pseudocode description of the read of a binary value in Range binary mode. {#figureGetRacPseudoCode}
 
 ##### Termination
 
@@ -650,7 +650,7 @@ Figure: A pseudocode description of the contexts of Range Non Binary Values. {#f
 
 #### Initial Values for the Context Model
 
-When `keyframe` (see (#frame)) value is 1, all Range coder state variables are set to their initial state.
+When `keyframe` (see (#frame)) value is 1, all range coder state variables are set to their initial state.
 
 #### State Transition Table
 
@@ -1138,8 +1138,8 @@ Table: The definitions for `micro_version` values for FFV1 version 4.{V4}
 |value  | coder used                                      |
 |-------|:------------------------------------------------|
 | 0     | Golomb Rice                                     |
-| 1     | Range Coder with default state transition table |
-| 2     | Range Coder with custom state transition table  |
+| 1     | Range coder with default state transition table |
+| 2     | Range coder with custom state transition table  |
 | Other | reserved for future use                         |
 Table: The definitions for `coder_type` values. {#tableCoderType}
 
@@ -1147,13 +1147,13 @@ Restrictions:
 
 If `coder_type` is 0, then `bits_per_raw_sample` **SHOULD NOT** be > 8.
 
-Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and Range Coder is prefered.
+Background: At the time of this writing, there is no known implementation of FFV1 bitstream supporting Golomb Rice algorithm with `bits_per_raw_sample` greater than 8, and range coder is prefered.
 
 ### `state_transition_delta`
 
-`state_transition_delta` specifies the Range coder custom state transition table.
+`state_transition_delta` specifies the range coder custom state transition table.
 
-If `state_transition_delta` is not present in the FFV1 bitstream, all Range coder custom state transition table elements are assumed to be 0.
+If `state_transition_delta` is not present in the FFV1 bitstream, all range coder custom state transition table elements are assumed to be 0.
 
 ### `colorspace_type`
 
@@ -1243,7 +1243,7 @@ Table: The definitions for `states_coded` values. {#tableStatesCoded}
 
 ### `initial_state_delta`
 
-`initial_state_delta[ i ][ j ][ k ]` indicates the initial Range coder state, it is encoded using `k` as context index and
+`initial_state_delta[ i ][ j ][ k ]` indicates the initial range coder state, it is encoded using `k` as context index and
 
 SVGI:!---
 SVGI:![svg](initialstatedelta1.svg "initial state delta 1")
