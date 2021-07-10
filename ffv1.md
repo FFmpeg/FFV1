@@ -2,7 +2,7 @@
 
 This document describes FFV1, a lossless video encoding format. The design of FFV1 considers the storage of image characteristics, data fixity, and the optimized use of encoding time and storage requirements. FFV1 is designed to support a wide range of lossless video applications such as long-term audiovisual preservation, scientific imaging, screen recording, and other video encoding scenarios that seek to avoid the generational loss of lossy video encodings.
 
-This document defines version 0, 1 and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
+This document defines version 0, 1, and 3 of FFV1. The distinctions of the versions are provided throughout the document, but in summary:{V3}
 
 - Version 0 of FFV1 was the original implementation of FFV1 and has been flagged as stable on April 14, 2006 [@?FFV1_V0].{V3}
 
@@ -16,7 +16,7 @@ This document defines a version 4 of FFV1. Prior versions of FFV1 are defined wi
 
 This document assumes familiarity with mathematical and coding concepts such as Range coding [@?Range-Encoding] and YCbCr color spaces [@?YCbCr].
 
-This specification describes the valid bitstream and how to decode such valid bitstream. Bitstreams not conforming to this specification or how they are handled is outside this specification. A decoder could reject every invalid bitstream or attempt to perform error concealment or re-download or use a redundant copy of the invalid part or any other action it deems appropriate.
+This specification describes the valid bitstream and how to decode such valid bitstream. Bitstreams not conforming to this specification or how they are handled is outside this specification. A decoder could reject every invalid bitstream, attempt to perform error concealment, or re-download or use a redundant copy of the invalid part or any other action it deems appropriate.
 
 # Notation and Conventions
 
@@ -56,7 +56,7 @@ RGB:
 : A reference to the method of storing the value of a pixel by using three numeric values that represent Red, Green, and Blue.
 
 YCbCr:
-: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g. YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo or ICtCp (intensity, blue-yellow, red-green). The exact meaning of the three numeric values is unspecified.
+: A reference to the method of storing the value of a pixel by using three numeric values that represent the luma of the pixel (Y) and the chroma of the pixel (Cb and Cr). YCbCr word is used for historical reasons and currently references any color space relying on 1 luma Sample and 2 chroma Samples, e.g., YCbCr (luma, blue-difference chroma, red-difference chroma), YCgCo, or ICtCp (intensity, blue-yellow, red-green). The exact meaning of the three numeric values is unspecified.
 
 TBA:{V4}
 : To Be Announced. Used in reference to the development of future iterations of the FFV1 specification.{V4}
@@ -65,9 +65,9 @@ TBA:{V4}
 
 ### Pseudocode
 
-The FFV1 bitstream is described in this document using pseudocode. Note that the pseudocode is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudocode used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while` and `for` keywords as well as functions defined within this document.
+The FFV1 bitstream is described in this document using pseudocode. Note that the pseudocode is used for clarity in order to illustrate the structure of FFV1 and not intended to specify any particular implementation. The pseudocode used is based upon the C programming language [@!ISO.9899.2018] and uses its `if/else`, `while`, and `for` keywords as well as functions defined within this document.
 
-In some instances, pseudocode is presented in a two-column format such as shown in [@figurePseudoCode]. In this form the `type` column provides a Symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudocode.
+In some instances, pseudocode is presented in a two-column format such as shown in [@figurePseudoCode]. In this form, the `type` column provides a Symbol as defined in [@tablePseudoCodeSymbols] that defines the storage of the data referenced in that same line of pseudocode.
 
 ```c
 pseudocode                                                    | type
@@ -80,7 +80,7 @@ Figure: A depiction of type-labelled pseudocode used within this document. {#fig
 
 ### Arithmetic Operators
 
-Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators which are re-defined within this section.
+Note: the operators and the order of precedence are the same as used in the C programming language [@!ISO.9899.2018], with the exception of `>>` (removal of implementation defined behavior) and `^` (power instead of XOR) operators, which are re-defined within this section.
 
 `a + b`       means a plus b.
 
@@ -146,9 +146,9 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `ceil(a)`               means the smallest integer greater than or equal to a.
 
-`sign(a)`               extracts the sign of a number, i.e. if a < 0 then -1, else if a > 0 then 1, else 0.
+`sign(a)`               extracts the sign of a number, i.e., if a < 0 then -1, else if a > 0 then 1, else 0.
 
-`abs(a)`                means the absolute value of a, i.e. `abs(a)` = `sign(a) * a`.
+`abs(a)`                means the absolute value of a, i.e., `abs(a)` = `sign(a) * a`.
 
 `log2(a)`               means the base-two logarithm of a.
 
@@ -156,15 +156,15 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `max(a,b)`              means the larger of two values a and b.
 
-`median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e. a+b+c-min(a,b,c)-max(a,b,c).
+`median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e., a+b+c-min(a,b,c)-max(a,b,c).
 
 `A ==> B`               means A implies B.
 
 `A <==> B`              means A ==> B , B ==> A.
 
-a~b~                    means the b-th value of a sequence of a
+a~b~                    means the b-th value of a sequence of a.
 
-a~b,c~                  means the 'b,c'-th value of a sequence of a
+a~b,c~                  means the 'b,c'-th value of a sequence of a.
 
 ### Order of Operation Precedence
 
@@ -215,15 +215,15 @@ a = b, a += b, a -= b, a *= b
 
 # Sample Coding
 
-For each `Slice` (as described in (#slice)) of a Frame, the Planes, Lines, and Samples are coded in an order determined by the color space (see (#color-spaces)). Each Sample is predicted by the median predictor as described in (#median-predictor) from other Samples within the same Plane and the difference is stored using the method described in (#coding-of-the-sample-difference).
+For each `Slice` (as described in (#slice)) of a Frame, the Planes, Lines, and Samples are coded in an order determined by the color space (see (#color-spaces)). Each Sample is predicted by the median predictor as described in (#median-predictor) from other Samples within the same Plane, and the difference is stored using the method described in (#coding-of-the-sample-difference).
 
 ## Border
 
 A border is assumed for each coded `Slice` for the purpose of the median predictor and context according to the following rules:
 
-- one column of Samples to the left of the coded Slice is assumed as identical to the Samples of the leftmost column of the coded Slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded Slice is assumed to be `0`
-- one column of Samples to the right of the coded Slice is assumed as identical to the Samples of the rightmost column of the coded Slice
-- an additional column of Samples to the left of the coded Slice and two rows of Samples above the coded Slice are assumed to be `0`
+- one column of Samples to the left of the coded Slice is assumed as identical to the Samples of the leftmost column of the coded Slice shifted down by one row. The value of the topmost Sample of the column of Samples to the left of the coded Slice is assumed to be `0`.
+- one column of Samples to the right of the coded Slice is assumed as identical to the Samples of the rightmost column of the coded Slice.
+- an additional column of Samples to the left of the coded Slice and two rows of Samples above the coded Slice are assumed to be `0`.
 
 [@figureAssumedBorder] depicts a Slice of 9 Samples `a,b,c,d,e,f,g,h,i` in a 3x3 arrangement along with its assumed border.
 
@@ -259,7 +259,7 @@ Relative to any Sample `X`, six other relatively positioned Samples from the cod
 ```
 Figure: A depiction of how relatively positioned Samples are referenced within this document. {#figureRelativeSampleNames}
 
-The labels for these relative Samples are made of the first letters of the words Top, Left and Right.
+The labels for these relative Samples are made of the first letters of the words Top, Left, and Right.
 
 ## Median Predictor
 
@@ -273,7 +273,7 @@ Note, this prediction template is also used in [@ISO.14495-1.1999] and [@HuffYUV
 
 ### Exception
 
-If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample) and (#coder-type)), the following median predictor **MUST** be used:
+If `colorspace_type == 0 && bits_per_raw_sample == 16 && ( coder_type == 1 || coder_type == 2 )` (see (#colorspace-type), (#bits-per-raw-sample), and (#coder-type)), the following median predictor **MUST** be used:
 
 ```
 median(left16s, top16s, left16s + top16s - diag16s)
@@ -287,7 +287,7 @@ top16s  = t  >= 32768 ? ( t  - 65536 ) : t
 diag16s = tl >= 32768 ? ( tl - 65536 ) : tl
 ```
 
-Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g. 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2019]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
+Background: a two's complement 16-bit signed integer was used for storing Sample values in all known implementations of FFV1 bitstream (see  (#ffv1-implementations)). So in some circumstances, the most significant bit was wrongly interpreted (used as a sign bit instead of the 16th bit of an unsigned integer). Note that when the issue was discovered, the only configuration of all known implementations being impacted is 16-bit YCbCr with no pixel transformation with Range Coder coder, as other potentially impacted configurations (e.g., 15/16-bit JPEG2000-RCT with Range Coder coder, or 16-bit content with Golomb Rice coder) were implemented nowhere [@?ISO.15444-1.2019]. In the meanwhile, 16-bit JPEG2000-RCT with Range Coder coder was implemented without this issue in one implementation and validated by one conformance checker. It is expected (to be confirmed) to remove this exception for the median predictor in the next version of the FFV1 bitstream.
 
 ## Quantization Table Sets
 
@@ -319,16 +319,16 @@ AART:          Q_(3)[L - l]  +
 AART:          Q_(4)[T - t]
 Figure: Description of the computing of the Context. {#figureContext}
 
-If `context >= 0` then `context` is used and the difference between the Sample and its predicted value is encoded as is, else `-context` is used and the difference between the Sample and its predicted value is encoded with a flipped sign.
+If `context >= 0` then `context` is used and the difference between the Sample and its predicted value is encoded as is, else `-context` is used, and the difference between the Sample and its predicted value is encoded with a flipped sign.
 
 
 ## Quantization Table Set Indexes
 
 For each Plane of each Slice, a Quantization Table Set is selected from an index:
 
-- For Y Plane, `quant_table_set_index[ 0 ]` index is used
-- For Cb and Cr Planes, `quant_table_set_index[ 1 ]` index is used
-- For extra Plane, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used
+- For Y Plane, `quant_table_set_index[ 0 ]` index is used.
+- For Cb and Cr Planes, `quant_table_set_index[ 1 ]` index is used.
+- For extra Plane, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used.
 
 Background: in first implementations of FFV1 bitstream, the index for Cb and Cr Planes was stored even if it is not used (chroma_planes set to 0), this index is kept for `version` <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
 
@@ -342,7 +342,7 @@ The FFV1 bitstream interleaves data in an order determined by the color space. I
 
 This color space allows 1 to 4 Planes.
 
-The Cb and Cr Planes are optional, but if used then **MUST** be used together. Omitting the Cb and Cr Planes codes the frames in grayscale without color data.
+The Cb and Cr Planes are optional, but if used, then **MUST** be used together. Omitting the Cb and Cr Planes codes the frames in grayscale without color data.
 
 An optional transparency Plane can be used to code transparency data.
 
@@ -353,7 +353,7 @@ An FFV1 Frame using YCbCr **MUST** use one of the following arrangements:
 - Y, Cb, Cr
 - Y, Cb, Cr, Transparency
 
-The Y Plane **MUST** be coded first. If the Cb and Cr Planes are used then they **MUST** be coded after the Y Plane. If a transparency Plane is used, then it **MUST** be coded last.
+The Y Plane **MUST** be coded first. If the Cb and Cr Planes are used, then they **MUST** be coded after the Y Plane. If a transparency Plane is used, then it **MUST** be coded last.
 
 ### RGB
 
@@ -370,7 +370,7 @@ SVGC:rgb1.svg=$$\\\\begin{array}{ccccccc}Cb & = & b - g \\\\\\ Cr & = & r - g \\
 AART:Cb = b - g
 AART:Cr = r - g
 AART:Y = g + (Cb + Cr) >> 2
-Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space. {#figureRgbYcbcr}
+Figure: Description of the transformation of pixels from RGB color space to coded, modified YCbCr color space. {#figureRgbYcbcr}
 
 SVGI:!---
 SVGI:![svg](rgb2.svg "rgb 2")
@@ -379,9 +379,9 @@ SVGC:rgb2.svg=$$\\\\begin{array}{ccccccc}g & = & Y - ( Cb + Cr ) >> 2 \\\\\\ r &
 AART:g = Y - (Cb + Cr) >> 2
 AART:r = Cr + g
 AART:b = Cb + g
-Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space. {#figureYcbcrRgb}
+Figure: Description of the transformation of pixels from coded, modified YCbCr color space to RGB color space. {#figureYcbcrRgb}
 
-Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
+Cb and Cr are positively offset by `1 << bits_per_raw_sample` after the conversion from RGB to the modified YCbCr, and are negatively offseted by the same value before the conversion from the modified YCbCr to RGB, in order to have only non-negative values after the conversion.
 
 When FFV1 uses the JPEG2000-RCT, the horizontal Lines are interleaved to improve caching efficiency since it is most likely that the JPEG2000-RCT will immediately be converted to RGB during decoding. The interleaved coding order is also Y, then Cb, then Cr, and then, if used, transparency.
 
@@ -412,7 +412,7 @@ SVGC:rgb3.svg=$$\\\\begin{array}{ccccccc}Cb & = & g - b \\\\\\ Cr & = & r - b \\
 AART:Cb = g - b
 AART:Cr = r - b
 AART:Y = b + (Cb + Cr) >> 2
-Figure: Description of the transformation of pixels from RGB color space to coded modified YCbCr color space (in case of exception). {#figureRgbYcbcrException}
+Figure: Description of the transformation of pixels from RGB color space to coded, modified YCbCr color space (in case of exception). {#figureRgbYcbcrException}
 
 SVGI:!---
 SVGI:![svg](rgb4.svg "rgb 4")
@@ -421,7 +421,7 @@ SVGC:rgb4.svg=$$\\\\begin{array}{ccccccc}b & = & Y - (Cb + Cr)>>2 \\\\\\ r & = &
 AART:b = Y - (Cb + Cr) >> 2
 AART:r = Cr + b
 AART:g = Cb + b
-Figure: Description of the transformation of pixels from coded modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
+Figure: Description of the transformation of pixels from coded, modified YCbCr color space to RGB color space (in case of exception). {#figureYcbcrRgbException}
 
 Background: At the time of this writing, in all known implementations of FFV1 bitstream, when `bits_per_raw_sample` was between 9 and 15 inclusive and `extra_plane` is 0, Green Blue Red (GBR) Planes were used as Blue Green Red (BGR) Planes during both encoding and decoding. In the meanwhile, 16-bit JPEG2000-RCT was implemented without this issue in one implementation and validated by one conformance checker. Methods to address this exception for the transform are under consideration for the next version of the FFV1 bitstream.
 
@@ -439,13 +439,13 @@ Figure: Description of the coding of the Sample Difference in the bitstream. {#f
 
 ### Range Coding Mode
 
-Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2020] but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
+Early experimental versions of FFV1 used the CABAC Arithmetic coder from H.264 as defined in [@ISO.14496-10.2020], but due to the uncertain patent/royalty situation, as well as its slightly worse performance, CABAC was replaced by a Range coder based on an algorithm defined by G. Nigel N. Martin in 1979 [@?Range-Encoding].
 
 #### Range Binary Values
 
-To encode binary digits efficiently a Range coder is used. A Range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the 2 sub-ranges are proportional to their estimated probability. The quantization table is used to choose the context used from the surrounding image sample values for the case of coding the sample differences. Coding integers is done by coding multiple binary values. The range decoder will read bytes until it can determine which sub-range the input falls into to return the next binary symbol.
+To encode binary digits efficiently, a Range coder is used. A Range coder encodes a series of binary symbols by using a probability estimation within each context. The sizes of each of the 2 sub-ranges are proportional to their estimated probability. The quantization table is used to choose the context used from the surrounding image sample values for the case of coding the sample differences. Coding integers is done by coding multiple binary values. The range decoder will read bytes until it can determine which sub-range the input falls into to return the next binary symbol.
 
-To describe Range coding for FFV1 the following values are used:
+To describe Range coding for FFV1, the following values are used:
 
 C~i~
 : the i-th Context.
@@ -598,22 +598,22 @@ Figure: A pseudocode description of the read of a binary value in Range Binary m
 
 The range coder can be used in three modes.
 
-* In `Open mode` when decoding, every Symbol the reader attempts to read is available. In this mode arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
+* In `Open mode` when decoding, every Symbol the reader attempts to read is available. In this mode, arbitrary data can have been appended without affecting the range coder output. This mode is not used in FFV1.
 
-* In `Closed mode` the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
+* In `Closed mode`, the length in bytes of the bytestream is provided to the range decoder. Bytes beyond the length are read as 0 by the range decoder. This is generally one byte shorter than the open mode.
 
-* In `Sentinel mode` the exact length in bytes is not known and thus the range decoder **MAY** read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary Symbol with state 129, which value **SHALL** be discarded. After reading this Symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined, in this case the last (sentinel) Symbol will be read non-corrupted and be of value 0.
+* In `Sentinel mode`, the exact length in bytes is not known and thus the range decoder **MAY** read into the data that follows the range coded bytestream by one byte. In `Sentinel mode`, the end of the range coded bytestream is a binary Symbol with state 129, which value **SHALL** be discarded. After reading this Symbol, the range decoder will have read one byte beyond the end of the range coded bytestream. This way the byte position of the end can be determined. Bytestreams written in `Sentinel mode` can be read in `Closed mode` if the length can be determined. In this case, the last (sentinel) Symbol will be read non-corrupted and be of value 0.
 
 Above describes the range decoding. Encoding is defined as any process which produces a decodable bytestream.
 
 There are three places where range coder termination is needed in FFV1.
 First is in the `Configuration Record`, in this case the size of the range coded bytestream is known and handled as `Closed mode`.
-Second is the switch from the `Slice Header` which is range coded to Golomb coded Slices as `Sentinel mode`.
-Third is the end of range coded Slices which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
+Second is the switch from the `Slice Header`, which is range coded to Golomb coded Slices as `Sentinel mode`.
+Third is the end of range coded Slices, which need to terminate before the CRC at their end. This can be handled as `Sentinel mode` or as `Closed mode` if the CRC position has been determined.
 
 #### Range Non Binary Values
 
-To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However that would mean 255 contexts per 8-bit Symbol that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single Symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
+To encode scalar integers, it would be possible to encode each bit separately and use the past bits as context. However, that would mean 255 contexts per 8-bit Symbol, that is not only a waste of memory but also requires more past data to reach a reasonably good estimate of the probabilities. Alternatively, assuming a Laplacian distribution and only dealing with its variance and mean (as in Huffman coding) would also be possible, however, for maximum flexibility and simplicity, the chosen method uses a single Symbol to encode if a number is 0, and if not, encodes the number using its exponent, mantissa, and sign. The exact contexts used are best described by [@figureRangeNonBinaryValueExample].
 
 ```c
 int get_symbol(RangeCoder *c, uint8_t *state, int is_signed) {
@@ -654,7 +654,7 @@ When `keyframe` (see (#frame)) value is 1, all Range coder state variables are s
 
 #### State Transition Table
 
-In this mode a State Transition Table is used, indicating in which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
+In this mode, a State Transition Table is used, indicating in which state the decoder will move to, based on the current state and the value extracted from [@figureGetRacPseudoCode].
 
 SVGI:!---
 SVGI:![svg](statetransitiontable1.svg "state transition table 1")
@@ -712,7 +712,7 @@ Figure: Default state transition table for Range coding. {#figureDefaultStateTra
 
 #### Alternative State Transition Table
 
-The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) **MUST** be set to 2 and the difference to the default **MUST** be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
+The alternative state transition table has been built using iterative minimization of frame sizes and generally performs better than the default. To use it, the `coder_type` (see (#coder-type)) **MUST** be set to 2, and the difference to the default **MUST** be stored in the `Parameters`, see (#parameters). The reference implementation of FFV1 in FFmpeg uses [@figureAltStateTransition] by default at the time of this writing when Range coding is used.
 
 ```
   0, 10, 10, 10, 10, 16, 16, 16, 28, 16, 16, 29, 42, 49, 20, 49,
@@ -789,7 +789,7 @@ Figure: A pseudocode description of the read of a signed integer in Golomb Rice 
 |0000 0000 001  | 10    |
 |0000 0000 0001 | 11    |
 |0000 0000 0000 | ESC   |
-Table: Description of the coding of the Prefix of Signed Golomb Rice Codes {#tableSignedGolombRiceCodesPrefix}
+Table: Description of the coding of the Prefix of Signed Golomb Rice Codes.{#tableSignedGolombRiceCodesPrefix}
 
 `ESC` is an ESCape Symbol to indicate that the Symbol to be stored is too large for normal storage and that an alternate storage method is used.
 
@@ -799,7 +799,7 @@ Table: Description of the coding of the Prefix of Signed Golomb Rice Codes {#tab
 |:-------------|:--------------------------------------------------------|
 |non ESC       | the k least significant bits MSB first                  |
 |ESC           | the value - 11, in MSB first order                      |
-Table: Description of the coding of the Suffix of Signed Golomb Rice Codes {#tableSignedGolombRiceCodesSuffix}
+Table: Description of the coding of the Suffix of Signed Golomb Rice Codes.{#tableSignedGolombRiceCodesSuffix}
 
 ESC **MUST NOT** be used if the value can be coded as non ESC.
 
@@ -929,7 +929,7 @@ Level coding is identical to the normal difference coding with the exception tha
     }
 ```
 
-Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test Samples the use of prediction slightly improved the compression rate.
+Note, this is different from JPEG-LS, which doesn’t use prediction in run mode and uses a different encoding and context model for the last difference. On a small set of test Samples, the use of prediction slightly improved the compression rate.
 
 #### Initial Values for the VLC context state
 
@@ -950,7 +950,7 @@ Within the following sub-sections, pseudocode is used, as described in (#pseudoc
 
 |Symbol| Definition                                             |
 |------|--------------------------------------------------------|
-| u(n) | unsigned big endian integer Symbol using n bits               |
+| u(n) | unsigned, big endian integer Symbol using n bits               |
 | br   | Range coded Boolean (1-bit) Symbol with the method described in (#range-binary-values)           |
 | ur   | Range coded unsigned scalar Symbol coded with the method described in (#range-non-binary-values) |
 | sr   | Range coded signed scalar Symbol coded with the method described in (#range-non-binary-values)   |
@@ -1690,7 +1690,7 @@ SliceFooter( ) {                                              |
 
 `slice_size` indicates the size of the Slice in bytes.
 
-Note: this allows finding the start of Slices before previous Slices have been fully decoded, and allows parallel decoding as well as error resilience.
+Note: this allows finding the start of Slices before previous Slices have been fully decoded and allows parallel decoding as well as error resilience.
 
 ### error\_status
 
@@ -1710,7 +1710,7 @@ Table: The definitions for `error_status` values. {#tableErrorStatus}
 
 This is equivalent to storing the crc remainder in the 32-bit parity.
 
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7), with initial value 0, without pre-inversion and without post-inversion.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7), with initial value 0, without pre-inversion, and without post-inversion.
 
 # Restrictions
 
@@ -1783,7 +1783,7 @@ Published specification:
 [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
 Applications which use this media type:
-: Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to screen recording, scientific imaging, and digital video preservation.
+: Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to, screen recording, scientific imaging, and digital video preservation.
 
 Fragment identifier considerations:
 : N/A.
