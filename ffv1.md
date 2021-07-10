@@ -193,7 +193,7 @@ a = b, a += b, a -= b, a *= b
 
 ### NumBytes
 
-`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its Container to store the `NumBytes` values; see (#mapping-ffv1-into-containers).
+`NumBytes` is a non-negative integer that expresses the size in 8-bit octets of a particular FFV1 `Configuration Record` or `Frame`. FFV1 relies on its container to store the `NumBytes` values; see (#mapping-ffv1-into-containers).
 
 ### Bitstream Functions
 
@@ -1286,7 +1286,7 @@ Table: The definitions for `intra` values. {#tableIntra}
 
 ## Configuration Record
 
-In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying Container as described in (#mapping-ffv1-into-containers). It contains the `Parameters` used for all instances of Frame. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying Container.
+In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container as described in (#mapping-ffv1-into-containers). It contains the `Parameters` used for all instances of Frame. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
 
 ```c
 pseudocode                                                 | type
