@@ -1782,7 +1782,7 @@ Published specification:
 
 [RFC Editor: Upon publication as an RFC, please replace "XXXX" with the number assigned to this document and remove this note.]
 
-Applications which use this media type:
+Applications that use this media type:
 : Any application that requires the transport of lossless video can use this media type. Some examples are, but not limited to, screen recording, scientific imaging, and digital video preservation.
 
 Fragment identifier considerations:
@@ -1792,7 +1792,7 @@ Additional information:
 : None.
 
 Person & email address to contact for further information:
-: Michael Niedermayer <michael@niedermayer.cc>
+: Michael Niedermayer (<michael@niedermayer.cc>)
 
 Intended usage:
 : COMMON
@@ -1801,10 +1801,10 @@ Restrictions on usage:
 : None.
 
 Author:
-: Dave Rice <dave@dericed.com>
+: Dave Rice (<dave@dericed.com>)
 
 Change controller:
-: IETF cellar working group delegated from the IESG.
+: IETF CELLAR Working Group delegated from the IESG.
 
 # Changelog
 
