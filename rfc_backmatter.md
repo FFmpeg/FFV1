@@ -181,7 +181,7 @@ After having checked `keyframe` field, a decoder **SHOULD** parse `slice_size` f
 
 This appendix is informative.
 
-Some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity` in the `reserved` bits of `Slice()`. Any revision of this specification should care about avoiding to add 40 bits of content after `SliceContent` if `version` == 0 or `version` == 1. Else a decoder conforming to the revised specification could not distinguish between a revised bitstream and such buggy bitstream in the wild.
+Some bitstreams were found with 40 extra bits corresponding to `error_status` and `slice_crc_parity` in the `reserved` bits of `Slice()`. Any revision of this specification should care about avoiding to add 40 bits of content after `SliceContent` if `version == 0` or `version == 1`. Else a decoder conforming to the revised specification could not distinguish between a revised bitstream and such buggy bitstream in the wild.
 
 # FFV1 Implementations
 

@@ -156,7 +156,7 @@ Note: the operators and the order of precedence are the same as used in the C pr
 
 `max(a,b)`              means the larger of two values a and b.
 
-`median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e., a+b+c-min(a,b,c)-max(a,b,c).
+`median(a,b,c)`         means the numerical middle value in a data set of a, b, and c, i.e., `a+b+c-min(a,b,c)-max(a,b,c)`.
 
 `a ==> b`               means a implies b.
 
@@ -330,7 +330,7 @@ For each Plane of each Slice, a Quantization Table Set is selected from an index
 - For Cb and Cr Planes, `quant_table_set_index[ 1 ]` index is used.
 - For extra Plane, `quant_table_set_index[ (version <= 3 || chroma_planes) ? 2 : 1 ]` index is used.
 
-Background: in first implementations of FFV1 bitstream, the index for Cb and Cr Planes was stored even if it is not used (chroma_planes set to 0), this index is kept for `version` <= 3 in order to keep compatibility with FFV1 bitstreams in the wild.
+Background: in first implementations of FFV1 bitstream, the index for Cb and Cr Planes was stored even if it is not used (`chroma_planes` set to 0), this index is kept for `version <= 3` in order to keep compatibility with FFV1 bitstreams in the wild.
 
 ## Color spaces
 
@@ -1087,9 +1087,9 @@ CONTEXT_SIZE is 32.
 
 Each version is incompatible with other versions: decoders **SHOULD** reject FFV1 bitstreams due to an unknown version.
 
-Decoders **SHOULD** reject FFV1 bitstreams with version <= 1 && ConfigurationRecordIsPresent == 1.
+Decoders **SHOULD** reject FFV1 bitstreams with `version <= 1 && ConfigurationRecordIsPresent == 1`.
 
-Decoders **SHOULD** reject FFV1 bitstreams with version >= 3 && ConfigurationRecordIsPresent == 0.
+Decoders **SHOULD** reject FFV1 bitstreams with `version >= 3 && ConfigurationRecordIsPresent == 0`.
 
 |value   | version                 |
 |:-------|:------------------------|
@@ -1166,7 +1166,7 @@ If `state_transition_delta` is not present in the FFV1 bitstream, all Range code
 | Other | reserved for future use | reserved for future use | reserved for future use | reserved for future use |
 Table: The definitions for `colorspace_type` values. {#tableColorspaceType}
 
-FFV1 bitstreams with `colorspace_type` == 1 && (`chroma_planes` != 1 || `log2_h_chroma_subsample` != 0 || `log2_v_chroma_subsample` != 0) are not part of this specification.
+FFV1 bitstreams with `colorspace_type == 1 && (chroma_planes != 1 || log2_h_chroma_subsample != 0 || log2_v_chroma_subsample != 0)` are not part of this specification.
 
 ### `chroma_planes`
 
@@ -1188,8 +1188,8 @@ Table: The definitions for `chroma_planes` values. {#tableChromaPlanes}
 | Other | the actual bits for each Sample               |
 Table: The definitions for `bits_per_raw_sample` values. {#tableBitsPerRawSample}
 
-\* Encoders **MUST NOT** store `bits_per_raw_sample` = 0.
-Decoders **SHOULD** accept and interpret `bits_per_raw_sample` = 0 as 8.
+\* Encoders **MUST NOT** store `bits_per_raw_sample = 0`.
+Decoders **SHOULD** accept and interpret `bits_per_raw_sample = 0` as 8.
 
 ### `log2_h_chroma_subsample`
 
@@ -1351,7 +1351,7 @@ FFV1 **SHOULD** use `V_FFV1` as the Matroska `Codec ID`. For FFV1 versions 2 or 
 
 A Frame is an encoded representation of a complete static image. The whole Frame is provided by the underlaying container.
 
-A Frame consists of the `keyframe` field, `Parameters` (if `version` <= 1), and a sequence of independent Slices. The pseudocode below describes the contents of a Frame.
+A Frame consists of the `keyframe` field, `Parameters` (if `version <= 1`), and a sequence of independent Slices. The pseudocode below describes the contents of a Frame.
 
 `keyframe` field has its own initial state, set to 128.
 
