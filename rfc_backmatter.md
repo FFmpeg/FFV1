@@ -3,23 +3,24 @@
 
 <reference anchor="ISO.9899.2018">
   <front>
-    <title>Programming languages - C</title>
+    <title>Information technology - Programming languages - C</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="" year="2018"/>
+    <date year="2018" month="June"/>
   </front>
-  <seriesInfo name="ISO" value="Standard 9899"/>
+  <refcontent>ISO/IEC 9899:2018</refcontent>
 </reference>
 
-<reference anchor="ISO.15444-1.2016">
+<reference anchor="ISO.15444-1.2019">
   <front>
     <title>Information technology -- JPEG 2000 image coding system: Core coding system</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="October" year="2016" />
+    <date  year="2019" month="October"/>
   </front>
+  <refcontent>ISO/IEC 15444-1:2019</refcontent>
 </reference>
 
 <reference anchor="ISO.14495-1.1999">
@@ -28,52 +29,55 @@
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="December" year="1999" />
+    <date year="1999" month="December"/>
   </front>
+  <refcontent>ISO/IEC 14495-1:1999</refcontent>
 </reference>
 
-<reference anchor="ISO.14496-10.2014">
+<reference anchor="ISO.14496-10.2020">
   <front>
     <title>Information technology -- Coding of audio-visual objects -- Part 10: Advanced Video Coding</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="September" year="2014" />
+    <date year="2020" month="December"/>
   </front>
+  <refcontent>ISO/IEC 14496-10:2020</refcontent>
 </reference>
 
-<reference anchor="ISO.14496-12.2015">
+<reference anchor="ISO.14496-12.2020">
   <front>
     <title>Information technology -- Coding of audio-visual objects -- Part 12: ISO base media file format</title>
     <author>
       <organization>International Organization for Standardization</organization>
     </author>
-    <date month="December" year="2015" />
+    <date year="2020" month="December"/>
   </front>
+  <refcontent>ISO/IEC 14496-12:2020</refcontent>
 </reference>
 
-<reference anchor="range-coding">
+<reference anchor="Range-Encoding">
   <front>
     <title>Range encoding: an algorithm for removing redundancy from a digitised message</title>
     <author initials="G. N. N." surname="Martin" fullname="G. N. N. Martin"/>
-    <date month="July" year="1979" />
+    <date year="1979" month="July"/>
   </front>
-  <seriesInfo name="Proceedings of the Conference on Video and Data Recording." value="Institution of Electronic and Radio Engineers, Hampshire, England"/>
+  <refcontent>Proceedings of the Conference on Video and Data Recording</refcontent>
+  <refcontent>Institution of Electronic and Radio Engineers, Hampshire, England</refcontent>
 </reference>
 
-<reference anchor="AVI" target="https://msdn.microsoft.com/en-us/library/windows/desktop/dd318189%28v=vs.85%29.aspx">
+<reference anchor="AVI" target="https://docs.microsoft.com/en-us/windows/win32/directshow/avi-riff-file-reference">
   <front>
     <title>AVI RIFF File Reference</title>
     <author>
       <organization>Microsoft</organization>
     </author>
-    <date year="undated" />
   </front>
 </reference>
 
 <reference anchor="HuffYUV" target="https://web.archive.org/web/20040402121343/http://cultact-server.novi.dk/kpo/huffyuv/huffyuv.html">
   <front>
-    <title>HuffYUV</title>
+    <title>HuffYUV revisited</title>
     <author initials="B." surname="Rudiak-Gould" fullname="Ben Rudiak-Gould"/>
     <date month="December" year="2003" />
   </front>
@@ -87,31 +91,29 @@
   </front>
 </reference>
 
-<reference anchor="VALGRIND" target="https://valgrind.org/">
+<reference anchor="Valgrind" target="https://valgrind.org/">
   <front>
     <title>Valgrind website</title>
     <author>
       <organization>Valgrind Developers</organization>
     </author>
-    <date year="undated" />
   </front>
 </reference>
 
-<reference anchor="Address-Sanitizer" target="https://clang.llvm.org/docs/AddressSanitizer.html">
+<reference anchor="AddressSanitizer" target="https://clang.llvm.org/docs/AddressSanitizer.html">
   <front>
-    <title>ASAN AddressSanitizer website</title>
+    <title>AddressSanitizer</title>
     <author>
-      <organization>The Clang Team</organization>
+      <organization>Clang Project</organization>
     </author>
-    <date year="undated" />
   </front>
+  <refcontent>Clang 12 documentation</refcontent>
 </reference>
 
-<reference anchor="REFIMPL" target="https://ffmpeg.org">
+<reference anchor="REFIMPL" target="https://ffmpeg.org/doxygen/trunk/ffv1_8h.html">
   <front>
     <title>The reference FFV1 implementation / the FFV1 codec in FFmpeg</title>
     <author initials="M." surname="Niedermayer" fullname="Michael Niedermayer"/>
-    <date year="undated" />
   </front>
 </reference>
 
@@ -123,8 +125,6 @@
   </front>
 </reference>
 
-
-
 <reference anchor="MediaConch" target="https://mediaarea.net/MediaConch">
   <front>
     <title>MediaConch</title>
@@ -135,23 +135,13 @@
   </front>
 </reference>
 
-<reference anchor="YCbCr" target="https://en.wikipedia.org/w/index.php?title=YCbCr">
+<reference anchor="YCbCr" target="https://en.wikipedia.org/w/index.php?title=YCbCr&amp;oldid=1025097882">
   <front>
     <title>YCbCr</title>
     <author>
       <organization>Wikipedia</organization>
     </author>
-    <date year="undated" />
-  </front>
-</reference>
-
-<reference anchor="Matroska" target="https://datatracker.ietf.org/doc/draft-ietf-cellar-matroska/">
-  <front>
-    <title>Matroska</title>
-    <author>
-      <organization>IETF</organization>
-    </author>
-    <date year="2019" />
+    <date month="May" day="25" year="2021"/>
   </front>
 </reference>
 
@@ -207,7 +197,7 @@ The reference implementation [@REFIMPL] was validated in the following condition
 * Sending the decoder packets generated by the reference encoder and then subjected to random corruption.
 * Sending the decoder random packets that are not FFV1.
 
-In all of the conditions above, the decoder and encoder was run inside the [@VALGRIND] memory debugger as well as clangs address sanitizer [@Address-Sanitizer], which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
+In all of the conditions above, the decoder and encoder was run inside the [@Valgrind] memory debugger as well as clangs address sanitizer [@AddressSanitizer], which track reads and writes to invalid memory regions as well as the use of uninitialized memory.  There were no errors reported on any of the tested conditions.
 
 ## FFV1 Decoder in Go
 
