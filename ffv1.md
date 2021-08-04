@@ -755,7 +755,7 @@ The end of the bitstream of the Frame is padded with zeroes until the bitstream 
 
 #### Signed Golomb Rice Codes
 
-This coding mode uses Golomb Rice codes. The VLC is split into two parts: the prefix and suffix. The prefix stores the most significant bits or indicates if the symbol is too large to be stored (this is known as the ESC case, see (#default). The suffix either stores the k least significant bits or stores the whole number in the ESC case.
+This coding mode uses Golomb Rice codes. The VLC is split into two parts: the prefix and suffix. The prefix stores the most significant bits or indicates if the symbol is too large to be stored (this is known as the ESC case. The suffix either stores the k least significant bits or stores the whole number in the ESC case.
 
 ```c
 int get_ur_golomb(k) {
