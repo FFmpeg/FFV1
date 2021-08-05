@@ -6,7 +6,7 @@ This document defines versions 0, 1, and 3 of FFV1. The distinctions of the vers
 
 - Version 0 of FFV1 was the original implementation of FFV1 and was flagged as stable on April 14, 2006 [@?FFV1_V0].{V3}
 
-- Version 1 of FFV1 adds support of more video bit depths and was has been flagged as stable on April 24, 2009 [@?FFV1_V1].{V3}
+- Version 1 of FFV1 adds support of more video bit depths and was flagged as stable on April 24, 2009 [@?FFV1_V1].{V3}
 
 - Version 2 of FFV1 only existed in experimental form and is not described by this document, but it is available as a LyX file at <https://github.com/FFmpeg/FFV1/blob/8ad772b6d61c3dd8b0171979a2cd9f11924d5532/ffv1.lyx>.{V3}
 
