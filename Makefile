@@ -1,8 +1,8 @@
-VERSION := 22
+VERSION := 23
 STATUS := draft-
 OUTPUT := $(STATUS)ietf-cellar-ffv1-$(VERSION)
 
-VERSION-v4 := 19
+VERSION-v4 := 20
 STATUS-v4 := draft-
 OUTPUT-v4 := $(STATUS-v4)ietf-cellar-ffv1-v4-$(VERSION-v4)
 
