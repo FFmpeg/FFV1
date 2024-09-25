@@ -1267,7 +1267,8 @@ Figure: Description of the coding of `initial_state_delta[ i ][ j ][ k ]`. {#fig
 |value | error detection/correction type           |
 |------|:------------------------------------------|
 |0     | 32-bit CRC in `ConfigurationRecord`       |
-|1     | 32-bit CRC in `Slice` and `ConfigurationRecord`|
+|1     | 32-bit CRC in `Slice` and `ConfigurationRecord` using crcref=0  as initial and final values|
+|2     | 32-bit CRC in `Slice` and `ConfigurationRecord` using crcref=0x7a8c4079 as initial and final values|{V4}
 |Other | reserved for future use                   |
 Table: The definitions for `ec` values. {#tableEc}
 
@@ -1311,7 +1312,7 @@ Decoders conforming to this version of this specification **SHALL** ignore `rese
 
 ### `configuration_record_crc_parity`
 
-`configuration_record_crc_parity` is 32 bits that are chosen so that the `Configuration Record` as a whole has a CRC remainder of zero.
+`configuration_record_crc_parity` is 32 bits that are chosen so that the `Configuration Record` as a whole has a CRC remainder of crcref.
 
 This is equivalent to storing the CRC remainder in the 32-bit parity.
 
@@ -1720,11 +1721,11 @@ Table: The definitions for `error_status` values. {#tableErrorStatus}
 
 ### `slice_crc_parity`
 
-`slice_crc_parity` is 32 bits that are chosen so that the Slice as a whole has a CRC remainder of 0.
+`slice_crc_parity` is 32 bits that are chosen so that the Slice as a whole has a CRC remainder of crcref.
 
 This is equivalent to storing the CRC remainder in the 32-bit parity.
 
-The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value 0, without pre-inversion, and without post-inversion.
+The CRC generator polynomial used is the standard IEEE CRC polynomial (0x104C11DB7) with initial value crcref, without pre-inversion, and without post-inversion.
 
 # Restrictions
 
