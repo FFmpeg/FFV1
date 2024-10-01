@@ -1614,11 +1614,8 @@ chroma_planes == 1 && (p == 1 || p == 2)
 `slice_pixel_height` is the height in pixels of the Slice. It is defined as the following:
 
 ```
-floor(
-        ( slice_y + slice_height )
-        * slice_pixel_height
-        / num_v_slices
-    ) - slice_pixel_y.
+slice_pixel_y´ - slice_pixel_y
+slice_pixel_y´ is slice_pixel_y but with slice_y replaced by slice_y + slice_height
 ```
 
 ### `slice_pixel_y`
@@ -1664,11 +1661,8 @@ chroma_planes == 1 && (p == 1 || p == 2)
 `slice_pixel_width` is the width in pixels of the Slice. It is defined as the following:
 
 ```
-floor(
-        ( slice_x + slice_width )
-        * slice_pixel_width
-        / num_h_slices
-    ) - slice_pixel_x
+slice_pixel_x´ - slice_pixel_x
+slice_pixel_x´ is slice_pixel_x but with slice_x replaced by slice_x + slice_width
 ```
 
 ### `slice_pixel_x`
