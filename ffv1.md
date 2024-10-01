@@ -46,6 +46,10 @@ Plane:
 Pixel:
 : The smallest addressable representation of a color in a Frame. It is composed of one or more Samples.
 
+MacroPixel:
+: The smallest rectangle able to tile the Frame aligned to the left and top borders.
+For example in a 4:2:0 Frame A MacroPixel contains 2x2 luma samples 1 Cb and 1 Cr sample.
+
 MSB:
 : Most Significant Bit, the bit that can cause the largest change in magnitude of the symbol.
 
@@ -1623,7 +1627,9 @@ slice_pixel_y´ is slice_pixel_y but with slice_y replaced by slice_y + slice_he
 `slice_pixel_y` is the Slice vertical position in pixels. It is defined as the following:
 
 ```
-floor( slice_y * frame_pixel_height / num_v_slices )
+floor( slice_y * frame_pixel_height / num_v_slices ) {V3}
+floor( slice_y * frame_macropixel_height / num_v_slices + 0.5 ) * macropixel_height {V4}
+the value is limited by frame_pixel_height {V4}
 ```
 
 ## Line
@@ -1670,7 +1676,9 @@ slice_pixel_x´ is slice_pixel_x but with slice_x replaced by slice_x + slice_wi
 `slice_pixel_x` is the Slice horizontal position in pixels. It is defined as the following:
 
 ```
-floor( slice_x * frame_pixel_width / num_h_slices )
+floor( slice_x * frame_pixel_width / num_h_slices ) {V3}
+floor( slice_x * frame_macropixel_width / num_h_slices + 0.5 ) * macropixel_width {V4}
+the value is limited by frame_pixel_width {V4}
 ```
 
 ### `sample_difference`
