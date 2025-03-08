@@ -336,6 +336,14 @@ For each Plane of each Slice, a Quantization Table Set is selected from an index
 
 Background: in the first implementations of the FFV1 bitstream, the index for Cb and Cr Planes was stored even if it was not used (`chroma_planes` set to 0), this index is kept for `version <= 3` in order to keep compatibility with FFV1 bitstreams in the wild.
 
+## Remapping {V4}
+
+FFV1 v4 supports remapping samples, this is especially helpfull for floating point values.       {V4}
+This allows mapping 16,32 or 64bit floating point values into 16bit integers for each slice      {V4}
+as long as each slice is 65536 samples or smaller.                                               {V4}
+But it can also be used when some bits are always 0 or 1 to transform discontinuous sample ranges{V4}
+into continuous ones.                                                                            {V4}
+
 ## Color Spaces
 
 FFV1 supports several color spaces. The count of allowed coded Planes and the meaning of the extra Plane are determined by the selected color space.
@@ -1078,6 +1086,9 @@ Parameters( ) {                                               |
         }                                                     |
         ec                                                    | ur
         intra                                                 | ur
+        if (version >= 4){                                    |   {V4}
+            flt                                               | ur{V4}
+        }                                                     |   {V4}
     }                                                         |
 }                                                             |
 ```
@@ -1289,6 +1300,20 @@ Inferred to be 0 if not present.
 |Other  | reserved for future use                                          |
 Table: The definitions for `intra` values. {#tableIntra}
 
+### `flt`                                                                   {V4}
+
+`flt` indicates the samples are floating point numbers instead of integers  {V4}
+
+Inferred to be 0 if not present.                                            {V4}
+
+|value  | relationship                                                     |{V4}
+|-------|:-----------------------------------------------------------------|{V4}
+|0      | integer samples                                                  |{V4}
+|1      | floating point samples                                           |{V4}
+|Other  | reserved for future use                                          |{V4}
+
+Floating point samples use the representation of IEEE754                    {V4}
+
 ## Configuration Record
 
 In the case of a FFV1 bitstream with `version >= 3`, a `Configuration Record` is stored in the underlying container as described in (#mapping-ffv1-into-containers). It contains the `Parameters` used for all instances of Frame. The size of the `Configuration Record`, `NumBytes`, is supplied by the underlying container.
@@ -1468,6 +1493,7 @@ SliceHeader( ) {                                              |
     if (version >= 4) {                                       |   {V4}
         reset_contexts                                        | br{V4}
         slice_coding_mode                                     | ur{V4}
+        remap_mode                                            | ur{V4}
     }                                                         |   {V4}
 }                                                             |
 ```
@@ -1569,6 +1595,19 @@ Inferred to be 0 if not present.{V4}
 | Other | reserved for future use      |{V4}
 Table: The definitions for `slice_coding_mode` values. {#tableSliceCodingMode}
 
+### `remap_mode`{V4}
+
+`remap_mode` indicates the use of sample value remapping {V4}
+Inferred to be 0 if not present.{V4}
+
+|value  | remap_mode                            |{V4}
+|-------|:--------------------------------------|{V4}
+| 0     | remap is not used                     |{V4}
+| 1     | dual RLE coded remap                  |{V4}
+| 2     | dual RLE coded remap with fliped bits |{V4}
+| Other | reserved for future use               |{V4}
+Table: The definitions for `remap mode` values. {#tableRemapMode}
+
 ## Slice Content
 
 A `Slice Content` contains all Line elements part of the `Slice`.
@@ -1579,6 +1618,12 @@ Depending on the configuration, Line elements are ordered by Plane then by row (
 pseudocode                                                    | type
 --------------------------------------------------------------|-----
 SliceContent( ) {                                             |
+    if (remap_mode) {                                         | {V4}
+        for (p = 0; p < primary_color_count; p++) {           | {V4}
+            mul_count                                         | ur {V4}
+            Remap(p)                                          | {V4}
+        }                                                     | {V4}
+    }                                                         | {V4}
     if (colorspace_type == 0) {                               |
         for (p = 0; p < primary_color_count; p++) {           |
             for (y = 0; y < plane_pixel_height[ p ]; y++) {   |
@@ -1684,6 +1729,30 @@ the value is limited by frame_pixel_width {V4}
 ### `sample_difference`
 
 `sample_difference[ p ][ y ][ x ]` is the Sample Difference for Sample at Plane `p`, y position `y`, and x position `x`. The Sample value is computed based on median predictor and context described in (#samples).
+
+## `Remap`                                                                              {V4}
+                                                                                        {V4}
+Each remap table has 1 << `bits_per_raw_sample` entries. They are coded using a         {V4}
+Dual RLE coder. It uses unsigned `get_symbol()`, the initial range coder state is       {V4}
+128 for each context and slice. Runs of 0 and runs of 1 use 2 separate sets of          {V4}
+contexts and one bit to keep track which is the current state. The initial state is the 0 run. {V4}
+The state switches each time when a run of length 0 has been encountered.               {V4}
+"1" elements represent samples which possibly occur, "0" which do not occur.            {V4}
+Each run steps are multiplied by the current multipler. When this multipler is >1 then  {V4}
+for each "1" entry a fine tuning value is stored as a signed  `get_symbol()`            {V4}
+                                                                                        {V4}
+Note, float values with their sign bit = 0 have their other bits flipped                {V4}
+in remap_mode 2. That arranges values with similar exponents closer together.           {V4}
+                                                                                        {V4}
+
+### `mul_count`                                                                         {V4}
+                                                                                        {V4}
+mul_count specifies the number of equal sized segments used for coding                  {V4}
+this Remap table. a mul_count of 0 indicates that a single multiplier of 1 is used.     {V4}
+multipliers are stored as unsigned range coded values when their segment is used        {V4}
+for the first time after a "1" entry in the Remap table. That means segments that are   {V4}
+not used have no multiplier.                                                            {V4}
+
 
 ## Slice Footer
 
